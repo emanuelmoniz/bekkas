@@ -1,11 +1,21 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\MaterialController;
+use App\Http\Controllers\Admin\ProductPhotoController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
     return view('welcome');
-})->name('home');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -17,6 +27,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+/*
+|--------------------------------------------------------------------------
+| ADMIN ROUTES
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware(['auth', 'is_admin'])
     ->prefix('admin')
     ->name('admin.')
@@ -26,14 +42,24 @@ Route::middleware(['auth', 'is_admin'])
             return view('admin.dashboard');
         })->name('dashboard');
 
-	Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
+        // PRODUCTS
+        Route::resource('products', ProductController::class);
 
-	Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+        // PRODUCT PHOTOS
+        Route::post('products/{product}/photos', [ProductPhotoController::class, 'store'])
+            ->name('products.photos.store');
 
-	Route::resource('materials', \App\Http\Controllers\Admin\MaterialController::class);
+        Route::post('photos/{photo}/primary', [ProductPhotoController::class, 'makePrimary'])
+            ->name('photos.primary');
 
+        Route::delete('photos/{photo}', [ProductPhotoController::class, 'destroy'])
+            ->name('photos.destroy');
 
+        // CATEGORIES
+        Route::resource('categories', CategoryController::class);
+
+        // MATERIALS
+        Route::resource('materials', MaterialController::class);
     });
 
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

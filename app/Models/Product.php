@@ -3,16 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Category;
-use App\Models\Material;
-use App\Models\ProductTranslation;
-use App\Models\ProductPhoto;
 
 class Product extends Model
 {
     protected $fillable = [
-        'is_new','is_promo','price','promo_price','tax',
-        'width','length','height','weight','stock','active'
+        'price',
+        'promo_price',
+        'tax',
+        'stock',
+        'is_new',
+        'is_promo',
+        'active',
+        'width',
+        'length',
+        'height',
+        'weight',
     ];
 
     public function translations()

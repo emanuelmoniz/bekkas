@@ -8,135 +8,73 @@
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            <form method="POST" action="{{ route('admin.products.update', $product) }}">
-                @csrf
-                @method('PUT')
+            {{-- PHOTOS --}}
+            <div class="bg-white p-6 rounded shadow mb-6">
+                <h3 class="font-semibold mb-4">Photos</h3>
 
-                {{-- TRANSLATIONS --}}
-                <div class="bg-white p-6 rounded shadow mb-6">
-                    <h3 class="font-semibold mb-4">Translations</h3>
+                <form method="POST"
+                      action="{{ route('admin.products.photos.store', $product) }}"
+                      enctype="multipart/form-data"
+                      class="mb-4 flex flex-col sm:flex-row gap-4">
+                    @csrf
 
-                    @foreach (['pt-PT' => 'Português', 'en-UK' => 'English'] as $locale => $label)
-                        @php
-                            $translation = $product->translations->firstWhere('locale', $locale);
-                        @endphp
+                    <input type="file"
+                           name="photos[]"
+                           multiple
+                           accept="image/*"
+                           class="border rounded px-3 py-2">
 
-                        <div class="border p-4 mb-4">
-                            <h4 class="font-medium mb-2">{{ $label }}</h4>
+                    <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded">
+                        Upload Photos
+                    </button>
+                </form>
 
-                            <div class="mb-3">
-                                <label class="block text-sm mb-1">Name</label>
-                                <input type="text"
-                                       name="name[{{ $locale }}]"
-                                       value="{{ $translation?->name }}"
-                                       class="w-full border rounded px-3 py-2"
-                                       required>
-                            </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    @foreach ($product->photos as $photo)
+                        <div class="border p-2 rounded text-center">
+                            <img src="{{ asset('storage/'.$photo->path) }}"
+                                 class="h-32 w-full object-cover rounded mb-2">
 
-                            <div>
-                                <label class="block text-sm mb-1">Description</label>
-                                <textarea name="description[{{ $locale }}]"
-                                          class="w-full border rounded px-3 py-2"
-                                          rows="4">{{ $translation?->description }}</textarea>
-                            </div>
+                            @if ($photo->is_primary)
+                                <div class="text-green-600 font-semibold text-sm mb-1">
+                                    Primary
+                                </div>
+                            @else
+                                <form method="POST"
+                                      action="{{ route('admin.photos.primary', $photo) }}">
+                                    @csrf
+                                    <button class="text-blue-600 text-sm">
+                                        Make Primary
+                                    </button>
+                                </form>
+                            @endif
+
+                            <form method="POST"
+                                  action="{{ route('admin.photos.destroy', $photo) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                        onclick="return confirm('Delete photo?')"
+                                        class="text-red-600 text-sm mt-1">
+                                    Delete
+                                </button>
+                            </form>
                         </div>
                     @endforeach
                 </div>
+            </div>
 
-                {{-- PRICING --}}
-                <div class="bg-white p-6 rounded shadow mb-6">
-                    <h3 class="font-semibold mb-4">Pricing</h3>
+            {{-- PRODUCT FORM --}}
+            @include('admin.products._form', ['mode' => 'edit'])
 
-                    <div class="grid grid-cols-3 gap-4">
-                        <input type="number" step="0.01" name="price"
-                               value="{{ $product->price }}"
-                               class="border rounded px-3 py-2"
-                               placeholder="Price" required>
-
-                        <input type="number" step="0.01" name="promo_price"
-                               value="{{ $product->promo_price }}"
-                               class="border rounded px-3 py-2"
-                               placeholder="Promo Price">
-
-                        <input type="number" step="0.01" name="tax"
-                               value="{{ $product->tax }}"
-                               class="border rounded px-3 py-2"
-                               placeholder="Tax (%)">
-                    </div>
-                </div>
-
-                {{-- STOCK --}}
-                <div class="bg-white p-6 rounded shadow mb-6">
-                    <h3 class="font-semibold mb-4">Stock</h3>
-
-                    <input type="number"
-                           name="stock"
-                           value="{{ $product->stock }}"
-                           class="border rounded px-3 py-2">
-                </div>
-
-                {{-- CATEGORIES --}}
-                <div class="bg-white p-6 rounded shadow mb-6">
-                    <h3 class="font-semibold mb-4">Categories</h3>
-
-                    @foreach ($categories as $category)
-                        <label class="block">
-                            <input type="checkbox"
-                                   name="categories[]"
-                                   value="{{ $category->id }}"
-                                   @checked($product->categories->contains($category->id))>
-                            {{ optional($category->translation())->name }}
-                        </label>
-                    @endforeach
-                </div>
-
-                {{-- MATERIALS --}}
-                <div class="bg-white p-6 rounded shadow mb-6">
-                    <h3 class="font-semibold mb-4">Materials</h3>
-
-                    @foreach ($materials as $material)
-                        <label class="block">
-                            <input type="checkbox"
-                                   name="materials[]"
-                                   value="{{ $material->id }}"
-                                   @checked($product->materials->contains($material->id))>
-                            {{ optional($material->translation())->name }}
-                        </label>
-                    @endforeach
-                </div>
-
-                {{-- FLAGS --}}
-                <div class="bg-white p-6 rounded shadow mb-6 space-y-2">
-                    <label class="block">
-                        <input type="checkbox" name="is_new" value="1" @checked($product->is_new)>
-                        New
-                    </label>
-
-                    <label class="block">
-                        <input type="checkbox" name="is_promo" value="1" @checked($product->is_promo)>
-                        Promo
-                    </label>
-
-                    <label class="block">
-                        <input type="checkbox" name="active" value="1" @checked($product->active)>
-                        Active
-                    </label>
-                </div>
-
-                {{-- ACTIONS --}}
-                <div class="bg-white p-6 rounded shadow flex justify-between">
-                    <a href="{{ route('admin.products.index') }}"
-                       class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-3 rounded">
-                        Cancel
-                    </a>
-
-                    <button type="submit"
-                            class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded">
-                        Update Product
-                    </button>
-                </div>
-
-            </form>
+            {{-- CANCEL --}}
+            <div class="mt-4">
+                <a href="{{ route('admin.products.index') }}"
+                   class="inline-flex bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-3 rounded">
+                    Cancel
+                </a>
+            </div>
 
         </div>
     </div>
