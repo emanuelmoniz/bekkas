@@ -26,6 +26,13 @@ Route::middleware(['auth', 'is_admin'])
             return view('admin.dashboard');
         })->name('dashboard');
 
+	Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
+
+	Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+
+	Route::resource('materials', \App\Http\Controllers\Admin\MaterialController::class);
+
+
     });
 
 
