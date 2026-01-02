@@ -7,17 +7,19 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('product_photos', function (Blueprint $table) {
+        Schema::create('ticket_attachments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('ticket_message_id')->constrained()->cascadeOnDelete();
+            $table->string('original_name');
             $table->string('path');
-            $table->boolean('is_primary')->default(false);
+            $table->string('mime');
+            $table->integer('size');
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('product_photos');
+        Schema::dropIfExists('ticket_attachments');
     }
 };

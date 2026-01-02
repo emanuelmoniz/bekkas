@@ -11,6 +11,7 @@ use App\Models\Role;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
