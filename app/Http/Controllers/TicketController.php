@@ -12,20 +12,56 @@ use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
-        $tickets = $user->hasRole('admin')
-            ? Ticket::with('category.translations', 'owner')
-                ->latest('last_message_at')
-                ->get()
-            : Ticket::with('category.translations', 'owner')
-                ->where('user_id', $user->id)
-                ->latest('last_message_at')
-                ->get();
+        $query = Ticket::with('category.translations', 'owner')
+            ->when(! $user->hasRole('admin'), function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
 
-        return view('tickets.index', compact('tickets'));
+        // Shared filters (admin + client)
+
+        // Ticket ID
+        if ($request->filled('ticket_id')) {
+            $query->where('id', 'like', '%' . trim($request->ticket_id) . '%');
+        }
+
+        // Ticket title (NEW)
+        if ($request->filled('title')) {
+            $query->where('title', 'like', '%' . trim($request->title) . '%');
+        }
+
+        // Category
+        if ($request->filled('category_id')) {
+            $query->where('ticket_category_id', $request->category_id);
+        }
+
+        // Admin-only filters
+        if ($user->hasRole('admin')) {
+            if ($request->filled('user')) {
+                $query->whereHas('owner', function ($q) use ($request) {
+                    $q->where('name', 'like', '%' . trim($request->user) . '%');
+                });
+            }
+
+            if ($request->filled('email')) {
+                $query->whereHas('owner', function ($q) use ($request) {
+                    $q->where('email', 'like', '%' . trim($request->email) . '%');
+                });
+            }
+        }
+
+        $tickets = $query
+            ->latest('last_message_at')
+            ->get();
+
+        $categories = TicketCategory::with('translations')
+            ->where('active', true)
+            ->get();
+
+        return view('tickets.index', compact('tickets', 'categories'));
     }
 
     public function create()
@@ -56,12 +92,10 @@ class TicketController extends Controller
             'files.*' => 'nullable|file|max:20480',
         ]);
 
-        // Determine ticket owner
         $ownerId = $authUser->hasRole('admin') && $request->user_id
             ? (int) $request->user_id
             : $authUser->id;
 
-        // Create ticket
         $ticket = Ticket::create([
             'user_id' => $ownerId,
             'created_by' => $authUser->id,
@@ -76,14 +110,12 @@ class TicketController extends Controller
             ],
         ]);
 
-        // Create initial message
         $message = TicketMessage::create([
             'ticket_id' => $ticket->id,
             'user_id' => $authUser->id,
             'message' => $request->message,
         ]);
 
-        // Attach files
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $path = $file->store(
@@ -101,12 +133,11 @@ class TicketController extends Controller
             }
         }
 
-	// Send notification
-	$ticket->notifyParticipants(
-    		$message,
-    		'New ticket created',
-    		$authUser->id
-	);
+        $ticket->notifyParticipants(
+            $message,
+            'New ticket created',
+            $authUser->id
+        );
 
         return redirect()->route('tickets.show', $ticket);
     }

@@ -61,4 +61,12 @@ class User extends Authenticatable
     {
         return $this->hasRole('admin');
     }
+
+    /**
+     * Address relations
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
 }

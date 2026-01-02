@@ -14,6 +14,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketMessageController;
 use App\Http\Controllers\TicketStatusController;
 use App\Http\Controllers\TicketAttachmentController;
+use App\Http\Controllers\AddressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +98,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/tickets/attachments/{attachment}',
         [TicketAttachmentController::class, 'download']
     )->name('tickets.attachments.download');
+
+    /*
+    |------------------------
+    | Addresses
+    |------------------------
+    */
+
+    Route::post('/addresses', [AddressController::class, 'store'])
+	->name('addresses.store');
+    Route::patch('/addresses/{address}', [AddressController::class, 'update'])
+	->name('addresses.update');
+    Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])
+	->name('addresses.destroy');
+
 });
 
 /*
