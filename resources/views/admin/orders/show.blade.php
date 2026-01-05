@@ -5,46 +5,141 @@
         </h2>
     </x-slot>
 
-    <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="py-6 max-w-6xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
+        {{-- =======================
+             ORDER STATUS (READ)
+        ======================= --}}
+        <div class="bg-white shadow rounded p-4 grid md:grid-cols-2 gap-4">
+            <div>
+                <p><strong>Status:</strong> {{ $order->status }}</p>
+                <p><strong>Paid:</strong> {{ $order->is_paid ? 'Yes' : 'No' }}</p>
+                <p><strong>Canceled:</strong> {{ $order->is_canceled ? 'Yes' : 'No' }}</p>
+                <p><strong>Refunded:</strong> {{ $order->is_refunded ? 'Yes' : 'No' }}</p>
+            </div>
+
+            <div>
+                <p><strong>User:</strong> {{ $order->user->name }}</p>
+                <p><strong>Email:</strong> {{ $order->user->email }}</p>
+                <p><strong>NIF:</strong> {{ $order->address->nif }}</p>
+                @if ($order->tracking_number)
+                    <p><strong>Tracking:</strong> {{ $order->tracking_number }}</p>
+                @endif
+            </div>
+        </div>
+
+        {{-- =======================
+             SHIPPING ADDRESS
+        ======================= --}}
+        <div class="bg-white shadow rounded p-4">
+            <h3 class="font-semibold mb-2">Shipping Address</h3>
+
+            <p>{{ $order->address->title }}</p>
+            <p>{{ $order->address->address_line_1 }}</p>
+            <p>{{ $order->address->address_line_2 }}</p>
+            <p>{{ $order->address->postal_code }} {{ $order->address->city }}</p>
+            <p>{{ $order->address->country }}</p>
+            <p><strong>NIF:</strong> {{ $order->address->nif }}</p>
+        </div>
+
+        {{-- =======================
+             PRODUCTS
+        ======================= --}}
+        <div class="bg-white shadow rounded p-4">
+            <h3 class="font-semibold mb-2">Products</h3>
+
+            <table class="min-w-full border">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-3 py-2 text-left">Product</th>
+                        <th class="px-3 py-2 text-center">Qty</th>
+                        <th class="px-3 py-2 text-right">Gross</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($order->items as $item)
+                        <tr class="border-t">
+                            <td class="px-3 py-2">
+                                {{ optional($item->product->translation())->name }}
+                            </td>
+                            <td class="px-3 py-2 text-center">
+                                {{ $item->quantity }}
+                            </td>
+                            <td class="px-3 py-2 text-right">
+                                {{ number_format($item->total_gross, 2) }} €
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        {{-- =======================
+             TOTALS
+        ======================= --}}
+        <div class="bg-white shadow rounded p-4 text-right space-y-1">
+            <p>Products (net): {{ number_format($order->products_total_net, 2) }} €</p>
+            <p>Products tax: {{ number_format($order->products_total_tax, 2) }} €</p>
+            <p>Shipping (gross): {{ number_format($order->shipping_gross, 2) }} €</p>
+            <p>Shipping tax: {{ number_format($order->shipping_tax, 2) }} €</p>
+            <hr>
+            <p class="font-semibold">
+                Total: {{ number_format($order->total_gross, 2) }} €
+            </p>
+        </div>
+
+        {{-- =======================
+             ADMIN CONTROLS
+        ======================= --}}
         <form method="POST"
               action="{{ route('admin.orders.update', $order) }}"
-              class="bg-white shadow rounded p-4 space-y-3">
+              class="bg-white shadow rounded p-4 space-y-4">
             @csrf
             @method('PATCH')
 
-            <select name="status" class="border rounded px-2 py-1 w-full">
-                @foreach (['PROCESSING','DISPATCHED','DELIVERED','CANCELED'] as $status)
-                    <option value="{{ $status }}"
-                        @selected($order->status === $status)>
-                        {{ $status }}
-                    </option>
-                @endforeach
-            </select>
+            <h3 class="font-semibold">Admin Actions</h3>
 
-            <input name="tracking_number"
-                   value="{{ $order->tracking_number }}"
-                   placeholder="Tracking number"
-                   class="border rounded px-2 py-1 w-full">
+            <div>
+                <label class="block font-medium mb-1">Status</label>
+                <select name="status" class="border rounded px-3 py-2 w-full">
+                    @foreach (['PROCESSING','DISPATCHED','DELIVERED','CANCELED'] as $status)
+                        <option value="{{ $status }}"
+                            @selected($order->status === $status)>
+                            {{ $status }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-            <label class="block">
-                <input type="checkbox" name="is_paid" @checked($order->is_paid)>
-                Paid
-            </label>
+            <div>
+                <label class="block font-medium mb-1">Tracking number</label>
+                <input name="tracking_number"
+                       value="{{ $order->tracking_number }}"
+                       class="border rounded px-3 py-2 w-full">
+            </div>
 
-            <label class="block">
-                <input type="checkbox" name="is_canceled" @checked($order->is_canceled)>
-                Canceled
-            </label>
+            <div class="flex gap-6">
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" name="is_paid" @checked($order->is_paid)>
+                    Paid
+                </label>
 
-            <label class="block">
-                <input type="checkbox" name="is_refunded" @checked($order->is_refunded)>
-                Refunded
-            </label>
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" name="is_canceled" @checked($order->is_canceled)>
+                    Canceled
+                </label>
 
-            <button class="bg-blue-600 text-white px-4 py-2 rounded">
-                Save
-            </button>
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" name="is_refunded" @checked($order->is_refunded)>
+                    Refunded
+                </label>
+            </div>
+
+            <div class="pt-2">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded">
+                    Save changes
+                </button>
+            </div>
         </form>
 
     </div>

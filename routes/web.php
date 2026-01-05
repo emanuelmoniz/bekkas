@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -13,6 +12,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ShippingTierController;
 use App\Http\Controllers\Admin\TaxController;
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketMessageController;
 use App\Http\Controllers\TicketStatusController;
@@ -36,6 +36,12 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+/*
+|--------------------------------------------------------------------------
+| Public (Client)
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/products', [ClientProductController::class, 'index'])
     ->name('products.index');
 
@@ -54,7 +60,6 @@ Route::post('/cart/update/{product}', [CartController::class, 'update'])
 Route::post('/cart/remove/{product}', [CartController::class, 'remove'])
     ->name('cart.remove');
 
-
 /*
 |--------------------------------------------------------------------------
 | Authenticated (Clients + Admins)
@@ -64,9 +69,7 @@ Route::post('/cart/remove/{product}', [CartController::class, 'remove'])
 Route::middleware('auth')->group(function () {
 
     /*
-    |------------------------
     | Profile
-    |------------------------
     */
 
     Route::get('/profile', [ProfileController::class, 'edit'])
@@ -79,68 +82,7 @@ Route::middleware('auth')->group(function () {
         ->name('profile.destroy');
 
     /*
-    |------------------------
-    | Tickets (Client & Admin)
-    |------------------------
-    */
-
-    Route::get('/tickets', [TicketController::class, 'index'])
-        ->name('tickets.index');
-
-    Route::get('/tickets/create', [TicketController::class, 'create'])
-        ->name('tickets.create');
-
-    Route::post('/tickets', [TicketController::class, 'store'])
-        ->name('tickets.store');
-
-    Route::get('/tickets/{ticket}', [TicketController::class, 'show'])
-        ->name('tickets.show');
-
-    Route::post('/tickets/{ticket}/messages',
-        [TicketMessageController::class, 'store']
-    )->name('tickets.messages.store');
-
-    Route::post('/tickets/{ticket}/close',
-        [TicketStatusController::class, 'close']
-    )->name('tickets.close');
-
-    Route::post('/tickets/{ticket}/reopen',
-        [TicketStatusController::class, 'reopen']
-    )->name('tickets.reopen');
-
-    Route::post('/tickets/{ticket}/mark-unread', function (\App\Models\Ticket $ticket) {
-        $user = auth()->user();
-
-        if (! $user->hasRole('admin') && $ticket->user_id !== $user->id) {
-            abort(403);
-        }
-
-        $ticket->markAsUnread($user->id);
-
-        return redirect()->route('tickets.index');
-    })->name('tickets.mark-unread');
-
-    Route::get('/tickets/attachments/{attachment}',
-        [TicketAttachmentController::class, 'download']
-    )->name('tickets.attachments.download');
-
-    /*
-    |------------------------
-    | Addresses
-    |------------------------
-    */
-
-    Route::post('/addresses', [AddressController::class, 'store'])
-	->name('addresses.store');
-    Route::patch('/addresses/{address}', [AddressController::class, 'update'])
-	->name('addresses.update');
-    Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])
-	->name('addresses.destroy');
-
-    /*
-    |------------------------
-    | Orders
-    |------------------------
+    | Orders (Client)
     */
 
     Route::get('/orders', [OrderController::class, 'index'])
@@ -152,6 +94,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders', [OrderController::class, 'store'])
         ->name('orders.store');
 
+    /*
+    | Checkout
+    */
+
+    Route::get('/checkout', [OrderController::class, 'checkout'])
+        ->name('checkout.index');
+
+    Route::post('/checkout', [OrderController::class, 'place'])
+        ->name('checkout.place');
 });
 
 /*
@@ -170,31 +121,23 @@ Route::middleware(['auth', 'is_admin'])
         })->name('dashboard');
 
         /*
-        |------------------------
-        | Users
-        |------------------------
-        */
-
-        Route::resource('users', \App\Http\Controllers\Admin\UserController::class)
-            ->only(['index', 'show', 'update']);
-
-        /*
-        |------------------------
-        | Products (already implemented)
-        |------------------------
+        | Products
         */
 
         Route::resource('products', ProductController::class);
 
-        Route::post('products/{product}/photos',
+        Route::post(
+            'products/{product}/photos',
             [ProductPhotoController::class, 'store']
         )->name('products.photos.store');
 
-        Route::post('photos/{photo}/primary',
+        Route::post(
+            'photos/{photo}/primary',
             [ProductPhotoController::class, 'makePrimary']
         )->name('photos.primary');
 
-        Route::delete('photos/{photo}',
+        Route::delete(
+            'photos/{photo}',
             [ProductPhotoController::class, 'destroy']
         )->name('photos.destroy');
 
@@ -202,89 +145,29 @@ Route::middleware(['auth', 'is_admin'])
         Route::resource('materials', MaterialController::class);
 
         /*
-        |------------------------
-        | Ticket Admin Actions
-        |------------------------
-        */
-
-        Route::get('/tickets/{ticket}/edit',
-            [TicketAdminController::class, 'edit']
-        )->name('tickets.edit');
-
-        Route::post('/tickets/{ticket}',
-            [TicketAdminController::class, 'update']
-        )->name('tickets.update');
-
-        /*
-        |------------------------
-        | Ticket Categories 
-        |------------------------
-        */
-
-        Route::resource('ticket-categories', TicketCategoryController::class)
-            ->except(['show']);
-
-        /*
-        |------------------------
-        | Orders
-        |------------------------
+        | Orders (ADMIN) ✅ FIXED
         */
 
         Route::get('/orders', [AdminOrderController::class, 'index'])
-            ->name('admin.orders.index');
+            ->name('orders.index');
 
         Route::get('/orders/{order}', [AdminOrderController::class, 'show'])
-            ->name('admin.orders.show');
+            ->name('orders.show');
 
         Route::patch('/orders/{order}', [AdminOrderController::class, 'update'])
-            ->name('admin.orders.update');
+            ->name('orders.update');
 
         /*
-        |------------------------
         | Shipping Tiers
-        |------------------------
         */
 
-	Route::get('/shipping-tiers', [ShippingTierController::class, 'index'])
-    		->name('shipping-tiers.index');
-
-	Route::get('/shipping-tiers/create', [ShippingTierController::class, 'create'])
-    		->name('shipping-tiers.create');
-
-	Route::post('/shipping-tiers', [ShippingTierController::class, 'store'])
-    		->name('shipping-tiers.store');
-
-	Route::get('/shipping-tiers/{shippingTier}/edit', [ShippingTierController::class, 'edit'])
-    		->name('shipping-tiers.edit');
-
-	Route::patch('/shipping-tiers/{shippingTier}', [ShippingTierController::class, 'update'])
-    		->name('shipping-tiers.update');
-
-	Route::delete('/shipping-tiers/{shippingTier}', [ShippingTierController::class, 'destroy'])
-    		->name('shipping-tiers.destroy');
+        Route::resource('shipping-tiers', ShippingTierController::class);
 
         /*
-        |------------------------
         | Taxes
-        |------------------------
         */
 
-	Route::get('/taxes', [TaxController::class, 'index'])
-    		->name('taxes.index');
-
-	Route::get('/taxes/create', [TaxController::class, 'create'])
-    		->name('taxes.create');
-
-	Route::post('/taxes', [TaxController::class, 'store'])
-    		->name('taxes.store');
-
-	Route::get('/taxes/{tax}/edit', [TaxController::class, 'edit'])
-    		->name('taxes.edit');
-
-	Route::patch('/taxes/{tax}', [TaxController::class, 'update'])
-    		->name('taxes.update');
-
-
+        Route::resource('taxes', TaxController::class)->except(['show']);
     });
 
 require __DIR__ . '/auth.php';
