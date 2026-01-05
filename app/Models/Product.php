@@ -50,4 +50,10 @@ class Product extends Model
     {
         return $this->hasOne(ProductPhoto::class)->where('is_primary', true);
     }
+
+    public function tax()
+    {
+        return $this->belongsTo(Tax::class);
+    }
+
 }

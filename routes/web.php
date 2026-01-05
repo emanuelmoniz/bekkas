@@ -9,12 +9,17 @@ use App\Http\Controllers\Admin\MaterialController;
 use App\Http\Controllers\Admin\ProductPhotoController;
 use App\Http\Controllers\Admin\TicketAdminController;
 use App\Http\Controllers\Admin\TicketCategoryController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\ShippingTierController;
 
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketMessageController;
 use App\Http\Controllers\TicketStatusController;
 use App\Http\Controllers\TicketAttachmentController;
+
 use App\Http\Controllers\AddressController;
+
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -112,6 +117,21 @@ Route::middleware('auth')->group(function () {
     Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])
 	->name('addresses.destroy');
 
+    /*
+    |------------------------
+    | Orders
+    |------------------------
+    */
+
+    Route::get('/orders', [OrderController::class, 'index'])
+        ->name('orders.index');
+
+    Route::get('/orders/{order}', [OrderController::class, 'show'])
+        ->name('orders.show');
+
+    Route::post('/orders', [OrderController::class, 'store'])
+        ->name('orders.store');
+
 });
 
 /*
@@ -177,12 +197,51 @@ Route::middleware(['auth', 'is_admin'])
 
         /*
         |------------------------
-        | Ticket Categories (FIXED)
+        | Ticket Categories 
         |------------------------
         */
 
         Route::resource('ticket-categories', TicketCategoryController::class)
             ->except(['show']);
+
+        /*
+        |------------------------
+        | Orders
+        |------------------------
+        */
+
+        Route::get('/orders', [AdminOrderController::class, 'index'])
+            ->name('admin.orders.index');
+
+        Route::get('/orders/{order}', [AdminOrderController::class, 'show'])
+            ->name('admin.orders.show');
+
+        Route::patch('/orders/{order}', [AdminOrderController::class, 'update'])
+            ->name('admin.orders.update');
+
+        /*
+        |------------------------
+        | Shipping Tiers
+        |------------------------
+        */
+
+	Route::get('/shipping-tiers', [ShippingTierController::class, 'index'])
+    	    ->name('admin.shipping-tiers.index');
+
+	Route::get('/shipping-tiers/create', [ShippingTierController::class, 'create'])
+            ->name('admin.shipping-tiers.create');
+
+	Route::post('/shipping-tiers', [ShippingTierController::class, 'store'])
+    	    ->name('admin.shipping-tiers.store');
+
+	Route::get('/shipping-tiers/{shippingTier}/edit', [ShippingTierController::class, 'edit'])
+            ->name('admin.shipping-tiers.edit');
+
+	Route::patch('/shipping-tiers/{shippingTier}', [ShippingTierController::class, 'update'])
+            ->name('admin.shipping-tiers.update');
+
+	Route::delete('/shipping-tiers/{shippingTier}', [ShippingTierController::class, 'destroy'])
+            ->name('admin.shipping-tiers.destroy');
     });
 
 require __DIR__ . '/auth.php';
