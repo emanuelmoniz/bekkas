@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\TicketAdminController;
 use App\Http\Controllers\Admin\TicketCategoryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ShippingTierController;
+use App\Http\Controllers\Admin\TaxController;
 
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketMessageController;
@@ -226,22 +227,45 @@ Route::middleware(['auth', 'is_admin'])
         */
 
 	Route::get('/shipping-tiers', [ShippingTierController::class, 'index'])
-    	    ->name('admin.shipping-tiers.index');
+    		->name('shipping-tiers.index');
 
 	Route::get('/shipping-tiers/create', [ShippingTierController::class, 'create'])
-            ->name('admin.shipping-tiers.create');
+    		->name('shipping-tiers.create');
 
 	Route::post('/shipping-tiers', [ShippingTierController::class, 'store'])
-    	    ->name('admin.shipping-tiers.store');
+    		->name('shipping-tiers.store');
 
 	Route::get('/shipping-tiers/{shippingTier}/edit', [ShippingTierController::class, 'edit'])
-            ->name('admin.shipping-tiers.edit');
+    		->name('shipping-tiers.edit');
 
 	Route::patch('/shipping-tiers/{shippingTier}', [ShippingTierController::class, 'update'])
-            ->name('admin.shipping-tiers.update');
+    		->name('shipping-tiers.update');
 
 	Route::delete('/shipping-tiers/{shippingTier}', [ShippingTierController::class, 'destroy'])
-            ->name('admin.shipping-tiers.destroy');
+    		->name('shipping-tiers.destroy');
+
+        /*
+        |------------------------
+        | Taxes
+        |------------------------
+        */
+
+	Route::get('/taxes', [TaxController::class, 'index'])
+    		->name('taxes.index');
+
+	Route::get('/taxes/create', [TaxController::class, 'create'])
+    		->name('taxes.create');
+
+	Route::post('/taxes', [TaxController::class, 'store'])
+    		->name('taxes.store');
+
+	Route::get('/taxes/{tax}/edit', [TaxController::class, 'edit'])
+    		->name('taxes.edit');
+
+	Route::patch('/taxes/{tax}', [TaxController::class, 'update'])
+    		->name('taxes.update');
+
+
     });
 
 require __DIR__ . '/auth.php';

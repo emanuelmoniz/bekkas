@@ -1,135 +1,113 @@
-@php
-    $isEdit = ($mode ?? 'create') === 'edit';
-@endphp
-
 <form method="POST"
-      action="{{ $isEdit ? route('admin.products.update', $product) : route('admin.products.store') }}">
+      action="{{ $mode === 'edit'
+            ? route('admin.products.update', $product)
+            : route('admin.products.store') }}"
+      class="bg-white p-6 rounded shadow space-y-6">
+
     @csrf
-    @if ($isEdit)
-        @method('PUT')
+    @if ($mode === 'edit')
+        @method('PATCH')
     @endif
 
     {{-- TRANSLATIONS --}}
-    <div class="bg-white p-6 rounded shadow mb-6">
-        <h3 class="font-semibold mb-4">Translations</h3>
-
-        @foreach (['pt-PT' => 'Português', 'en-UK' => 'English'] as $locale => $label)
-            @php
-                $translation = $isEdit
-                    ? $product->translations->firstWhere('locale', $locale)
-                    : null;
-            @endphp
-
-            <div class="border p-4 mb-4">
-                <h4 class="font-medium mb-2">{{ $label }}</h4>
-
-                <div class="mb-3">
-                    <label class="block text-sm mb-1">Name</label>
-                    <input type="text"
-                           name="name[{{ $locale }}]"
-                           value="{{ $translation?->name }}"
-                           class="w-full border rounded px-3 py-2"
-                           required>
-                </div>
-
-                <div>
-                    <label class="block text-sm mb-1">Description</label>
-                    <textarea name="description[{{ $locale }}]"
-                              class="w-full border rounded px-3 py-2"
-                              rows="4">{{ $translation?->description }}</textarea>
-                </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @foreach (['pt-PT', 'en-UK'] as $locale)
+            <div>
+                <label class="block font-medium mb-1">
+                    Name ({{ $locale }})
+                </label>
+                <input type="text"
+                       name="name[{{ $locale }}]"
+                       value="{{ old("name.$locale",
+                            $mode === 'edit'
+                                ? optional($product->translations->where('locale', $locale)->first())->name
+                                : '') }}"
+                       required
+                       class="w-full border rounded px-3 py-2">
             </div>
         @endforeach
     </div>
 
-    {{-- PRICING --}}
-    <div class="bg-white p-6 rounded shadow mb-6">
-        <h3 class="font-semibold mb-4">Pricing</h3>
+    {{-- PRICE / TAX --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+            <label class="block font-medium mb-1">Price (gross)</label>
+            <input type="number"
+                   step="0.01"
+                   name="price"
+                   value="{{ old('price', $product->price ?? '') }}"
+                   required
+                   class="w-full border rounded px-3 py-2">
+        </div>
 
-        <div class="grid grid-cols-3 gap-4">
-            <input type="number" step="0.01" name="price"
-                   value="{{ $product->price ?? '' }}"
-                   class="border rounded px-3 py-2"
-                   placeholder="Price" required>
+        <div>
+            <label class="block font-medium mb-1">Promo Price</label>
+            <input type="number"
+                   step="0.01"
+                   name="promo_price"
+                   value="{{ old('promo_price', $product->promo_price ?? '') }}"
+                   class="w-full border rounded px-3 py-2">
+        </div>
 
-            <input type="number" step="0.01" name="promo_price"
-                   value="{{ $product->promo_price ?? '' }}"
-                   class="border rounded px-3 py-2"
-                   placeholder="Promo Price">
+        {{-- ✅ TAX SELECTOR --}}
+        <div>
+            <label class="block font-medium mb-1">Tax</label>
+            <select name="tax_id"
+                    required
+                    class="w-full border rounded px-3 py-2">
+                <option value="">— Select tax —</option>
 
-            <input type="number" step="0.01" name="tax"
-                   value="{{ $product->tax ?? '' }}"
-                   class="border rounded px-3 py-2"
-                   placeholder="Tax (%)">
+                @foreach ($taxes as $tax)
+                    <option value="{{ $tax->id }}"
+                        @selected(
+                            old('tax_id', $product->tax_id ?? null) === $tax->id
+                        )>
+                        {{ $tax->name }} ({{ $tax->percentage }}%)
+                    </option>
+                @endforeach
+            </select>
         </div>
     </div>
 
-    {{-- STOCK --}}
-    <div class="bg-white p-6 rounded shadow mb-6">
-        <h3 class="font-semibold mb-4">Stock</h3>
+    {{-- STOCK / FLAGS --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+            <label class="block font-medium mb-1">Stock</label>
+            <input type="number"
+                   name="stock"
+                   value="{{ old('stock', $product->stock ?? 0) }}"
+                   required
+                   class="w-full border rounded px-3 py-2">
+        </div>
 
-        <input type="number"
-               name="stock"
-               value="{{ $product->stock ?? 0 }}"
-               class="border rounded px-3 py-2">
-    </div>
-
-    {{-- CATEGORIES --}}
-    <div class="bg-white p-6 rounded shadow mb-6">
-        <h3 class="font-semibold mb-4">Categories</h3>
-
-        @foreach ($categories as $category)
-            <label class="block">
-                <input type="checkbox"
-                       name="categories[]"
-                       value="{{ $category->id }}"
-                       @checked($isEdit && $product->categories->contains($category->id))>
-                {{ optional($category->translation())->name }}
-            </label>
-        @endforeach
-    </div>
-
-    {{-- MATERIALS --}}
-    <div class="bg-white p-6 rounded shadow mb-6">
-        <h3 class="font-semibold mb-4">Materials</h3>
-
-        @foreach ($materials as $material)
-            <label class="block">
-                <input type="checkbox"
-                       name="materials[]"
-                       value="{{ $material->id }}"
-                       @checked($isEdit && $product->materials->contains($material->id))>
-                {{ optional($material->translation())->name }}
-            </label>
-        @endforeach
-    </div>
-
-    {{-- FLAGS --}}
-    <div class="bg-white p-6 rounded shadow mb-6 space-y-2">
-        <label class="block">
-            <input type="checkbox" name="is_new" value="1"
-                   @checked($product->is_new ?? false)>
+        <label class="flex items-center gap-2 mt-7">
+            <input type="checkbox"
+                   name="is_new"
+                   @checked(old('is_new', $product->is_new ?? false))>
             New
         </label>
 
-        <label class="block">
-            <input type="checkbox" name="is_promo" value="1"
-                   @checked($product->is_promo ?? false)>
+        <label class="flex items-center gap-2 mt-7">
+            <input type="checkbox"
+                   name="is_promo"
+                   @checked(old('is_promo', $product->is_promo ?? false))>
             Promo
-        </label>
-
-        <label class="block">
-            <input type="checkbox" name="active" value="1"
-                   @checked($product->active ?? true)>
-            Active
         </label>
     </div>
 
-    {{-- ACTIONS --}}
-    <div class="bg-white p-6 rounded shadow flex justify-end">
+    {{-- ACTIVE --}}
+    <label class="flex items-center gap-2">
+        <input type="checkbox"
+               name="active"
+               @checked(old('active', $product->active ?? true))>
+        Active
+    </label>
+
+    {{-- SUBMIT --}}
+    <div class="pt-4">
         <button type="submit"
-                class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded">
-            {{ $isEdit ? 'Update Product' : 'Create Product' }}
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded">
+            {{ $mode === 'edit' ? 'Update Product' : 'Create Product' }}
         </button>
     </div>
 </form>

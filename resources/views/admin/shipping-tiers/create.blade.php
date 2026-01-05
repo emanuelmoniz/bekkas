@@ -12,33 +12,42 @@
             @csrf
 
             <div>
-                <label class="block text-sm font-medium">Weight From (g)</label>
-                <input type="number" name="weight_from"
-                       class="border rounded w-full px-2 py-1"
-                       required>
+                <label class="block text-sm font-medium">Weight from (g)</label>
+                <input type="number"
+                       name="weight_from"
+                       value="{{ old('weight_from') }}"
+                       required
+                       class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
-                <label class="block text-sm font-medium">Weight To (g)</label>
-                <input type="number" name="weight_to"
-                       class="border rounded w-full px-2 py-1"
-                       required>
+                <label class="block text-sm font-medium">Weight to (g)</label>
+                <input type="number"
+                       name="weight_to"
+                       value="{{ old('weight_to') }}"
+                       required
+                       class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Cost (gross)</label>
-                <input type="number" step="0.01" name="cost_gross"
-                       class="border rounded w-full px-2 py-1"
-                       required>
+                <input type="number"
+                       step="0.01"
+                       name="cost_gross"
+                       value="{{ old('cost_gross') }}"
+                       required
+                       class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Tax</label>
                 <select name="tax_id"
-                        class="border rounded w-full px-2 py-1"
-                        required>
-                    @foreach (\App\Models\Tax::where('is_active', true)->get() as $tax)
-                        <option value="{{ $tax->id }}">
+                        required
+                        class="w-full border rounded px-3 py-2">
+                    <option value="">— Select tax —</option>
+                    @foreach ($taxes as $tax)
+                        <option value="{{ $tax->id }}"
+                            @selected(old('tax_id') == $tax->id)>
                             {{ $tax->name }} ({{ $tax->percentage }}%)
                         </option>
                     @endforeach
@@ -50,9 +59,12 @@
                 Active
             </label>
 
-            <button class="bg-blue-600 text-white px-4 py-2 rounded">
-                Save
-            </button>
+            <div class="flex justify-end">
+                <button type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                    Save
+                </button>
+            </div>
         </form>
     </div>
 </x-app-layout>

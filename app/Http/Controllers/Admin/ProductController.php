@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\ProductTranslation;
 use App\Models\Category;
 use App\Models\Material;
+use App\Models\Tax;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -22,7 +23,7 @@ class ProductController extends Controller
             });
         }
 
-        // STOCK (single field, semantic logic)
+        // STOCK (single field semantic logic)
         if ($request->filled('stock')) {
             $stock = (int) $request->stock;
 
@@ -78,16 +79,36 @@ class ProductController extends Controller
     {
         $categories = Category::with('translations')->get();
         $materials  = Material::with('translations')->get();
+        $taxes      = Tax::where('is_active', true)->orderBy('percentage')->get();
 
-        return view('admin.products.create', compact('categories', 'materials'));
+        return view('admin.products.create', compact(
+            'categories',
+            'materials',
+            'taxes'
+        ));
     }
 
     public function store(Request $request)
     {
-        $product = Product::create($request->only([
-            'is_new','is_promo','price','promo_price','tax',
-            'width','length','height','weight','stock','active'
-        ]));
+        $request->validate([
+            'tax_id' => 'required|exists:taxes,id',
+        ]);
+
+        $product = Product::create([
+            'tax_id'      => $request->tax_id,
+            'price'       => $request->price,
+            'promo_price' => $request->promo_price,
+            'stock'       => $request->stock,
+            'width'       => $request->width,
+            'length'      => $request->length,
+            'height'      => $request->height,
+            'weight'      => $request->weight,
+
+            // ✅ BOOLEAN NORMALIZATION
+            'is_new'   => $request->boolean('is_new'),
+            'is_promo' => $request->boolean('is_promo'),
+            'active'   => $request->boolean('active'),
+        ]);
 
         foreach (['pt-PT', 'en-UK'] as $locale) {
             ProductTranslation::create([
@@ -110,16 +131,37 @@ class ProductController extends Controller
 
         $categories = Category::with('translations')->get();
         $materials  = Material::with('translations')->get();
+        $taxes      = Tax::where('is_active', true)->orderBy('percentage')->get();
 
-        return view('admin.products.edit', compact('product', 'categories', 'materials'));
+        return view('admin.products.edit', compact(
+            'product',
+            'categories',
+            'materials',
+            'taxes'
+        ));
     }
 
     public function update(Request $request, Product $product)
     {
-        $product->update($request->only([
-            'is_new','is_promo','price','promo_price','tax',
-            'width','length','height','weight','stock','active'
-        ]));
+        $request->validate([
+            'tax_id' => 'required|exists:taxes,id',
+        ]);
+
+        $product->update([
+            'tax_id'      => $request->tax_id,
+            'price'       => $request->price,
+            'promo_price' => $request->promo_price,
+            'stock'       => $request->stock,
+            'width'       => $request->width,
+            'length'      => $request->length,
+            'height'      => $request->height,
+            'weight'      => $request->weight,
+
+            // ✅ BOOLEAN NORMALIZATION
+            'is_new'   => $request->boolean('is_new'),
+            'is_promo' => $request->boolean('is_promo'),
+            'active'   => $request->boolean('active'),
+        ]);
 
         foreach (['pt-PT', 'en-UK'] as $locale) {
             $product->translations()

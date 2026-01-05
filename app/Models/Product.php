@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
+        'tax_id',        // ✅ REQUIRED
         'price',
         'promo_price',
-        'tax',
         'stock',
         'is_new',
         'is_promo',
@@ -19,6 +19,17 @@ class Product extends Model
         'height',
         'weight',
     ];
+
+    protected $casts = [
+        'is_new'   => 'boolean',
+        'is_promo' => 'boolean',
+        'active'   => 'boolean',
+    ];
+
+    public function tax()
+    {
+        return $this->belongsTo(Tax::class);
+    }
 
     public function translations()
     {
@@ -50,10 +61,4 @@ class Product extends Model
     {
         return $this->hasOne(ProductPhoto::class)->where('is_primary', true);
     }
-
-    public function tax()
-    {
-        return $this->belongsTo(Tax::class);
-    }
-
 }
