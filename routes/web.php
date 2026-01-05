@@ -17,12 +17,10 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketMessageController;
 use App\Http\Controllers\TicketStatusController;
 use App\Http\Controllers\TicketAttachmentController;
-
 use App\Http\Controllers\AddressController;
-
 use App\Http\Controllers\OrderController;
-
 use App\Http\Controllers\ProductController as ClientProductController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +41,19 @@ Route::get('/products', [ClientProductController::class, 'index'])
 
 Route::get('/products/{product}', [ClientProductController::class, 'show'])
     ->name('products.show');
+
+Route::get('/cart', [CartController::class, 'index'])
+    ->name('cart.index');
+
+Route::post('/cart/add/{product}', [CartController::class, 'add'])
+    ->name('cart.add');
+
+Route::post('/cart/update/{product}', [CartController::class, 'update'])
+    ->name('cart.update');
+
+Route::post('/cart/remove/{product}', [CartController::class, 'remove'])
+    ->name('cart.remove');
+
 
 /*
 |--------------------------------------------------------------------------

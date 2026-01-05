@@ -82,6 +82,22 @@
                     </div>
                 @endif
 
+@if ($product->stock > 0)
+    <form method="POST"
+          action="{{ route('cart.add', $product) }}"
+          class="pt-4 flex gap-2">
+        @csrf
+        <input type="number"
+               name="quantity"
+               value="1"
+               min="1"
+               class="w-20 border rounded px-2 py-1">
+        <button class="bg-indigo-600 text-white px-4 py-2 rounded">
+            Add to cart
+        </button>
+    </form>
+@endif
+
             </div>
         </div>
     </div>
