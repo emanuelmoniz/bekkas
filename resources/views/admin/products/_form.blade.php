@@ -69,31 +69,78 @@
         </div>
     </div>
 
-    {{-- STOCK / FLAGS --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div>
-            <label class="block font-medium mb-1">Stock</label>
-            <input type="number"
-                   name="stock"
-                   value="{{ old('stock', $product->stock ?? 0) }}"
-                   required
-                   class="w-full border rounded px-3 py-2">
-        </div>
+{{-- CATEGORIES --}}
+<div>
+    <label class="block font-medium mb-1">Categories</label>
+    <select name="categories[]"
+            multiple
+            class="w-full border rounded px-3 py-2">
+        @foreach ($categories as $category)
+            <option value="{{ $category->id }}"
+                @selected(
+                    isset($product) &&
+                    $product->categories->contains($category->id)
+                )>
+                {{ optional($category->translation())->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
-        <label class="flex items-center gap-2 mt-7">
-            <input type="checkbox"
-                   name="is_new"
-                   @checked(old('is_new', $product->is_new ?? false))>
-            New
-        </label>
+{{-- MATERIALS --}}
+<div>
+    <label class="block font-medium mb-1">Materials</label>
+    <select name="materials[]"
+            multiple
+            class="w-full border rounded px-3 py-2">
+        @foreach ($materials as $material)
+            <option value="{{ $material->id }}"
+                @selected(
+                    isset($product) &&
+                    $product->materials->contains($material->id)
+                )>
+                {{ optional($material->translation())->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
-        <label class="flex items-center gap-2 mt-7">
-            <input type="checkbox"
-                   name="is_promo"
-                   @checked(old('is_promo', $product->is_promo ?? false))>
-            Promo
-        </label>
+
+{{-- STOCK / DIMENSIONS / FLAGS --}}
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div>
+        <label class="block font-medium mb-1">Stock</label>
+        <input type="number"
+               name="stock"
+               value="{{ old('stock', $product->stock ?? 0) }}"
+               required
+               class="w-full border rounded px-3 py-2">
     </div>
+
+    <div>
+        <label class="block font-medium mb-1">Weight (grams)</label>
+        <input type="number"
+               name="weight"
+               min="0"
+               value="{{ old('weight', $product->weight ?? '') }}"
+               required
+               class="w-full border rounded px-3 py-2">
+    </div>
+
+    <label class="flex items-center gap-2 mt-7">
+        <input type="checkbox"
+               name="is_new"
+               @checked(old('is_new', $product->is_new ?? false))>
+        New
+    </label>
+
+    <label class="flex items-center gap-2 mt-7">
+        <input type="checkbox"
+               name="is_promo"
+               @checked(old('is_promo', $product->is_promo ?? false))>
+        Promo
+    </label>
+</div>
 
     {{-- ACTIVE --}}
     <label class="flex items-center gap-2">

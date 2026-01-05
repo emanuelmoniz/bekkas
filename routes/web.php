@@ -22,6 +22,8 @@ use App\Http\Controllers\AddressController;
 
 use App\Http\Controllers\OrderController;
 
+use App\Http\Controllers\ProductController as ClientProductController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,6 +37,12 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/products', [ClientProductController::class, 'index'])
+    ->name('products.index');
+
+Route::get('/products/{product}', [ClientProductController::class, 'show'])
+    ->name('products.show');
 
 /*
 |--------------------------------------------------------------------------
