@@ -34,6 +34,21 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'nav.logout', 'locale' => 'pt-PT', 'value' => 'Sair', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'nav.logout', 'locale' => 'en-UK', 'value' => 'Log Out', 'created_at'=>$now,'updated_at'=>$now],
 
+            ['key' => 'nav.products', 'locale' => 'pt-PT', 'value' => 'Produtos', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'nav.products', 'locale' => 'en-UK', 'value' => 'Products', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'nav.architecture', 'locale' => 'pt-PT', 'value' => 'Arquitetura', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'nav.architecture', 'locale' => 'en-UK', 'value' => 'Architecture', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'nav.about', 'locale' => 'pt-PT', 'value' => 'Sobre Nós', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'nav.about', 'locale' => 'en-UK', 'value' => 'About Us', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'nav.contact', 'locale' => 'pt-PT', 'value' => 'Contacto', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'nav.contact', 'locale' => 'en-UK', 'value' => 'Contact', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'nav.admin', 'locale' => 'pt-PT', 'value' => 'Admin', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'nav.admin', 'locale' => 'en-UK', 'value' => 'Admin', 'created_at'=>$now,'updated_at'=>$now],
+
             // Cart page
             ['key' => 'page.cart.title', 'locale' => 'pt-PT', 'value' => 'Carrinho', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'page.cart.title', 'locale' => 'en-UK', 'value' => 'Cart', 'created_at'=>$now,'updated_at'=>$now],

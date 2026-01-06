@@ -52,6 +52,14 @@ Route::get('/products', [ClientProductController::class, 'index'])
 Route::get('/products/{product}', [ClientProductController::class, 'show'])
     ->name('products.show');
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
 Route::get('/cart', [CartController::class, 'index'])
     ->name('cart.index');
 
