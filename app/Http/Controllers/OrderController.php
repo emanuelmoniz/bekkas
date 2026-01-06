@@ -173,6 +173,15 @@ class OrderController extends Controller
                     'address_id' => $address->id,
                     'status' => 'PROCESSING',
 
+                    // Address snapshot
+                    'address_title' => $address->title,
+                    'address_nif' => $address->nif,
+                    'address_line_1' => $address->address_line_1,
+                    'address_line_2' => $address->address_line_2,
+                    'address_postal_code' => $address->postal_code,
+                    'address_city' => $address->city,
+                    'address_country' => $address->country,
+
                     'products_total_net' => round($productsNet, 2),
                     'products_total_tax' => round($productsTax, 2),
                     'products_total_gross' => round($productsGross, 2),

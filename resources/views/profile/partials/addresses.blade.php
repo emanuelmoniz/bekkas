@@ -1,6 +1,6 @@
 <section>
     <header class="mb-4">
-        <h2 class="text-lg font-medium text-gray-900">Addresses</h2>
+        <h2 class="text-lg font-medium text-gray-900">{{ t('profile.addresses') ?: 'Addresses' }}</h2>
     </header>
 
     <div class="space-y-4 mb-6">
@@ -29,11 +29,11 @@
                                value="1"
                                @checked($address->is_default)
                                @disabled($address->is_default)>
-                        Default address
+                        {{ t('profile.default_address') ?: 'Default address' }}
                     </label>
 
                     <button class="bg-indigo-600 text-white px-3 py-1 rounded">
-                        Save
+                        {{ t('profile.save') ?: 'Save' }}
                     </button>
                 </form>
 
@@ -45,37 +45,37 @@
                     @method('DELETE')
 
                     <button class="text-red-600 text-sm">
-                        Delete
+                        {{ t('profile.delete') ?: 'Delete' }}
                     </button>
                 </form>
             </div>
         @empty
-            <p class="text-sm text-gray-600">No addresses yet.</p>
+            <p class="text-sm text-gray-600">{{ t('profile.no_addresses') ?: 'No addresses yet.' }}</p>
         @endforelse
     </div>
 
     {{-- ADD NEW ADDRESS --}}
     <form method="POST" action="{{ route('addresses.store') }}" class="border p-4 rounded space-y-2">
         @csrf
-        <h3 class="font-medium">Add new address</h3>
+        <h3 class="font-medium">{{ t('profile.add_new_address') ?: 'Add new address' }}</h3>
 
         <div class="grid grid-cols-2 gap-2">
-            <input name="title" placeholder="Title" class="border rounded px-2 py-1" required>
-            <input name="nif" placeholder="NIF" class="border rounded px-2 py-1" required>
-            <input name="address_line_1" placeholder="Address line 1" class="border rounded px-2 py-1" required>
-            <input name="address_line_2" placeholder="Address line 2" class="border rounded px-2 py-1" required>
-            <input name="postal_code" placeholder="Postal code" class="border rounded px-2 py-1" required>
-            <input name="city" placeholder="City" class="border rounded px-2 py-1" required>
-            <input name="country" placeholder="Country" class="border rounded px-2 py-1" required>
+            <input name="title" placeholder="{{ t('profile.address_title') ?: 'Title' }}" class="border rounded px-2 py-1" required>
+            <input name="nif" placeholder="{{ t('profile.address_nif') ?: 'NIF' }}" class="border rounded px-2 py-1" required>
+            <input name="address_line_1" placeholder="{{ t('profile.address_line_1') ?: 'Address line 1' }}" class="border rounded px-2 py-1" required>
+            <input name="address_line_2" placeholder="{{ t('profile.address_line_2') ?: 'Address line 2' }}" class="border rounded px-2 py-1" required>
+            <input name="postal_code" placeholder="{{ t('profile.address_postal_code') ?: 'Postal code' }}" class="border rounded px-2 py-1" required>
+            <input name="city" placeholder="{{ t('profile.address_city') ?: 'City' }}" class="border rounded px-2 py-1" required>
+            <input name="country" placeholder="{{ t('profile.address_country') ?: 'Country' }}" class="border rounded px-2 py-1" required>
         </div>
 
         <label class="flex items-center gap-2 mt-2">
             <input type="checkbox" name="is_default" value="1">
-            Default address
+            {{ t('profile.default_address') ?: 'Default address' }}
         </label>
 
         <button class="bg-green-600 text-white px-4 py-2 rounded mt-2">
-            Add Address
+            {{ t('profile.add_address') ?: 'Add Address' }}
         </button>
     </form>
 </section>

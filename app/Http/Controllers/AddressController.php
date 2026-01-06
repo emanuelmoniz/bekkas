@@ -71,12 +71,6 @@ class AddressController extends Controller
     {
         $this->authorizeAddress($address);
 
-        // Check if address is used by any orders
-        if ($address->orders()->exists()) {
-            return redirect()->route('profile.edit')
-                ->withErrors('Cannot delete this address as it is used by existing orders.');
-        }
-
         $user = $address->user;
         $wasDefault = $address->is_default;
 

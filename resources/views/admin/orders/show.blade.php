@@ -13,16 +13,16 @@
         <div class="bg-white shadow rounded p-4 grid md:grid-cols-2 gap-4">
             <div>
                 <p><strong>Date:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
-                <p><strong>Status:</strong> {{ $order->status }}</p>
-                <p><strong>Paid:</strong> {{ $order->is_paid ? 'Yes' : 'No' }}</p>
-                <p><strong>Canceled:</strong> {{ $order->is_canceled ? 'Yes' : 'No' }}</p>
-                <p><strong>Refunded:</strong> {{ $order->is_refunded ? 'Yes' : 'No' }}</p>
+                <p><strong>{{ t('orders.status') ?: 'Status' }}:</strong> {{ $order->status }}</p>
+                <p><strong>{{ t('orders.paid') ?: 'Paid' }}:</strong> {{ $order->is_paid ? 'Yes' : 'No' }}</p>
+                <p><strong>{{ t('orders.canceled') ?: 'Canceled' }}:</strong> {{ $order->is_canceled ? 'Yes' : 'No' }}</p>
+                <p><strong>{{ t('orders.refunded') ?: 'Refunded' }}:</strong> {{ $order->is_refunded ? 'Yes' : 'No' }}</p>
             </div>
 
             <div>
                 <p><strong>User:</strong> {{ $order->user->name }}</p>
                 <p><strong>Email:</strong> {{ $order->user->email }}</p>
-                <p><strong>NIF:</strong> {{ $order->address->nif }}</p>
+                <p><strong>NIF:</strong> {{ $order->address_nif }}</p>
                 @if ($order->tracking_number)
                     <p><strong>Tracking:</strong> {{ $order->tracking_number }}</p>
                 @endif
@@ -35,12 +35,14 @@
         <div class="bg-white shadow rounded p-4">
             <h3 class="font-semibold mb-2">Shipping Address</h3>
 
-            <p>{{ $order->address->title }}</p>
-            <p>{{ $order->address->address_line_1 }}</p>
-            <p>{{ $order->address->address_line_2 }}</p>
-            <p>{{ $order->address->postal_code }} {{ $order->address->city }}</p>
-            <p>{{ $order->address->country }}</p>
-            <p><strong>NIF:</strong> {{ $order->address->nif }}</p>
+            <p>{{ $order->address_title }}</p>
+            <p>{{ $order->address_line_1 }}</p>
+            @if($order->address_line_2)
+                <p>{{ $order->address_line_2 }}</p>
+            @endif
+            <p>{{ $order->address_postal_code }} {{ $order->address_city }}</p>
+            <p>{{ $order->address_country }}</p>
+            <p><strong>NIF:</strong> {{ $order->address_nif }}</p>
         </div>
 
         {{-- =======================

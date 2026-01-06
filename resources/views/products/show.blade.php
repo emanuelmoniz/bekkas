@@ -15,7 +15,7 @@
                          class="w-full rounded shadow">
                 @empty
                     <div class="bg-gray-200 h-64 flex items-center justify-center rounded">
-                        <span class="text-gray-500">No photos available</span>
+                        <span class="text-gray-500">{{ t('products.no_photos') ?: 'No photos available' }}</span>
                     </div>
                 @endforelse
             </div>
@@ -37,16 +37,16 @@
 
                 {{-- WEIGHT --}}
                 <div class="text-sm text-gray-600">
-                    Weight: {{ $product->weight }} g
+                    {{ t('products.weight') ?: 'Weight' }}: {{ $product->weight }} g
                 </div>
 
                 {{-- STOCK --}}
                 <div class="text-sm">
-                    Stock:
+                    {{ t('products.stock') ?: 'Stock' }}:
                     @if ($product->stock > 0)
-                        <span class="text-green-600 font-medium">Available</span>
+                        <span class="text-green-600 font-medium">{{ t('products.available') ?: 'Available' }}</span>
                     @else
-                        <span class="text-red-600 font-medium">Out of stock</span>
+                        <span class="text-red-600 font-medium">{{ t('products.out_of_stock') ?: 'Out of stock' }}</span>
                     @endif
                 </div>
 
@@ -54,7 +54,7 @@
                 @if ($product->categories->isNotEmpty())
                     <div>
                         <h4 class="font-medium text-sm text-gray-700 mb-1">
-                            Categories
+                            {{ t('products.categories') ?: 'Categories' }}
                         </h4>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($product->categories as $category)
@@ -70,7 +70,7 @@
                 @if ($product->materials->isNotEmpty())
                     <div>
                         <h4 class="font-medium text-sm text-gray-700 mb-1">
-                            Materials
+                            {{ t('products.materials') ?: 'Materials' }}
                         </h4>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($product->materials as $material)
@@ -93,7 +93,7 @@
                min="1"
                class="w-20 border rounded px-2 py-1">
         <button class="bg-indigo-600 text-white px-4 py-2 rounded">
-            Add to cart
+            {{ t('products.add_to_cart') ?: 'Add to cart' }}
         </button>
     </form>
 @endif

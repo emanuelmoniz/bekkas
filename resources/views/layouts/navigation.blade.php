@@ -16,16 +16,16 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @auth
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            Dashboard
+                            {{ t('nav.dashboard') ?: 'Dashboard' }}
                         </x-nav-link>
                     @endauth
 
                     <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
-                        Shop
+                        {{ t('nav.shop') ?: 'Shop' }}
                     </x-nav-link>
 
                     <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
-                        Cart ({{ count(session('cart', [])) }})
+                        {{ t('nav.cart') ?: 'Cart' }} ({{ count(session('cart', [])) }})
                     </x-nav-link>
                 </div>
             </div>
@@ -60,14 +60,14 @@
 
                         <x-slot name="content">
                             <x-dropdown-link :href="route('profile.edit')">
-                                Profile
+                                {{ t('nav.profile') ?: 'Profile' }}
                             </x-dropdown-link>
 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <x-dropdown-link :href="route('logout')"
+                                    <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault(); this.closest('form').submit();">
-                                    Log Out
+                                    {{ t('nav.logout') ?: 'Log Out' }}
                                 </x-dropdown-link>
                             </form>
                         </x-slot>
@@ -75,10 +75,10 @@
                 @else
                     <div class="flex items-center space-x-4">
                         <a href="{{ route('login') }}" class="text-sm text-gray-600 hover:text-gray-900">
-                            Login
+                            {{ t('nav.login') ?: 'Login' }}
                         </a>
                         <a href="{{ route('register') }}" class="text-sm text-gray-600 hover:text-gray-900">
-                            Register
+                            {{ t('nav.register') ?: 'Register' }}
                         </a>
                     </div>
                 @endauth

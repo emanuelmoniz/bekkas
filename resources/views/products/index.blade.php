@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800">
-            Products
+            {{ t('products.title') ?: 'Products' }}
         </h2>
     </x-slot>
 
@@ -15,7 +15,7 @@
                     <input type="text"
                            name="name"
                            value="{{ request('name') }}"
-                           placeholder="Name"
+                           placeholder="{{ t('products.filter.name') ?: 'Name' }}"
                            class="border rounded px-3 py-2">
 
                     {{-- CATEGORY --}}
@@ -23,7 +23,7 @@
                         <input type="hidden" name="category_id" :value="selected">
                         <button type="button" @click="open=!open"
                                 class="w-full border rounded px-3 py-2 text-left">
-                            {{ optional($categories->firstWhere('id', request('category_id'))?->translation())->name ?? 'Category' }}
+                            {{ optional($categories->firstWhere('id', request('category_id'))?->translation())->name ?? t('products.filter.category') ?: 'Category' }}
                         </button>
                         <div x-show="open" @click.outside="open=false"
                              class="absolute z-10 w-full bg-white border rounded shadow mt-1">
@@ -44,11 +44,11 @@
                         <input type="hidden" name="material_id" :value="selected">
                         <button type="button" @click="open=!open"
                                 class="w-full border rounded px-3 py-2 text-left">
-                            {{ optional($materials->firstWhere('id', request('material_id'))?->translation())->name ?? 'Material' }}
+                            {{ optional($materials->firstWhere('id', request('material_id'))?->translation())->name ?? t('products.filter.material') ?: 'Material' }}
                         </button>
                         <div x-show="open" @click.outside="open=false"
                              class="absolute z-10 w-full bg-white border rounded shadow mt-1">
-                            <input x-model="search" class="w-full px-3 py-2 border-b" placeholder="Search...">
+                            <input x-model="search" class="w-full px-3 py-2 border-b" placeholder="{{ t('products.filter.search') ?: 'Search...' }}">
                             @foreach ($materials as $material)
                                 @php $name = optional($material->translation())->name; @endphp
                                 <div x-show="'{{ strtolower($name) }}'.includes(search.toLowerCase())"
@@ -61,28 +61,28 @@
                     </div>
 
                     <select name="is_new" class="border rounded px-3 py-2">
-                        <option value="">New</option>
-                        <option value="1" @selected(request('is_new')==='1')>Only New</option>
-                        <option value="0" @selected(request('is_new')==='0')>Not New</option>
+                        <option value="">{{ t('products.filter.new') ?: 'New' }}</option>
+                        <option value="1" @selected(request('is_new')==='1')>{{ t('products.filter.only_new') ?: 'Only New' }}</option>
+                        <option value="0" @selected(request('is_new')==='0')>{{ t('products.filter.not_new') ?: 'Not New' }}</option>
                     </select>
 
                     <select name="is_promo" class="border rounded px-3 py-2">
-                        <option value="">Promo</option>
-                        <option value="1" @selected(request('is_promo')==='1')>Only Promo</option>
-                        <option value="0" @selected(request('is_promo')==='0')>Not Promo</option>
+                        <option value="">{{ t('products.filter.promo') ?: 'Promo' }}</option>
+                        <option value="1" @selected(request('is_promo')==='1')>{{ t('products.filter.only_promo') ?: 'Only Promo' }}</option>
+                        <option value="0" @selected(request('is_promo')==='0')>{{ t('products.filter.not_promo') ?: 'Not Promo' }}</option>
                     </select>
 
                     <label class="flex items-center gap-2">
                         <input type="checkbox" name="available" value="1" @checked(request('available'))>
-                        In stock
+                        {{ t('products.filter.in_stock') ?: 'In stock' }}
                     </label>
 
                     <div class="flex gap-2">
                         <button class="bg-indigo-600 text-white px-4 py-2 rounded">
-                            Filter
+                            {{ t('products.filter.apply') ?: 'Filter' }}
                         </button>
                         <a href="{{ route('products.index') }}" class="underline text-sm">
-                            Reset
+                            {{ t('products.filter.reset') ?: 'Reset' }}
                         </a>
                     </div>
                 </div>
@@ -104,7 +104,7 @@
                     </a>
                 @empty
                     <p class="text-gray-600 col-span-full text-center">
-                        No products found.
+                        {{ t('products.no_products') ?: 'No products found.' }}
                     </p>
                 @endforelse
             </div>

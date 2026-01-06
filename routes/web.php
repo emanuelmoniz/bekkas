@@ -227,6 +227,9 @@ Route::middleware(['auth', 'is_admin'])
 
         Route::resource('ticket-categories', TicketCategoryController::class);
 
+        // Static translations (DB-driven)
+        Route::resource('static-translations', \App\Http\Controllers\Admin\StaticTranslationController::class)->except(['show']);
+
         Route::get('tickets/create', [TicketAdminController::class, 'create'])
             ->name('tickets.create');
 

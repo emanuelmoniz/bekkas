@@ -15,6 +15,15 @@ class Order extends Model
         'is_refunded',
         'tracking_number',
 
+        // Address snapshot
+        'address_title',
+        'address_nif',
+        'address_line_1',
+        'address_line_2',
+        'address_postal_code',
+        'address_city',
+        'address_country',
+
         'products_total_net',
         'products_total_tax',
         'products_total_gross',
