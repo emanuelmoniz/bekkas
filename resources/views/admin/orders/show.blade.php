@@ -12,6 +12,7 @@
         ======================= --}}
         <div class="bg-white shadow rounded p-4 grid md:grid-cols-2 gap-4">
             <div>
+                <p><strong>Date:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
                 <p><strong>Status:</strong> {{ $order->status }}</p>
                 <p><strong>Paid:</strong> {{ $order->is_paid ? 'Yes' : 'No' }}</p>
                 <p><strong>Canceled:</strong> {{ $order->is_canceled ? 'Yes' : 'No' }}</p>
