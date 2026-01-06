@@ -136,6 +136,10 @@
                                 {{ t('nav.my_tickets') ?: 'My Tickets' }}
                             </x-dropdown-link>
 
+                            <x-dropdown-link :href="route('orders.index')">
+                                {{ t('nav.orders') ?: 'Orders' }}
+                            </x-dropdown-link>
+
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                     <x-dropdown-link :href="route('logout')"
@@ -250,6 +254,10 @@
 
                     <x-responsive-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.*')">
                         {{ t('nav.my_tickets') ?: 'My Tickets' }}
+                    </x-responsive-nav-link>
+
+                    <x-responsive-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')">
+                        {{ t('nav.orders') ?: 'Orders' }}
                     </x-responsive-nav-link>
 
                     <form method="POST" action="{{ route('logout') }}">

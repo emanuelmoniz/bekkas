@@ -372,6 +372,12 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'auth.register', 'locale' => 'pt-PT', 'value' => 'Registar', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'auth.register', 'locale' => 'en-UK', 'value' => 'Register', 'created_at'=>$now,'updated_at'=>$now],
 
+            ['key' => 'auth.failed', 'locale' => 'pt-PT', 'value' => 'Credenciais inválidas. Verifique o e-mail e a palavra-passe.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'auth.failed', 'locale' => 'en-UK', 'value' => 'Invalid credentials. Please check your email and password.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'auth.recaptcha_required', 'locale' => 'pt-PT', 'value' => 'Por favor, verifique que não é um robô.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'auth.recaptcha_required', 'locale' => 'en-UK', 'value' => 'Please verify that you are not a robot.', 'created_at'=>$now,'updated_at'=>$now],
+
             // Home page
             ['key' => 'home.banner.tagline', 'locale' => 'pt-PT', 'value' => 'Imprimindo Vida camada por camada', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'home.banner.tagline', 'locale' => 'en-UK', 'value' => 'Printing Life layer by layer', 'created_at'=>$now,'updated_at'=>$now],
@@ -474,6 +480,9 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.new', 'locale' => 'pt-PT', 'value' => 'Novo Ticket', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'tickets.new', 'locale' => 'en-UK', 'value' => 'New Ticket', 'created_at'=>$now,'updated_at'=>$now],
 
+            ['key' => 'tickets.recaptcha_required', 'locale' => 'pt-PT', 'value' => 'Por favor, verifique que não é um robô.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.recaptcha_required', 'locale' => 'en-UK', 'value' => 'Please verify that you are not a robot.', 'created_at'=>$now,'updated_at'=>$now],
+
             // Ticket email notifications
             ['key' => 'tickets.email.subject', 'locale' => 'pt-PT', 'value' => 'Ticket #:uuid – :event', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'tickets.email.subject', 'locale' => 'en-UK', 'value' => 'Ticket #:uuid – :event', 'created_at'=>$now,'updated_at'=>$now],
@@ -507,6 +516,9 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'nav.my_tickets', 'locale' => 'pt-PT', 'value' => 'Meus Tickets', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'nav.my_tickets', 'locale' => 'en-UK', 'value' => 'My Tickets', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'nav.orders', 'locale' => 'pt-PT', 'value' => 'Encomendas', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'nav.orders', 'locale' => 'en-UK', 'value' => 'Orders', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'auth.not_a_user', 'locale' => 'pt-PT', 'value' => 'Não é utilizador?', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'auth.not_a_user', 'locale' => 'en-UK', 'value' => 'Not a user?', 'created_at'=>$now,'updated_at'=>$now],
@@ -577,6 +589,9 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'contact.success_message', 'locale' => 'pt-PT', 'value' => 'Obrigado pela sua mensagem! Entraremos em contacto em breve.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'contact.success_message', 'locale' => 'en-UK', 'value' => 'Thank you for your message! We will get back to you soon.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.recaptcha_required', 'locale' => 'pt-PT', 'value' => 'Por favor, verifique que não é um robô.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.recaptcha_required', 'locale' => 'en-UK', 'value' => 'Please verify that you are not a robot.', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'contact.email.admin_subject', 'locale' => 'pt-PT', 'value' => 'Nova mensagem de contacto de :name', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'contact.email.admin_subject', 'locale' => 'en-UK', 'value' => 'New contact message from :name', 'created_at'=>$now,'updated_at'=>$now],

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Rules\Recaptcha;
 
 class RegisteredUserController extends Controller
 {
@@ -32,6 +33,9 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'g-recaptcha-response' => ['required', new Recaptcha],
+        ], [
+            'g-recaptcha-response.required' => t('auth.recaptcha_required') ?: 'Please verify that you are not a robot.',
         ]);
 
         $user = User::create([

@@ -138,6 +138,14 @@
 
                 <input type="file" name="files[]" multiple>
 
+                <!-- Google reCAPTCHA -->
+                <div>
+                    <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                    @error('g-recaptcha-response')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <div class="flex justify-end">
                     <button class="bg-blue-600 text-white px-6 py-2 rounded">
                         Send

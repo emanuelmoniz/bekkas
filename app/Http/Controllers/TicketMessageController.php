@@ -7,6 +7,7 @@ use App\Models\TicketMessage;
 use App\Models\TicketAttachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Rules\Recaptcha;
 
 class TicketMessageController extends Controller
 {
@@ -25,6 +26,9 @@ class TicketMessageController extends Controller
         $request->validate([
             'message' => 'required|string',
             'files.*' => 'nullable|file|max:20480',
+            'g-recaptcha-response' => ['required', new Recaptcha],
+        ], [
+            'g-recaptcha-response.required' => t('tickets.recaptcha_required') ?: 'Please verify that you are not a robot.',
         ]);
 
         // Create message
@@ -37,7 +41,7 @@ class TicketMessageController extends Controller
 	$ticket->notifyParticipants(
     		$message,
     		'New message',
-    		auth()->id()
+            $user->id
 	);
 
         // Attach files

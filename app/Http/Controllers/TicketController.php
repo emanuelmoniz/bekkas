@@ -9,6 +9,7 @@ use App\Models\TicketAttachment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Rules\Recaptcha;
 
 class TicketController extends Controller
 {
@@ -67,6 +68,9 @@ class TicketController extends Controller
             'message' => 'required|string',
             'due_date' => 'nullable|date',
             'files.*' => 'nullable|file|max:20480',
+            'g-recaptcha-response' => ['required', new Recaptcha],
+        ], [
+            'g-recaptcha-response.required' => t('tickets.recaptcha_required') ?: 'Please verify that you are not a robot.',
         ]);
 
         // Client always creates ticket for themselves

@@ -14,6 +14,9 @@
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
+
+        <!-- Google reCAPTCHA -->
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </head>
     <body class="bg-white dark:bg-[#161615] text-gray-900 dark:text-gray-100">
         @include('layouts.navigation')
@@ -146,6 +149,11 @@
                                 <textarea id="message" name="message" rows="5" required
                                           class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"></textarea>
                             </div>
+
+                            <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                            @error('g-recaptcha-response')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
 
                             <button type="submit" 
                                     class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
