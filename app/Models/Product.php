@@ -24,11 +24,45 @@ class Product extends Model
         'is_new'   => 'boolean',
         'is_promo' => 'boolean',
         'active'   => 'boolean',
+        'price' => 'decimal:2',
+        'promo_price' => 'decimal:2',
+        'weight' => 'decimal:3',
+        'width' => 'decimal:2',
+        'length' => 'decimal:2',
+        'height' => 'decimal:2',
     ];
 
     public function tax()
     {
         return $this->belongsTo(Tax::class);
+    }
+
+    /**
+     * Ensure `$product->tax` returns a model-like object even if a
+     * legacy `tax` attribute (string/percentage) exists in the row.
+     * This preserves backward compatibility where the database stores
+     * a denormalized `tax` column alongside the `tax_id` foreign key.
+     */
+    public function getTaxAttribute($value)
+    {
+        // If a real relation exists or can be loaded, return it
+        $relation = $this->getRelationValue('tax');
+        if ($relation instanceof \Illuminate\Database\Eloquent\Model) {
+            return $relation;
+        }
+
+        // If row contains a denormalized tax percentage (string/number),
+        // return a small object that mimics the Tax model interface used
+        // by the rest of the app (`->percentage`, `->id`, `->is_active`).
+        if (! is_null($value) && $value !== '') {
+            $obj = new \stdClass();
+            $obj->id = $this->tax_id ?? null;
+            $obj->percentage = is_numeric($value) ? (float) $value : null;
+            $obj->is_active = null;
+            return $obj;
+        }
+
+        return null;
     }
 
     public function translations()

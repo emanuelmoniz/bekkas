@@ -6,19 +6,24 @@
             </h2>
 
             <div class="flex gap-2">
-                <a href="{{ route('tickets.index') }}"
+                <a href="{{ route('admin.tickets.index') }}"
                    class="bg-gray-300 px-4 py-2 rounded text-sm">
                     Back to tickets
                 </a>
 
                 <form method="POST"
-                      action="{{ route('tickets.mark-unread', $ticket) }}">
+                      action="{{ route('admin.tickets.mark-unread', $ticket) }}">
                     @csrf
                     <button type="submit"
                             class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded text-sm">
                         Mark as unread
                     </button>
                 </form>
+
+                <a href="{{ route('admin.tickets.edit', $ticket) }}"
+                   class="bg-indigo-600 text-white px-4 py-2 rounded text-sm">
+                    Admin Edit
+                </a>
             </div>
         </div>
     </x-slot>

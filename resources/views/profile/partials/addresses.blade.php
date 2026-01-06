@@ -28,7 +28,7 @@
                                name="is_default"
                                value="1"
                                @checked($address->is_default)
-                               @disabled($addressCount === 1)>
+                               @disabled($address->is_default)>
                         Default address
                     </label>
 

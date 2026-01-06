@@ -52,12 +52,15 @@ Route::get('/cart', [CartController::class, 'index'])
     ->name('cart.index');
 
 Route::post('/cart/add/{product}', [CartController::class, 'add'])
+    ->middleware('throttle:30,1') // 30 per minute
     ->name('cart.add');
 
 Route::post('/cart/update/{product}', [CartController::class, 'update'])
+    ->middleware('throttle:30,1')
     ->name('cart.update');
 
 Route::post('/cart/remove/{product}', [CartController::class, 'remove'])
+    ->middleware('throttle:30,1')
     ->name('cart.remove');
 
 /*
@@ -82,6 +85,19 @@ Route::middleware('auth')->group(function () {
         ->name('profile.destroy');
 
     /*
+    | Addresses
+    */
+
+    Route::post('/addresses', [AddressController::class, 'store'])
+        ->name('addresses.store');
+
+    Route::patch('/addresses/{address}', [AddressController::class, 'update'])
+        ->name('addresses.update');
+
+    Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])
+        ->name('addresses.destroy');
+
+    /*
     | Orders (Client)
     */
 
@@ -102,7 +118,39 @@ Route::middleware('auth')->group(function () {
         ->name('checkout.index');
 
     Route::post('/checkout', [OrderController::class, 'place'])
+        ->middleware('throttle:5,1') // 5 per minute (sensitive)
         ->name('checkout.place');
+
+    /*
+    | Tickets (Client)
+    */
+
+    Route::get('/tickets', [TicketController::class, 'index'])
+        ->name('tickets.index');
+
+    Route::get('/tickets/create', [TicketController::class, 'create'])
+        ->name('tickets.create');
+
+    Route::post('/tickets', [TicketController::class, 'store'])
+        ->name('tickets.store');
+
+    Route::get('/tickets/{ticket}', [TicketController::class, 'show'])
+        ->name('tickets.show');
+
+    Route::post('/tickets/{ticket}/mark-unread', [TicketStatusController::class, 'markUnread'])
+        ->name('tickets.mark-unread');
+
+    Route::post('/tickets/{ticket}/close', [TicketStatusController::class, 'close'])
+        ->name('tickets.close');
+
+    Route::post('/tickets/{ticket}/reopen', [TicketStatusController::class, 'reopen'])
+        ->name('tickets.reopen');
+
+    Route::post('/tickets/{ticket}/messages', [TicketMessageController::class, 'store'])
+        ->name('tickets.messages.store');
+
+    Route::get('/tickets/attachments/{attachment}', [TicketAttachmentController::class, 'download'])
+        ->name('tickets.attachments.download');
 });
 
 /*
@@ -168,6 +216,33 @@ Route::middleware(['auth', 'is_admin'])
         */
 
         Route::resource('taxes', TaxController::class)->except(['show']);
+
+        /*
+        | Tickets (Admin)
+        */
+
+        Route::resource('ticket-categories', TicketCategoryController::class);
+
+        Route::get('tickets/create', [TicketAdminController::class, 'create'])
+            ->name('tickets.create');
+
+        Route::post('tickets', [TicketAdminController::class, 'store'])
+            ->name('tickets.store');
+
+        Route::get('tickets', [TicketAdminController::class, 'index'])
+            ->name('tickets.index');
+
+        Route::get('tickets/{ticket}', [TicketAdminController::class, 'show'])
+            ->name('tickets.show');
+
+        Route::post('tickets/{ticket}/mark-unread', [TicketStatusController::class, 'markUnread'])
+            ->name('tickets.mark-unread');
+
+        Route::get('tickets/{ticket}/edit', [TicketAdminController::class, 'edit'])
+            ->name('tickets.edit');
+
+        Route::patch('tickets/{ticket}', [TicketAdminController::class, 'update'])
+            ->name('tickets.update');
     });
 
 require __DIR__ . '/auth.php';

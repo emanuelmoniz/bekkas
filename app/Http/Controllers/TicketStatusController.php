@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use App\Models\TicketMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 class TicketStatusController extends Controller
 {
@@ -113,5 +114,24 @@ class TicketStatusController extends Controller
         $this->updateReadStateForSystemMessage($ticket, $user->id);
 
         return redirect()->route('tickets.show', $ticket);
+    }
+
+    public function markUnread(Request $request, Ticket $ticket)
+    {
+        $user = Auth::user();
+
+        if (! $user->hasRole('admin') && $ticket->user_id !== $user->id) {
+            abort(403);
+        }
+
+        // Mark ticket as unread for current user
+        $ticket->markAsUnread($user->id);
+
+        // Redirect based on which route was called
+        $currentRoute = Route::currentRouteName();
+        
+        return $currentRoute === 'admin.tickets.mark-unread'
+            ? redirect()->route('admin.tickets.index')
+            : redirect()->route('tickets.index');
     }
 }

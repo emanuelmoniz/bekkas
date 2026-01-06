@@ -56,21 +56,13 @@ class AddressController extends Controller
         ]);
 
         $user = $address->user;
-        $addressCount = $user->addresses()->count();
 
-        // If only one address exists, force default
-        if ($addressCount === 1) {
-            $data['is_default'] = true;
-        }
-
-        if (!empty($data['is_default'])) {
+        // If marking this address as default, unmark all others first
+        if ($request->filled('is_default') && $request->boolean('is_default')) {
             $user->addresses()->update(['is_default' => false]);
         }
 
-        $address->update([
-            ...$data,
-            'is_default' => !empty($data['is_default']),
-        ]);
+        $address->update($data);
 
         return redirect()->route('profile.edit');
     }
@@ -79,6 +71,12 @@ class AddressController extends Controller
     {
         $this->authorizeAddress($address);
 
+        // Check if address is used by any orders
+        if ($address->orders()->exists()) {
+            return redirect()->route('profile.edit')
+                ->withErrors('Cannot delete this address as it is used by existing orders.');
+        }
+
         $user = $address->user;
         $wasDefault = $address->is_default;
 
@@ -86,7 +84,10 @@ class AddressController extends Controller
 
         // If default was deleted, promote another address
         if ($wasDefault) {
-            $user->addresses()->first()?->update(['is_default' => true]);
+            $first = $user->addresses()->first();
+            if ($first) {
+                $first->update(['is_default' => true]);
+            }
         }
 
         return redirect()->route('profile.edit');

@@ -10,6 +10,7 @@
               action="{{ route('admin.tickets.update', $ticket) }}"
               class="bg-white p-6 rounded shadow space-y-4">
             @csrf
+            @method('PATCH')
 
             {{-- OWNER --}}
             @if ($canChangeOwner)
@@ -59,7 +60,7 @@
             </div>
 
             <div class="flex justify-between">
-                <a href="{{ route('tickets.show', $ticket) }}"
+                <a href="{{ route('admin.tickets.index') }}"
                    class="bg-gray-300 px-4 py-2 rounded">
                     Cancel
                 </a>

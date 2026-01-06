@@ -104,13 +104,13 @@ class ProductController extends Controller
             'height'      => $request->height,
             'weight'      => $request->weight,
 
-            // ✅ BOOLEAN NORMALIZATION
+            // BOOLEAN NORMALIZATION
             'is_new'   => $request->boolean('is_new'),
             'is_promo' => $request->boolean('is_promo'),
             'active'   => $request->boolean('active'),
         ]);
 
-        foreach (['pt-PT', 'en-UK'] as $locale) {
+        foreach (config('app.locales') as $locale => $name) {
             ProductTranslation::create([
                 'product_id' => $product->id,
                 'locale' => $locale,
@@ -163,7 +163,7 @@ class ProductController extends Controller
             'active'   => $request->boolean('active'),
         ]);
 
-        foreach (['pt-PT', 'en-UK'] as $locale) {
+        foreach (config('app.locales') as $locale => $name) {
             $product->translations()
                 ->updateOrCreate(
                     ['locale' => $locale],

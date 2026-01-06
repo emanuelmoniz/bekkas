@@ -32,6 +32,17 @@ class Order extends Model
         'is_paid' => 'boolean',
         'is_canceled' => 'boolean',
         'is_refunded' => 'boolean',
+        'products_total_net' => 'decimal:2',
+        'products_total_tax' => 'decimal:2',
+        'products_total_gross' => 'decimal:2',
+        'shipping_net' => 'decimal:2',
+        'shipping_tax' => 'decimal:2',
+        'shipping_gross' => 'decimal:2',
+        'total_net' => 'decimal:2',
+        'total_tax' => 'decimal:2',
+        'total_gross' => 'decimal:2',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /* =======================
