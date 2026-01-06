@@ -31,10 +31,11 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email', 'confirmed'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'g-recaptcha-response' => ['required', new Recaptcha],
         ], [
+            'email.confirmed' => t('auth.email_mismatch') ?: 'Email addresses do not match.',
             'g-recaptcha-response.required' => t('auth.recaptcha_required') ?: 'Please verify that you are not a robot.',
         ]);
 

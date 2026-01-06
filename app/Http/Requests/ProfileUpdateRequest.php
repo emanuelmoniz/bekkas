@@ -24,7 +24,22 @@ class ProfileUpdateRequest extends FormRequest
                 'email',
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
+                'confirmed',
             ],
+            'email_confirmation' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+            ],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'email.confirmed' => t('auth.email_mismatch') ?: 'Email addresses do not match.',
         ];
     }
 }

@@ -326,6 +326,12 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.profile_information', 'locale' => 'pt-PT', 'value' => 'Informação do Perfil', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'profile.profile_information', 'locale' => 'en-UK', 'value' => 'Profile Information', 'created_at'=>$now,'updated_at'=>$now],
 
+            ['key' => 'profile.save', 'locale' => 'pt-PT', 'value' => 'Guardar', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.save', 'locale' => 'en-UK', 'value' => 'Save', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'profile.saved', 'locale' => 'pt-PT', 'value' => 'Guardado.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.saved', 'locale' => 'en-UK', 'value' => 'Saved.', 'created_at'=>$now,'updated_at'=>$now],
+
             ['key' => 'profile.update_profile_info_desc', 'locale' => 'pt-PT', 'value' => 'Atualize as informações do perfil e endereço de email da sua conta.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'profile.update_profile_info_desc', 'locale' => 'en-UK', 'value' => "Update your account's profile information and email address.", 'created_at'=>$now,'updated_at'=>$now],
 
@@ -346,6 +352,12 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'profile.delete_account', 'locale' => 'pt-PT', 'value' => 'Eliminar Conta', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'profile.delete_account', 'locale' => 'en-UK', 'value' => 'Delete Account', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'profile.delete_account_button', 'locale' => 'pt-PT', 'value' => 'Eliminar Conta', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.delete_account_button', 'locale' => 'en-UK', 'value' => 'Delete Account', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'profile.cancel', 'locale' => 'pt-PT', 'value' => 'Cancelar', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.cancel', 'locale' => 'en-UK', 'value' => 'Cancel', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'profile.delete_account_desc', 'locale' => 'pt-PT', 'value' => 'Uma vez que a sua conta é eliminada, todos os seus recursos e dados serão permanentemente eliminados. Antes de eliminar a sua conta, por favor faça o download de quaisquer dados ou informações que deseja reter.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'profile.delete_account_desc', 'locale' => 'en-UK', 'value' => 'Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.', 'created_at'=>$now,'updated_at'=>$now],
@@ -371,6 +383,9 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'auth.register', 'locale' => 'pt-PT', 'value' => 'Registar', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'auth.register', 'locale' => 'en-UK', 'value' => 'Register', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'auth.email_mismatch', 'locale' => 'pt-PT', 'value' => 'Os emails não coincidem. Verifique os dois campos.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'auth.email_mismatch', 'locale' => 'en-UK', 'value' => 'Email addresses do not match. Please check both fields.', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'auth.failed', 'locale' => 'pt-PT', 'value' => 'Credenciais inválidas. Verifique o e-mail e a palavra-passe.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'auth.failed', 'locale' => 'en-UK', 'value' => 'Invalid credentials. Please check your email and password.', 'created_at'=>$now,'updated_at'=>$now],
@@ -514,8 +529,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.email.thanks', 'locale' => 'pt-PT', 'value' => 'Obrigado,', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'tickets.email.thanks', 'locale' => 'en-UK', 'value' => 'Thanks,', 'created_at'=>$now,'updated_at'=>$now],
 
-            ['key' => 'nav.my_tickets', 'locale' => 'pt-PT', 'value' => 'Meus Tickets', 'created_at'=>$now,'updated_at'=>$now],
-            ['key' => 'nav.my_tickets', 'locale' => 'en-UK', 'value' => 'My Tickets', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'nav.my_tickets', 'locale' => 'pt-PT', 'value' => 'Tickets', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'nav.my_tickets', 'locale' => 'en-UK', 'value' => 'Tickets', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'nav.orders', 'locale' => 'pt-PT', 'value' => 'Encomendas', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'nav.orders', 'locale' => 'en-UK', 'value' => 'Orders', 'created_at'=>$now,'updated_at'=>$now],
