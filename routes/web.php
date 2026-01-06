@@ -56,9 +56,9 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
+Route::get('/architecture', function () {
+    return view('architecture');
+})->name('architecture.index');
 
 Route::get('/cart', [CartController::class, 'index'])
     ->name('cart.index');

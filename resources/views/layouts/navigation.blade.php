@@ -7,7 +7,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('products.index') }}">
+                    <a href="/">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
@@ -74,7 +74,7 @@
                             {{ t('nav.products') ?: 'Products' }}
                         </x-nav-link>
 
-                        <x-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.*')">
+                        <x-nav-link :href="route('architecture.index')" :active="request()->routeIs('architecture.*')">
                             {{ t('nav.architecture') ?: 'Architecture' }}
                         </x-nav-link>
 
@@ -82,7 +82,7 @@
                             {{ t('nav.about') ?: 'About Us' }}
                         </x-nav-link>
 
-                        <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
+                        <x-nav-link :href="'https://bekkas.pt#contact'" :active="false">
                             {{ t('nav.contact') ?: 'Contact' }}
                         </x-nav-link>
 
@@ -130,6 +130,10 @@
 
                             <x-dropdown-link :href="route('profile.edit')">
                                 {{ t('nav.profile') ?: 'Profile' }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('tickets.index')">
+                                {{ t('nav.my_tickets') ?: 'My Tickets' }}
                             </x-dropdown-link>
 
                             <form method="POST" action="{{ route('logout') }}">
@@ -204,7 +208,7 @@
                 <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
                     {{ t('nav.about') ?: 'About Us' }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
+                <x-responsive-nav-link :href="'https://bekkas.pt#contact'" :active="false">
                     {{ t('nav.contact') ?: 'Contact' }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">

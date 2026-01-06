@@ -371,6 +371,102 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'auth.register', 'locale' => 'pt-PT', 'value' => 'Registar', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'auth.register', 'locale' => 'en-UK', 'value' => 'Register', 'created_at'=>$now,'updated_at'=>$now],
+
+            // Home page
+            ['key' => 'home.banner.tagline', 'locale' => 'pt-PT', 'value' => 'Imprimindo Vida camada por camada', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'home.banner.tagline', 'locale' => 'en-UK', 'value' => 'Printing Life layer by layer', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'home.banner.button', 'locale' => 'pt-PT', 'value' => 'NOSSOS SERVIÇOS', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'home.banner.button', 'locale' => 'en-UK', 'value' => 'OUR SERVICES', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'home.services.products.title', 'locale' => 'pt-PT', 'value' => 'PRODUTOS', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'home.services.products.title', 'locale' => 'en-UK', 'value' => 'PRODUCTS', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'home.services.products.description', 'locale' => 'pt-PT', 'value' => 'Objetos do quotidiano, presentes e lembranças impressas em 3D com precisão e qualidade.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'home.services.products.description', 'locale' => 'en-UK', 'value' => 'Day to day life objects, gifts, souvenires printed with precision and quality.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'home.services.products.button', 'locale' => 'pt-PT', 'value' => 'Loja', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'home.services.products.button', 'locale' => 'en-UK', 'value' => 'Store', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'home.services.architecture.title', 'locale' => 'pt-PT', 'value' => 'ARQUITETURA', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'home.services.architecture.title', 'locale' => 'en-UK', 'value' => 'ARCHITECTURE', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'home.services.architecture.description', 'locale' => 'pt-PT', 'value' => 'Serviço de impressão para arquitetos, engenheiros e criadores. Transforme seus projetos em modelos 3D.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'home.services.architecture.description', 'locale' => 'en-UK', 'value' => 'Printing service for architects, engineers and creators. Transform your projects into 3D models.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'home.services.architecture.button', 'locale' => 'pt-PT', 'value' => 'Mais Informações', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'home.services.architecture.button', 'locale' => 'en-UK', 'value' => 'More Info', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'home.contact.title', 'locale' => 'pt-PT', 'value' => 'Contacte-nos', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'home.contact.title', 'locale' => 'en-UK', 'value' => 'Contact Us', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'home.contact.location', 'locale' => 'pt-PT', 'value' => 'Localização', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'home.contact.location', 'locale' => 'en-UK', 'value' => 'Location', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'home.contact.phone', 'locale' => 'pt-PT', 'value' => 'Telefone', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'home.contact.phone', 'locale' => 'en-UK', 'value' => 'Phone', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'home.contact.email', 'locale' => 'pt-PT', 'value' => 'Email', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'home.contact.email', 'locale' => 'en-UK', 'value' => 'Email', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'home.contact.social', 'locale' => 'pt-PT', 'value' => 'Siga-nos', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'home.contact.social', 'locale' => 'en-UK', 'value' => 'Follow Us', 'created_at'=>$now,'updated_at'=>$now],
+
+            // Footer
+            ['key' => 'footer.about', 'locale' => 'pt-PT', 'value' => 'Serviços de Impressão 3D para todos', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'footer.about', 'locale' => 'en-UK', 'value' => '3D Printing Services for everyone', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'footer.links', 'locale' => 'pt-PT', 'value' => 'Links Rápidos', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'footer.links', 'locale' => 'en-UK', 'value' => 'Quick Links', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'footer.follow', 'locale' => 'pt-PT', 'value' => 'Siga-nos', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'footer.follow', 'locale' => 'en-UK', 'value' => 'Follow Us', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'footer.rights', 'locale' => 'pt-PT', 'value' => 'Todos os direitos reservados.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'footer.rights', 'locale' => 'en-UK', 'value' => 'All rights reserved.', 'created_at'=>$now,'updated_at'=>$now],
+
+            // Architecture page
+            ['key' => 'architecture.banner.title', 'locale' => 'pt-PT', 'value' => 'Serviços de Arquitetura', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.banner.title', 'locale' => 'en-UK', 'value' => 'Architecture Services', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'architecture.banner.subtitle', 'locale' => 'pt-PT', 'value' => 'Soluções profissionais de impressão 3D para arquitetos e designers', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.banner.subtitle', 'locale' => 'en-UK', 'value' => 'Professional 3D printing solutions for architects and designers', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'architecture.banner.button', 'locale' => 'pt-PT', 'value' => 'Solicitar Serviço', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.banner.button', 'locale' => 'en-UK', 'value' => 'Request Service', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'architecture.features.title', 'locale' => 'pt-PT', 'value' => 'Nossos Serviços', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.features.title', 'locale' => 'en-UK', 'value' => 'Our Services', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'architecture.features.modeling', 'locale' => 'pt-PT', 'value' => 'Modelagem 3D', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.features.modeling', 'locale' => 'en-UK', 'value' => '3D Modeling', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'architecture.features.modeling_desc', 'locale' => 'pt-PT', 'value' => 'Preparação profissional de modelos 3D e otimização para impressão.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.features.modeling_desc', 'locale' => 'en-UK', 'value' => 'Professional 3D model preparation and optimization for printing.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'architecture.features.materials', 'locale' => 'pt-PT', 'value' => 'Múltiplos Materiais', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.features.materials', 'locale' => 'en-UK', 'value' => 'Multiple Materials', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'architecture.features.materials_desc', 'locale' => 'pt-PT', 'value' => 'Escolha entre vários materiais e acabamentos para atender às suas necessidades de projeto.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.features.materials_desc', 'locale' => 'en-UK', 'value' => 'Choose from various materials and finishes to suit your project needs.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'architecture.features.support', 'locale' => 'pt-PT', 'value' => 'Suporte de Especialista', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.features.support', 'locale' => 'en-UK', 'value' => 'Expert Support', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'architecture.features.support_desc', 'locale' => 'pt-PT', 'value' => 'Suporte dedicado desde a consulta de design até a entrega final.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.features.support_desc', 'locale' => 'en-UK', 'value' => 'Dedicated support from design consultation to final delivery.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'architecture.request.title', 'locale' => 'pt-PT', 'value' => 'Solicitar Orçamento', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.request.title', 'locale' => 'en-UK', 'value' => 'Request a Quote', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'architecture.request.project_details', 'locale' => 'pt-PT', 'value' => 'Detalhes do Projeto', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.request.project_details', 'locale' => 'en-UK', 'value' => 'Project Details', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'architecture.request.submit', 'locale' => 'pt-PT', 'value' => 'Enviar Pedido', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.request.submit', 'locale' => 'en-UK', 'value' => 'Submit Request', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'nav.my_tickets', 'locale' => 'pt-PT', 'value' => 'Meus Tickets', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'nav.my_tickets', 'locale' => 'en-UK', 'value' => 'My Tickets', 'created_at'=>$now,'updated_at'=>$now],
         ];
 
         DB::table('static_translations')->upsert($rows, ['key','locale']);
