@@ -4,16 +4,16 @@
         <div class="flex justify-between h-16">
 
             <!-- Left side -->
-            <div class="flex">
+            <div class="flex flex-1 items-center">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="/">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                    <a href="/" class="inline-flex items-center">
+                        <img src="{{ asset('images/logo.png') }}" alt="BEKKAS" class="h-7 w-auto">
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:flex sm:flex-1 sm:justify-center">
                     @if(request()->is('admin/*') || request()->is('admin'))
                         {{-- ADMIN MENU --}}
                         
@@ -86,15 +86,13 @@
                             {{ t('nav.contact') ?: 'Contact' }}
                         </x-nav-link>
 
-                        <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
-                            {{ t('nav.cart') ?: 'Cart' }} ({{ count(session('cart', [])) }})
-                        </x-nav-link>
                     @endif
                 </div>
             </div>
 
             <!-- Right side -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-6">
+                @php $cartCount = count(session('cart', [])); @endphp
                 <!-- Language Selector -->
                 <div class="flex items-center gap-2">
                     @php
@@ -107,6 +105,18 @@
                         {{ $otherLocaleName }}
                     </a>
                 </div>
+
+                @if($cartCount > 0)
+                    <div class="relative">
+                        <a href="{{ route('cart.index') }}" class="flex items-center text-gray-600 hover:text-gray-900" aria-label="Cart">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25h11.118c.51 0 .955-.343 1.087-.835l1.518-5.688a1.125 1.125 0 00-1.087-1.415H5.106" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25L5.106 4.272M7.5 14.25l-2.25 3m0 0h13.5m-13.5 0a1.5 1.5 0 103 0m10.5 0a1.5 1.5 0 103 0" />
+                            </svg>
+                            <span class="absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-red-600 text-white text-xs px-1.5 py-0.5 min-w-[1.25rem]">{{ $cartCount }}</span>
+                        </a>
+                    </div>
+                @endif
 
                 @auth
                     <x-dropdown align="right" width="48">
@@ -215,9 +225,12 @@
                 <x-responsive-nav-link :href="'https://bekkas.pt#contact'" :active="false">
                     {{ t('nav.contact') ?: 'Contact' }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
-                    {{ t('nav.cart') ?: 'Cart' }} ({{ count(session('cart', [])) }})
-                </x-responsive-nav-link>
+                @php $cartCount = count(session('cart', [])); @endphp
+                @if($cartCount > 0)
+                    <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
+                        {{ t('nav.cart') ?: 'Cart' }} ({{ $cartCount }})
+                    </x-responsive-nav-link>
+                @endif
             @endif
         </div>
 
