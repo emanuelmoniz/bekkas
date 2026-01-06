@@ -19,6 +19,7 @@ use App\Http\Controllers\TicketStatusController;
 use App\Http\Controllers\TicketAttachmentController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProductController as ClientProductController;
 use App\Http\Controllers\CartController;
 
@@ -41,6 +42,9 @@ Route::get('/dashboard', function () {
 | Public (Client)
 |--------------------------------------------------------------------------
 */
+
+Route::get('/language/{locale}', [LanguageController::class, 'switch'])
+    ->name('language.switch');
 
 Route::get('/products', [ClientProductController::class, 'index'])
     ->name('products.index');

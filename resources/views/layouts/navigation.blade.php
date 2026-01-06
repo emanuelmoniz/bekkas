@@ -31,8 +31,21 @@
             </div>
 
             <!-- Right side -->
-            @auth
-                <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden sm:flex sm:items-center sm:ms-6 gap-6">
+                <!-- Language Selector -->
+                <div class="flex items-center gap-2">
+                    @php
+                        $currentLocale = app()->getLocale();
+                        $otherLocale = $currentLocale === 'pt-PT' ? 'en-UK' : 'pt-PT';
+                        $otherLocaleName = $otherLocale === 'pt-PT' ? 'PT' : 'EN';
+                    @endphp
+                    <a href="{{ route('language.switch', $otherLocale) }}"
+                       class="text-sm text-gray-600 hover:text-gray-900 font-medium">
+                        {{ $otherLocaleName }}
+                    </a>
+                </div>
+
+                @auth
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
@@ -59,17 +72,17 @@
                             </form>
                         </x-slot>
                     </x-dropdown>
-                </div>
-            @else
-                <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
-                    <a href="{{ route('login') }}" class="text-sm text-gray-600 hover:text-gray-900">
-                        Login
-                    </a>
-                    <a href="{{ route('register') }}" class="text-sm text-gray-600 hover:text-gray-900">
-                        Register
-                    </a>
-                </div>
-            @endauth
+                @else
+                    <div class="flex items-center space-x-4">
+                        <a href="{{ route('login') }}" class="text-sm text-gray-600 hover:text-gray-900">
+                            Login
+                        </a>
+                        <a href="{{ route('register') }}" class="text-sm text-gray-600 hover:text-gray-900">
+                            Register
+                        </a>
+                    </div>
+                @endauth
+            </div>
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
@@ -113,6 +126,19 @@
         </div>
 
         <div class="pt-4 pb-1 border-t border-gray-200">
+            {{-- Language Selector Mobile --}}
+            <div class="px-4 py-2">
+                @php
+                    $currentLocale = app()->getLocale();
+                    $otherLocale = $currentLocale === 'pt-PT' ? 'en-UK' : 'pt-PT';
+                    $otherLocaleName = $otherLocale === 'pt-PT' ? 'PT' : 'EN';
+                @endphp
+                <a href="{{ route('language.switch', $otherLocale) }}"
+                   class="text-sm text-gray-600 hover:text-gray-900 font-medium">
+                    {{ $otherLocaleName }}
+                </a>
+            </div>
+
             @auth
                 <div class="px-4">
                     <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>

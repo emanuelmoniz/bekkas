@@ -82,6 +82,13 @@
                         <span>Total tax</span>
                         <span>€{{ number_format($totalTax, 2) }}</span>
                     </div>
+
+                    <div class="pt-4">
+                        <a href="{{ route('checkout.index') }}"
+                           class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded text-center font-medium block">
+                            Proceed to Checkout
+                        </a>
+                    </div>
                 </div>
             @endif
 
