@@ -11,7 +11,7 @@
         <div class="mb-4 flex justify-end">
             <a href="{{ route('tickets.create') }}"
                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-                New Ticket
+                {{ t('tickets.new') ?: 'New Ticket' }}
             </a>
         </div>
 

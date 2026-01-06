@@ -248,6 +248,10 @@
                         {{ t('nav.profile') ?: 'Profile' }}
                     </x-responsive-nav-link>
 
+                    <x-responsive-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.*')">
+                        {{ t('nav.my_tickets') ?: 'My Tickets' }}
+                    </x-responsive-nav-link>
+
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <x-responsive-nav-link :href="route('logout')"

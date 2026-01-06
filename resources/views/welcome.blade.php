@@ -114,7 +114,13 @@
 
                     <!-- Contact Form -->
                     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-                        <form method="POST" action="#" class="space-y-6">
+                        @if(session('success'))
+                            <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        <form method="POST" action="{{ route('contact.store') }}" class="space-y-6">
                             @csrf
 
                             <div>

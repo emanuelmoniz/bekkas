@@ -22,6 +22,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProductController as ClientProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,9 @@ Route::get('/about', function () {
 Route::get('/architecture', function () {
     return view('architecture');
 })->name('architecture.index');
+
+Route::post('/contact', [ContactController::class, 'store'])
+    ->name('contact.store');
 
 Route::get('/cart', [CartController::class, 'index'])
     ->name('cart.index');

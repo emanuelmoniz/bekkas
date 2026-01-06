@@ -459,14 +459,157 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'architecture.request.title', 'locale' => 'pt-PT', 'value' => 'Solicitar Orçamento', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'architecture.request.title', 'locale' => 'en-UK', 'value' => 'Request a Quote', 'created_at'=>$now,'updated_at'=>$now],
 
+            ['key' => 'architecture.request.cta', 'locale' => 'pt-PT', 'value' => 'Quer mais informação ou um orçamento para um projeto específico? Envie-nos um ticket e entraremos em contacto.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.request.cta', 'locale' => 'en-UK', 'value' => 'Want more info or a quote for a specific project? Please send us a ticket and we will follow up.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'architecture.request.ticket_button', 'locale' => 'pt-PT', 'value' => 'Criar novo ticket', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'architecture.request.ticket_button', 'locale' => 'en-UK', 'value' => 'Create new ticket', 'created_at'=>$now,'updated_at'=>$now],
+
             ['key' => 'architecture.request.project_details', 'locale' => 'pt-PT', 'value' => 'Detalhes do Projeto', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'architecture.request.project_details', 'locale' => 'en-UK', 'value' => 'Project Details', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'architecture.request.submit', 'locale' => 'pt-PT', 'value' => 'Enviar Pedido', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'architecture.request.submit', 'locale' => 'en-UK', 'value' => 'Submit Request', 'created_at'=>$now,'updated_at'=>$now],
 
+            ['key' => 'tickets.new', 'locale' => 'pt-PT', 'value' => 'Novo Ticket', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.new', 'locale' => 'en-UK', 'value' => 'New Ticket', 'created_at'=>$now,'updated_at'=>$now],
+
+            // Ticket email notifications
+            ['key' => 'tickets.email.subject', 'locale' => 'pt-PT', 'value' => 'Ticket #:uuid – :event', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.email.subject', 'locale' => 'en-UK', 'value' => 'Ticket #:uuid – :event', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.email.greeting', 'locale' => 'pt-PT', 'value' => 'Olá :name,', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.email.greeting', 'locale' => 'en-UK', 'value' => 'Hello :name,', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.email.update_intro', 'locale' => 'pt-PT', 'value' => 'Existe uma atualização num ticket em que está envolvido.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.email.update_intro', 'locale' => 'en-UK', 'value' => 'There is an update on a ticket you are involved in.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.email.ticket_label', 'locale' => 'pt-PT', 'value' => 'Ticket', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.email.ticket_label', 'locale' => 'en-UK', 'value' => 'Ticket', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.email.status_label', 'locale' => 'pt-PT', 'value' => 'Estado', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.email.status_label', 'locale' => 'en-UK', 'value' => 'Status', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.email.update_type_label', 'locale' => 'pt-PT', 'value' => 'Tipo de atualização', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.email.update_type_label', 'locale' => 'en-UK', 'value' => 'Update type', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.email.message_label', 'locale' => 'pt-PT', 'value' => 'Mensagem', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.email.message_label', 'locale' => 'en-UK', 'value' => 'Message', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.email.view_button', 'locale' => 'pt-PT', 'value' => 'Ver Ticket', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.email.view_button', 'locale' => 'en-UK', 'value' => 'View Ticket', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.email.auto_sent', 'locale' => 'pt-PT', 'value' => 'Este email foi enviado automaticamente.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.email.auto_sent', 'locale' => 'en-UK', 'value' => 'This email was sent automatically.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.email.thanks', 'locale' => 'pt-PT', 'value' => 'Obrigado,', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.email.thanks', 'locale' => 'en-UK', 'value' => 'Thanks,', 'created_at'=>$now,'updated_at'=>$now],
+
             ['key' => 'nav.my_tickets', 'locale' => 'pt-PT', 'value' => 'Meus Tickets', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'nav.my_tickets', 'locale' => 'en-UK', 'value' => 'My Tickets', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'auth.not_a_user', 'locale' => 'pt-PT', 'value' => 'Não é utilizador?', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'auth.not_a_user', 'locale' => 'en-UK', 'value' => 'Not a user?', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'auth.please_register', 'locale' => 'pt-PT', 'value' => 'Por favor registe-se', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'auth.please_register', 'locale' => 'en-UK', 'value' => 'Please register', 'created_at'=>$now,'updated_at'=>$now],
+
+            // About page
+            ['key' => 'about.banner.title', 'locale' => 'pt-PT', 'value' => 'Sobre a BEKKAS', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.banner.title', 'locale' => 'en-UK', 'value' => 'About BEKKAS', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.banner.subtitle', 'locale' => 'pt-PT', 'value' => 'Tornando a impressão 3D acessível a todos', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.banner.subtitle', 'locale' => 'en-UK', 'value' => 'Making 3D printing accessible to everyone', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.mission.title', 'locale' => 'pt-PT', 'value' => 'A Nossa Missão', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.mission.title', 'locale' => 'en-UK', 'value' => 'Our Mission', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.mission.intro', 'locale' => 'pt-PT', 'value' => 'Na BEKKAS, acreditamos que todos merecem acesso ao poder transformador da tecnologia de impressão 3D.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.mission.intro', 'locale' => 'en-UK', 'value' => 'At BEKKAS, we believe that everyone deserves access to the transformative power of 3D printing technology.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.mission.purpose', 'locale' => 'pt-PT', 'value' => 'O nosso negócio está focado em tornar a impressão 3D acessível e económica, dando a todos a oportunidade de ter algo único e personalizável que reflita a sua visão e criatividade.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.mission.purpose', 'locale' => 'en-UK', 'value' => 'Our business is focused on making 3D printing accessible and affordable, giving everybody a chance to have something unique and personalizable that reflects their vision and creativity.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.values.title', 'locale' => 'pt-PT', 'value' => 'Os Nossos Valores', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.values.title', 'locale' => 'en-UK', 'value' => 'What We Stand For', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.values.accessibility', 'locale' => 'pt-PT', 'value' => 'Acessibilidade', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.values.accessibility', 'locale' => 'en-UK', 'value' => 'Accessibility', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.values.accessibility_desc', 'locale' => 'pt-PT', 'value' => 'Tornamos a tecnologia de impressão 3D disponível para todos, desde estudantes a profissionais, com soluções acessíveis e orientação especializada.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.values.accessibility_desc', 'locale' => 'en-UK', 'value' => 'We make 3D printing technology available to everyone, from students to professionals, with affordable solutions and expert guidance.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.values.uniqueness', 'locale' => 'pt-PT', 'value' => 'Originalidade', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.values.uniqueness', 'locale' => 'en-UK', 'value' => 'Uniqueness', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.values.uniqueness_desc', 'locale' => 'pt-PT', 'value' => 'Cada projeto é diferente. Ajudamos a criar algo verdadeiramente único e personalizável que se destaca de produtos produzidos em massa.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.values.uniqueness_desc', 'locale' => 'en-UK', 'value' => 'Every project is different. We help you create something truly unique and personalizable that stands out from mass-produced items.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.values.quality', 'locale' => 'pt-PT', 'value' => 'Qualidade', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.values.quality', 'locale' => 'en-UK', 'value' => 'Quality', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.values.quality_desc', 'locale' => 'pt-PT', 'value' => 'Nunca comprometemos a qualidade. Desde a seleção de materiais até à entrega final, cada etapa é executada com precisão e cuidado.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.values.quality_desc', 'locale' => 'en-UK', 'value' => 'We never compromise on quality. From material selection to final delivery, every step is executed with precision and care.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.story.title', 'locale' => 'pt-PT', 'value' => 'A Nossa História', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.story.title', 'locale' => 'en-UK', 'value' => 'Our Story', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.story.paragraph1', 'locale' => 'pt-PT', 'value' => 'A BEKKAS foi fundada com uma visão simples: democratizar o acesso à tecnologia de impressão 3D e capacitar as pessoas a dar vida às suas ideias.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.story.paragraph1', 'locale' => 'en-UK', 'value' => 'BEKKAS was founded with a simple vision: to democratize access to 3D printing technology and empower individuals to bring their ideas to life.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.story.paragraph2', 'locale' => 'pt-PT', 'value' => 'Começámos por servir arquitetos e estudantes, ajudando-os a criar modelos detalhados para os seus projetos. Hoje, servimos uma comunidade diversificada de criadores, oferecendo soluções de impressão 3D personalizadas para qualquer necessidade.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.story.paragraph2', 'locale' => 'en-UK', 'value' => 'We started by serving architects and students, helping them create detailed models for their projects. Today, we serve a diverse community of creators, offering personalized 3D printing solutions for any need.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.story.paragraph3', 'locale' => 'pt-PT', 'value' => 'Seja um protótipo, um presente personalizado, um modelo arquitetónico ou um produto único, estamos aqui para tornar isso realidade. A sua imaginação é o único limite.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.story.paragraph3', 'locale' => 'en-UK', 'value' => 'Whether you need a prototype, a custom gift, an architectural model, or a unique product, we are here to make it happen. Your imagination is the only limit.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.cta.title', 'locale' => 'pt-PT', 'value' => 'Pronto para Começar o Seu Projeto?', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.cta.title', 'locale' => 'en-UK', 'value' => 'Ready to Start Your Project?', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.cta.description', 'locale' => 'pt-PT', 'value' => 'Junte-se a centenas de clientes satisfeitos que deram vida às suas ideias com a BEKKAS.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.cta.description', 'locale' => 'en-UK', 'value' => 'Join hundreds of satisfied customers who have brought their ideas to life with BEKKAS.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.cta.shop', 'locale' => 'pt-PT', 'value' => 'Ver Produtos', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.cta.shop', 'locale' => 'en-UK', 'value' => 'Browse Products', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'about.cta.contact', 'locale' => 'pt-PT', 'value' => 'Iniciar Projeto', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'about.cta.contact', 'locale' => 'en-UK', 'value' => 'Start a Project', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.success_message', 'locale' => 'pt-PT', 'value' => 'Obrigado pela sua mensagem! Entraremos em contacto em breve.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.success_message', 'locale' => 'en-UK', 'value' => 'Thank you for your message! We will get back to you soon.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.email.admin_subject', 'locale' => 'pt-PT', 'value' => 'Nova mensagem de contacto de :name', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.email.admin_subject', 'locale' => 'en-UK', 'value' => 'New contact message from :name', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.email.admin_heading', 'locale' => 'pt-PT', 'value' => 'Nova mensagem de contacto', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.email.admin_heading', 'locale' => 'en-UK', 'value' => 'New Contact Message', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.email.name_label', 'locale' => 'pt-PT', 'value' => 'Nome', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.email.name_label', 'locale' => 'en-UK', 'value' => 'Name', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.email.email_label', 'locale' => 'pt-PT', 'value' => 'Email', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.email.email_label', 'locale' => 'en-UK', 'value' => 'Email', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.email.message_label', 'locale' => 'pt-PT', 'value' => 'Mensagem', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.email.message_label', 'locale' => 'en-UK', 'value' => 'Message', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.email.thanks', 'locale' => 'pt-PT', 'value' => 'Obrigado,', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.email.thanks', 'locale' => 'en-UK', 'value' => 'Thanks,', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.email.user_subject', 'locale' => 'pt-PT', 'value' => 'Recebemos a sua mensagem', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.email.user_subject', 'locale' => 'en-UK', 'value' => 'We received your message', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.email.user_heading', 'locale' => 'pt-PT', 'value' => 'Obrigado, :name', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.email.user_heading', 'locale' => 'en-UK', 'value' => 'Thank you, :name', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.email.user_body', 'locale' => 'pt-PT', 'value' => 'Recebemos a sua mensagem e entraremos em contacto em breve.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.email.user_body', 'locale' => 'en-UK', 'value' => 'We received your message and will get back to you shortly.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.email.no_reply', 'locale' => 'pt-PT', 'value' => 'Por favor, não responda a este email.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.email.no_reply', 'locale' => 'en-UK', 'value' => 'Please do not reply to this email.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.email.user_followup', 'locale' => 'pt-PT', 'value' => 'O seu pedido será respondido em breve.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.email.user_followup', 'locale' => 'en-UK', 'value' => 'Your request will be answered soon.', 'created_at'=>$now,'updated_at'=>$now],
         ];
 
         DB::table('static_translations')->upsert($rows, ['key','locale']);

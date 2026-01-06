@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use App\Notifications\TicketUpdatedNotification;
+use App\Mail\TicketNotification;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use App\Models\User;
 use App\Models\TicketMessage;
@@ -96,9 +97,9 @@ class Ticket extends Model
             ->where('id', '!=', $actorId)
             ->get();
 
-    	Notification::send(
-        	$recipients,
-        	new TicketUpdatedNotification($this, $message, $eventLabel)
-    	);
+        foreach ($recipients as $recipient) {
+            Mail::to($recipient->email, $recipient->name)
+                ->send(new TicketNotification($this, $message, $eventLabel, $recipient->name));
+        }
     }
 }

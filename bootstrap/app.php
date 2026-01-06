@@ -32,7 +32,8 @@ return Application::configure(basePath: dirname(__DIR__))
             }
 
             if ($e instanceof \Illuminate\Auth\AuthenticationException) {
-                return redirect()->route('login');
+                // Preserve intended URL for guests so they return after login/register
+                return redirect()->guest(route('login'));
             }
 
             if ($e instanceof \Illuminate\Auth\Access\AuthorizationException) {

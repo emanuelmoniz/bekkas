@@ -65,41 +65,15 @@
         <!-- REQUEST SECTION -->
         <section id="request" class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 px-6">
             <div class="max-w-3xl mx-auto">
-                <h2 class="text-4xl font-bold mb-12 text-center text-gray-900 dark:text-white">{{ t('architecture.request.title') ?: 'Request a Quote' }}</h2>
-                
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-                    <form method="POST" action="#" class="space-y-6">
-                        @csrf
+                <h2 class="text-4xl font-bold mb-6 text-center text-gray-900 dark:text-white">{{ t('architecture.request.title') ?: 'Request a Quote' }}</h2>
+                <p class="text-center text-lg text-gray-700 dark:text-gray-300 mb-10">
+                    {{ t('architecture.request.cta') ?: 'Want more info or a quote for a specific project? Please send us a ticket and we will follow up.' }}
+                </p>
 
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                {{ t('contact.name') ?: 'Name' }}
-                            </label>
-                            <input type="text" id="name" name="name" required
-                                   class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                        </div>
-
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                {{ t('contact.email') ?: 'Email' }}
-                            </label>
-                            <input type="email" id="email" name="email" required
-                                   class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                        </div>
-
-                        <div>
-                            <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                {{ t('architecture.request.project_details') ?: 'Project Details' }}
-                            </label>
-                            <textarea id="message" name="message" rows="5" required
-                                      class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"></textarea>
-                        </div>
-
-                        <button type="submit" 
-                                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                            {{ t('architecture.request.submit') ?: 'Submit Request' }}
-                        </button>
-                    </form>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
+                    <a href="{{ route('tickets.create') }}" class="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                        {{ t('architecture.request.ticket_button') ?: 'Create new ticket' }}
+                    </a>
                 </div>
             </div>
         </section>

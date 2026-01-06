@@ -22,11 +22,11 @@ class TranslationServiceProvider extends ServiceProvider
         }
 
         if (! function_exists('t')) {
-            function t(string $key): string
+            function t(string $key, array $replacements = []): string
             {
                 // If the translations table doesn't exist (migrations not run yet), fall back to __()
                 if (! Schema::hasTable('static_translations')) {
-                    return (string) __($key);
+                    return (string) __($key, $replacements);
                 }
 
                 $locale = app()->getLocale();
@@ -43,19 +43,19 @@ class TranslationServiceProvider extends ServiceProvider
 
                     // Try current locale
                     if (isset($all[$locale]) && array_key_exists($key, $all[$locale])) {
-                        return $all[$locale][$key];
+                        return apply_t_replacements($all[$locale][$key], $replacements);
                     }
 
                     // Fallback locale
                     if (isset($all[$fallback]) && array_key_exists($key, $all[$fallback])) {
-                        return $all[$fallback][$key];
+                        return apply_t_replacements($all[$fallback][$key], $replacements);
                     }
                 } catch (\Throwable $e) {
-                    return (string) __($key);
+                    return (string) __($key, $replacements);
                 }
 
                 // Last resort: use Laravel's __()
-                return (string) __($key);
+                return (string) __($key, $replacements);
             }
         }
     }

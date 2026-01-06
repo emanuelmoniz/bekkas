@@ -51,6 +51,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        // New users are clients by default, redirect to home
+        return redirect()->intended('/');
     }
 }
