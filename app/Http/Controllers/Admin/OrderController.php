@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -59,8 +60,9 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         $order->load(['items.product', 'user', 'address']);
+        $statuses = OrderStatus::with('translations')->orderBy('sort_order')->get();
 
-        return view('admin.orders.show', compact('order'));
+        return view('admin.orders.show', compact('order', 'statuses'));
     }
 
     public function update(Request $request, Order $order)
@@ -68,30 +70,38 @@ class OrderController extends Controller
         $request->validate([
             'status' => 'required|string',
             'is_paid' => 'nullable|boolean',
-            'is_canceled' => 'nullable|boolean',
             'is_refunded' => 'nullable|boolean',
             'tracking_number' => 'nullable|string|max:255',
         ]);
 
-        // Restore stock when order is canceled (only if not already canceled)
-        if ($request->boolean('is_canceled') && !$order->is_canceled) {
-            DB::transaction(function () use ($order) {
+        DB::transaction(function () use ($request, $order) {
+            // Restore stock when order status changes to CANCELED (only if not already canceled)
+            if ($request->status === 'CANCELED' && $order->status !== 'CANCELED') {
                 foreach ($order->items as $item) {
                     $product = $item->product;
                     if ($product) {
                         $product->increment('stock', $item->quantity);
                     }
                 }
-            });
-        }
+            }
 
-        $order->update([
-            'status' => $request->status,
-            'is_paid' => $request->boolean('is_paid'),
-            'is_canceled' => $request->boolean('is_canceled'),
-            'is_refunded' => $request->boolean('is_refunded'),
-            'tracking_number' => $request->tracking_number,
-        ]);
+            // Decrement stock when order status changes from CANCELED to another status
+            if ($order->status === 'CANCELED' && $request->status !== 'CANCELED') {
+                foreach ($order->items as $item) {
+                    $product = $item->product;
+                    if ($product) {
+                        $product->decrement('stock', $item->quantity);
+                    }
+                }
+            }
+
+            $order->update([
+                'status' => $request->status,
+                'is_paid' => $request->boolean('is_paid'),
+                'is_refunded' => $request->boolean('is_refunded'),
+                'tracking_number' => $request->tracking_number,
+            ]);
+        });
 
         return redirect()->route('admin.orders.show', $order)->with('success', 'Order updated successfully!');
     }

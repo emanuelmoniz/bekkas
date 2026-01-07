@@ -10,9 +10,13 @@
         {{-- STATUS --}}
         <div class="bg-white shadow rounded p-4">
             <p><strong>{{ t('orders.date') ?: 'Date' }}:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
-            <p><strong>{{ t('orders.status') ?: 'Status' }}:</strong> {{ $order->status }}</p>
+            <p><strong>{{ t('orders.status') ?: 'Status' }}:</strong> 
+                @php
+                    $statusObj = \App\Models\OrderStatus::where('code', $order->status)->first();
+                @endphp
+                {{ optional($statusObj?->translation())->name ?? $order->status }}
+            </p>
             <p><strong>{{ t('orders.paid') ?: 'Paid' }}:</strong> {{ $order->is_paid ? 'Yes' : 'No' }}</p>
-            <p><strong>{{ t('orders.canceled') ?: 'Canceled' }}:</strong> {{ $order->is_canceled ? 'Yes' : 'No' }}</p>
             <p><strong>{{ t('orders.refunded') ?: 'Refunded' }}:</strong> {{ $order->is_refunded ? 'Yes' : 'No' }}</p>
             @if ($order->tracking_number)
                 <p><strong>{{ t('orders.tracking') ?: 'Tracking' }}:</strong> {{ $order->tracking_number }}</p>

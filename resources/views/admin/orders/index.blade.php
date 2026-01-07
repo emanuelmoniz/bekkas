@@ -25,10 +25,13 @@
 
                 <select name="status" class="border rounded px-3 py-2">
                     <option value="">All statuses</option>
-                    @foreach (['PROCESSING','DISPATCHED','DELIVERED','CANCELED'] as $status)
-                        <option value="{{ $status }}"
-                            @selected(request('status') === $status)>
-                            {{ $status }}
+                    @php
+                        $statuses = \App\Models\OrderStatus::with('translations')->orderBy('sort_order')->get();
+                    @endphp
+                    @foreach ($statuses as $statusObj)
+                        <option value="{{ $statusObj->code }}"
+                            @selected(request('status') === $statusObj->code)>
+                            {{ optional($statusObj->translation())->name ?? $statusObj->code }}
                         </option>
                     @endforeach
                 </select>
@@ -81,7 +84,12 @@
                                     {{ $order->user->email }}
                                 </span>
                             </td>
-                            <td class="px-3 py-2">{{ $order->status }}</td>
+                            <td class="px-3 py-2">
+                                @php
+                                    $statusObj = \App\Models\OrderStatus::where('code', $order->status)->first();
+                                @endphp
+                                {{ optional($statusObj?->translation())->name ?? $order->status }}
+                            </td>
                             <td class="px-3 py-2">{{ $order->is_paid ? 'Yes' : 'No' }}</td>
                             <td class="px-3 py-2">
                                 {{ number_format($order->total_gross, 2) }} €

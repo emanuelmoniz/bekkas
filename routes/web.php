@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProductPhotoController;
 use App\Http\Controllers\Admin\TicketAdminController;
 use App\Http\Controllers\Admin\TicketCategoryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\OrderStatusController;
 use App\Http\Controllers\Admin\ShippingTierController;
 use App\Http\Controllers\Admin\TaxController;
 
@@ -233,6 +234,11 @@ Route::middleware(['auth', 'is_admin'])
 
         Route::patch('/orders/{order}', [AdminOrderController::class, 'update'])
             ->name('orders.update');
+
+        /*
+        | Order Statuses
+        */
+        Route::resource('order-statuses', OrderStatusController::class);
 
         /*
         | Shipping Tiers

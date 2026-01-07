@@ -13,9 +13,13 @@
         <div class="bg-white shadow rounded p-4 grid md:grid-cols-2 gap-4">
             <div>
                 <p><strong>Date:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
-                <p><strong>{{ t('orders.status') ?: 'Status' }}:</strong> {{ $order->status }}</p>
+                <p><strong>{{ t('orders.status') ?: 'Status' }}:</strong> 
+                    @php
+                        $currentStatus = $statuses->firstWhere('code', $order->status);
+                    @endphp
+                    {{ optional($currentStatus?->translation())->name ?? $order->status }}
+                </p>
                 <p><strong>{{ t('orders.paid') ?: 'Paid' }}:</strong> {{ $order->is_paid ? 'Yes' : 'No' }}</p>
-                <p><strong>{{ t('orders.canceled') ?: 'Canceled' }}:</strong> {{ $order->is_canceled ? 'Yes' : 'No' }}</p>
                 <p><strong>{{ t('orders.refunded') ?: 'Refunded' }}:</strong> {{ $order->is_refunded ? 'Yes' : 'No' }}</p>
             </div>
 
@@ -105,10 +109,10 @@
             <div>
                 <label class="block font-medium mb-1">Status</label>
                 <select name="status" class="border rounded px-3 py-2 w-full">
-                    @foreach (['PROCESSING','DISPATCHED','DELIVERED','CANCELED'] as $status)
-                        <option value="{{ $status }}"
-                            @selected($order->status === $status)>
-                            {{ $status }}
+                    @foreach ($statuses as $status)
+                        <option value="{{ $status->code }}"
+                            @selected($order->status === $status->code)>
+                            {{ optional($status->translation())->name ?? $status->code }}
                         </option>
                     @endforeach
                 </select>
@@ -125,11 +129,6 @@
                 <label class="flex items-center gap-2">
                     <input type="checkbox" name="is_paid" value="1" @checked($order->is_paid)>
                     Paid
-                </label>
-
-                <label class="flex items-center gap-2">
-                    <input type="checkbox" name="is_canceled" value="1" @checked($order->is_canceled)>
-                    Canceled
                 </label>
 
                 <label class="flex items-center gap-2">

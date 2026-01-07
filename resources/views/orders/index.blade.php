@@ -23,7 +23,12 @@
                             <td class="px-4 py-2">{{ $order->order_number }}</td>
                             <td class="px-4 py-2">{{ $order->created_at->format('d/m/Y H:i') }}</td>
                             <td class="px-4 py-2">{{ $order->updated_at->format('d/m/Y H:i') }}</td>
-                            <td class="px-4 py-2">{{ $order->status }}</td>
+                            <td class="px-4 py-2">
+                                @php
+                                    $statusObj = \App\Models\OrderStatus::where('code', $order->status)->first();
+                                @endphp
+                                {{ optional($statusObj?->translation())->name ?? $order->status }}
+                            </td>
                             <td class="px-4 py-2">{{ number_format($order->total_gross, 2) }} €</td>
                             <td class="px-4 py-2">
                                 {{ $order->is_paid ? (t('orders.paid') ?: 'Yes') : (t('orders.not_paid') ?: 'No') }}
