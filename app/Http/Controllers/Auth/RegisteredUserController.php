@@ -35,8 +35,16 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'g-recaptcha-response' => ['required', new Recaptcha],
         ], [
-            'email.confirmed' => t('auth.email_mismatch') ?: 'Email addresses do not match.',
-            'g-recaptcha-response.required' => t('auth.recaptcha_required') ?: 'Please verify that you are not a robot.',
+            'name.required' => t('validation.name_required') ?: 'Please enter your name.',
+            'name.max' => t('validation.name_max') ?: 'Name cannot exceed 255 characters.',
+            'email.required' => t('validation.email_required') ?: 'Please enter your email address.',
+            'email.email' => t('validation.email_invalid') ?: 'Please enter a valid email address.',
+            'email.unique' => t('validation.email_exists') ?: 'This email address is already registered.',
+            'email.confirmed' => t('validation.email_mismatch') ?: 'Email addresses do not match.',
+            'password.required' => t('validation.password_required') ?: 'Please enter a password.',
+            'password.min' => t('validation.password_min') ?: 'Password must be at least 8 characters.',
+            'password.confirmed' => t('validation.password_mismatch') ?: 'Passwords do not match.',
+            'g-recaptcha-response.required' => t('validation.recaptcha_required') ?: 'Please verify that you are not a robot.',
         ]);
 
         $user = User::create([

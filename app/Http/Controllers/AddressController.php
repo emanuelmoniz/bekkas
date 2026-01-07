@@ -19,6 +19,14 @@ class AddressController extends Controller
             'city' => 'required|string|max:100',
             'country' => 'required|string|max:100',
             'is_default' => 'nullable|boolean',
+        ], [
+            'title.required' => t('validation.title_required') ?: 'Please enter an address title.',
+            'nif.required' => t('validation.nif_required') ?: 'Please enter your NIF/Tax ID.',
+            'address_line_1.required' => t('validation.address_required') ?: 'Please enter your address.',
+            'address_line_2.required' => t('validation.address2_required') ?: 'Please enter address line 2.',
+            'postal_code.required' => t('validation.postal_code_required') ?: 'Please enter your postal code.',
+            'city.required' => t('validation.city_required') ?: 'Please enter your city.',
+            'country.required' => t('validation.country_required') ?: 'Please enter your country.',
         ]);
 
         $user = Auth::user();
@@ -53,6 +61,14 @@ class AddressController extends Controller
             'city' => 'required|string|max:100',
             'country' => 'required|string|max:100',
             'is_default' => 'nullable|boolean',
+        ], [
+            'title.required' => t('validation.title_required') ?: 'Please enter an address title.',
+            'nif.required' => t('validation.nif_required') ?: 'Please enter your NIF/Tax ID.',
+            'address_line_1.required' => t('validation.address_required') ?: 'Please enter your address.',
+            'address_line_2.required' => t('validation.address2_required') ?: 'Please enter address line 2.',
+            'postal_code.required' => t('validation.postal_code_required') ?: 'Please enter your postal code.',
+            'city.required' => t('validation.city_required') ?: 'Please enter your city.',
+            'country.required' => t('validation.country_required') ?: 'Please enter your country.',
         ]);
 
         $user = $address->user;

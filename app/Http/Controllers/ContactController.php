@@ -19,7 +19,12 @@ class ContactController extends Controller
             'message' => 'required|string|max:5000',
             'g-recaptcha-response' => ['required', new Recaptcha],
         ], [
-            'g-recaptcha-response.required' => t('contact.recaptcha_required') ?: 'Please verify that you are not a robot.',
+            'name.required' => t('validation.name_required') ?: 'Please enter your name.',
+            'email.required' => t('validation.email_required') ?: 'Please enter your email address.',
+            'email.email' => t('validation.email_invalid') ?: 'Please enter a valid email address.',
+            'message.required' => t('validation.message_required') ?: 'Please enter your message.',
+            'message.max' => t('validation.message_max') ?: 'Message cannot exceed 5000 characters.',
+            'g-recaptcha-response.required' => t('validation.recaptcha_required') ?: 'Please verify that you are not a robot.',
         ]);
 
         if ($validator->fails()) {

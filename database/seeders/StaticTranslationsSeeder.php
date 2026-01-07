@@ -83,6 +83,12 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'cart.checkout', 'locale' => 'pt-PT', 'value' => 'Finalizar Compra', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'cart.checkout', 'locale' => 'en-UK', 'value' => 'Proceed to Checkout', 'created_at'=>$now,'updated_at'=>$now],
 
+            ['key' => 'cart.continue_shopping', 'locale' => 'pt-PT', 'value' => 'Continuar a Comprar', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'cart.continue_shopping', 'locale' => 'en-UK', 'value' => 'Continue Shopping', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'cart.start_shopping', 'locale' => 'pt-PT', 'value' => 'Começar a Comprar', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'cart.start_shopping', 'locale' => 'en-UK', 'value' => 'Start Shopping', 'created_at'=>$now,'updated_at'=>$now],
+
             // Checkout page
             ['key' => 'page.checkout.title', 'locale' => 'pt-PT', 'value' => 'Finalizar Compra', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'page.checkout.title', 'locale' => 'en-UK', 'value' => 'Checkout', 'created_at'=>$now,'updated_at'=>$now],
@@ -640,6 +646,70 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'contact.email.user_followup', 'locale' => 'pt-PT', 'value' => 'O seu pedido será respondido em breve.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'contact.email.user_followup', 'locale' => 'en-UK', 'value' => 'Your request will be answered soon.', 'created_at'=>$now,'updated_at'=>$now],
+
+            // Validation messages
+            ['key' => 'validation.name_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira o seu nome.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.name_required', 'locale' => 'en-UK', 'value' => 'Please enter your name.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.name_max', 'locale' => 'pt-PT', 'value' => 'O nome não pode exceder 255 caracteres.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.name_max', 'locale' => 'en-UK', 'value' => 'Name cannot exceed 255 characters.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.email_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira o seu endereço de email.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.email_required', 'locale' => 'en-UK', 'value' => 'Please enter your email address.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.email_invalid', 'locale' => 'pt-PT', 'value' => 'Por favor, insira um endereço de email válido.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.email_invalid', 'locale' => 'en-UK', 'value' => 'Please enter a valid email address.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.email_exists', 'locale' => 'pt-PT', 'value' => 'Este endereço de email já está registado.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.email_exists', 'locale' => 'en-UK', 'value' => 'This email address is already registered.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.email_mismatch', 'locale' => 'pt-PT', 'value' => 'Os endereços de email não coincidem.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.email_mismatch', 'locale' => 'en-UK', 'value' => 'Email addresses do not match.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.password_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira uma palavra-passe.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.password_required', 'locale' => 'en-UK', 'value' => 'Please enter a password.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.password_min', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve ter pelo menos 8 caracteres.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.password_min', 'locale' => 'en-UK', 'value' => 'Password must be at least 8 characters.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.password_mismatch', 'locale' => 'pt-PT', 'value' => 'As palavras-passe não coincidem.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.password_mismatch', 'locale' => 'en-UK', 'value' => 'Passwords do not match.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.current_password_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira a sua palavra-passe atual.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.current_password_required', 'locale' => 'en-UK', 'value' => 'Please enter your current password.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.current_password_incorrect', 'locale' => 'pt-PT', 'value' => 'A palavra-passe atual está incorreta.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.current_password_incorrect', 'locale' => 'en-UK', 'value' => 'Current password is incorrect.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.recaptcha_required', 'locale' => 'pt-PT', 'value' => 'Por favor, verifique que não é um robô.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.recaptcha_required', 'locale' => 'en-UK', 'value' => 'Please verify that you are not a robot.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.title_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira um título para a morada.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.title_required', 'locale' => 'en-UK', 'value' => 'Please enter an address title.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.nif_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira o seu NIF/Contribuinte.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.nif_required', 'locale' => 'en-UK', 'value' => 'Please enter your NIF/Tax ID.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.address_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira a sua morada.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.address_required', 'locale' => 'en-UK', 'value' => 'Please enter your address.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.address2_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira a linha 2 da morada.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.address2_required', 'locale' => 'en-UK', 'value' => 'Please enter address line 2.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.postal_code_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira o seu código postal.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.postal_code_required', 'locale' => 'en-UK', 'value' => 'Please enter your postal code.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.city_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira a sua cidade.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.city_required', 'locale' => 'en-UK', 'value' => 'Please enter your city.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.country_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira o seu país.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.country_required', 'locale' => 'en-UK', 'value' => 'Please enter your country.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.message_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira a sua mensagem.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.message_required', 'locale' => 'en-UK', 'value' => 'Please enter your message.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.message_max', 'locale' => 'pt-PT', 'value' => 'A mensagem não pode exceder 5000 caracteres.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.message_max', 'locale' => 'en-UK', 'value' => 'Message cannot exceed 5000 characters.', 'created_at'=>$now,'updated_at'=>$now],
         ];
 
         DB::table('static_translations')->upsert($rows, ['key','locale']);

@@ -34,6 +34,12 @@ class NewPasswordController extends Controller
             'token' => ['required'],
             'email' => ['required', 'email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'email.required' => t('validation.email_required') ?: 'Please enter your email address.',
+            'email.email' => t('validation.email_invalid') ?: 'Please enter a valid email address.',
+            'password.required' => t('validation.password_required') ?: 'Please enter a password.',
+            'password.min' => t('validation.password_min') ?: 'Password must be at least 8 characters.',
+            'password.confirmed' => t('validation.password_mismatch') ?: 'Passwords do not match.',
         ]);
 
         // Here we will attempt to reset the user's password. If it is successful we

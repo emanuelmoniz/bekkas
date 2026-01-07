@@ -75,6 +75,11 @@ class CartController extends Controller
         $cart[$product->id] = ($cart[$product->id] ?? 0) + $request->quantity;
 
         session()->put('cart', $cart);
+        
+        // Store the referrer URL so user can continue shopping from where they left off
+        if ($request->headers->get('referer') && !str_contains($request->headers->get('referer'), '/cart')) {
+            session()->put('shopping_return_url', $request->headers->get('referer'));
+        }
 
         return redirect()->route('cart.index');
     }

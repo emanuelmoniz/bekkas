@@ -7,22 +7,21 @@
             <div class="flex flex-1 items-center">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="/" class="inline-flex items-center">
-                        <img src="{{ asset('images/logo.png') }}" alt="BEKKAS" class="h-7 w-auto">
+                    <a href="/" class="inline-flex items-center pt-1">
+                        <img src="{{ asset('images/logo.png') }}" alt="BEKKAS" class="h-6 w-auto">
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:flex sm:flex-1 sm:justify-center">
+                <div class="hidden h-full space-x-8 sm:-my-px sm:flex sm:flex-1 sm:justify-center">
                     @if(request()->is('admin/*') || request()->is('admin'))
                         {{-- ADMIN MENU --}}
                         
                         {{-- Products with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <button class="inline-flex items-center h-full px-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out
-                                    {{ request()->is('admin/products*') || request()->is('admin/categories*') || request()->is('admin/materials*') ? 'border-indigo-400 text-gray-900 focus:border-indigo-700' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:text-gray-700 focus:border-gray-300' }}">
+                            <x-nav-button :active="request()->is('admin/products*') || request()->is('admin/categories*') || request()->is('admin/materials*')">
                                 Products
-                            </button>
+                            </x-nav-button>
                             <div x-show="open" x-cloak class="absolute left-0 top-full mt-0 w-48 bg-white rounded-md shadow-lg z-50 border border-gray-200">
                                 <a href="{{ route('admin.products.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Products</a>
                                 <a href="{{ route('admin.products.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Create Product</a>
@@ -33,10 +32,9 @@
 
                         {{-- Tickets with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <button class="inline-flex items-center h-full px-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out
-                                    {{ request()->is('admin/tickets*') || request()->is('admin/ticket-categories*') ? 'border-indigo-400 text-gray-900 focus:border-indigo-700' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:text-gray-700 focus:border-gray-300' }}">
+                            <x-nav-button :active="request()->is('admin/tickets*') || request()->is('admin/ticket-categories*')">
                                 Tickets
-                            </button>
+                            </x-nav-button>
                             <div x-show="open" x-cloak class="absolute left-0 top-full mt-0 w-48 bg-white rounded-md shadow-lg z-50 border border-gray-200">
                                 <a href="{{ route('admin.tickets.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Tickets</a>
                                 <a href="{{ route('admin.tickets.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Create Ticket</a>
@@ -46,10 +44,9 @@
 
                         {{-- Orders with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <button class="inline-flex items-center h-full px-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out
-                                    {{ request()->is('admin/orders*') || request()->is('admin/shipping-tiers*') ? 'border-indigo-400 text-gray-900 focus:border-indigo-700' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:text-gray-700 focus:border-gray-300' }}">
+                            <x-nav-button :active="request()->is('admin/orders*') || request()->is('admin/shipping-tiers*')">
                                 Orders
-                            </button>
+                            </x-nav-button>
                             <div x-show="open" x-cloak class="absolute left-0 top-full mt-0 w-48 bg-white rounded-md shadow-lg z-50 border border-gray-200">
                                 <a href="{{ route('admin.orders.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Orders</a>
                                 <a href="{{ route('admin.shipping-tiers.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Shipping Tiers</a>
@@ -58,10 +55,9 @@
 
                         {{-- Translations with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <button class="inline-flex items-center h-full px-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out
-                                    {{ request()->is('admin/static-translations*') ? 'border-indigo-400 text-gray-900 focus:border-indigo-700' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:text-gray-700 focus:border-gray-300' }}">
+                            <x-nav-button :active="request()->is('admin/static-translations*')">
                                 Translations
-                            </button>
+                            </x-nav-button>
                             <div x-show="open" x-cloak class="absolute left-0 top-full mt-0 w-48 bg-white rounded-md shadow-lg z-50 border border-gray-200">
                                 <a href="{{ route('admin.static-translations.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Translations</a>
                                 <a href="{{ route('admin.static-translations.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Create Translation</a>
@@ -70,21 +66,34 @@
 
                     @else
                         {{-- PUBLIC MENU --}}
-                        <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
-                            {{ t('nav.products') ?: 'Products' }}
-                        </x-nav-link>
+                        
+                        {{-- Products --}}
+                        <div class="relative h-full flex items-center">
+                            <x-nav-button :active="request()->routeIs('products.*')" @click="window.location.href='{{ route('products.index') }}'">
+                                {{ t('nav.products') ?: 'Products' }}
+                            </x-nav-button>
+                        </div>
 
-                        <x-nav-link :href="route('architecture.index')" :active="request()->routeIs('architecture.*')">
-                            {{ t('nav.architecture') ?: 'Architecture' }}
-                        </x-nav-link>
+                        {{-- Architecture --}}
+                        <div class="relative h-full flex items-center">
+                            <x-nav-button :active="request()->routeIs('architecture.*')" @click="window.location.href='{{ route('architecture.index') }}'">
+                                {{ t('nav.architecture') ?: 'Architecture' }}
+                            </x-nav-button>
+                        </div>
 
-                        <x-nav-link :href="route('about')" :active="request()->routeIs('about')">
-                            {{ t('nav.about') ?: 'About Us' }}
-                        </x-nav-link>
+                        {{-- About --}}
+                        <div class="relative h-full flex items-center">
+                            <x-nav-button :active="request()->routeIs('about')" @click="window.location.href='{{ route('about') }}'">
+                                {{ t('nav.about') ?: 'About Us' }}
+                            </x-nav-button>
+                        </div>
 
-                        <x-nav-link :href="'https://bekkas.pt#contact'" :active="false">
-                            {{ t('nav.contact') ?: 'Contact' }}
-                        </x-nav-link>
+                        {{-- Contact --}}
+                        <div class="relative h-full flex items-center">
+                            <x-nav-button :active="false" @click="window.location.href='https://bekkas.pt#contact'">
+                                {{ t('nav.contact') ?: 'Contact' }}
+                            </x-nav-button>
+                        </div>
 
                     @endif
                 </div>
@@ -216,7 +225,7 @@
                 <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
                     {{ t('nav.products') ?: 'Products' }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.*')">
+                <x-responsive-nav-link :href="route('architecture.index')" :active="request()->routeIs('architecture.*')">
                     {{ t('nav.architecture') ?: 'Architecture' }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
@@ -284,10 +293,10 @@
             @else
                 <div class="mt-3 space-y-1 px-4">
                     <x-responsive-nav-link :href="route('login')">
-                        Login
+                        {{ t('nav.login') ?: 'Login' }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('register')">
-                        Register
+                        {{ t('nav.register') ?: 'Register' }}
                     </x-responsive-nav-link>
                 </div>
             @endauth
