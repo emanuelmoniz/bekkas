@@ -89,6 +89,49 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'cart.start_shopping', 'locale' => 'pt-PT', 'value' => 'Começar a Comprar', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'cart.start_shopping', 'locale' => 'en-UK', 'value' => 'Start Shopping', 'created_at'=>$now,'updated_at'=>$now],
 
+            // Favorites
+            ['key' => 'nav.favorites', 'locale' => 'pt-PT', 'value' => 'Favoritos', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'nav.favorites', 'locale' => 'en-UK', 'value' => 'Favorites', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'favorites.title', 'locale' => 'pt-PT', 'value' => 'Os Meus Favoritos', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'favorites.title', 'locale' => 'en-UK', 'value' => 'My Favorites', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'favorites.empty', 'locale' => 'pt-PT', 'value' => 'Não tem produtos favoritos.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'favorites.empty', 'locale' => 'en-UK', 'value' => 'You have no favorite products.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'favorites.no_results', 'locale' => 'pt-PT', 'value' => 'Nenhum favorito corresponde aos critérios do filtro.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'favorites.no_results', 'locale' => 'en-UK', 'value' => 'No favorites match your filter criteria.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'favorites.browse_products', 'locale' => 'pt-PT', 'value' => 'Explorar Produtos', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'favorites.browse_products', 'locale' => 'en-UK', 'value' => 'Browse Products', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'favorites.remove', 'locale' => 'pt-PT', 'value' => 'Remover', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'favorites.remove', 'locale' => 'en-UK', 'value' => 'Remove', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'favorites.filters', 'locale' => 'pt-PT', 'value' => 'Filtros', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'favorites.filters', 'locale' => 'en-UK', 'value' => 'Filters', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'favorites.filter.search', 'locale' => 'pt-PT', 'value' => 'Pesquisar...', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'favorites.filter.search', 'locale' => 'en-UK', 'value' => 'Search...', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'favorites.filter.all_categories', 'locale' => 'pt-PT', 'value' => 'Todas as Categorias', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'favorites.filter.all_categories', 'locale' => 'en-UK', 'value' => 'All Categories', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'favorites.filter.all_materials', 'locale' => 'pt-PT', 'value' => 'Todos os Materiais', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'favorites.filter.all_materials', 'locale' => 'en-UK', 'value' => 'All Materials', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'favorites.filter.min_price', 'locale' => 'pt-PT', 'value' => 'Mín €', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'favorites.filter.min_price', 'locale' => 'en-UK', 'value' => 'Min €', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'favorites.filter.max_price', 'locale' => 'pt-PT', 'value' => 'Máx €', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'favorites.filter.max_price', 'locale' => 'en-UK', 'value' => 'Max €', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'favorites.filter.apply', 'locale' => 'pt-PT', 'value' => 'Filtrar', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'favorites.filter.apply', 'locale' => 'en-UK', 'value' => 'Filter', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'favorites.filter.reset', 'locale' => 'pt-PT', 'value' => 'Limpar', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'favorites.filter.reset', 'locale' => 'en-UK', 'value' => 'Reset', 'created_at'=>$now,'updated_at'=>$now],
+
             // Checkout page
             ['key' => 'page.checkout.title', 'locale' => 'pt-PT', 'value' => 'Finalizar Compra', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'page.checkout.title', 'locale' => 'en-UK', 'value' => 'Checkout', 'created_at'=>$now,'updated_at'=>$now],

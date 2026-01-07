@@ -5,6 +5,34 @@
         </h2>
     </x-slot>
 
+    <script>
+        function favoriteToggle(productId, initialFavorite) {
+            return {
+                isFavorite: initialFavorite,
+                async toggle() {
+                    try {
+                        const response = await fetch(`/favorites/toggle/${productId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json'
+                            }
+                        });
+                        const data = await response.json();
+                        this.isFavorite = data.isFavorite;
+                        // Update Alpine store
+                        if (window.Alpine && window.Alpine.store) {
+                            window.Alpine.store('favorites').count = data.favoritesCount;
+                        }
+                    } catch (error) {
+                        console.error('Error toggling favorite:', error);
+                    }
+                }
+            }
+        }
+    </script>
+
     <div class="py-6">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -21,11 +49,18 @@
             </div>
 
             {{-- DETAILS --}}
-            <div class="bg-white p-6 rounded shadow space-y-4">
+            <div class="bg-white p-6 rounded shadow space-y-4" x-data="favoriteToggle({{ $product->id }}, {{ json_encode($isFavorite ?? false) }})">
 
-                {{-- PRICE --}}
-                <div class="text-xl font-semibold">
-                    €{{ number_format($product->promo_price ?? $product->price, 2) }}
+                {{-- PRICE & FAVORITE --}}
+                <div class="flex items-center justify-between">
+                    <div class="text-xl font-semibold">
+                        €{{ number_format($product->promo_price ?? $product->price, 2) }}
+                    </div>
+                    <button @click="toggle" class="p-2 hover:bg-gray-100 rounded-full transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" :fill="isFavorite ? 'currentColor' : 'none'" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6" :class="isFavorite ? 'text-red-500' : 'text-gray-400'">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </button>
                 </div>
 
                 {{-- DESCRIPTION --}}

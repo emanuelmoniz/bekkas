@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 relative z-50">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -22,11 +22,21 @@
                             <x-nav-button :active="request()->is('admin/products*') || request()->is('admin/categories*') || request()->is('admin/materials*')">
                                 Products
                             </x-nav-button>
-                            <div x-show="open" x-cloak class="absolute left-0 top-full mt-0 w-48 bg-white rounded-md shadow-lg z-50 border border-gray-200">
-                                <a href="{{ route('admin.products.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Products</a>
-                                <a href="{{ route('admin.products.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Create Product</a>
-                                <a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Categories</a>
-                                <a href="{{ route('admin.materials.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Materials</a>
+                            <div x-show="open"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100"
+                                 x-transition:leave-end="opacity-0 scale-95"
+                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                 style="display: none;">
+                                <div class="py-1">
+                                    <a href="{{ route('admin.products.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Products</a>
+                                    <a href="{{ route('admin.products.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Create Product</a>
+                                    <a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Categories</a>
+                                    <a href="{{ route('admin.materials.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Materials</a>
+                                </div>
                             </div>
                         </div>
 
@@ -35,10 +45,20 @@
                             <x-nav-button :active="request()->is('admin/tickets*') || request()->is('admin/ticket-categories*')">
                                 Tickets
                             </x-nav-button>
-                            <div x-show="open" x-cloak class="absolute left-0 top-full mt-0 w-48 bg-white rounded-md shadow-lg z-50 border border-gray-200">
-                                <a href="{{ route('admin.tickets.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Tickets</a>
-                                <a href="{{ route('admin.tickets.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Create Ticket</a>
-                                <a href="{{ route('admin.ticket-categories.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Categories</a>
+                            <div x-show="open"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100"
+                                 x-transition:leave-end="opacity-0 scale-95"
+                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                 style="display: none;">
+                                <div class="py-1">
+                                    <a href="{{ route('admin.tickets.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Tickets</a>
+                                    <a href="{{ route('admin.tickets.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Create Ticket</a>
+                                    <a href="{{ route('admin.ticket-categories.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Categories</a>
+                                </div>
                             </div>
                         </div>
 
@@ -47,9 +67,19 @@
                             <x-nav-button :active="request()->is('admin/orders*') || request()->is('admin/shipping-tiers*')">
                                 Orders
                             </x-nav-button>
-                            <div x-show="open" x-cloak class="absolute left-0 top-full mt-0 w-48 bg-white rounded-md shadow-lg z-50 border border-gray-200">
-                                <a href="{{ route('admin.orders.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Orders</a>
-                                <a href="{{ route('admin.shipping-tiers.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Shipping Tiers</a>
+                            <div x-show="open"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100"
+                                 x-transition:leave-end="opacity-0 scale-95"
+                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                 style="display: none;">
+                                <div class="py-1">
+                                    <a href="{{ route('admin.orders.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Orders</a>
+                                    <a href="{{ route('admin.shipping-tiers.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Shipping Tiers</a>
+                                </div>
                             </div>
                         </div>
 
@@ -58,9 +88,19 @@
                             <x-nav-button :active="request()->is('admin/static-translations*')">
                                 Translations
                             </x-nav-button>
-                            <div x-show="open" x-cloak class="absolute left-0 top-full mt-0 w-48 bg-white rounded-md shadow-lg z-50 border border-gray-200">
-                                <a href="{{ route('admin.static-translations.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Translations</a>
-                                <a href="{{ route('admin.static-translations.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Create Translation</a>
+                            <div x-show="open"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100"
+                                 x-transition:leave-end="opacity-0 scale-95"
+                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                 style="display: none;">
+                                <div class="py-1">
+                                    <a href="{{ route('admin.static-translations.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Translations</a>
+                                    <a href="{{ route('admin.static-translations.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Create Translation</a>
+                                </div>
                             </div>
                         </div>
 
@@ -68,10 +108,29 @@
                         {{-- PUBLIC MENU --}}
                         
                         {{-- Products --}}
-                        <div class="relative h-full flex items-center">
+                        <div x-data="{ open: false }" 
+                             class="relative h-full flex items-center" 
+                             @mouseenter="if($store.favorites.count > 0) open = true" 
+                             @mouseleave="open = false">
                             <x-nav-button :active="request()->routeIs('products.*')" @click="window.location.href='{{ route('products.index') }}'">
                                 {{ t('nav.products') ?: 'Products' }}
                             </x-nav-button>
+                            
+                            <div x-show="open && $store.favorites.count > 0"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100"
+                                 x-transition:leave-end="opacity-0 scale-95"
+                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                 style="display: none;">
+                                <div class="py-1">
+                                    <x-dropdown-link :href="route('favorites.index')">
+                                        {{ t('nav.favorites') ?: 'Favorites' }} (<span x-text="$store.favorites.count"></span>)
+                                    </x-dropdown-link>
+                                </div>
+                            </div>
                         </div>
 
                         {{-- Architecture --}}
@@ -128,17 +187,18 @@
                 @endif
 
                 @auth
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
-                                <div>{{ Auth::user()->name }}</div>
-                                <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
-                            </button>
-                        </x-slot>
+                    <div class="h-full flex items-center">
+                        <x-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <button class="h-full inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
+                                    <div>{{ Auth::user()->name }}</div>
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
 
                         <x-slot name="content">
                             @if(Auth::user()->isAdmin())
@@ -168,6 +228,7 @@
                             </form>
                         </x-slot>
                     </x-dropdown>
+                    </div>
                 @else
                     <div class="flex items-center space-x-4">
                         <a href="{{ route('login') }}" class="text-sm text-gray-600 hover:text-gray-900">
@@ -225,6 +286,15 @@
                 <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
                     {{ t('nav.products') ?: 'Products' }}
                 </x-responsive-nav-link>
+                
+                <div x-data="{}" 
+                     x-show="$store.favorites.count > 0"
+                     class="pl-4">
+                    <x-responsive-nav-link :href="route('favorites.index')" :active="request()->routeIs('favorites.*')">
+                        {{ t('nav.favorites') ?: 'Favorites' }} (<span x-text="$store.favorites.count"></span>)
+                    </x-responsive-nav-link>
+                </div>
+                
                 <x-responsive-nav-link :href="route('architecture.index')" :active="request()->routeIs('architecture.*')">
                     {{ t('nav.architecture') ?: 'Architecture' }}
                 </x-responsive-nav-link>

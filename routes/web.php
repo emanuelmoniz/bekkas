@@ -22,6 +22,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProductController as ClientProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ContactController;
 
 /*
@@ -78,6 +79,18 @@ Route::post('/cart/update/{product}', [CartController::class, 'update'])
 Route::post('/cart/remove/{product}', [CartController::class, 'remove'])
     ->middleware('throttle:30,1')
     ->name('cart.remove');
+
+// Favorites
+Route::get('/favorites', [FavoriteController::class, 'index'])
+    ->name('favorites.index');
+
+Route::post('/favorites/toggle/{product}', [FavoriteController::class, 'toggle'])
+    ->middleware('throttle:30,1')
+    ->name('favorites.toggle');
+
+Route::post('/favorites/remove/{product}', [FavoriteController::class, 'remove'])
+    ->middleware('throttle:30,1')
+    ->name('favorites.remove');
 
 /*
 |--------------------------------------------------------------------------

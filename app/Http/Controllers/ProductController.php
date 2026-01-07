@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Material;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -71,7 +72,15 @@ class ProductController extends Controller
     		->with('translations')
     		->get();
 
-        return view('products.index', compact('products', 'categories', 'materials'));
+        // Get favorite product IDs for the current user
+        $favoriteIds = [];
+        if (Auth::check()) {
+            $favoriteIds = Auth::user()->favorites()->pluck('product_id')->toArray();
+        } else {
+            $favoriteIds = session('favorites', []);
+        }
+
+        return view('products.index', compact('products', 'categories', 'materials', 'favoriteIds'));
     }
 
     public function show(Product $product)
@@ -80,6 +89,15 @@ class ProductController extends Controller
 
         $product->load(['translations', 'photos', 'categories', 'materials']);
 
-        return view('products.show', compact('product'));
+        // Check if product is in favorites
+        $isFavorite = false;
+        if (Auth::check()) {
+            $isFavorite = Auth::user()->favorites()->where('product_id', $product->id)->exists();
+        } else {
+            $sessionFavorites = session('favorites', []);
+            $isFavorite = in_array($product->id, $sessionFavorites);
+        }
+
+        return view('products.show', compact('product', 'isFavorite'));
     }
 }
