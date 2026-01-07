@@ -88,13 +88,13 @@
 
                     {{-- ACTIONS --}}
                     <div class="flex gap-2">
-                        <button class="bg-indigo-600 text-white px-4 py-2 rounded">
-                            Filter
-                        </button>
                         <a href="{{ route('admin.products.index') }}"
-                           class="underline text-sm">
+                           class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
                             Reset
                         </a>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                            Filter
+                        </button>
                     </div>
                 </div>
             </form>

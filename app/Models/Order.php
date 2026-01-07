@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
     protected $fillable = [
         'user_id',
         'address_id',
+        'order_number',
         'status',
         'is_paid',
         'is_canceled',
@@ -53,6 +55,18 @@ class Order extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($order) {
+            // Generate unique order number like: ORD-A3F9-2B7E
+            do {
+                $orderNumber = 'ORD-' . strtoupper(Str::random(4)) . '-' . strtoupper(Str::random(4));
+            } while (self::where('order_number', $orderNumber)->exists());
+            
+            $order->order_number = $orderNumber;
+        });
+    }
 
     /* =======================
      * Relationships

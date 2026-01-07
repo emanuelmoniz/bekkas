@@ -12,20 +12,34 @@
             <form method="POST"
                   action="{{ route('checkout.place') }}"
                   class="md:col-span-2 bg-white p-6 rounded shadow space-y-4"
-                  x-data="{ addressMode: '{{ $addresses->isEmpty() ? 'new' : 'existing' }}' }">
+                  x-data="{ addressMode: '{{ $addresses->isEmpty() ? 'new' : 'existing' }}', selectedAddressId: {{ $addresses->where('is_default', true)->first()->id ?? 'null' }} }">
                 @csrf
 
+                {{-- Validation Errors --}}
+                @if ($errors->any())
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">{{ t('validation.error_heading') ?: 'Please fix the following errors:' }}</strong>
+                        <ul class="mt-2 list-disc list-inside text-sm">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <h3 class="font-semibold">{{ t('checkout.shipping_address') ?: 'Shipping Address' }}</h3>
+
+                {{-- Hidden field for address_id --}}
+                <input type="hidden" name="address_id" :value="addressMode === 'existing' ? selectedAddressId : ''">
 
                 {{-- EXISTING ADDRESSES --}}
                 @if ($addresses->isNotEmpty())
                     @foreach ($addresses as $address)
                         <label class="block border p-3 rounded cursor-pointer">
                             <input type="radio"
-                                   name="address_id"
+                                   name="address_selection"
                                    value="{{ $address->id }}"
-                                   x-model="addressMode"
-                                   x-bind:value="'existing'"
+                                   @click="addressMode = 'existing'; selectedAddressId = {{ $address->id }}"
                                    @checked($address->is_default)>
                             <span class="ml-2">
                                 {{ $address->title }} —
@@ -38,9 +52,9 @@
                     {{-- NEW ADDRESS OPTION --}}
                     <label class="block border p-3 rounded cursor-pointer">
                         <input type="radio"
-                               name="address_mode"
+                               name="address_selection"
                                value="new"
-                               x-model="addressMode">
+                               @click="addressMode = 'new'; selectedAddressId = null">
                         <span class="ml-2 font-medium">
                             {{ t('checkout.new_address') ?: 'New address' }}
                         </span>
@@ -51,13 +65,13 @@
                 <div x-show="addressMode === 'new'" x-cloak class="space-y-2 pt-4">
                     <h4 class="font-medium">{{ t('checkout.new_address_details') ?: 'New address details' }}</h4>
 
-                    <input name="title" placeholder="{{ t('checkout.title') ?: 'Title' }}" class="border rounded px-3 py-2 w-full">
-                    <input name="nif" placeholder="{{ t('checkout.nif') ?: 'NIF' }}" class="border rounded px-3 py-2 w-full">
-                    <input name="address_line_1" placeholder="{{ t('checkout.address_line_1') ?: 'Address line 1' }}" class="border rounded px-3 py-2 w-full">
-                    <input name="address_line_2" placeholder="{{ t('checkout.address_line_2') ?: 'Address line 2' }}" class="border rounded px-3 py-2 w-full">
-                    <input name="postal_code" placeholder="{{ t('checkout.postal_code') ?: 'Postal code' }}" class="border rounded px-3 py-2 w-full">
-                    <input name="city" placeholder="{{ t('checkout.city') ?: 'City' }}" class="border rounded px-3 py-2 w-full">
-                    <input name="country" placeholder="{{ t('checkout.country') ?: 'Country' }}" class="border rounded px-3 py-2 w-full">
+                    <input name="title" placeholder="{{ t('checkout.address_title') ?: 'Address name' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
+                    <input name="nif" placeholder="{{ t('checkout.nif_optional') ?: 'NIF (optional)' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
+                    <input name="address_line_1" placeholder="{{ t('checkout.address_line_1') ?: 'Address line 1' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
+                    <input name="address_line_2" placeholder="{{ t('checkout.validation.address_line_2_optional') ?: 'Address line 2 (optional)' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
+                    <input name="postal_code" placeholder="{{ t('checkout.postal_code') ?: 'Postal code' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
+                    <input name="city" placeholder="{{ t('checkout.city') ?: 'City' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
+                    <input name="country" placeholder="{{ t('checkout.country') ?: 'Country' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
                 </div>
 
                 <button class="bg-indigo-600 text-white px-6 py-3 rounded mt-6">

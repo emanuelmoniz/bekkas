@@ -145,8 +145,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.new_address_details', 'locale' => 'pt-PT', 'value' => 'Detalhes da nova morada', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'checkout.new_address_details', 'locale' => 'en-UK', 'value' => 'New address details', 'created_at'=>$now,'updated_at'=>$now],
 
-            ['key' => 'checkout.title', 'locale' => 'pt-PT', 'value' => 'Título', 'created_at'=>$now,'updated_at'=>$now],
-            ['key' => 'checkout.title', 'locale' => 'en-UK', 'value' => 'Title', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.address_title', 'locale' => 'pt-PT', 'value' => 'Nome da morada', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.address_title', 'locale' => 'en-UK', 'value' => 'Address name', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'checkout.nif', 'locale' => 'pt-PT', 'value' => 'NIF', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'checkout.nif', 'locale' => 'en-UK', 'value' => 'NIF', 'created_at'=>$now,'updated_at'=>$now],
@@ -187,6 +187,9 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'orders.date', 'locale' => 'pt-PT', 'value' => 'Data', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'orders.date', 'locale' => 'en-UK', 'value' => 'Date', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.last_update', 'locale' => 'pt-PT', 'value' => 'Última Atualização', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.last_update', 'locale' => 'en-UK', 'value' => 'Last Update', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'orders.not_paid', 'locale' => 'pt-PT', 'value' => 'Não', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'orders.not_paid', 'locale' => 'en-UK', 'value' => 'No', 'created_at'=>$now,'updated_at'=>$now],
@@ -347,17 +350,20 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.add_new_address', 'locale' => 'pt-PT', 'value' => 'Adicionar nova morada', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'profile.add_new_address', 'locale' => 'en-UK', 'value' => 'Add new address', 'created_at'=>$now,'updated_at'=>$now],
 
-            ['key' => 'profile.address_title', 'locale' => 'pt-PT', 'value' => 'Título', 'created_at'=>$now,'updated_at'=>$now],
-            ['key' => 'profile.address_title', 'locale' => 'en-UK', 'value' => 'Title', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.address_title', 'locale' => 'pt-PT', 'value' => 'Nome da morada', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.address_title', 'locale' => 'en-UK', 'value' => 'Address name', 'created_at'=>$now,'updated_at'=>$now],
 
-            ['key' => 'profile.address_nif', 'locale' => 'pt-PT', 'value' => 'NIF', 'created_at'=>$now,'updated_at'=>$now],
-            ['key' => 'profile.address_nif', 'locale' => 'en-UK', 'value' => 'NIF', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.address_nif_optional', 'locale' => 'pt-PT', 'value' => 'NIF (opcional)', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.address_nif_optional', 'locale' => 'en-UK', 'value' => 'NIF (optional)', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'profile.address_line_1', 'locale' => 'pt-PT', 'value' => 'Morada linha 1', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'profile.address_line_1', 'locale' => 'en-UK', 'value' => 'Address line 1', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'profile.address_line_2', 'locale' => 'pt-PT', 'value' => 'Morada linha 2', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'profile.address_line_2', 'locale' => 'en-UK', 'value' => 'Address line 2', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'profile.address_line_2_optional', 'locale' => 'pt-PT', 'value' => 'Morada linha 2 (opcional)', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.address_line_2_optional', 'locale' => 'en-UK', 'value' => 'Address line 2 (optional)', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'profile.address_postal_code', 'locale' => 'pt-PT', 'value' => 'Código postal', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'profile.address_postal_code', 'locale' => 'en-UK', 'value' => 'Postal code', 'created_at'=>$now,'updated_at'=>$now],
@@ -753,6 +759,59 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'validation.message_max', 'locale' => 'pt-PT', 'value' => 'A mensagem não pode exceder 5000 caracteres.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'validation.message_max', 'locale' => 'en-UK', 'value' => 'Message cannot exceed 5000 characters.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.error_heading', 'locale' => 'pt-PT', 'value' => 'Por favor, corrija os seguintes erros:', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.error_heading', 'locale' => 'en-UK', 'value' => 'Please fix the following errors:', 'created_at'=>$now,'updated_at'=>$now],
+
+            // Stock validation messages
+            ['key' => 'stock.out_of_stock', 'locale' => 'pt-PT', 'value' => 'Este produto está esgotado.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'stock.out_of_stock', 'locale' => 'en-UK', 'value' => 'This product is out of stock.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'stock.only_available', 'locale' => 'pt-PT', 'value' => 'Apenas :stock unidades disponíveis em stock.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'stock.only_available', 'locale' => 'en-UK', 'value' => 'Only :stock units available in stock.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'stock.insufficient_stock', 'locale' => 'pt-PT', 'value' => ':name tem apenas :stock unidades disponíveis (tem :qty no carrinho).', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'stock.insufficient_stock', 'locale' => 'en-UK', 'value' => ':name has only :stock units available (you have :qty in cart).', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'stock.insufficient_for_order', 'locale' => 'pt-PT', 'value' => ':name tem stock insuficiente. Disponível: :stock, Solicitado: :qty', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'stock.insufficient_for_order', 'locale' => 'en-UK', 'value' => ':name has insufficient stock. Available: :stock, Requested: :qty', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'stock.product_not_found', 'locale' => 'pt-PT', 'value' => 'Produto ID :id não encontrado ou inativo.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'stock.product_not_found', 'locale' => 'en-UK', 'value' => 'Product ID :id not found or inactive.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'stock.is_out_of_stock', 'locale' => 'pt-PT', 'value' => ':name está esgotado.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'stock.is_out_of_stock', 'locale' => 'en-UK', 'value' => ':name is out of stock.', 'created_at'=>$now,'updated_at'=>$now],
+
+            // Checkout validation messages
+            ['key' => 'checkout.validation.address_required', 'locale' => 'pt-PT', 'value' => 'Por favor, selecione um endereço ou forneça um novo.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.validation.address_required', 'locale' => 'en-UK', 'value' => 'Please select an address or provide a new one.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.validation.address_invalid', 'locale' => 'pt-PT', 'value' => 'O endereço selecionado é inválido.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.validation.address_invalid', 'locale' => 'en-UK', 'value' => 'The selected address is invalid.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.validation.title_required', 'locale' => 'pt-PT', 'value' => 'Por favor, forneça um título para o endereço.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.validation.title_required', 'locale' => 'en-UK', 'value' => 'Please provide an address title.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.validation.nif_invalid', 'locale' => 'pt-PT', 'value' => 'O formato do NIF/Número de contribuinte é inválido.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.validation.nif_invalid', 'locale' => 'en-UK', 'value' => 'NIF/VAT number format is invalid.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.nif_optional', 'locale' => 'pt-PT', 'value' => 'NIF (opcional)', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.nif_optional', 'locale' => 'en-UK', 'value' => 'NIF (optional)', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.validation.address_line_1_required', 'locale' => 'pt-PT', 'value' => 'O endereço é obrigatório.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.validation.address_line_1_required', 'locale' => 'en-UK', 'value' => 'Address is required.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.validation.address_line_2_optional', 'locale' => 'pt-PT', 'value' => 'Morada linha 2 (opcional)', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.validation.address_line_2_optional', 'locale' => 'en-UK', 'value' => 'Address line 2 (optional)', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.validation.postal_code_required', 'locale' => 'pt-PT', 'value' => 'O código postal é obrigatório.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.validation.postal_code_required', 'locale' => 'en-UK', 'value' => 'Postal code is required.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.validation.city_required', 'locale' => 'pt-PT', 'value' => 'A cidade é obrigatória.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.validation.city_required', 'locale' => 'en-UK', 'value' => 'City is required.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.validation.country_required', 'locale' => 'pt-PT', 'value' => 'O país é obrigatório.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.validation.country_required', 'locale' => 'en-UK', 'value' => 'Country is required.', 'created_at'=>$now,'updated_at'=>$now],
         ];
 
         DB::table('static_translations')->upsert($rows, ['key','locale']);

@@ -17,7 +17,7 @@ return new class extends Migration
             
             // Add address snapshot columns
             $table->string('address_title')->after('address_id');
-            $table->string('address_nif')->after('address_title');
+            $table->string('address_nif')->nullable()->after('address_title');
             $table->string('address_line_1')->after('address_nif');
             $table->string('address_line_2')->nullable()->after('address_line_1');
             $table->string('address_postal_code')->after('address_line_2');

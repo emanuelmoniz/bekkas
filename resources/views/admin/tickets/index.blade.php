@@ -77,9 +77,12 @@
                     </div>
                 </div>
 
-                <div class="md:col-span-5 text-right">
-                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">Filter</button>
-                    <a href="{{ route('admin.tickets.index') }}" class="text-sm text-gray-600 underline ml-2">Reset</a>
+                <div class="md:col-span-5 text-right flex justify-end gap-2">
+                    <a href="{{ route('admin.tickets.index') }}" 
+                       class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                        Reset
+                    </a>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Filter</button>
                 </div>
             </form>
         </div>

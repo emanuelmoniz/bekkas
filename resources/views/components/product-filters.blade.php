@@ -69,12 +69,13 @@
         </label>
 
         <div class="flex gap-2">
-            <button class="bg-indigo-600 text-white px-4 py-2 rounded">
-                {{ t('products.filter.apply') ?: 'Filter' }}
-            </button>
-            <a href="{{ route($resetRoute) }}" class="underline text-sm">
+            <a href="{{ route($resetRoute) }}" 
+               class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
                 {{ t('products.filter.reset') ?: 'Reset' }}
             </a>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                {{ t('products.filter.apply') ?: 'Filter' }}
+            </button>
         </div>
     </div>
 </form>

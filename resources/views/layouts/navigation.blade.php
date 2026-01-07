@@ -19,7 +19,7 @@
                         
                         {{-- Products with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->is('admin/products*') || request()->is('admin/categories*') || request()->is('admin/materials*')">
+                            <x-nav-button :active="request()->is('admin/products*') || request()->is('admin/categories*') || request()->is('admin/materials*')" @click="window.location.href='{{ route('admin.products.index') }}'">
                                 Products
                             </x-nav-button>
                             <div x-show="open"
@@ -32,7 +32,6 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.products.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Products</a>
                                     <a href="{{ route('admin.products.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Create Product</a>
                                     <a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Categories</a>
                                     <a href="{{ route('admin.materials.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Materials</a>
@@ -42,7 +41,7 @@
 
                         {{-- Tickets with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->is('admin/tickets*') || request()->is('admin/ticket-categories*')">
+                            <x-nav-button :active="request()->is('admin/tickets*') || request()->is('admin/ticket-categories*')" @click="window.location.href='{{ route('admin.tickets.index') }}'">
                                 Tickets
                             </x-nav-button>
                             <div x-show="open"
@@ -55,7 +54,6 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.tickets.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Tickets</a>
                                     <a href="{{ route('admin.tickets.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Create Ticket</a>
                                     <a href="{{ route('admin.ticket-categories.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Categories</a>
                                 </div>
@@ -64,7 +62,7 @@
 
                         {{-- Orders with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->is('admin/orders*') || request()->is('admin/shipping-tiers*')">
+                            <x-nav-button :active="request()->is('admin/orders*') || request()->is('admin/shipping-tiers*')" @click="window.location.href='{{ route('admin.orders.index') }}'">
                                 Orders
                             </x-nav-button>
                             <div x-show="open"
@@ -77,7 +75,6 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.orders.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Orders</a>
                                     <a href="{{ route('admin.shipping-tiers.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Shipping Tiers</a>
                                 </div>
                             </div>
@@ -85,7 +82,7 @@
 
                         {{-- Translations with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->is('admin/static-translations*')">
+                            <x-nav-button :active="request()->is('admin/static-translations*')" @click="window.location.href='{{ route('admin.static-translations.index') }}'">
                                 Translations
                             </x-nav-button>
                             <div x-show="open"
@@ -98,7 +95,6 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.static-translations.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All Translations</a>
                                     <a href="{{ route('admin.static-translations.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Create Translation</a>
                                 </div>
                             </div>

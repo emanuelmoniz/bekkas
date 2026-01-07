@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800">
-            Order #{{ $order->id }}
+            Order {{ $order->order_number }}
         </h2>
     </x-slot>
 
@@ -123,17 +123,17 @@
 
             <div class="flex gap-6">
                 <label class="flex items-center gap-2">
-                    <input type="checkbox" name="is_paid" @checked($order->is_paid)>
+                    <input type="checkbox" name="is_paid" value="1" @checked($order->is_paid)>
                     Paid
                 </label>
 
                 <label class="flex items-center gap-2">
-                    <input type="checkbox" name="is_canceled" @checked($order->is_canceled)>
+                    <input type="checkbox" name="is_canceled" value="1" @checked($order->is_canceled)>
                     Canceled
                 </label>
 
                 <label class="flex items-center gap-2">
-                    <input type="checkbox" name="is_refunded" @checked($order->is_refunded)>
+                    <input type="checkbox" name="is_refunded" value="1" @checked($order->is_refunded)>
                     Refunded
                 </label>
             </div>

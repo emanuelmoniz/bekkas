@@ -52,6 +52,27 @@ class OrderController extends Controller
             ->where('active', true)
             ->get();
 
+        // Validate stock availability for all products in cart
+        $stockErrors = [];
+        foreach ($products as $product) {
+            $qty = $cart[$product->id];
+            $productName = optional($product->translation())->name ?? "Product #{$product->id}";
+            
+            if ($product->stock <= 0) {
+                $stockErrors[] = str_replace(':name', $productName, t('stock.is_out_of_stock'));
+            } elseif ($qty > $product->stock) {
+                $message = t('stock.insufficient_stock');
+                $message = str_replace(':name', $productName, $message);
+                $message = str_replace(':stock', $product->stock, $message);
+                $message = str_replace(':qty', $qty, $message);
+                $stockErrors[] = $message;
+            }
+        }
+
+        if (!empty($stockErrors)) {
+            return redirect()->route('cart.index')->with('error', implode(' ', $stockErrors));
+        }
+
         $items = [];
         $totalWeight = 0;
         $productsGross = 0;
@@ -123,11 +144,30 @@ class OrderController extends Controller
         try {
             DB::transaction(function () use ($user, $cart, $address) {
 
+                // Lock products for update to prevent race conditions
                 $products = Product::whereIn('id', array_keys($cart))
                     ->where('active', true)
                     ->with(['tax'])
+                    ->lockForUpdate()
                     ->get()
                     ->keyBy('id');
+
+                // Validate stock availability before processing
+                foreach ($cart as $productId => $qty) {
+                    $product = $products[$productId] ?? null;
+                    if (! $product) {
+                        throw new \Exception(str_replace(':id', $productId, t('stock.product_not_found')));
+                    }
+
+                    if ($product->stock < $qty) {
+                        $productName = optional($product->translation())->name ?? "Product #{$productId}";
+                        $message = t('stock.insufficient_for_order');
+                        $message = str_replace(':name', $productName, $message);
+                        $message = str_replace(':stock', $product->stock, $message);
+                        $message = str_replace(':qty', $qty, $message);
+                        throw new \Exception($message);
+                    }
+                }
 
                 $totalWeight = 0;
                 $productsNet = 0;
@@ -165,6 +205,9 @@ class OrderController extends Controller
                     $productsNet += $net;
 
                     $totalWeight += ($product->weight * $qty);
+
+                    // Decrement stock
+                    $product->decrement('stock', $qty);
                 }
 
                 $shipping = ShippingCalculator::calculate($totalWeight);
@@ -216,7 +259,7 @@ class OrderController extends Controller
                 'error' => $e->getMessage(),
             ]);
 
-            return back()->with('error', 'Failed to place order. Please try again.');
+            return back()->with('error', $e->getMessage());
         }
     }
 

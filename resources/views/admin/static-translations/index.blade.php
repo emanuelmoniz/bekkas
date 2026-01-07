@@ -14,7 +14,11 @@
                             <option value="{{ $locale }}" @selected(request('locale') === $locale)>{{ $label }} ({{ $locale }})</option>
                         @endforeach
                     </select>
-                    <button class="bg-gray-100 px-3 py-1 rounded">Filter</button>
+                    <a href="{{ route('admin.static-translations.index') }}" 
+                       class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                        Reset
+                    </a>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Filter</button>
                 </form>
 
                 <a href="{{ route('admin.static-translations.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded">Create</a>

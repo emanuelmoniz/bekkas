@@ -71,8 +71,21 @@ class CartController extends Controller
             abort(404);
         }
 
+        // Check if product has stock
+        if ($product->stock <= 0) {
+            return back()->with('error', 'This product is out of stock.');
+        }
+
         $cart = session()->get('cart', []);
-        $cart[$product->id] = ($cart[$product->id] ?? 0) + $request->quantity;
+        $currentQty = $cart[$product->id] ?? 0;
+        $newQty = $currentQty + $request->quantity;
+
+        // Validate requested quantity doesn't exceed available stock
+        if ($newQty > $product->stock) {
+            return back()->with('error', str_replace(':stock', $product->stock, t('stock.only_available')));
+        }
+
+        $cart[$product->id] = $newQty;
 
         session()->put('cart', $cart);
         
@@ -86,6 +99,16 @@ class CartController extends Controller
 
     public function update(AddToCartRequest $request, Product $product)
     {
+        // Check if product has stock
+        if ($product->stock <= 0) {
+            return back()->with('error', 'This product is out of stock.');
+        }
+
+        // Validate requested quantity doesn't exceed available stock
+        if ($request->quantity > $product->stock) {
+            return back()->with('error', str_replace(':stock', $product->stock, t('stock.only_available')));
+        }
+
         $cart = session()->get('cart', []);
         $cart[$product->id] = $request->quantity;
 

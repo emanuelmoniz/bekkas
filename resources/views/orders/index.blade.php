@@ -9,6 +9,8 @@
                 <thead class="bg-gray-100">
                     <tr>
                         <th class="px-4 py-2 text-left">{{ t('orders.order_number') ?: 'Order #' }}</th>
+                        <th class="px-4 py-2 text-left">{{ t('orders.date') ?: 'Date' }}</th>
+                        <th class="px-4 py-2 text-left">{{ t('orders.last_update') ?: 'Last Update' }}</th>
                         <th class="px-4 py-2 text-left">{{ t('orders.status') ?: 'Status' }}</th>
                         <th class="px-4 py-2 text-left">{{ t('orders.total') ?: 'Total' }}</th>
                         <th class="px-4 py-2 text-left">{{ t('orders.paid') ?: 'Paid' }}</th>
@@ -18,7 +20,9 @@
                 <tbody>
                     @forelse ($orders as $order)
                         <tr class="border-t">
-                            <td class="px-4 py-2">#{{ $order->id }}</td>
+                            <td class="px-4 py-2">{{ $order->order_number }}</td>
+                            <td class="px-4 py-2">{{ $order->created_at->format('d/m/Y H:i') }}</td>
+                            <td class="px-4 py-2">{{ $order->updated_at->format('d/m/Y H:i') }}</td>
                             <td class="px-4 py-2">{{ $order->status }}</td>
                             <td class="px-4 py-2">{{ number_format($order->total_gross, 2) }} €</td>
                             <td class="px-4 py-2">
@@ -33,7 +37,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-4 py-6 text-center text-gray-500">
+                            <td colspan="7" class="px-4 py-6 text-center text-gray-500">
                                 {{ t('orders.no_orders') ?: 'No orders found.' }}
                             </td>
                         </tr>
