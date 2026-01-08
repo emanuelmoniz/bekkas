@@ -76,10 +76,12 @@ class OrderController extends Controller
 
         DB::transaction(function () use ($request, $order) {
             // Restore stock when order status changes to CANCELED (only if not already canceled)
+            // Only restore stock for items that were NOT backordered (had stock when ordered)
             if ($request->status === 'CANCELED' && $order->status !== 'CANCELED') {
                 foreach ($order->items as $item) {
                     $product = $item->product;
-                    if ($product) {
+                    // Only restore stock if this item was NOT backordered
+                    if ($product && !$item->was_backordered) {
                         $product->increment('stock', $item->quantity);
                     }
                 }
@@ -89,8 +91,14 @@ class OrderController extends Controller
             if ($order->status === 'CANCELED' && $request->status !== 'CANCELED') {
                 foreach ($order->items as $item) {
                     $product = $item->product;
-                    if ($product) {
-                        $product->decrement('stock', $item->quantity);
+                    // Only decrement if item was NOT backordered originally
+                    if ($product && !$item->was_backordered) {
+                        if ($product->stock >= $item->quantity) {
+                            $product->decrement('stock', $item->quantity);
+                        } elseif ($product->stock > 0) {
+                            // Partial stock available
+                            $product->update(['stock' => 0]);
+                        }
                     }
                 }
             }

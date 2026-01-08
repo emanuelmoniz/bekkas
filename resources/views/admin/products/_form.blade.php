@@ -113,6 +113,17 @@
         <input type="number"
                name="stock"
                value="{{ old('stock', $product->stock ?? 0) }}"
+               min="0"
+               required
+               class="w-full border rounded px-3 py-2">
+    </div>
+
+    <div>
+        <label class="block font-medium mb-1">Production Time (days)</label>
+        <input type="number"
+               name="production_time"
+               value="{{ old('production_time', $product->production_time ?? 0) }}"
+               min="0"
                required
                class="w-full border rounded px-3 py-2">
     </div>
@@ -129,12 +140,21 @@
 
     <label class="flex items-center gap-2 mt-7">
         <input type="checkbox"
+               name="is_backorder"
+               @checked(old('is_backorder', $product->is_backorder ?? true))>
+        Allow Back Order
+    </label>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <label class="flex items-center gap-2">
+        <input type="checkbox"
                name="is_new"
                @checked(old('is_new', $product->is_new ?? false))>
         New
     </label>
 
-    <label class="flex items-center gap-2 mt-7">
+    <label class="flex items-center gap-2">
         <input type="checkbox"
                name="is_promo"
                @checked(old('is_promo', $product->is_promo ?? false))>

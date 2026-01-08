@@ -76,14 +76,16 @@
                 </div>
 
                 {{-- STOCK --}}
-                <div class="text-sm">
-                    {{ t('products.stock') ?: 'Stock' }}:
-                    @if ($product->stock > 0)
-                        <span class="text-green-600 font-medium">{{ t('products.available') ?: 'Available' }}</span>
-                    @else
-                        <span class="text-red-600 font-medium">{{ t('products.out_of_stock') ?: 'Out of stock' }}</span>
-                    @endif
-                </div>
+                @if ($product->stock > 0 || !$product->is_backorder)
+                    <div class="text-sm">
+                        {{ t('products.stock') ?: 'Stock' }}:
+                        @if ($product->stock > 0)
+                            <span class="text-green-600 font-medium">{{ t('products.available') ?: 'Available' }}</span>
+                        @else
+                            <span class="text-red-600 font-medium">{{ t('products.out_of_stock') ?: 'Out of stock' }}</span>
+                        @endif
+                    </div>
+                @endif
 
                 {{-- CATEGORIES --}}
                 @if ($product->categories->isNotEmpty())
@@ -117,7 +119,7 @@
                     </div>
                 @endif
 
-@if ($product->stock > 0)
+@if ($product->stock > 0 || $product->is_backorder)
     <form method="POST"
           action="{{ route('cart.add', $product) }}"
           class="pt-4 flex gap-2">
@@ -126,6 +128,7 @@
                name="quantity"
                value="1"
                min="1"
+               @if(!$product->is_backorder) max="{{ $product->stock }}" @endif
                class="w-20 border rounded px-2 py-1">
         <button class="bg-indigo-600 text-white px-4 py-2 rounded">
             {{ t('products.add_to_cart') ?: 'Add to cart' }}

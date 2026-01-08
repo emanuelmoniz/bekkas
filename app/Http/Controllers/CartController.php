@@ -71,8 +71,8 @@ class CartController extends Controller
             abort(404);
         }
 
-        // Check if product has stock
-        if ($product->stock <= 0) {
+        // Check if product has stock (unless backorder is allowed)
+        if (!$product->is_backorder && $product->stock <= 0) {
             return back()->with('error', 'This product is out of stock.');
         }
 
@@ -80,8 +80,8 @@ class CartController extends Controller
         $currentQty = $cart[$product->id] ?? 0;
         $newQty = $currentQty + $request->quantity;
 
-        // Validate requested quantity doesn't exceed available stock
-        if ($newQty > $product->stock) {
+        // Validate requested quantity doesn't exceed available stock (unless backorder is allowed)
+        if (!$product->is_backorder && $newQty > $product->stock) {
             return back()->with('error', str_replace(':stock', $product->stock, t('stock.only_available')));
         }
 
@@ -99,13 +99,13 @@ class CartController extends Controller
 
     public function update(AddToCartRequest $request, Product $product)
     {
-        // Check if product has stock
-        if ($product->stock <= 0) {
+        // Check if product has stock (unless backorder is allowed)
+        if (!$product->is_backorder && $product->stock <= 0) {
             return back()->with('error', 'This product is out of stock.');
         }
 
-        // Validate requested quantity doesn't exceed available stock
-        if ($request->quantity > $product->stock) {
+        // Validate requested quantity doesn't exceed available stock (unless backorder is allowed)
+        if (!$product->is_backorder && $request->quantity > $product->stock) {
             return back()->with('error', str_replace(':stock', $product->stock, t('stock.only_available')));
         }
 

@@ -11,6 +11,8 @@ class Product extends Model
         'price',
         'promo_price',
         'stock',
+        'production_time',
+        'is_backorder',
         'is_new',
         'is_promo',
         'active',
@@ -23,6 +25,7 @@ class Product extends Model
     protected $casts = [
         'is_new'   => 'boolean',
         'is_promo' => 'boolean',
+        'is_backorder' => 'boolean',
         'active'   => 'boolean',
         'price' => 'decimal:2',
         'promo_price' => 'decimal:2',

@@ -52,9 +52,14 @@ class OrderController extends Controller
             ->where('active', true)
             ->get();
 
-        // Validate stock availability for all products in cart
+        // Validate stock availability for all products in cart (skip backorder products)
         $stockErrors = [];
         foreach ($products as $product) {
+            // Skip validation for backorder products
+            if ($product->is_backorder) {
+                continue;
+            }
+
             $qty = $cart[$product->id];
             $productName = optional($product->translation())->name ?? "Product #{$product->id}";
             
@@ -152,11 +157,16 @@ class OrderController extends Controller
                     ->get()
                     ->keyBy('id');
 
-                // Validate stock availability before processing
+                // Validate stock availability before processing (skip backorder products)
                 foreach ($cart as $productId => $qty) {
                     $product = $products[$productId] ?? null;
                     if (! $product) {
                         throw new \Exception(str_replace(':id', $productId, t('stock.product_not_found')));
+                    }
+
+                    // Skip stock validation for backorder products
+                    if ($product->is_backorder) {
+                        continue;
                     }
 
                     if ($product->stock < $qty) {
@@ -189,9 +199,13 @@ class OrderController extends Controller
                     $net = $gross / (1 + $taxPct / 100);
                     $tax = $gross - $net;
 
+                    // Track if this was a backorder (stock was 0 when ordered)
+                    $wasBackordered = ($product->stock == 0);
+
                     $items[] = [
                         'product_id' => $product->id,
                         'quantity' => $qty,
+                        'was_backordered' => $wasBackordered,
                         'unit_price_gross' => $unitGross,
                         'tax_percentage' => $taxPct,
                         'unit_weight' => $product->weight,
@@ -206,8 +220,18 @@ class OrderController extends Controller
 
                     $totalWeight += ($product->weight * $qty);
 
-                    // Decrement stock
-                    $product->decrement('stock', $qty);
+                    // Decrement stock when available
+                    if ($product->stock > 0) {
+                        if ($product->stock >= $qty) {
+                            // Full quantity available in stock
+                            $product->decrement('stock', $qty);
+                        } else {
+                            // Partial stock available (rest is backorder if allowed)
+                            $availableStock = $product->stock;
+                            $product->update(['stock' => 0]);
+                        }
+                    }
+                    // If stock = 0, don't decrement (it's a backorder)
                 }
 
                 $shipping = ShippingCalculator::calculate($totalWeight);
