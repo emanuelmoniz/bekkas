@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\OrderStatusController;
 use App\Http\Controllers\Admin\ShippingTierController;
 use App\Http\Controllers\Admin\TaxController;
+use App\Http\Controllers\Admin\CountryController;
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TicketController;
@@ -251,6 +252,12 @@ Route::middleware(['auth', 'is_admin'])
         */
 
         Route::resource('taxes', TaxController::class)->except(['show']);
+
+        /*
+        | Countries
+        */
+
+        Route::resource('countries', CountryController::class)->except(['show']);
 
         /*
         | Tickets (Admin)

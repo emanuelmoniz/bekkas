@@ -67,11 +67,19 @@
 
                     <input name="title" placeholder="{{ t('checkout.address_title') ?: 'Address name' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
                     <input name="nif" placeholder="{{ t('checkout.nif_optional') ?: 'NIF (optional)' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
+                    <input name="phone" placeholder="{{ t('checkout.phone_optional') ?: 'Phone (optional)' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
                     <input name="address_line_1" placeholder="{{ t('checkout.address_line_1') ?: 'Address line 1' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
                     <input name="address_line_2" placeholder="{{ t('checkout.validation.address_line_2_optional') ?: 'Address line 2 (optional)' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
                     <input name="postal_code" placeholder="{{ t('checkout.postal_code') ?: 'Postal code' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
                     <input name="city" placeholder="{{ t('checkout.city') ?: 'City' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
-                    <input name="country" placeholder="{{ t('checkout.country') ?: 'Country' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
+                    <select name="country_id" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
+                        <option value="">{{ t('checkout.country') ?: 'Country' }}</option>
+                        @foreach(\App\Models\Country::where('is_active', true)->orderBy('name_pt')->get() as $country)
+                            <option value="{{ $country->id }}">
+                                {{ $country->name_pt }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <button class="bg-indigo-600 text-white px-6 py-3 rounded mt-6">

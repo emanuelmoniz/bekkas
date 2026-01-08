@@ -26,11 +26,12 @@ class StoreOrderRequest extends FormRequest
             // New address fields (all required if address_line_1 is provided)
             'title' => 'required_without:address_id|string|max:255',
             'nif' => 'nullable|string|max:50',
+            'phone' => 'nullable|string|max:20',
             'address_line_1' => 'required_without:address_id|string|max:255',
             'address_line_2' => 'nullable|string|max:255',
             'postal_code' => 'required_without:address_id|string|max:20',
             'city' => 'required_without:address_id|string|max:100',
-            'country' => 'required_without:address_id|string|max:100',
+            'country_id' => 'required_without:address_id|exists:countries,id',
         ];
     }
 
@@ -66,9 +67,8 @@ class StoreOrderRequest extends FormRequest
             'city.string' => t('checkout.validation.city_required') ?: 'City is required.',
             'city.max' => t('checkout.validation.city_max') ?: 'City name is too long.',
             
-            'country.required_without' => t('checkout.validation.country_required') ?: 'Country is required.',
-            'country.string' => t('checkout.validation.country_required') ?: 'Country is required.',
-            'country.max' => t('checkout.validation.country_max') ?: 'Country name is too long.',
+            'country_id.required_without' => t('checkout.validation.country_required') ?: 'Country is required.',
+            'country_id.exists' => t('checkout.validation.country_invalid') ?: 'Please select a valid country.',
         ];
     }
 
@@ -82,7 +82,6 @@ class StoreOrderRequest extends FormRequest
             'address_line_1' => trim($this->address_line_1),
             'address_line_2' => trim($this->address_line_2),
             'city' => trim($this->city),
-            'country' => trim($this->country),
         ]);
     }
 }

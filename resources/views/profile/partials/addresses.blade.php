@@ -16,11 +16,18 @@
                     <div class="grid grid-cols-2 gap-2">
                         <input name="title" value="{{ $address->title }}" placeholder="{{ t('profile.address_title') ?: 'Address name' }}" class="border rounded px-2 py-1" required>
                         <input name="nif" value="{{ $address->nif }}" placeholder="{{ t('profile.address_nif_optional') ?: 'NIF (optional)' }}" class="border rounded px-2 py-1">
+                        <input name="phone" value="{{ $address->phone }}" placeholder="{{ t('profile.address_phone_optional') ?: 'Phone (optional)' }}" class="border rounded px-2 py-1">
                         <input name="address_line_1" value="{{ $address->address_line_1 }}" placeholder="{{ t('profile.address_line_1') ?: 'Address line 1' }}" class="border rounded px-2 py-1" required>
                         <input name="address_line_2" value="{{ $address->address_line_2 }}" placeholder="{{ t('profile.address_line_2_optional') ?: 'Address line 2 (optional)' }}" class="border rounded px-2 py-1">
                         <input name="postal_code" value="{{ $address->postal_code }}" placeholder="{{ t('profile.address_postal_code') ?: 'Postal code' }}" class="border rounded px-2 py-1" required>
                         <input name="city" value="{{ $address->city }}" class="border rounded px-2 py-1" required>
-                        <input name="country" value="{{ $address->country }}" class="border rounded px-2 py-1" required>
+                        <select name="country_id" class="border rounded px-2 py-1" required>
+                            @foreach(\App\Models\Country::where('is_active', true)->orderBy('name_pt')->get() as $country)
+                                <option value="{{ $country->id }}" @selected($address->country_id == $country->id)>
+                                    {{ $country->name_pt }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <label class="flex items-center gap-2">
@@ -62,11 +69,19 @@
         <div class="grid grid-cols-2 gap-2">
             <input name="title" placeholder="{{ t('profile.address_title') ?: 'Address name' }}" class="border rounded px-2 py-1" required>
             <input name="nif" placeholder="{{ t('profile.address_nif_optional') ?: 'NIF (optional)' }}" class="border rounded px-2 py-1">
+            <input name="phone" placeholder="{{ t('profile.address_phone_optional') ?: 'Phone (optional)' }}" class="border rounded px-2 py-1">
             <input name="address_line_1" placeholder="{{ t('profile.address_line_1') ?: 'Address line 1' }}" class="border rounded px-2 py-1" required>
             <input name="address_line_2" placeholder="{{ t('profile.address_line_2_optional') ?: 'Address line 2 (optional)' }}" class="border rounded px-2 py-1">
             <input name="postal_code" placeholder="{{ t('profile.address_postal_code') ?: 'Postal code' }}" class="border rounded px-2 py-1" required>
             <input name="city" placeholder="{{ t('profile.address_city') ?: 'City' }}" class="border rounded px-2 py-1" required>
-            <input name="country" placeholder="{{ t('profile.address_country') ?: 'Country' }}" class="border rounded px-2 py-1" required>
+            <select name="country_id" class="border rounded px-2 py-1" required>
+                <option value="">{{ t('profile.address_country') ?: 'Country' }}</option>
+                @foreach(\App\Models\Country::where('is_active', true)->orderBy('name_pt')->get() as $country)
+                    <option value="{{ $country->id }}" @selected(old('country_id') == $country->id)>
+                        {{ $country->name_pt }}
+                    </option>
+                @endforeach
+            </select>
         </div>
 
         <label class="flex items-center gap-2 mt-2">

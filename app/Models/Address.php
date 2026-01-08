@@ -12,11 +12,12 @@ class Address extends Model
     protected $fillable = [
         'title',
         'nif',
+        'phone',
         'address_line_1',
         'address_line_2',
         'postal_code',
         'city',
-        'country',
+        'country_id',
         'is_default',
     ];
 
@@ -27,6 +28,11 @@ class Address extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
     }
 
     public function orders()

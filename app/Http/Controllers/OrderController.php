@@ -223,7 +223,7 @@ class OrderController extends Controller
                     'address_line_2' => $address->address_line_2,
                     'address_postal_code' => $address->postal_code,
                     'address_city' => $address->city,
-                    'address_country' => $address->country,
+                    'address_country' => optional($address->country)->name_pt ?? 'Portugal',
 
                     'products_total_net' => round($productsNet, 2),
                     'products_total_tax' => round($productsTax, 2),

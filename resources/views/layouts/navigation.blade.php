@@ -81,10 +81,10 @@
                             </div>
                         </div>
 
-                        {{-- Translations with dropdown --}}
+                        {{-- Configuration with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->is('admin/static-translations*')" @click="window.location.href='{{ route('admin.static-translations.index') }}'">
-                                Translations
+                            <x-nav-button :active="request()->is('admin/countries*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*')">
+                                Configuration
                             </x-nav-button>
                             <div x-show="open"
                                  x-transition:enter="transition ease-out duration-200"
@@ -96,7 +96,9 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.static-translations.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Create Translation</a>
+                                    <a href="{{ route('admin.countries.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Countries</a>
+                                    <a href="{{ route('admin.taxes.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Taxes</a>
+                                    <a href="{{ route('admin.static-translations.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Translations</a>
                                 </div>
                             </div>
                         </div>
@@ -333,20 +335,23 @@
                     </div>
                 </div>
 
-                {{-- Translations --}}
+                {{-- Configuration --}}
                 <div x-data="{ open: false }">
                     <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">
-                        <span>Translations</span>
+                        <span>Configuration</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
                     <div x-show="open" class="pl-4 space-y-1">
-                        <x-responsive-nav-link :href="route('admin.static-translations.index')" :active="request()->is('admin/static-translations*')">
-                            All Translations
+                        <x-responsive-nav-link :href="route('admin.countries.index')" :active="request()->is('admin/countries*')">
+                            Countries
                         </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('admin.static-translations.create')" :active="false">
-                            Create Translation
+                        <x-responsive-nav-link :href="route('admin.taxes.index')" :active="request()->is('admin/taxes*')">
+                            Taxes
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('admin.static-translations.index')" :active="request()->is('admin/static-translations*')">
+                            Translations
                         </x-responsive-nav-link>
                     </div>
                 </div>
