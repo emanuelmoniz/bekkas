@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\OrderStatusController;
 use App\Http\Controllers\Admin\ShippingTierController;
 use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\CountryController;
+use App\Http\Controllers\Admin\RegionController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 use App\Http\Controllers\ProfileController;
@@ -247,6 +248,10 @@ Route::middleware(['auth', 'is_admin'])
         */
 
         Route::resource('shipping-tiers', ShippingTierController::class);
+        Route::post('shipping-tiers/regions', [ShippingTierController::class, 'getRegions'])
+            ->name('shipping-tiers.get-regions');
+        Route::post('shipping-tiers/{shippingTier}/duplicate', [ShippingTierController::class, 'duplicate'])
+            ->name('shipping-tiers.duplicate');
 
         /*
         | Taxes
@@ -260,7 +265,13 @@ Route::middleware(['auth', 'is_admin'])
 
         Route::resource('countries', CountryController::class)->except(['show']);
 
+        /*Regions
+        */
+
+        Route::resource('regions', RegionController::class);
+
         /*
+        | 
         | Users
         */
 

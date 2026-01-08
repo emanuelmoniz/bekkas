@@ -1,15 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800">
-            Shipping Tiers
+            Regions
         </h2>
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4 flex justify-end">
-            <a href="{{ route('admin.shipping-tiers.create') }}"
+            <a href="{{ route('admin.regions.create') }}"
                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-                New Shipping Tier
+                New Region
             </a>
         </div>
 
@@ -22,13 +22,6 @@
                        name="name"
                        value="{{ request('name') }}"
                        placeholder="Name"
-                       class="border rounded px-3 py-2">
-
-                {{-- WEIGHT --}}
-                <input type="number"
-                       name="weight"
-                       value="{{ request('weight') }}"
-                       placeholder="Weight (g)"
                        class="border rounded px-3 py-2">
 
                 {{-- COUNTRY --}}
@@ -48,9 +41,16 @@
                        placeholder="Postal Code"
                        class="border rounded px-3 py-2">
 
+                {{-- IS_ACTIVE --}}
+                <select name="is_active" class="border rounded px-3 py-2">
+                    <option value="">Active</option>
+                    <option value="1" @selected(request('is_active')==='1')>Yes</option>
+                    <option value="0" @selected(request('is_active')==='0')>No</option>
+                </select>
+
                 {{-- ACTIONS --}}
                 <div class="flex gap-2">
-                    <a href="{{ route('admin.shipping-tiers.index') }}"
+                    <a href="{{ route('admin.regions.index') }}"
                        class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
                         Reset
                     </a>
@@ -67,58 +67,41 @@
                 <thead class="bg-gray-100">
                     <tr>
                         <th class="px-4 py-2 text-left">Name</th>
-                        <th class="px-4 py-2 text-left">Weight From (g)</th>
-                        <th class="px-4 py-2 text-left">Weight To (g)</th>
-                        <th class="px-4 py-2 text-left">Cost (gross)</th>
-                        <th class="px-4 py-2 text-left">Shipping Days</th>
-                        <th class="px-4 py-2 text-left">Countries</th>
-                        <th class="px-4 py-2 text-left">Regions</th>
+                        <th class="px-4 py-2 text-left">Country</th>
+                        <th class="px-4 py-2 text-left">Postal Code From</th>
+                        <th class="px-4 py-2 text-left">Postal Code To</th>
                         <th class="px-4 py-2 text-left">Active</th>
                         <th class="px-4 py-2 text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($tiers as $tier)
+                    @forelse ($regions as $region)
                         <tr class="border-t">
+                            <td class="px-4 py-2">{{ $region->name }}</td>
                             <td class="px-4 py-2">
-                                {{ app()->getLocale() === 'pt' ? $tier->name_pt : $tier->name_en }}
+                                {{ app()->getLocale() === 'pt' ? $region->country->name_pt : $region->country->name_en }}
                             </td>
-                            <td class="px-4 py-2">{{ $tier->weight_from }}</td>
-                            <td class="px-4 py-2">{{ $tier->weight_to }}</td>
+                            <td class="px-4 py-2">{{ $region->postal_code_from }}</td>
+                            <td class="px-4 py-2">{{ $region->postal_code_to }}</td>
                             <td class="px-4 py-2">
-                                {{ number_format($tier->cost_gross, 2) }} €
-                            </td>
-                            <td class="px-4 py-2">{{ $tier->shipping_days }}</td>
-                            <td class="px-4 py-2">
-                                <span class="text-xs">{{ $tier->countries->count() }}</span>
-                            </td>
-                            <td class="px-4 py-2">
-                                <span class="text-xs">{{ $tier->regions->count() }}</span>
-                            </td>
-                            <td class="px-4 py-2">
-                                <span class="px-2 py-1 rounded text-xs {{ $tier->active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                    {{ $tier->active ? 'Yes' : 'No' }}
+                                <span class="px-2 py-1 rounded text-xs {{ $region->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                    {{ $region->is_active ? 'Yes' : 'No' }}
                                 </span>
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
-                                <a href="{{ route('admin.shipping-tiers.edit', $tier) }}"
+                                <a href="{{ route('admin.regions.show', $region) }}"
+                                   class="text-gray-600 hover:underline">
+                                    View
+                                </a>
+                                <a href="{{ route('admin.regions.edit', $region) }}"
                                    class="text-blue-600 hover:underline">
                                     Edit
                                 </a>
 
                                 <form method="POST"
-                                      action="{{ route('admin.shipping-tiers.duplicate', $tier) }}"
-                                      class="inline">
-                                    @csrf
-                                    <button class="text-green-600 hover:underline">
-                                        Duplicate
-                                    </button>
-                                </form>
-
-                                <form method="POST"
-                                      action="{{ route('admin.shipping-tiers.destroy', $tier) }}"
+                                      action="{{ route('admin.regions.destroy', $region) }}"
                                       class="inline"
-                                      onsubmit="return confirm('Delete this tier?')">
+                                      onsubmit="return confirm('Delete this region?')">
                                     @csrf
                                     @method('DELETE')
                                     <button class="text-red-600 hover:underline">
@@ -129,9 +112,9 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9"
+                            <td colspan="6"
                                 class="px-4 py-6 text-center text-gray-500">
-                                No shipping tiers found.
+                                No regions found.
                             </td>
                         </tr>
                     @endforelse
@@ -140,7 +123,7 @@
         </div>
 
         <div class="mt-6">
-            {{ $tiers->links() }}
+            {{ $regions->links() }}
         </div>
     </div>
 </x-app-layout>

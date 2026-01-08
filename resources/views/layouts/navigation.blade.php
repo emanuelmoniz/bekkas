@@ -103,7 +103,7 @@
 
                         {{-- Configuration with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->is('admin/countries*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*')">
+                            <x-nav-button :active="request()->is('admin/countries*') || request()->is('admin/regions*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*')">
                                 Configuration
                             </x-nav-button>
                             <div x-show="open"
@@ -117,6 +117,7 @@
                                  style="display: none;">
                                 <div class="py-1">
                                     <a href="{{ route('admin.countries.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Countries</a>
+                                    <a href="{{ route('admin.regions.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Regions</a>
                                     <a href="{{ route('admin.taxes.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Taxes</a>
                                     <a href="{{ route('admin.static-translations.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Translations</a>
                                 </div>
@@ -366,6 +367,9 @@
                     <div x-show="open" class="pl-4 space-y-1">
                         <x-responsive-nav-link :href="route('admin.countries.index')" :active="request()->is('admin/countries*')">
                             Countries
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('admin.regions.index')" :active="request()->is('admin/regions*')">
+                            Regions
                         </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('admin.taxes.index')" :active="request()->is('admin/taxes*')">
                             Taxes

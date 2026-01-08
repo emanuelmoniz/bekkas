@@ -5,17 +5,52 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ShippingTier;
 use App\Models\Tax;
+use App\Models\Country;
+use App\Models\Region;
 use Illuminate\Http\Request;
 
 class ShippingTierController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tiers = ShippingTier::with('tax')
-            ->orderBy('weight_from')
-            ->get();
+        $query = ShippingTier::with(['tax', 'countries', 'regions']);
 
-        return view('admin.shipping-tiers.index', compact('tiers'));
+        // Filter by name (search in both PT and EN)
+        if ($request->filled('name')) {
+            $name = $request->name;
+            $query->where(function($q) use ($name) {
+                $q->where('name_pt', 'like', '%' . $name . '%')
+                  ->orWhere('name_en', 'like', '%' . $name . '%');
+            });
+        }
+
+        // Filter by weight (checks if search weight falls within tier range)
+        if ($request->filled('weight')) {
+            $weight = $request->weight;
+            $query->where('weight_from', '<=', $weight)
+                  ->where('weight_to', '>=', $weight);
+        }
+
+        // Filter by country
+        if ($request->filled('country_id')) {
+            $query->whereHas('countries', function($q) use ($request) {
+                $q->where('countries.id', $request->country_id);
+            });
+        }
+
+        // Filter by postal code (finds tiers with regions containing this postal code)
+        if ($request->filled('postal_code')) {
+            $postalCode = $request->postal_code;
+            $query->whereHas('regions', function($q) use ($postalCode) {
+                $q->where('postal_code_from', '<=', $postalCode)
+                  ->where('postal_code_to', '>=', $postalCode);
+            });
+        }
+
+        $tiers = $query->orderBy('weight_from')->paginate(15)->withQueryString();
+        $countries = Country::where('is_active', true)->orderBy('name_en')->get();
+
+        return view('admin.shipping-tiers.index', compact('tiers', 'countries'));
     }
 
     public function create()
@@ -23,58 +58,95 @@ class ShippingTierController extends Controller
         $taxes = Tax::where('is_active', true)
             ->orderBy('percentage')
             ->get();
+        
+        $countries = Country::where('is_active', true)
+            ->orderBy('name_en')
+            ->get();
 
-        return view('admin.shipping-tiers.create', compact('taxes'));
+        return view('admin.shipping-tiers.create', compact('taxes', 'countries'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'name_pt' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
             'weight_from' => 'required|integer|min:0',
             'weight_to'   => 'required|integer|min:1|gt:weight_from',
             'cost_gross'  => 'required|numeric|min:0',
+            'shipping_days' => 'required|integer|min:1',
             'tax_id'      => 'required|exists:taxes,id',
+            'countries'   => 'required|array|min:1',
+            'countries.*' => 'exists:countries,id',
+            'regions'     => 'required|array|min:1',
+            'regions.*'   => 'exists:regions,id',
         ]);
 
-        ShippingTier::create([
+        $tier = ShippingTier::create([
+            'name_pt'     => $request->name_pt,
+            'name_en'     => $request->name_en,
             'weight_from' => $request->weight_from,
             'weight_to'   => $request->weight_to,
             'cost_gross'  => $request->cost_gross,
+            'shipping_days' => $request->shipping_days,
             'tax_id'      => $request->tax_id,
-            'active'      => $request->boolean('active'),
+            'active'      => $request->boolean('active', true),
         ]);
+
+        $tier->countries()->sync($request->countries);
+        $tier->regions()->sync($request->regions);
 
         return redirect()->route('admin.shipping-tiers.index');
     }
 
     public function edit(ShippingTier $shippingTier)
     {
+        $shippingTier->load(['countries', 'regions']);
+        
         $taxes = Tax::where('is_active', true)
             ->orderBy('percentage')
+            ->get();
+        
+        $countries = Country::where('is_active', true)
+            ->orderBy('name_en')
             ->get();
 
         return view('admin.shipping-tiers.edit', compact(
             'shippingTier',
-            'taxes'
+            'taxes',
+            'countries'
         ));
     }
 
     public function update(Request $request, ShippingTier $shippingTier)
     {
         $request->validate([
+            'name_pt' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
             'weight_from' => 'required|integer|min:0',
             'weight_to'   => 'required|integer|min:1|gt:weight_from',
             'cost_gross'  => 'required|numeric|min:0',
+            'shipping_days' => 'required|integer|min:1',
             'tax_id'      => 'required|exists:taxes,id',
+            'countries'   => 'required|array|min:1',
+            'countries.*' => 'exists:countries,id',
+            'regions'     => 'required|array|min:1',
+            'regions.*'   => 'exists:regions,id',
         ]);
 
         $shippingTier->update([
+            'name_pt'     => $request->name_pt,
+            'name_en'     => $request->name_en,
             'weight_from' => $request->weight_from,
             'weight_to'   => $request->weight_to,
             'cost_gross'  => $request->cost_gross,
+            'shipping_days' => $request->shipping_days,
             'tax_id'      => $request->tax_id,
             'active'      => $request->boolean('active'),
         ]);
+
+        $shippingTier->countries()->sync($request->countries);
+        $shippingTier->regions()->sync($request->regions);
 
         return redirect()->route('admin.shipping-tiers.index');
     }
@@ -84,5 +156,41 @@ class ShippingTierController extends Controller
         $shippingTier->delete();
 
         return redirect()->route('admin.shipping-tiers.index');
+    }
+
+    public function duplicate(ShippingTier $shippingTier)
+    {
+        $newTier = ShippingTier::create([
+            'name_pt'       => $shippingTier->name_pt . ' (Copy)',
+            'name_en'       => $shippingTier->name_en . ' (Copy)',
+            'weight_from'   => $shippingTier->weight_from,
+            'weight_to'     => $shippingTier->weight_to,
+            'cost_gross'    => $shippingTier->cost_gross,
+            'shipping_days' => $shippingTier->shipping_days,
+            'tax_id'        => $shippingTier->tax_id,
+            'active'        => $shippingTier->active,
+        ]);
+
+        // Copy countries and regions relationships
+        $newTier->countries()->sync($shippingTier->countries->pluck('id'));
+        $newTier->regions()->sync($shippingTier->regions->pluck('id'));
+
+        return redirect()->route('admin.shipping-tiers.edit', $newTier);
+    }
+
+    // AJAX endpoint to get regions for selected countries
+    public function getRegions(Request $request)
+    {
+        $request->validate([
+            'country_ids' => 'required|array',
+            'country_ids.*' => 'exists:countries,id',
+        ]);
+
+        $regions = Region::whereIn('country_id', $request->country_ids)
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get(['id', 'name', 'country_id']);
+
+        return response()->json($regions);
     }
 }
