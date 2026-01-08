@@ -40,7 +40,8 @@ class ProfileUpdateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.confirmed' => t('auth.email_mismatch') ?: 'Email addresses do not match.',
+            'email.confirmed' => t('auth.email_mismatch'),
+            'email.unique' => t('validation.email_exists'),
         ];
     }
 }

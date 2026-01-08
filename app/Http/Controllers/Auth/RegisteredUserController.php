@@ -10,9 +10,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use App\Rules\Recaptcha;
+use App\Rules\PasswordValidation;
 
 class RegisteredUserController extends Controller
 {
@@ -32,7 +32,7 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email', 'confirmed'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', PasswordValidation::rules()],
             'g-recaptcha-response' => ['required', new Recaptcha],
         ], [
             'name.required' => t('validation.name_required') ?: 'Please enter your name.',
@@ -42,7 +42,7 @@ class RegisteredUserController extends Controller
             'email.unique' => t('validation.email_exists') ?: 'This email address is already registered.',
             'email.confirmed' => t('validation.email_mismatch') ?: 'Email addresses do not match.',
             'password.required' => t('validation.password_required') ?: 'Please enter a password.',
-            'password.min' => t('validation.password_min') ?: 'Password must be at least 8 characters.',
+            'password.min' => t('validation.password_min') ?: 'Password must be at least :min characters.',
             'password.confirmed' => t('validation.password_mismatch') ?: 'Passwords do not match.',
             'g-recaptcha-response.required' => t('validation.recaptcha_required') ?: 'Please verify that you are not a robot.',
         ]);

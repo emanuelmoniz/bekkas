@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Rules\PasswordValidation;
 
 class NewPasswordController extends Controller
 {
@@ -33,13 +33,16 @@ class NewPasswordController extends Controller
         $request->validate([
             'token' => ['required'],
             'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => [
+                'required',
+                'confirmed',
+                PasswordValidation::rules()
+            ],
         ], [
-            'email.required' => t('validation.email_required') ?: 'Please enter your email address.',
-            'email.email' => t('validation.email_invalid') ?: 'Please enter a valid email address.',
-            'password.required' => t('validation.password_required') ?: 'Please enter a password.',
-            'password.min' => t('validation.password_min') ?: 'Password must be at least 8 characters.',
-            'password.confirmed' => t('validation.password_mismatch') ?: 'Passwords do not match.',
+            'email.required' => t('validation.email_required'),
+            'email.email' => t('validation.email_invalid'),
+            'password.required' => t('validation.password_required'),
+            'password.confirmed' => t('validation.password_mismatch'),
         ]);
 
         // Here we will attempt to reset the user's password. If it is successful we
@@ -61,8 +64,8 @@ class NewPasswordController extends Controller
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
+                    ? redirect()->route('login')->with('status', trans('passwords.reset'))
                     : back()->withInput($request->only('email'))
-                        ->withErrors(['email' => __($status)]);
+                        ->withErrors(['email' => trans('passwords.' . $status)]);
     }
 }

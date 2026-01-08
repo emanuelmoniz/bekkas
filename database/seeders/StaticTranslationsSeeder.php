@@ -166,6 +166,9 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.country', 'locale' => 'pt-PT', 'value' => 'País', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'checkout.country', 'locale' => 'en-UK', 'value' => 'Country', 'created_at'=>$now,'updated_at'=>$now],
 
+            ['key' => 'checkout.set_as_default', 'locale' => 'pt-PT', 'value' => 'Definir como morada predefinida', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.set_as_default', 'locale' => 'en-UK', 'value' => 'Set as default address', 'created_at'=>$now,'updated_at'=>$now],
+
             ['key' => 'checkout.place_order', 'locale' => 'pt-PT', 'value' => 'Finalizar encomenda', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'checkout.place_order', 'locale' => 'en-UK', 'value' => 'Place Order', 'created_at'=>$now,'updated_at'=>$now],
 
@@ -383,6 +386,22 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.add_address', 'locale' => 'pt-PT', 'value' => 'Adicionar morada', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'profile.add_address', 'locale' => 'en-UK', 'value' => 'Add Address', 'created_at'=>$now,'updated_at'=>$now],
 
+            // Profile success messages
+            ['key' => 'profile.updated_success', 'locale' => 'pt-PT', 'value' => 'Perfil atualizado com sucesso!', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.updated_success', 'locale' => 'en-UK', 'value' => 'Profile updated successfully!', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'profile.address_added_success', 'locale' => 'pt-PT', 'value' => 'Morada adicionada com sucesso!', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.address_added_success', 'locale' => 'en-UK', 'value' => 'Address added successfully!', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'profile.address_updated_success', 'locale' => 'pt-PT', 'value' => 'Morada atualizada com sucesso!', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.address_updated_success', 'locale' => 'en-UK', 'value' => 'Address updated successfully!', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'profile.address_deleted_success', 'locale' => 'pt-PT', 'value' => 'Morada eliminada com sucesso!', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.address_deleted_success', 'locale' => 'en-UK', 'value' => 'Address deleted successfully!', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'profile.password_updated_success', 'locale' => 'pt-PT', 'value' => 'Palavra-passe atualizada com sucesso!', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.password_updated_success', 'locale' => 'en-UK', 'value' => 'Password updated successfully!', 'created_at'=>$now,'updated_at'=>$now],
+
             // Profile forms
             ['key' => 'profile.profile_information', 'locale' => 'pt-PT', 'value' => 'Informação do Perfil', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'profile.profile_information', 'locale' => 'en-UK', 'value' => 'Profile Information', 'created_at'=>$now,'updated_at'=>$now],
@@ -392,6 +411,15 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'profile.saved', 'locale' => 'pt-PT', 'value' => 'Guardado.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'profile.saved', 'locale' => 'en-UK', 'value' => 'Saved.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'profile.current_password', 'locale' => 'pt-PT', 'value' => 'Palavra-passe Atual', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.current_password', 'locale' => 'en-UK', 'value' => 'Current Password', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'profile.new_password', 'locale' => 'pt-PT', 'value' => 'Nova Palavra-passe', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.new_password', 'locale' => 'en-UK', 'value' => 'New Password', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'profile.confirm_password', 'locale' => 'pt-PT', 'value' => 'Confirmar Palavra-passe', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.confirm_password', 'locale' => 'en-UK', 'value' => 'Confirm Password', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'profile.update_profile_info_desc', 'locale' => 'pt-PT', 'value' => 'Atualize as informações do perfil e endereço de email da sua conta.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'profile.update_profile_info_desc', 'locale' => 'en-UK', 'value' => "Update your account's profile information and email address.", 'created_at'=>$now,'updated_at'=>$now],
@@ -447,6 +475,15 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'auth.email_mismatch', 'locale' => 'pt-PT', 'value' => 'Os emails não coincidem. Verifique os dois campos.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'auth.email_mismatch', 'locale' => 'en-UK', 'value' => 'Email addresses do not match. Please check both fields.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'auth.email', 'locale' => 'pt-PT', 'value' => 'Email', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'auth.email', 'locale' => 'en-UK', 'value' => 'Email', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'auth.password', 'locale' => 'pt-PT', 'value' => 'Palavra-passe', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'auth.password', 'locale' => 'en-UK', 'value' => 'Password', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'auth.confirm_password', 'locale' => 'pt-PT', 'value' => 'Confirmar Palavra-passe', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'auth.confirm_password', 'locale' => 'en-UK', 'value' => 'Confirm Password', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'auth.failed', 'locale' => 'pt-PT', 'value' => 'Credenciais inválidas. Verifique o e-mail e a palavra-passe.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'auth.failed', 'locale' => 'en-UK', 'value' => 'Invalid credentials. Please check your email and password.', 'created_at'=>$now,'updated_at'=>$now],
@@ -601,7 +638,14 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'auth.please_register', 'locale' => 'pt-PT', 'value' => 'Por favor registe-se', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'auth.please_register', 'locale' => 'en-UK', 'value' => 'Please register', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'auth.forgot_password_desc', 'locale' => 'pt-PT', 'value' => 'Esqueceu-se da sua palavra-passe? Sem problema. Indique-nos o seu endereço de email e enviaremos um link de redefinição que lhe permitirá escolher uma nova.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'auth.forgot_password_desc', 'locale' => 'en-UK', 'value' => 'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.', 'created_at'=>$now,'updated_at'=>$now],
 
+            ['key' => 'auth.email_reset_link', 'locale' => 'pt-PT', 'value' => 'Enviar Link de Redefinição', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'auth.email_reset_link', 'locale' => 'en-UK', 'value' => 'Email Password Reset Link', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'auth.reset_password_button', 'locale' => 'pt-PT', 'value' => 'Redefinir Palavra-passe', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'auth.reset_password_button', 'locale' => 'en-UK', 'value' => 'Reset Password', 'created_at'=>$now,'updated_at'=>$now],
             // About page
             ['key' => 'about.banner.title', 'locale' => 'pt-PT', 'value' => 'Sobre a BEKKAS', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'about.banner.title', 'locale' => 'en-UK', 'value' => 'About BEKKAS', 'created_at'=>$now,'updated_at'=>$now],
@@ -718,14 +762,54 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'validation.email_exists', 'locale' => 'pt-PT', 'value' => 'Este endereço de email já está registado.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'validation.email_exists', 'locale' => 'en-UK', 'value' => 'This email address is already registered.', 'created_at'=>$now,'updated_at'=>$now],
 
+            ['key' => 'validation.unique', 'locale' => 'pt-PT', 'value' => 'Este valor já está a ser utilizado.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.unique', 'locale' => 'en-UK', 'value' => 'This value is already in use.', 'created_at'=>$now,'updated_at'=>$now],
+
             ['key' => 'validation.email_mismatch', 'locale' => 'pt-PT', 'value' => 'Os endereços de email não coincidem.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'validation.email_mismatch', 'locale' => 'en-UK', 'value' => 'Email addresses do not match.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.errors_found', 'locale' => 'pt-PT', 'value' => 'Por favor, corrija os seguintes erros:', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.errors_found', 'locale' => 'en-UK', 'value' => 'Please correct the following errors:', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.min.string', 'locale' => 'pt-PT', 'value' => 'Este campo deve ter pelo menos :min caracteres.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.min.string', 'locale' => 'en-UK', 'value' => 'This field must be at least :min characters.', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'validation.password_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira uma palavra-passe.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'validation.password_required', 'locale' => 'en-UK', 'value' => 'Please enter a password.', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'validation.password_min', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve ter pelo menos 8 caracteres.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'validation.password_min', 'locale' => 'en-UK', 'value' => 'Password must be at least 8 characters.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.password_letters', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter pelo menos uma letra.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.password_letters', 'locale' => 'en-UK', 'value' => 'Password must contain at least one letter.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.password_mixed_case', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter letras maiúsculas e minúsculas.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.password_mixed_case', 'locale' => 'en-UK', 'value' => 'Password must contain both uppercase and lowercase letters.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.password_numbers', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter pelo menos um número.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.password_numbers', 'locale' => 'en-UK', 'value' => 'Password must contain at least one number.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.password_symbols', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter pelo menos um símbolo.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.password_symbols', 'locale' => 'en-UK', 'value' => 'Password must contain at least one symbol.', 'created_at'=>$now,'updated_at'=>$now],
+
+            // Laravel Password rule default message keys
+            ['key' => 'validation.password.letters', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter pelo menos uma letra.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.password.letters', 'locale' => 'en-UK', 'value' => 'Password must contain at least one letter.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.password.mixed', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter letras maiúsculas e minúsculas.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.password.mixed', 'locale' => 'en-UK', 'value' => 'Password must contain both uppercase and lowercase letters.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.password.numbers', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter pelo menos um número.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.password.numbers', 'locale' => 'en-UK', 'value' => 'Password must contain at least one number.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.password.symbols', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter pelo menos um símbolo.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.password.symbols', 'locale' => 'en-UK', 'value' => 'Password must contain at least one symbol.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.password.uncompromised', 'locale' => 'pt-PT', 'value' => 'Esta palavra-passe apareceu numa fuga de dados. Por favor, escolha uma diferente.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.password.uncompromised', 'locale' => 'en-UK', 'value' => 'This password has appeared in a data leak. Please choose a different one.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'validation.password_uncompromised', 'locale' => 'pt-PT', 'value' => 'Esta palavra-passe apareceu numa fuga de dados. Por favor, escolha uma diferente.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'validation.password_uncompromised', 'locale' => 'en-UK', 'value' => 'This password has appeared in a data leak. Please choose a different one.', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'validation.password_mismatch', 'locale' => 'pt-PT', 'value' => 'As palavras-passe não coincidem.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'validation.password_mismatch', 'locale' => 'en-UK', 'value' => 'Passwords do not match.', 'created_at'=>$now,'updated_at'=>$now],

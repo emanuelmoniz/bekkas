@@ -80,6 +80,11 @@
                             </option>
                         @endforeach
                     </select>
+                    
+                    <label class="flex items-center gap-2 pt-2">
+                        <input type="checkbox" name="is_default" value="1" class="rounded" :disabled="addressMode !== 'new'">
+                        <span class="text-sm">{{ t('checkout.set_as_default') ?: 'Set as default address' }}</span>
+                    </label>
                 </div>
 
                 <button class="bg-indigo-600 text-white px-6 py-3 rounded mt-6">

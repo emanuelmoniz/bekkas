@@ -137,7 +137,10 @@ class OrderController extends Controller
         $validated = $request->validated();
 
         if ($request->filled('address_line_1')) {
-            $user->addresses()->update(['is_default' => false]);
+            // Only unset other default addresses if this new one should be default
+            if ($request->filled('is_default') && $request->is_default) {
+                $user->addresses()->update(['is_default' => false]);
+            }
 
             $address = $user->addresses()->create($validated);
         } else {

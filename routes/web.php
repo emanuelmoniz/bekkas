@@ -117,6 +117,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 
+    Route::put('/password', [\App\Http\Controllers\Auth\PasswordController::class, 'update'])
+        ->name('password.update');
+
     /*
     | Addresses
     */
