@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\OrderStatusController;
 use App\Http\Controllers\Admin\ShippingTierController;
 use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\CountryController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TicketController;
@@ -258,6 +259,34 @@ Route::middleware(['auth', 'is_admin'])
         */
 
         Route::resource('countries', CountryController::class)->except(['show']);
+
+        /*
+        | Users
+        */
+
+        Route::get('users', [AdminUserController::class, 'index'])
+            ->name('users.index');
+
+        Route::get('users/create', [AdminUserController::class, 'create'])
+            ->name('users.create');
+
+        Route::post('users', [AdminUserController::class, 'store'])
+            ->name('users.store');
+
+        Route::get('users/{user}', [AdminUserController::class, 'show'])
+            ->name('users.show');
+
+        Route::get('users/{user}/edit', [AdminUserController::class, 'edit'])
+            ->name('users.edit');
+
+        Route::patch('users/{user}', [AdminUserController::class, 'update'])
+            ->name('users.update');
+
+        Route::patch('users/{user}/addresses/{address}', [AdminUserController::class, 'updateAddress'])
+            ->name('users.addresses.update');
+
+        Route::post('users/{user}/addresses', [AdminUserController::class, 'createAddress'])
+            ->name('users.addresses.store');
 
         /*
         | Tickets (Admin)

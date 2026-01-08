@@ -359,6 +359,9 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.address_phone_optional', 'locale' => 'pt-PT', 'value' => 'Telefone (opcional)', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'profile.address_phone_optional', 'locale' => 'en-UK', 'value' => 'Phone (optional)', 'created_at'=>$now,'updated_at'=>$now],
 
+            ['key' => 'profile.phone', 'locale' => 'pt-PT', 'value' => 'Telefone', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'profile.phone', 'locale' => 'en-UK', 'value' => 'Phone', 'created_at'=>$now,'updated_at'=>$now],
+
             ['key' => 'profile.address_line_1', 'locale' => 'pt-PT', 'value' => 'Morada linha 1', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'profile.address_line_1', 'locale' => 'en-UK', 'value' => 'Address line 1', 'created_at'=>$now,'updated_at'=>$now],
 

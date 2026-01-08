@@ -33,6 +33,7 @@ class ProfileUpdateRequest extends FormRequest
                 'email',
                 'max:255',
             ],
+            'phone' => ['nullable', 'string', 'max:20'],
         ];
     }
 

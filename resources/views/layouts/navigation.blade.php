@@ -81,6 +81,26 @@
                             </div>
                         </div>
 
+                        {{-- Users with dropdown --}}
+                        <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                            <x-nav-button :active="request()->is('admin/users*')" @click="window.location.href='{{ route('admin.users.index') }}'">
+                                Users
+                            </x-nav-button>
+                            <div x-show="open"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100"
+                                 x-transition:leave-end="opacity-0 scale-95"
+                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                 style="display: none;">
+                                <div class="py-1">
+                                    <a href="{{ route('admin.users.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Create User</a>
+                                </div>
+                            </div>
+                        </div>
+
                         {{-- Configuration with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
                             <x-nav-button :active="request()->is('admin/countries*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*')">
