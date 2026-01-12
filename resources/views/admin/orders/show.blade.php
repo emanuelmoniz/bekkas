@@ -21,6 +21,12 @@
                 </p>
                 <p><strong>{{ t('orders.paid') ?: 'Paid' }}:</strong> {{ $order->is_paid ? 'Yes' : 'No' }}</p>
                 <p><strong>{{ t('orders.refunded') ?: 'Refunded' }}:</strong> {{ $order->is_refunded ? 'Yes' : 'No' }}</p>
+                @if($order->shipping_tier_name)
+                    <p><strong>Shipping Tier:</strong> {{ $order->shipping_tier_name }}</p>
+                @endif
+                @if($order->expected_delivery_date)
+                    <p><strong>Expected Delivery:</strong> {{ $order->expected_delivery_date->format('d/m/Y') }}</p>
+                @endif
             </div>
 
             <div>
@@ -123,6 +129,16 @@
                 <input name="tracking_number"
                        value="{{ $order->tracking_number }}"
                        class="border rounded px-3 py-2 w-full">
+            </div>
+            
+            <div>
+                <label class="block font-medium mb-1">Tracking URL</label>
+                <input name="tracking_url"
+                       value="{{ $order->tracking_url }}"
+                       type="url"
+                       placeholder="https://track.carrier.com/..."
+                       class="border rounded px-3 py-2 w-full">
+                <p class="text-sm text-gray-500 mt-1">Full URL to tracking page (optional)</p>
             </div>
 
             <div class="flex gap-6">

@@ -62,6 +62,25 @@
                 @enderror
             </div>
 
+            <div>
+                <label class="block text-sm font-medium mb-2">Default Shipping Tier</label>
+                <select name="default_shipping_tier_id" class="w-full border rounded px-3 py-2">
+                    <option value="">— No Default (use global) —</option>
+                    @foreach($shippingTiers as $tier)
+                        <option value="{{ $tier->id }}" 
+                                @selected(old('default_shipping_tier_id', $defaultShippingTierId) == $tier->id)>
+                            {{ $tier->name_en }} ({{ $tier->weight_from }}-{{ $tier->weight_to }}g, {{ $tier->shipping_days }} days)
+                        </option>
+                    @endforeach
+                </select>
+                @error('default_shipping_tier_id')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+                <p class="text-sm text-gray-600 mt-1">
+                    Used for delivery date calculations and free shipping for this region
+                </p>
+            </div>
+
             <label class="flex items-center gap-2">
                 <input type="checkbox" name="is_active" value="1" @checked(old('is_active', $region->is_active))>
                 Active

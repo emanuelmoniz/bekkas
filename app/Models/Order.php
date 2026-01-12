@@ -16,6 +16,8 @@ class Order extends Model
         'is_canceled',
         'is_refunded',
         'tracking_number',
+        'tracking_url',
+        'expected_delivery_date',
 
         // Address snapshot
         'address_title',
@@ -33,6 +35,7 @@ class Order extends Model
         'shipping_net',
         'shipping_tax',
         'shipping_gross',
+        'shipping_tier_name',
 
         'total_net',
         'total_tax',
@@ -52,6 +55,7 @@ class Order extends Model
         'total_net' => 'decimal:2',
         'total_tax' => 'decimal:2',
         'total_gross' => 'decimal:2',
+        'expected_delivery_date' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

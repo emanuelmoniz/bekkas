@@ -72,6 +72,7 @@ class OrderController extends Controller
             'is_paid' => 'nullable|boolean',
             'is_refunded' => 'nullable|boolean',
             'tracking_number' => 'nullable|string|max:255',
+            'tracking_url' => 'nullable|url|max:500',
         ]);
 
         DB::transaction(function () use ($request, $order) {
@@ -108,6 +109,7 @@ class OrderController extends Controller
                 'is_paid' => $request->boolean('is_paid'),
                 'is_refunded' => $request->boolean('is_refunded'),
                 'tracking_number' => $request->tracking_number,
+                'tracking_url' => $request->tracking_url,
             ]);
         });
 

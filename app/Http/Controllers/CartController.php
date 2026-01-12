@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Services\ShippingCalculator;
 use App\Http\Requests\AddToCartRequest;
 use Illuminate\Http\Request;
 
@@ -19,7 +18,6 @@ class CartController extends Controller
             ->get();
 
         $items = [];
-        $totalWeight = 0;
 
         $productsGross = 0;
         $productsTax = 0;
@@ -45,23 +43,12 @@ class CartController extends Controller
 
             $productsGross += $lineGross;
             $productsTax += $lineTax;
-
-            $totalWeight += ($product->weight * $qty);
         }
-
-        $shipping = ShippingCalculator::calculate($totalWeight);
 
         return view('cart.index', [
             'items' => $items,
-            'totalWeight' => $totalWeight,
-
             'productsGross' => round($productsGross, 2),
             'productsTax' => round($productsTax, 2),
-
-            'shipping' => $shipping,
-
-            'totalGross' => round($productsGross + $shipping['gross'], 2),
-            'totalTax' => round($productsTax + $shipping['tax'], 2),
         ]);
     }
 

@@ -15,10 +15,12 @@ class ShippingTier extends Model
         'shipping_days',
         'tax_id',
         'active',
+        'use_for_default',
     ];
 
     protected $casts = [
         'active' => 'boolean',
+        'use_for_default' => 'boolean',
     ];
 
     public function tax()
@@ -34,5 +36,11 @@ class ShippingTier extends Model
     public function regions()
     {
         return $this->belongsToMany(Region::class, 'region_shipping_tier');
+    }
+
+    public function defaultForRegions()
+    {
+        return $this->belongsToMany(Region::class, 'region_default_shipping_tiers', 'shipping_tier_id', 'region_id')
+            ->withTimestamps();
     }
 }

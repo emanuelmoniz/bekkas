@@ -154,6 +154,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [OrderController::class, 'checkout'])
         ->name('checkout.index');
 
+    Route::post('/checkout/shipping-tiers', [OrderController::class, 'getShippingTiers'])
+        ->name('checkout.shipping-tiers');
+
     Route::post('/checkout', [OrderController::class, 'place'])
         ->middleware('throttle:5,1') // 5 per minute (sensitive)
         ->name('checkout.place');

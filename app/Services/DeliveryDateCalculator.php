@@ -63,17 +63,17 @@ class DeliveryDateCalculator
         $weight = $product->weight ?? 0;
         
         // Three-tier logic:
-        // 1. If logged in with default address: use postal code + weight, select lowest shipping days
+        // 1. If logged in with default address: use region-based default by postal code + weight
         // 2. If logged in without default address (or not logged in): use weight only, select lowest shipping days
-        // 3. If no tiers found: use default tier (even if inactive)
+        // 3. If no tiers found: use global default tier (even if inactive)
         
         if (Auth::check()) {
             $user = Auth::user();
             $defaultAddress = $user->addresses()->where('is_default', true)->first();
             
             if ($defaultAddress && $defaultAddress->postal_code) {
-                // Tier 1: Logged in with default address
-                $tier = $this->getTierByPostalCodeAndWeight($defaultAddress->postal_code, $weight);
+                // Tier 1: Use region-based default shipping tier
+                $tier = DefaultShippingTierResolver::resolve($defaultAddress->postal_code, $weight);
                 if ($tier) {
                     return $tier;
                 }
@@ -86,7 +86,7 @@ class DeliveryDateCalculator
             return $tier;
         }
         
-        // Tier 3: Fallback to default tier from config (even if inactive)
+        // Tier 3: Fallback to global default tier from config (even if inactive)
         $defaultTierId = \App\Models\ShippingConfig::get('default_shipping_tier_id');
         if ($defaultTierId) {
             return ShippingTier::find($defaultTierId);

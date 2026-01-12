@@ -70,24 +70,13 @@
                         <span>€{{ number_format($productsTax, 2) }}</span>
                     </div>
 
-                    <div class="flex justify-between">
-                        <span>{{ t('cart.summary.shipping') ?: 'Shipping' }}</span>
-                        <span>€{{ number_format($shipping['gross'], 2) }}</span>
-                    </div>
-
-                    <div class="text-sm text-gray-500 flex justify-between">
-                        <span>{{ t('cart.summary.shipping_tax') ?: 'Shipping tax' }}</span>
-                        <span>€{{ number_format($shipping['tax'], 2) }}</span>
-                    </div>
-
                     <div class="border-t pt-2 flex justify-between font-semibold">
-                        <span>{{ t('cart.summary.total') ?: 'Total' }}</span>
-                        <span>€{{ number_format($totalGross, 2) }}</span>
+                        <span>{{ t('cart.summary.subtotal') ?: 'Subtotal' }}</span>
+                        <span>€{{ number_format($productsGross, 2) }}</span>
                     </div>
 
-                    <div class="text-sm text-gray-600 flex justify-between">
-                        <span>{{ t('cart.summary.total_tax') ?: 'Total tax' }}</span>
-                        <span>€{{ number_format($totalTax, 2) }}</span>
+                    <div class="bg-blue-50 border border-blue-200 rounded p-3 text-sm text-blue-800">
+                        {{ t('cart.shipping_at_checkout') ?: 'The shipping cost will be calculated at checkout.' }}
                     </div>
 
                     <div class="pt-4">

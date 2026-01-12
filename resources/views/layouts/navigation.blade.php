@@ -62,7 +62,7 @@
 
                         {{-- Orders with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->is('admin/orders*') || request()->is('admin/shipping-tiers*') || request()->is('admin/shipping-config*') || request()->is('admin/order-statuses*')" @click="window.location.href='{{ route('admin.orders.index') }}'">
+                            <x-nav-button :active="request()->is('admin/orders*') || request()->is('admin/order-statuses*')" @click="window.location.href='{{ route('admin.orders.index') }}'">
                                 Orders
                             </x-nav-button>
                             <div x-show="open"
@@ -75,8 +75,6 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.shipping-config.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Shipping Config</a>
-                                    <a href="{{ route('admin.shipping-tiers.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Shipping Tiers</a>
                                     <a href="{{ route('admin.order-statuses.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Order Statuses</a>
                                 </div>
                             </div>
@@ -104,7 +102,7 @@
 
                         {{-- Configuration with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->is('admin/countries*') || request()->is('admin/regions*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*')">
+                            <x-nav-button :active="request()->is('admin/countries*') || request()->is('admin/regions*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*') || request()->is('admin/shipping-tiers*') || request()->is('admin/shipping-config*')">
                                 Configuration
                             </x-nav-button>
                             <div x-show="open"
@@ -117,6 +115,8 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
+                                    <a href="{{ route('admin.shipping-config.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Shipping</a>
+                                    <a href="{{ route('admin.shipping-tiers.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Shipping Tiers</a>
                                     <a href="{{ route('admin.countries.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Countries</a>
                                     <a href="{{ route('admin.regions.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Regions</a>
                                     <a href="{{ route('admin.taxes.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Taxes</a>
@@ -162,7 +162,7 @@
 
             <!-- Right side -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-6">
-                @php $cartCount = count(session('cart', [])); @endphp
+                @php $cartCount = array_sum(session('cart', [])); @endphp
                 <!-- Language Selector -->
                 <div class="flex items-center gap-2">
                     @php
@@ -343,9 +343,6 @@
                         <x-responsive-nav-link :href="route('admin.order-statuses.index')" :active="request()->is('admin/order-statuses*')">
                             Order Statuses
                         </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('admin.shipping-tiers.index')" :active="request()->is('admin/shipping-tiers*')">
-                            Shipping Tiers
-                        </x-responsive-nav-link>
                     </div>
                 </div>
 
@@ -358,6 +355,12 @@
                         </svg>
                     </button>
                     <div x-show="open" class="pl-4 space-y-1">
+                        <x-responsive-nav-link :href="route('admin.shipping-config.index')" :active="request()->is('admin/shipping-config*')">
+                            Shipping
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('admin.shipping-tiers.index')" :active="request()->is('admin/shipping-tiers*')">
+                            Shipping Tiers
+                        </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('admin.countries.index')" :active="request()->is('admin/countries*')">
                             Countries
                         </x-responsive-nav-link>
@@ -395,7 +398,7 @@
                     </x-responsive-nav-link>
                 </div>
                 
-                @php $cartCount = count(session('cart', [])); @endphp
+                @php $cartCount = array_sum(session('cart', [])); @endphp
                 @if($cartCount > 0)
                     <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
                         {{ t('nav.cart') ?: 'Cart' }} ({{ $cartCount }})

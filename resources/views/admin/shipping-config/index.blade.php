@@ -33,7 +33,7 @@
 
             <div>
                 <label for="default_shipping_tier_id" class="block font-semibold mb-2">
-                    Default Shipping Tier
+                    Global Default Shipping Tier (Fallback)
                 </label>
                 <select id="default_shipping_tier_id" 
                         name="default_shipping_tier_id" 
@@ -51,7 +51,30 @@
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
                 <p class="text-sm text-gray-600 mt-1">
-                    Used as fallback when no matching tier is found (includes inactive tiers)
+                    Used as global fallback when no region-specific default is configured. Edit region-specific defaults in each region's settings.
+                </p>
+            </div>
+
+            <div>
+                <label for="tracking_statuses" class="block font-semibold mb-2">
+                    Order Statuses for Tracking URL
+                </label>
+                    @php
+                        $allStatuses = \App\Models\OrderStatus::all();
+                    @endphp
+                    <select id="tracking_statuses" name="tracking_statuses[]" multiple class="form-multiselect block w-full mt-1">
+                        @foreach ($allStatuses as $status)
+                            <option value="{{ $status->code }}" {{ in_array($status->code, $tracking_statuses ?? []) ? 'selected' : '' }}>
+                                {{ $status->code }}
+                                @php $trans = $status->translation(); @endphp
+                                @if($trans && $trans->name && $trans->name !== $status->code)
+                                    - {{ $trans->name }}
+                                @endif
+                            </option>
+                        @endforeach
+                    </select>
+                <p class="text-sm text-gray-600 mt-1">
+                    Select which order statuses will display the tracking URL to the client.
                 </p>
             </div>
 

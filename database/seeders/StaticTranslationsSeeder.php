@@ -12,6 +12,11 @@ class StaticTranslationsSeeder extends Seeder
         $now = now();
 
         $rows = [
+            // Orders Yes/No
+            ['key' => 'orders.yes', 'locale' => 'pt-PT', 'value' => 'Sim', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.yes', 'locale' => 'en-UK', 'value' => 'Yes', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.no', 'locale' => 'pt-PT', 'value' => 'Não', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.no', 'locale' => 'en-UK', 'value' => 'No', 'created_at'=>$now,'updated_at'=>$now],
             // Navigation
             ['key' => 'nav.dashboard', 'locale' => 'pt-PT', 'value' => 'Painel', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'nav.dashboard', 'locale' => 'en-UK', 'value' => 'Dashboard', 'created_at'=>$now,'updated_at'=>$now],
@@ -88,6 +93,12 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'cart.start_shopping', 'locale' => 'pt-PT', 'value' => 'Começar a Comprar', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'cart.start_shopping', 'locale' => 'en-UK', 'value' => 'Start Shopping', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'cart.summary.subtotal', 'locale' => 'pt-PT', 'value' => 'Subtotal', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'cart.summary.subtotal', 'locale' => 'en-UK', 'value' => 'Subtotal', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'cart.shipping_at_checkout', 'locale' => 'pt-PT', 'value' => 'O custo de envio será calculado no checkout.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'cart.shipping_at_checkout', 'locale' => 'en-UK', 'value' => 'The shipping cost will be calculated at checkout.', 'created_at'=>$now,'updated_at'=>$now],
 
             // Shipping Config (Admin)
             ['key' => 'shipping_config.title', 'locale' => 'pt-PT', 'value' => 'Configuração de Envio', 'created_at'=>$now,'updated_at'=>$now],
@@ -194,6 +205,30 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.place_order', 'locale' => 'pt-PT', 'value' => 'Finalizar encomenda', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'checkout.place_order', 'locale' => 'en-UK', 'value' => 'Place Order', 'created_at'=>$now,'updated_at'=>$now],
 
+            ['key' => 'checkout.free_shipping_qualified', 'locale' => 'pt-PT', 'value' => 'Qualificou-se para envio grátis! Pode também escolher um método de envio mais rápido abaixo (custo adicional aplica-se).', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.free_shipping_qualified', 'locale' => 'en-UK', 'value' => 'You qualify for free shipping! You can also choose a faster shipping method below (additional cost applies).', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.free', 'locale' => 'pt-PT', 'value' => 'GRÁTIS', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.free', 'locale' => 'en-UK', 'value' => 'FREE', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.free_shipping_message', 'locale' => 'pt-PT', 'value' => 'O total da sua encomenda excede', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.free_shipping_message', 'locale' => 'en-UK', 'value' => 'Your order total exceeds', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.free_shipping_applied', 'locale' => 'pt-PT', 'value' => 'Envio grátis foi aplicado à sua encomenda.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.free_shipping_applied', 'locale' => 'en-UK', 'value' => 'Free shipping has been applied to your order.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.shipping_method', 'locale' => 'pt-PT', 'value' => 'Método de envio', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.shipping_method', 'locale' => 'en-UK', 'value' => 'Shipping method', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.address_required_for_shipping', 'locale' => 'pt-PT', 'value' => 'Por favor, preencha o formulário de morada para podermos mostrar as opções de envio disponíveis.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.address_required_for_shipping', 'locale' => 'en-UK', 'value' => 'Please fill the address form so we can show the available shipping options.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.select_shipping_method', 'locale' => 'pt-PT', 'value' => 'Selecione o Método de Envio', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.select_shipping_method', 'locale' => 'en-UK', 'value' => 'Select Shipping Method', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.no_shipping_available', 'locale' => 'pt-PT', 'value' => 'Não há opções de envio disponíveis para a sua morada. Por favor, contacte-nos.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.no_shipping_available', 'locale' => 'en-UK', 'value' => 'No shipping options available for your address. Please contact us.', 'created_at'=>$now,'updated_at'=>$now],
+
             // Orders page
             ['key' => 'orders.status', 'locale' => 'pt-PT', 'value' => 'Estado', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'orders.status', 'locale' => 'en-UK', 'value' => 'Status', 'created_at'=>$now,'updated_at'=>$now],
@@ -263,6 +298,15 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'orders.no_orders', 'locale' => 'pt-PT', 'value' => 'Nenhuma encomenda encontrada.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'orders.no_orders', 'locale' => 'en-UK', 'value' => 'No orders found.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.expected_delivery', 'locale' => 'pt-PT', 'value' => 'Entrega Prevista', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.expected_delivery', 'locale' => 'en-UK', 'value' => 'Expected Delivery', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.track_shipment', 'locale' => 'pt-PT', 'value' => 'Rastrear a Sua Encomenda', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.track_shipment', 'locale' => 'en-UK', 'value' => 'Track Your Shipment', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.no_tracking', 'locale' => 'pt-PT', 'value' => 'A sua encomenda ainda não tem informações de rastreamento', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.no_tracking', 'locale' => 'en-UK', 'value' => 'Your order does not have tracking information yet', 'created_at'=>$now,'updated_at'=>$now],
 
             // Products page
             ['key' => 'products.title', 'locale' => 'pt-PT', 'value' => 'Produtos', 'created_at'=>$now,'updated_at'=>$now],
