@@ -5,11 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Material;
+use App\Services\DeliveryDateCalculator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
+    protected $deliveryCalculator;
+
+    public function __construct(DeliveryDateCalculator $deliveryCalculator)
+    {
+        $this->deliveryCalculator = $deliveryCalculator;
+    }
+
     public function index(Request $request)
     {
         $query = Product::query()
@@ -80,7 +88,14 @@ class ProductController extends Controller
             $favoriteIds = session('favorites', []);
         }
 
-        return view('products.index', compact('products', 'categories', 'materials', 'favoriteIds'));
+        // Calculate delivery dates for products
+        $deliveryDates = [];
+        foreach ($products as $product) {
+            $deliveryInfo = $this->deliveryCalculator->calculateDeliveryDate($product);
+            $deliveryDates[$product->id] = $deliveryInfo['formatted'];
+        }
+
+        return view('products.index', compact('products', 'categories', 'materials', 'favoriteIds', 'deliveryDates'));
     }
 
     public function show(Product $product)
@@ -98,6 +113,10 @@ class ProductController extends Controller
             $isFavorite = in_array($product->id, $sessionFavorites);
         }
 
-        return view('products.show', compact('product', 'isFavorite'));
+        // Calculate delivery date
+        $deliveryInfo = $this->deliveryCalculator->calculateDeliveryDate($product);
+        $deliveryDate = $deliveryInfo['formatted'];
+
+        return view('products.show', compact('product', 'isFavorite', 'deliveryDate'));
     }
 }

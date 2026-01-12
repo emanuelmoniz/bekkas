@@ -70,6 +70,12 @@ class TicketController extends Controller
             'files.*' => 'nullable|file|max:20480',
             'g-recaptcha-response' => ['required', new Recaptcha],
         ], [
+            'title.required' => t('tickets.title_required') ?: 'Please enter a title.',
+            'title.max' => t('tickets.title_max') ?: 'Title cannot exceed 255 characters.',
+            'ticket_category_id.required' => t('tickets.category_required') ?: 'Please select a category.',
+            'message.required' => t('tickets.message_required') ?: 'Please enter a message.',
+            'due_date.date' => t('tickets.due_date_invalid') ?: 'Please enter a valid date.',
+            'files.*.max' => t('tickets.file_max') ?: 'File cannot exceed 20 MB.',
             'g-recaptcha-response.required' => t('tickets.recaptcha_required') ?: 'Please verify that you are not a robot.',
         ]);
 

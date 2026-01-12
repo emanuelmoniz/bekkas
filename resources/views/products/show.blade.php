@@ -75,6 +75,21 @@
                     {{ t('products.weight') ?: 'Weight' }}: {{ $product->weight }} g
                 </div>
 
+                {{-- EXPECTED DELIVERY --}}
+                @if(isset($deliveryDate) && $deliveryDate)
+                    <div class="bg-blue-50 border border-blue-200 rounded p-3">
+                        <div class="text-sm font-medium text-blue-900">
+                            {{ t('products.expected_delivery') ?: 'Expected delivery' }}
+                        </div>
+                        <div class="text-lg font-semibold text-blue-700">
+                            {{ $deliveryDate }}
+                        </div>
+                        <div class="text-xs text-blue-600 mt-1">
+                            {{ t('products.delivery_working_days') ?: 'Calculated in working days (Mon-Fri)' }}
+                        </div>
+                    </div>
+                @endif
+
                 {{-- STOCK --}}
                 @if ($product->stock > 0 || !$product->is_backorder)
                     <div class="text-sm">

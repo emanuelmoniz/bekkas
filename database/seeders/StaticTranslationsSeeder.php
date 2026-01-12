@@ -89,6 +89,25 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'cart.start_shopping', 'locale' => 'pt-PT', 'value' => 'Começar a Comprar', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'cart.start_shopping', 'locale' => 'en-UK', 'value' => 'Start Shopping', 'created_at'=>$now,'updated_at'=>$now],
 
+            // Shipping Config (Admin)
+            ['key' => 'shipping_config.title', 'locale' => 'pt-PT', 'value' => 'Configuração de Envio', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'shipping_config.title', 'locale' => 'en-UK', 'value' => 'Shipping Configuration', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'shipping_config.free_shipping_over', 'locale' => 'pt-PT', 'value' => 'Envio Gratuito Acima de (€)', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'shipping_config.free_shipping_over', 'locale' => 'en-UK', 'value' => 'Free Shipping Over (€)', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'shipping_config.free_shipping_help', 'locale' => 'pt-PT', 'value' => 'Defina como 0 para desativar o limite de envio gratuito', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'shipping_config.free_shipping_help', 'locale' => 'en-UK', 'value' => 'Set to 0 to disable free shipping threshold', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'shipping_config.success', 'locale' => 'pt-PT', 'value' => 'Configuração de envio atualizada com sucesso.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'shipping_config.success', 'locale' => 'en-UK', 'value' => 'Shipping configuration updated successfully.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'shipping_config.save_changes', 'locale' => 'pt-PT', 'value' => 'Guardar Alterações', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'shipping_config.save_changes', 'locale' => 'en-UK', 'value' => 'Save Changes', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'shipping_config.cancel', 'locale' => 'pt-PT', 'value' => 'Cancelar', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'shipping_config.cancel', 'locale' => 'en-UK', 'value' => 'Cancel', 'created_at'=>$now,'updated_at'=>$now],
+
             // Favorites
             ['key' => 'nav.favorites', 'locale' => 'pt-PT', 'value' => 'Favoritos', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'nav.favorites', 'locale' => 'en-UK', 'value' => 'Favorites', 'created_at'=>$now,'updated_at'=>$now],
@@ -131,6 +150,9 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'favorites.filter.reset', 'locale' => 'pt-PT', 'value' => 'Limpar', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'favorites.filter.reset', 'locale' => 'en-UK', 'value' => 'Reset', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'favorites.removed', 'locale' => 'pt-PT', 'value' => 'Produto removido dos favoritos.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'favorites.removed', 'locale' => 'en-UK', 'value' => 'Product removed from favorites.', 'created_at'=>$now,'updated_at'=>$now],
 
             // Checkout page
             ['key' => 'page.checkout.title', 'locale' => 'pt-PT', 'value' => 'Finalizar Compra', 'created_at'=>$now,'updated_at'=>$now],
@@ -311,6 +333,12 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'products.add_to_cart', 'locale' => 'pt-PT', 'value' => 'Adicionar ao carrinho', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'products.add_to_cart', 'locale' => 'en-UK', 'value' => 'Add to cart', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'products.expected_delivery', 'locale' => 'pt-PT', 'value' => 'Entrega prevista', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'products.expected_delivery', 'locale' => 'en-UK', 'value' => 'Expected delivery', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'products.delivery_working_days', 'locale' => 'pt-PT', 'value' => 'Calculado em dias úteis (Seg-Sex)', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'products.delivery_working_days', 'locale' => 'en-UK', 'value' => 'Calculated in working days (Mon-Fri)', 'created_at'=>$now,'updated_at'=>$now],
 
             // Checkout additional
             ['key' => 'checkout.title', 'locale' => 'pt-PT', 'value' => 'Finalizar Compra', 'created_at'=>$now,'updated_at'=>$now],
@@ -593,8 +621,120 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.new', 'locale' => 'pt-PT', 'value' => 'Novo Ticket', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'tickets.new', 'locale' => 'en-UK', 'value' => 'New Ticket', 'created_at'=>$now,'updated_at'=>$now],
 
+            // Ticket create form
+            ['key' => 'tickets.open_ticket', 'locale' => 'pt-PT', 'value' => 'Abrir Ticket', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.open_ticket', 'locale' => 'en-UK', 'value' => 'Open Ticket', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.category', 'locale' => 'pt-PT', 'value' => 'Categoria', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.category', 'locale' => 'en-UK', 'value' => 'Category', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.title', 'locale' => 'pt-PT', 'value' => 'Título', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.title', 'locale' => 'en-UK', 'value' => 'Title', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.message', 'locale' => 'pt-PT', 'value' => 'Mensagem', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.message', 'locale' => 'en-UK', 'value' => 'Message', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.due_date', 'locale' => 'pt-PT', 'value' => 'Data de Vencimento', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.due_date', 'locale' => 'en-UK', 'value' => 'Due Date', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.files', 'locale' => 'pt-PT', 'value' => 'Ficheiros', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.files', 'locale' => 'en-UK', 'value' => 'Files', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.cancel', 'locale' => 'pt-PT', 'value' => 'Cancelar', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.cancel', 'locale' => 'en-UK', 'value' => 'Cancel', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.submit', 'locale' => 'pt-PT', 'value' => 'Abrir Ticket', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.submit', 'locale' => 'en-UK', 'value' => 'Open Ticket', 'created_at'=>$now,'updated_at'=>$now],
+
+            // Ticket validation messages
+            ['key' => 'tickets.title_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira um título.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.title_required', 'locale' => 'en-UK', 'value' => 'Please enter a title.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.title_max', 'locale' => 'pt-PT', 'value' => 'O título não pode exceder 255 caracteres.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.title_max', 'locale' => 'en-UK', 'value' => 'Title cannot exceed 255 characters.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.category_required', 'locale' => 'pt-PT', 'value' => 'Por favor, selecione uma categoria.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.category_required', 'locale' => 'en-UK', 'value' => 'Please select a category.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.message_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira uma mensagem.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.message_required', 'locale' => 'en-UK', 'value' => 'Please enter a message.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.due_date_invalid', 'locale' => 'pt-PT', 'value' => 'Por favor, insira uma data válida.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.due_date_invalid', 'locale' => 'en-UK', 'value' => 'Please enter a valid date.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.file_max', 'locale' => 'pt-PT', 'value' => 'O ficheiro não pode exceder 20 MB.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.file_max', 'locale' => 'en-UK', 'value' => 'File cannot exceed 20 MB.', 'created_at'=>$now,'updated_at'=>$now],
+
             ['key' => 'tickets.recaptcha_required', 'locale' => 'pt-PT', 'value' => 'Por favor, verifique que não é um robô.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'tickets.recaptcha_required', 'locale' => 'en-UK', 'value' => 'Please verify that you are not a robot.', 'created_at'=>$now,'updated_at'=>$now],
+
+            // Ticket index page
+            ['key' => 'tickets.index_title', 'locale' => 'pt-PT', 'value' => 'Tickets', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.index_title', 'locale' => 'en-UK', 'value' => 'Tickets', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.ticket_id', 'locale' => 'pt-PT', 'value' => 'ID do Ticket', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.ticket_id', 'locale' => 'en-UK', 'value' => 'Ticket ID', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.search_title', 'locale' => 'pt-PT', 'value' => 'Pesquisar título', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.search_title', 'locale' => 'en-UK', 'value' => 'Search title', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.select_category', 'locale' => 'pt-PT', 'value' => 'Selecionar categoria', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.select_category', 'locale' => 'en-UK', 'value' => 'Select category', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.search', 'locale' => 'pt-PT', 'value' => 'Pesquisar...', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.search', 'locale' => 'en-UK', 'value' => 'Search...', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.reset', 'locale' => 'pt-PT', 'value' => 'Limpar', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.reset', 'locale' => 'en-UK', 'value' => 'Reset', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.filter', 'locale' => 'pt-PT', 'value' => 'Filtrar', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.filter', 'locale' => 'en-UK', 'value' => 'Filter', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.status', 'locale' => 'pt-PT', 'value' => 'Estado', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.status', 'locale' => 'en-UK', 'value' => 'Status', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.last_update', 'locale' => 'pt-PT', 'value' => 'Última Atualização', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.last_update', 'locale' => 'en-UK', 'value' => 'Last Update', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.no_tickets', 'locale' => 'pt-PT', 'value' => 'Nenhum ticket encontrado.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.no_tickets', 'locale' => 'en-UK', 'value' => 'No tickets found.', 'created_at'=>$now,'updated_at'=>$now],
+
+            // Ticket show page
+            ['key' => 'tickets.back_to_tickets', 'locale' => 'pt-PT', 'value' => 'Voltar aos tickets', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.back_to_tickets', 'locale' => 'en-UK', 'value' => 'Back to tickets', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.mark_as_unread', 'locale' => 'pt-PT', 'value' => 'Marcar como não lido', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.mark_as_unread', 'locale' => 'en-UK', 'value' => 'Mark as unread', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.user', 'locale' => 'pt-PT', 'value' => 'Utilizador', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.user', 'locale' => 'en-UK', 'value' => 'User', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.opened', 'locale' => 'pt-PT', 'value' => 'Aberto', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.opened', 'locale' => 'en-UK', 'value' => 'Opened', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.closed', 'locale' => 'pt-PT', 'value' => 'Fechado', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.closed', 'locale' => 'en-UK', 'value' => 'Closed', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.close_reason', 'locale' => 'pt-PT', 'value' => 'Motivo do encerramento', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.close_reason', 'locale' => 'en-UK', 'value' => 'Close reason', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.close_ticket', 'locale' => 'pt-PT', 'value' => 'Fechar Ticket', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.close_ticket', 'locale' => 'en-UK', 'value' => 'Close Ticket', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.reopen_reason', 'locale' => 'pt-PT', 'value' => 'Motivo da reabertura', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.reopen_reason', 'locale' => 'en-UK', 'value' => 'Reopen reason', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.reopen_ticket', 'locale' => 'pt-PT', 'value' => 'Reabrir Ticket', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.reopen_ticket', 'locale' => 'en-UK', 'value' => 'Reopen Ticket', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.system', 'locale' => 'pt-PT', 'value' => 'Sistema', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.system', 'locale' => 'en-UK', 'value' => 'System', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.send', 'locale' => 'pt-PT', 'value' => 'Enviar', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.send', 'locale' => 'en-UK', 'value' => 'Send', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'tickets.new_message', 'locale' => 'pt-PT', 'value' => 'Nova mensagem', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'tickets.new_message', 'locale' => 'en-UK', 'value' => 'New message', 'created_at'=>$now,'updated_at'=>$now],
 
             // Ticket email notifications
             ['key' => 'tickets.email.subject', 'locale' => 'pt-PT', 'value' => 'Ticket #:uuid – :event', 'created_at'=>$now,'updated_at'=>$now],
@@ -706,6 +846,19 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'about.cta.contact', 'locale' => 'pt-PT', 'value' => 'Iniciar Projeto', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'about.cta.contact', 'locale' => 'en-UK', 'value' => 'Start a Project', 'created_at'=>$now,'updated_at'=>$now],
+
+            // Contact form fields
+            ['key' => 'contact.name', 'locale' => 'pt-PT', 'value' => 'Nome', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.name', 'locale' => 'en-UK', 'value' => 'Name', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.email', 'locale' => 'pt-PT', 'value' => 'Email', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.email', 'locale' => 'en-UK', 'value' => 'Email', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.message', 'locale' => 'pt-PT', 'value' => 'Mensagem', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.message', 'locale' => 'en-UK', 'value' => 'Message', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'contact.send', 'locale' => 'pt-PT', 'value' => 'Enviar Mensagem', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'contact.send', 'locale' => 'en-UK', 'value' => 'Send Message', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'contact.success_message', 'locale' => 'pt-PT', 'value' => 'Obrigado pela sua mensagem! Entraremos em contacto em breve.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'contact.success_message', 'locale' => 'en-UK', 'value' => 'Thank you for your message! We will get back to you soon.', 'created_at'=>$now,'updated_at'=>$now],

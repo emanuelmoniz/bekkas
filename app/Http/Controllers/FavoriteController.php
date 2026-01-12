@@ -6,11 +6,19 @@ use App\Models\Product;
 use App\Models\Favorite;
 use App\Models\Category;
 use App\Models\Material;
+use App\Services\DeliveryDateCalculator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
+    protected $deliveryCalculator;
+
+    public function __construct(DeliveryDateCalculator $deliveryCalculator)
+    {
+        $this->deliveryCalculator = $deliveryCalculator;
+    }
+
     public function index(Request $request)
     {
         // Get favorites from session or database
@@ -74,7 +82,14 @@ class FavoriteController extends Controller
 
         $hasFavorites = !empty($favoriteIds);
 
-        return view('favorites.index', compact('products', 'categories', 'materials', 'hasFavorites'));
+        // Calculate delivery dates for products
+        $deliveryDates = [];
+        foreach ($products as $product) {
+            $deliveryInfo = $this->deliveryCalculator->calculateDeliveryDate($product);
+            $deliveryDates[$product->id] = $deliveryInfo['formatted'];
+        }
+
+        return view('favorites.index', compact('products', 'categories', 'materials', 'hasFavorites', 'deliveryDates'));
     }
 
     public function toggle(Request $request, Product $product)

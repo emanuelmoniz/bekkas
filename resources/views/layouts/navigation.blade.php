@@ -62,7 +62,7 @@
 
                         {{-- Orders with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->is('admin/orders*') || request()->is('admin/shipping-tiers*') || request()->is('admin/order-statuses*')" @click="window.location.href='{{ route('admin.orders.index') }}'">
+                            <x-nav-button :active="request()->is('admin/orders*') || request()->is('admin/shipping-tiers*') || request()->is('admin/shipping-config*') || request()->is('admin/order-statuses*')" @click="window.location.href='{{ route('admin.orders.index') }}'">
                                 Orders
                             </x-nav-button>
                             <div x-show="open"
@@ -75,8 +75,9 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.order-statuses.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Order Statuses</a>
+                                    <a href="{{ route('admin.shipping-config.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Shipping Config</a>
                                     <a href="{{ route('admin.shipping-tiers.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Shipping Tiers</a>
+                                    <a href="{{ route('admin.order-statuses.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Order Statuses</a>
                                 </div>
                             </div>
                         </div>
@@ -128,29 +129,10 @@
                         {{-- PUBLIC MENU --}}
                         
                         {{-- Products --}}
-                        <div x-data="{ open: false }" 
-                             class="relative h-full flex items-center" 
-                             @mouseenter="if($store.favorites.count > 0) open = true" 
-                             @mouseleave="open = false">
+                        <div class="relative h-full flex items-center">
                             <x-nav-button :active="request()->routeIs('products.*')" @click="window.location.href='{{ route('products.index') }}'">
                                 {{ t('nav.products') ?: 'Products' }}
                             </x-nav-button>
-                            
-                            <div x-show="open && $store.favorites.count > 0"
-                                 x-transition:enter="transition ease-out duration-200"
-                                 x-transition:enter-start="opacity-0 scale-95"
-                                 x-transition:enter-end="opacity-100 scale-100"
-                                 x-transition:leave="transition ease-in duration-150"
-                                 x-transition:leave-start="opacity-100 scale-100"
-                                 x-transition:leave-end="opacity-0 scale-95"
-                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
-                                 style="display: none;">
-                                <div class="py-1">
-                                    <x-dropdown-link :href="route('favorites.index')">
-                                        {{ t('nav.favorites') ?: 'Favorites' }} (<span x-text="$store.favorites.count"></span>)
-                                    </x-dropdown-link>
-                                </div>
-                            </div>
                         </div>
 
                         {{-- Architecture --}}
@@ -194,6 +176,17 @@
                     </a>
                 </div>
 
+                <!-- Favorites Icon -->
+                <div x-data="{}" x-show="$store.favorites.count > 0" class="relative" style="display: none;">
+                    <a href="{{ route('favorites.index') }}" class="flex items-center text-gray-600 hover:text-gray-900" aria-label="Favorites">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" stroke="none">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                        <span class="absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-red-600 text-white text-xs px-1.5 py-0.5 min-w-[1.25rem]" x-text="$store.favorites.count"></span>
+                    </a>
+                </div>
+
+                <!-- Cart Icon -->
                 @if($cartCount > 0)
                     <div class="relative">
                         <a href="{{ route('cart.index') }}" class="flex items-center text-gray-600 hover:text-gray-900" aria-label="Cart">
@@ -386,14 +379,6 @@
                     {{ t('nav.products') ?: 'Products' }}
                 </x-responsive-nav-link>
                 
-                <div x-data="{}" 
-                     x-show="$store.favorites.count > 0"
-                     class="pl-4">
-                    <x-responsive-nav-link :href="route('favorites.index')" :active="request()->routeIs('favorites.*')">
-                        {{ t('nav.favorites') ?: 'Favorites' }} (<span x-text="$store.favorites.count"></span>)
-                    </x-responsive-nav-link>
-                </div>
-                
                 <x-responsive-nav-link :href="route('architecture.index')" :active="request()->routeIs('architecture.*')">
                     {{ t('nav.architecture') ?: 'Architecture' }}
                 </x-responsive-nav-link>
@@ -403,6 +388,13 @@
                 <x-responsive-nav-link :href="'https://bekkas.pt#contact'" :active="false">
                     {{ t('nav.contact') ?: 'Contact' }}
                 </x-responsive-nav-link>
+                
+                <div x-data="{}" x-show="$store.favorites.count > 0" style="display: none;">
+                    <x-responsive-nav-link :href="route('favorites.index')" :active="request()->routeIs('favorites.*')">
+                        {{ t('nav.favorites') ?: 'Favorites' }} (<span x-text="$store.favorites.count"></span>)
+                    </x-responsive-nav-link>
+                </div>
+                
                 @php $cartCount = count(session('cart', [])); @endphp
                 @if($cartCount > 0)
                     <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">

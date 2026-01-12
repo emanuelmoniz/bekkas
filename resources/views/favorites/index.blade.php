@@ -16,7 +16,7 @@
                     {{-- PRODUCTS --}}
                     <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
                         @foreach ($products as $product)
-                            <div class="bg-white rounded shadow p-4 hover:shadow-lg transition relative">
+                            <div class="bg-white rounded shadow p-4 hover:shadow-lg transition relative isolate">
                                 <a href="{{ route('products.show', $product) }}">
                                     <img src="{{ asset('storage/' . optional($product->primaryPhoto)->path) }}"
                                          class="h-40 w-full object-cover rounded mb-3">
@@ -26,6 +26,11 @@
                                     <div class="text-sm text-gray-600">
                                         €{{ number_format($product->promo_price ?? $product->price, 2) }}
                                     </div>
+                                    @if(isset($deliveryDates[$product->id]) && $deliveryDates[$product->id])
+                                        <div class="text-xs text-gray-500 mt-1">
+                                            {{ t('products.expected_delivery') ?: 'Expected delivery' }}: {{ $deliveryDates[$product->id] }}
+                                        </div>
+                                    @endif
                                 </a>
                                 
                                 <form method="POST" action="{{ route('favorites.remove', $product) }}" class="mt-3">

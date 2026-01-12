@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Open Ticket
+            {{ t('tickets.open_ticket') ?: 'Open Ticket' }}
         </h2>
     </x-slot>
 
@@ -15,7 +15,7 @@
             <div class="bg-white p-6 rounded shadow mb-6 space-y-4">
 
                 <div>
-                    <label class="block font-semibold mb-1">Category *</label>
+                    <label class="block font-semibold mb-1">{{ t('tickets.category') ?: 'Category' }} *</label>
                     <select name="ticket_category_id" class="w-full border rounded px-3 py-2" required>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}">
@@ -26,7 +26,7 @@
                 </div>
 
                 <div>
-                    <label class="block font-semibold mb-1">Title *</label>
+                    <label class="block font-semibold mb-1">{{ t('tickets.title') ?: 'Title' }} *</label>
                     <input type="text"
                            name="title"
                            class="w-full border rounded px-3 py-2"
@@ -34,7 +34,7 @@
                 </div>
 
                 <div>
-                    <label class="block font-semibold mb-1">Message *</label>
+                    <label class="block font-semibold mb-1">{{ t('tickets.message') ?: 'Message' }} *</label>
                     <textarea name="message"
                               rows="5"
                               class="w-full border rounded px-3 py-2"
@@ -42,14 +42,14 @@
                 </div>
 
                 <div>
-                    <label class="block font-semibold mb-1">Due Date</label>
+                    <label class="block font-semibold mb-1">{{ t('tickets.due_date') ?: 'Due Date' }}</label>
                     <input type="date"
                            name="due_date"
                            class="border rounded px-3 py-2">
                 </div>
 
                 <div>
-                    <label class="block font-semibold mb-1">Files</label>
+                    <label class="block font-semibold mb-1">{{ t('tickets.files') ?: 'Files' }}</label>
                     <input type="file"
                            name="files[]"
                            multiple>
@@ -67,10 +67,10 @@
             <div class="flex justify-end gap-3">
                 <a href="{{ route('tickets.index') }}"
                    class="bg-gray-300 px-6 py-2 rounded">
-                    Cancel
+                    {{ t('tickets.cancel') ?: 'Cancel' }}
                 </a>
                 <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">
-                    Open Ticket
+                    {{ t('tickets.submit') ?: 'Open Ticket' }}
                 </button>
             </div>
         </form>

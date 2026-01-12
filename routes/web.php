@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\TicketCategoryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\OrderStatusController;
 use App\Http\Controllers\Admin\ShippingTierController;
+use App\Http\Controllers\Admin\ShippingConfigController;
 use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\RegionController;
@@ -240,6 +241,15 @@ Route::middleware(['auth', 'is_admin'])
 
         Route::patch('/orders/{order}', [AdminOrderController::class, 'update'])
             ->name('orders.update');
+
+        /*
+        | Shipping Config
+        */
+        Route::get('/shipping-config', [ShippingConfigController::class, 'index'])
+            ->name('shipping-config.index');
+
+        Route::put('/shipping-config', [ShippingConfigController::class, 'update'])
+            ->name('shipping-config.update');
 
         /*
         | Order Statuses

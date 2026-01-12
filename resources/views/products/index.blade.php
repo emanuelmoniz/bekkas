@@ -50,7 +50,7 @@
             {{-- PRODUCTS --}}
             <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6" x-data="favoritesData()">
                 @forelse ($products as $product)
-                    <div class="bg-white rounded shadow p-4 hover:shadow-lg transition relative">
+                    <div class="bg-white rounded shadow p-4 hover:shadow-lg transition relative overflow-hidden isolate">
                         <button @click.prevent="toggleFavorite({{ $product->id }})" 
                                 class="absolute top-2 right-2 p-2 hover:bg-gray-100 rounded-full transition z-10">
                             <svg xmlns="http://www.w3.org/2000/svg" 
@@ -71,6 +71,11 @@
                             <div class="text-sm text-gray-600">
                                 €{{ number_format($product->promo_price ?? $product->price, 2) }}
                             </div>
+                            @if(isset($deliveryDates[$product->id]) && $deliveryDates[$product->id])
+                                <div class="text-xs text-gray-500 mt-1">
+                                    {{ t('products.expected_delivery') ?: 'Expected delivery' }}: {{ $deliveryDates[$product->id] }}
+                                </div>
+                            @endif
                         </a>
                     </div>
                 @empty
