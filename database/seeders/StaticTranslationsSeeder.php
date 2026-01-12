@@ -340,6 +340,18 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'products.delivery_working_days', 'locale' => 'pt-PT', 'value' => 'Calculado em dias úteis (Seg-Sex)', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'products.delivery_working_days', 'locale' => 'en-UK', 'value' => 'Calculated in working days (Mon-Fri)', 'created_at'=>$now,'updated_at'=>$now],
 
+            ['key' => 'products.backorder_title', 'locale' => 'pt-PT', 'value' => 'Feito por encomenda', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'products.backorder_title', 'locale' => 'en-UK', 'value' => 'Made to order', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'products.backorder_message', 'locale' => 'pt-PT', 'value' => 'Este artigo não tem stock, mas pode ser impresso por encomenda. O tempo de produção é', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'products.backorder_message', 'locale' => 'en-UK', 'value' => 'This item does not have stock, but can be printed per request. The production time is', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'products.backorder_delivery_note', 'locale' => 'pt-PT', 'value' => 'A estimativa de data de entrega apresentada já inclui este tempo de produção.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'products.backorder_delivery_note', 'locale' => 'en-UK', 'value' => 'The shown delivery date estimation already includes this production time.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'products.working_days', 'locale' => 'pt-PT', 'value' => 'dias úteis', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'products.working_days', 'locale' => 'en-UK', 'value' => 'working days', 'created_at'=>$now,'updated_at'=>$now],
+
             // Checkout additional
             ['key' => 'checkout.title', 'locale' => 'pt-PT', 'value' => 'Finalizar Compra', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'checkout.title', 'locale' => 'en-UK', 'value' => 'Checkout', 'created_at'=>$now,'updated_at'=>$now],

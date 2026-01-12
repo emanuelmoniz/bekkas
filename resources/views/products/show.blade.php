@@ -90,15 +90,27 @@
                     </div>
                 @endif
 
-                {{-- STOCK --}}
-                @if ($product->stock > 0 || !$product->is_backorder)
+                {{-- STOCK / BACKORDER --}}
+                @if ($product->stock > 0)
                     <div class="text-sm">
                         {{ t('products.stock') ?: 'Stock' }}:
-                        @if ($product->stock > 0)
-                            <span class="text-green-600 font-medium">{{ t('products.available') ?: 'Available' }}</span>
-                        @else
-                            <span class="text-red-600 font-medium">{{ t('products.out_of_stock') ?: 'Out of stock' }}</span>
-                        @endif
+                        <span class="text-green-600 font-medium">{{ t('products.available') ?: 'Available' }}</span>
+                    </div>
+                @elseif ($product->is_backorder)
+                    <div class="bg-amber-50 border border-amber-200 rounded p-3">
+                        <div class="text-sm font-medium text-amber-900 mb-1">
+                            {{ t('products.backorder_title') ?: 'Made to order' }}
+                        </div>
+                        <div class="text-sm text-amber-800">
+                            {{ t('products.backorder_message') ?: 'This item does not have stock, but can be printed per request. The production time is' }}
+                            <span class="font-medium">{{ $product->production_time }} {{ t('products.working_days') ?: 'working days' }}</span>.
+                            {{ t('products.backorder_delivery_note') ?: 'The shown delivery date estimation already includes this production time.' }}
+                        </div>
+                    </div>
+                @else
+                    <div class="text-sm">
+                        {{ t('products.stock') ?: 'Stock' }}:
+                        <span class="text-red-600 font-medium">{{ t('products.out_of_stock') ?: 'Out of stock' }}</span>
                     </div>
                 @endif
 
