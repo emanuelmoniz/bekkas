@@ -19,6 +19,13 @@ class LanguageController extends Controller
         // Set the application locale
         app()->setLocale($locale);
 
+        // If user is authenticated, update their language preference
+        if (auth()->check()) {
+            $user = auth()->user();
+            $user->language = $locale;
+            $user->save();
+        }
+
         // Redirect back to previous page or home
         return redirect()->back();
     }

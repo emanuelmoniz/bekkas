@@ -59,6 +59,16 @@
             <x-input-error class="mt-2" :messages="$errors->get('phone')" />
         </div>
 
+        <div>
+            <x-input-label for="language" :value="t('profile.language') ?: 'Language'" />
+            <select id="language" name="language" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                @foreach(config('app.locales') as $key => $label)
+                    <option value="{{ $key }}" {{ old('language', $user->language ?? app()->getLocale()) == $key ? 'selected' : '' }}>{{ $label }}</option>
+                @endforeach
+            </select>
+            <x-input-error class="mt-2" :messages="$errors->get('language')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ t('profile.save') ?: 'Save' }}</x-primary-button>
 

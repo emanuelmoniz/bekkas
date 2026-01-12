@@ -64,7 +64,7 @@
                     @endphp
                     <select id="tracking_statuses" name="tracking_statuses[]" multiple class="form-multiselect block w-full mt-1">
                         @foreach ($allStatuses as $status)
-                            <option value="{{ $status->code }}" {{ in_array($status->code, $tracking_statuses ?? []) ? 'selected' : '' }}>
+                            <option value="{{ $status->code }}" {{ in_array($status->code, $trackingStatuses ?? []) ? 'selected' : '' }}>
                                 {{ $status->code }}
                                 @php $trans = $status->translation(); @endphp
                                 @if($trans && $trans->name && $trans->name !== $status->code)

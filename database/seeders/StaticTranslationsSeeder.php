@@ -12,6 +12,13 @@ class StaticTranslationsSeeder extends Seeder
         $now = now();
 
         $rows = [
+                        // Profile language labels
+                        ['key' => 'profile.language', 'locale' => 'pt-PT', 'value' => 'Idioma', 'created_at'=>$now,'updated_at'=>$now],
+                        ['key' => 'profile.language', 'locale' => 'en-UK', 'value' => 'Language', 'created_at'=>$now,'updated_at'=>$now],
+                        ['key' => 'profile.save', 'locale' => 'pt-PT', 'value' => 'Guardar', 'created_at'=>$now,'updated_at'=>$now],
+                        ['key' => 'profile.save', 'locale' => 'en-UK', 'value' => 'Save', 'created_at'=>$now,'updated_at'=>$now],
+                        ['key' => 'profile.saved', 'locale' => 'pt-PT', 'value' => 'Guardado.', 'created_at'=>$now,'updated_at'=>$now],
+                        ['key' => 'profile.saved', 'locale' => 'en-UK', 'value' => 'Saved.', 'created_at'=>$now,'updated_at'=>$now],
             // Orders Yes/No
             ['key' => 'orders.yes', 'locale' => 'pt-PT', 'value' => 'Sim', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'orders.yes', 'locale' => 'en-UK', 'value' => 'Yes', 'created_at'=>$now,'updated_at'=>$now],

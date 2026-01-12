@@ -34,6 +34,7 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
             ],
             'phone' => ['nullable', 'string', 'max:20'],
+            'language' => ['required', 'string', Rule::in(array_keys(config('app.locales')))],
         ];
     }
 
