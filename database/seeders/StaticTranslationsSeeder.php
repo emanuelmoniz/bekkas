@@ -10,7 +10,6 @@ class StaticTranslationsSeeder extends Seeder
     public function run(): void
     {
         $now = now();
-
         $rows = [
                         // Profile language labels
                         ['key' => 'profile.language', 'locale' => 'pt-PT', 'value' => 'Idioma', 'created_at'=>$now,'updated_at'=>$now],
@@ -1120,7 +1119,7 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.validation.city_required', 'locale' => 'en-UK', 'value' => 'City is required.', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'checkout.validation.country_required', 'locale' => 'pt-PT', 'value' => 'O país é obrigatório.', 'created_at'=>$now,'updated_at'=>$now],
-            ['key' => 'checkout.validation.country_required', 'locale' => 'en-UK', 'value' => 'Country is required.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.validation.country_required', 'locale' => 'en-UK', 'value' => 'Country is required.', 'created_at'=>$now,'updated_at'=>$now]
         ];
 
         DB::table('static_translations')->upsert($rows, ['key','locale']);

@@ -38,6 +38,7 @@
                             <input type="radio"
                                    name="address_selection"
                                    value="{{ $address->id }}"
+                                   data-country-id="{{ $address->country_id }}"
                                    data-postal-code="{{ $address->postal_code }}"
                                    @click="addressMode = 'existing'; selectedAddressId = {{ $address->id }}; onAddressChange()"
                                    @checked($address->is_default || (!$addresses->where('is_default', true)->first() && $loop->first))>
@@ -73,12 +74,12 @@
                     <input name="address_line_2" placeholder="{{ t('checkout.validation.address_line_2_optional') ?: 'Address line 2 (optional)' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
                     <input name="postal_code" 
                            x-model="newPostalCode"
-                           @input.debounce.500ms="updateShippingTiers(newPostalCode)"
+                           @input="updateShippingTiersForNewAddress()"
                            placeholder="{{ t('checkout.postal_code') ?: 'Postal code' }}" 
                            class="border rounded px-3 py-2 w-full" 
                            :disabled="addressMode !== 'new'">
                     <input name="city" placeholder="{{ t('checkout.city') ?: 'City' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
-                    <select name="country_id" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
+                    <select name="country_id" x-model="newCountryId" @change="updateShippingTiersForNewAddress()" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
                         <option value="">{{ t('checkout.country') ?: 'Country' }}</option>
                         @foreach(\App\Models\Country::where('is_active', true)->orderBy('name_pt')->get() as $country)
                             <option value="{{ $country->id }}">
@@ -161,12 +162,12 @@
 
                 <div class="flex justify-between">
                     <span>{{ t('checkout.shipping') ?: 'Shipping' }}</span>
-                    <span x-text="'€' + (shipping?.gross ?? 0).toFixed(2)" x-cloak>€{{ number_format($shipping['gross'], 2) }}</span>
+                    <span x-text="'€' + Number(shipping?.gross ?? 0).toFixed(2)" x-cloak>€{{ number_format($shipping['gross'], 2) }}</span>
                 </div>
 
                 <div class="text-sm text-gray-500 flex justify-between">
                     <span>{{ t('checkout.shipping_tax') ?: 'Shipping tax' }}</span>
-                    <span x-text="'€' + (shipping?.tax ?? 0).toFixed(2)" x-cloak>€{{ number_format($shipping['tax'], 2) }}</span>
+                    <span x-text="'€' + Number(shipping?.tax ?? 0).toFixed(2)" x-cloak>€{{ number_format($shipping['tax'], 2) }}</span>
                 </div>
 
                 <div class="text-sm text-gray-500 flex justify-between">
@@ -189,15 +190,31 @@
                 addressMode: '{{ $addresses->isEmpty() ? "new" : "existing" }}',
                 selectedAddressId: {{ $addresses->where('is_default', true)->first()->id ?? $addresses->first()->id ?? 'null' }},
                 newPostalCode: '',
+                newCountryId: '',
                 qualifiesForFreeShipping: {{ $qualifiesForFreeShipping ? 'true' : 'false' }},
                 freeShippingOver: {{ $freeShippingOver }},
                 allTiers: @json($availableShippingTiersFormatted),
+                addresses: @json($addresses->map(fn($a) => ['id' => $a->id, 'country_id' => $a->country_id, 'postal_code' => $a->postal_code])->toArray()),
                 availableTiers: [],
                 selectedTierId: {{ $selectedShippingTier ? $selectedShippingTier->id : 'null' }},
                 shipping: @json($shipping),
                 productsGross: {{ $productsGross }},
                 productsTax: {{ $productsTax }},
-
+                filterTiersByCountryAndPostal(tiers, countryId, postalCode) {
+                    if (!countryId) return [];
+                    // Filter tiers by regions that belong to the selected country
+                    const tiersForCountry = tiers.filter(tier => {
+                        if (!tier.regions || !Array.isArray(tier.regions)) return false;
+                        return tier.regions.some(region => region.country_id == countryId);
+                    });
+                    if (!postalCode || postalCode.length < 4) return tiersForCountry;
+                    // Normalize postal code to first 4 digits for comparison
+                    const normalizedPostal = postalCode.length > 4 ? postalCode.substring(0, 4) : postalCode;
+                    // Further filter by postal code
+                    return tiersForCountry.filter(tier =>
+                        tier.regions.some(region => region.country_id == countryId && normalizedPostal >= region.postal_code_from.substring(0, 4) && normalizedPostal <= region.postal_code_to.substring(0, 4))
+                    );
+                },
                 filterTiers(tiers, qualifiesForFreeShipping) {
                     if (!qualifiesForFreeShipping) return tiers;
                     // Find the free tier (is_free: true)
@@ -206,27 +223,29 @@
                     // Only show the free tier and any active tiers that are faster
                     return [freeTier, ...tiers.filter(t => !t.is_free && t.shipping_days < freeTier.shipping_days)];
                 },
-
                 init() {
                     // On page load, filter tiers for display
-                    this.availableTiers = this.filterTiers(this.allTiers, this.qualifiesForFreeShipping);
-                    if (this.selectedTierId && this.availableTiers.length > 0) {
-                        const selectedTier = this.availableTiers.find(t => t.id === this.selectedTierId);
-                        if (selectedTier) {
-                            this.selectTier(selectedTier);
+                    if (this.addressMode === 'existing' && this.selectedAddressId) {
+                        const address = this.addresses.find(a => a.id == this.selectedAddressId);
+                        if (address) {
+                            this.fetchShippingTiers(address.postal_code, this.selectedAddressId, null);
                         }
-                    } else if (this.availableTiers.length > 0 && !this.selectedTierId) {
-                        this.selectTier(this.availableTiers[0]);
+                    } else if (this.addressMode === 'new') {
+                        this.updateShippingTiersForNewAddress();
                     }
                 },
-
-                async updateShippingTiers(postalCode) {
-                    if (!postalCode || postalCode.length < 4) {
+                updateShippingTiersForNewAddress() {
+                    this.newPostalCode = this.newPostalCode.trim();
+                    if (!this.newCountryId || !this.newPostalCode || this.newPostalCode.length < 4) {
                         this.availableTiers = [];
                         this.selectedTierId = null;
                         this.shipping = { gross: 0, net: 0, tax: 0 };
                         return;
                     }
+                    // Use AJAX to get tiers
+                    this.fetchShippingTiers(this.newPostalCode, null, this.newCountryId);
+                },
+                async fetchShippingTiers(postalCode, addressId, countryId) {
                     try {
                         const response = await fetch('{{ route("checkout.shipping-tiers") }}', {
                             method: 'POST',
@@ -236,14 +255,12 @@
                             },
                             body: JSON.stringify({
                                 postal_code: postalCode,
-                                address_id: this.addressMode === 'existing' ? this.selectedAddressId : null
+                                address_id: addressId,
+                                country_id: countryId
                             })
                         });
                         const data = await response.json();
-                        this.qualifiesForFreeShipping = data.qualifies_for_free_shipping || false;
-                        this.freeShippingOver = data.free_shipping_over || 0;
-                        // Always filter tiers for display
-                        this.availableTiers = this.filterTiers(data.tiers || [], this.qualifiesForFreeShipping);
+                        this.availableTiers = this.filterTiers(data.tiers, this.qualifiesForFreeShipping);
                         if (this.availableTiers.length > 0) {
                             this.selectTier(this.availableTiers[0]);
                         } else {
@@ -254,33 +271,28 @@
                         console.error('Error fetching shipping tiers:', error);
                     }
                 },
-
                 selectTier(tier) {
                     this.selectedTierId = tier.id;
                     this.shipping = tier.shipping;
                 },
-
                 async onAddressChange() {
                     if (this.addressMode === 'existing' && this.selectedAddressId) {
-                        const addressSelect = document.querySelector('input[name=address_selection]:checked');
-                        const postalCode = addressSelect ? addressSelect.dataset.postalCode : '';
-                        await this.updateShippingTiers(postalCode);
-                    } else {
-                        this.availableTiers = [];
-                        this.selectedTierId = null;
-                        this.shipping = { gross: 0, net: 0, tax: 0 };
-                        this.qualifiesForFreeShipping = false;
+                        const address = this.addresses.find(a => a.id == this.selectedAddressId);
+                        if (address) {
+                            this.fetchShippingTiers(address.postal_code, this.selectedAddressId, null);
+                        }
+                    } else if (this.addressMode === 'new') {
+                        this.updateShippingTiersForNewAddress();
                     }
                 },
-
                 get totalGross() {
-                    return (this.productsGross + this.shipping.gross).toFixed(2);
+                    return (Number(this.productsGross) + Number(this.shipping.gross)).toFixed(2);
                 },
-
                 get totalTax() {
-                    return (this.productsTax + this.shipping.tax).toFixed(2);
+                    return (Number(this.productsTax) + Number(this.shipping.tax)).toFixed(2);
                 }
             }
         }
     </script>
+
 </x-app-layout>

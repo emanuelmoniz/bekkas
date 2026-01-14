@@ -49,6 +49,7 @@ class OrderController extends Controller
         $request->validate([
             'postal_code' => 'required|string',
             'address_id' => 'nullable|exists:addresses,id',
+            'country_id' => 'nullable|exists:countries,id',
         ]);
 
         $cart = session('cart', []);
@@ -56,8 +57,16 @@ class OrderController extends Controller
             return response()->json(['error' => 'Cart is empty'], 400);
         }
 
-        // Get postal code
+        // Get postal code and country
         $postalCode = $request->postal_code;
+        $countryId = null;
+
+        if ($request->address_id) {
+            $address = Address::find($request->address_id);
+            $countryId = $address->country_id;
+        } elseif ($request->country_id) {
+            $countryId = $request->country_id;
+        }
 
         // Calculate total weight
         $products = Product::whereIn('id', array_keys($cart))->get();
@@ -93,7 +102,10 @@ class OrderController extends Controller
         $tiers = ShippingTier::where('active', true)
             ->where('weight_from', '<=', $totalWeight)
             ->where('weight_to', '>=', $totalWeight)
-            ->whereHas('regions', function ($query) use ($postalCode) {
+            ->whereHas('regions', function ($query) use ($postalCode, $countryId) {
+                if ($countryId) {
+                    $query->where('country_id', $countryId);
+                }
                 $query->where('postal_code_from', '<=', $postalCode)
                       ->where('postal_code_to', '>=', $postalCode);
             })
@@ -368,6 +380,11 @@ class OrderController extends Controller
                 'cost_gross' => $gross,
                 'shipping_days' => $t->shipping_days,
                 'is_free' => $isFree,
+                'regions' => $t->regions->map(fn($r) => [
+                    'country_id' => $r->country_id,
+                    'postal_code_from' => $r->postal_code_from,
+                    'postal_code_to' => $r->postal_code_to
+                ])->toArray(),
                 'shipping' => [
                     'gross' => round($gross, 2),
                     'net' => round($net, 2),
