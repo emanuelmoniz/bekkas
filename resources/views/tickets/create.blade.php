@@ -62,6 +62,50 @@
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <script>
+                (function(){
+                    var script = document.currentScript;
+                    var container = (script && script.previousElementSibling && script.previousElementSibling.classList && script.previousElementSibling.classList.contains('g-recaptcha')) ? script.previousElementSibling : (script && script.parentElement && script.parentElement.querySelector('.g-recaptcha')) || document.querySelector('.g-recaptcha[data-sitekey]');
+                    if (!container) { console.debug('[recaptcha] container not found (ticket create)'); return; }
+
+                    function loadRecaptcha(){
+                        if (window.__recaptchaLazyLoaded) return;
+                        window.__recaptchaLazyLoaded = true;
+                        console.debug('[recaptcha] loading script (ticket create)');
+                        var s = document.createElement('script');
+                        s.src = 'https://www.google.com/recaptcha/api.js';
+                        s.async = true; s.defer = true;
+                        s.onload = function(){
+                            console.debug('[recaptcha] script loaded (ticket create)');
+                            try{
+                                var key = container.getAttribute('data-sitekey');
+                                if (window.grecaptcha && typeof window.grecaptcha.render === 'function' && !container.querySelector('iframe')) {
+                                    window.grecaptcha.render(container, { 'sitekey': key });
+                                    console.debug('[recaptcha] rendered (ticket create)');
+                                }
+                            } catch(e) { console.error('[recaptcha] render error (ticket create)', e); }
+                        };
+                        s.onerror = function(e){ console.error('[recaptcha] failed to load (ticket create)', e); };
+                        document.head.appendChild(s);
+                    }
+
+                    container.addEventListener('click', loadRecaptcha, {once:true});
+                    container.addEventListener('mouseenter', loadRecaptcha, {once:true});
+                    var f = container.closest('form'); if (f){
+                        f.addEventListener('submit', loadRecaptcha, {once:true});
+                        f.addEventListener('focusin', loadRecaptcha, {once:true});
+                        f.querySelectorAll('input, textarea, button, select').forEach(function(el){ el.addEventListener('focus', loadRecaptcha, {once:true}); });
+                    }
+
+                    if ('IntersectionObserver' in window) {
+                        var io = new IntersectionObserver(function(entries){
+                            entries.forEach(function(entry){ if (entry.isIntersecting) { loadRecaptcha(); io.disconnect(); } });
+                        }, {rootMargin: '200px'});
+                        io.observe(container);
+                    }
+                })();
+                </script>
             </div>
 
             <div class="flex justify-end gap-3">
@@ -76,4 +120,6 @@
         </form>
 
     </div>
+
+
 </x-app-layout>

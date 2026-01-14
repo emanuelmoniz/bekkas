@@ -17,8 +17,8 @@
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
 
-        <!-- Google reCAPTCHA -->
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <!-- Google reCAPTCHA (loaded only on pages that request it) -->
+        @stack('recaptcha')
     </head>
     <body class="bg-white dark:bg-[#161615] text-gray-900 dark:text-gray-100">
         @include('layouts.navigation')
@@ -157,6 +157,50 @@
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
 
+                            <script>
+                            (function(){
+                                var script = document.currentScript;
+                                var container = (script && script.previousElementSibling && script.previousElementSibling.classList && script.previousElementSibling.classList.contains('g-recaptcha')) ? script.previousElementSibling : (script && script.parentElement && script.parentElement.querySelector('.g-recaptcha')) || document.querySelector('.g-recaptcha[data-sitekey]');
+                                if (!container) { console.debug('[recaptcha] container not found (welcome)'); return; }
+
+                                function loadRecaptcha(){
+                                    if (window.__recaptchaLazyLoaded) return;
+                                    window.__recaptchaLazyLoaded = true;
+                                    console.debug('[recaptcha] loading script (welcome)');
+                                    var s = document.createElement('script');
+                                    s.src = 'https://www.google.com/recaptcha/api.js';
+                                    s.async = true; s.defer = true;
+                                    s.onload = function(){
+                                        console.debug('[recaptcha] script loaded (welcome)');
+                                        try{
+                                            var key = container.getAttribute('data-sitekey');
+                                            if (window.grecaptcha && typeof window.grecaptcha.render === 'function' && !container.querySelector('iframe')) {
+                                                window.grecaptcha.render(container, { 'sitekey': key });
+                                                console.debug('[recaptcha] rendered (welcome)');
+                                            }
+                                        } catch(e) { console.error('[recaptcha] render error (welcome)', e); }
+                                    };
+                                    s.onerror = function(e){ console.error('[recaptcha] failed to load (welcome)', e); };
+                                    document.head.appendChild(s);
+                                }
+
+                                container.addEventListener('click', loadRecaptcha, {once:true});
+                                container.addEventListener('mouseenter', loadRecaptcha, {once:true});
+                                var f = container.closest('form'); if (f){
+                                    f.addEventListener('submit', loadRecaptcha, {once:true});
+                                    f.addEventListener('focusin', loadRecaptcha, {once:true});
+                                    f.querySelectorAll('input, textarea, button, select').forEach(function(el){ el.addEventListener('focus', loadRecaptcha, {once:true}); });
+                                }
+
+                                if ('IntersectionObserver' in window) {
+                                    var io = new IntersectionObserver(function(entries){
+                                        entries.forEach(function(entry){ if (entry.isIntersecting) { loadRecaptcha(); io.disconnect(); } });
+                                    }, {rootMargin: '200px'});
+                                    io.observe(container);
+                                }
+                            })();
+                            </script>
+
                             <button type="submit" 
                                     class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
                                 {{ t('contact.send') ?: 'Send Message' }}
@@ -169,5 +213,85 @@
         </section>
 
         @include('layouts.footer')
+
+@push('recaptcha')
+<script>
+(function(){
+    if (window.__recaptchaLazyLoaded) return;
+
+    function init() {
+        if (window.__recaptchaLazyLoaded) return;
+
+        function loadRecaptcha(){
+            if (window.__recaptchaLazyLoaded) return;
+            window.__recaptchaLazyLoaded = true;
+            console.debug('[recaptcha] loading script');
+            var s = document.createElement('script');
+            s.src = 'https://www.google.com/recaptcha/api.js';
+            s.async = true; s.defer = true;
+            s.onload = function() {
+                console.debug('[recaptcha] script loaded, attempting to render widgets');
+                containers.forEach(function(c){
+                    var key = c.getAttribute('data-sitekey');
+                    if (!key) {
+                        console.warn('[recaptcha] missing data-sitekey on container', c);
+                        return;
+                    }
+
+                    try {
+                        if (window.grecaptcha && typeof window.grecaptcha.render === 'function') {
+                            if (!c.querySelector('iframe')) {
+                                window.grecaptcha.render(c, { 'sitekey': key });
+                                console.debug('[recaptcha] rendered widget for container', c);
+                            }
+                        }
+                    } catch (e) {
+                        console.error('[recaptcha] render error', e);
+                    }
+                });
+            };
+            s.onerror = function(e){ console.error('[recaptcha] failed to load', e); };
+            document.head.appendChild(s);
+        }
+
+        var containers = document.querySelectorAll('.g-recaptcha');
+        if (!containers.length) return;
+
+        var forms = new Set();
+        containers.forEach(function(c){
+            c.addEventListener('click', loadRecaptcha, {once:true});
+            c.addEventListener('mouseenter', loadRecaptcha, {once:true});
+            var f = c.closest('form'); if (f) forms.add(f);
+        });
+
+        forms.forEach(function(f){
+            f.addEventListener('submit', loadRecaptcha, {once:true});
+            f.addEventListener('focusin', loadRecaptcha, {once:true});
+            f.querySelectorAll('input, textarea, button, select').forEach(function(el){
+                el.addEventListener('focus', loadRecaptcha, {once:true});
+            });
+        });
+
+        if ('IntersectionObserver' in window) {
+            var io = new IntersectionObserver(function(entries){
+                entries.forEach(function(entry){
+                    if (entry.isIntersecting) {
+                        loadRecaptcha();
+                        io.disconnect();
+                    }
+                });
+            }, {rootMargin: '200px'});
+            containers.forEach(function(c){ io.observe(c); });
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
+@endpush
     </body>
 </html>
