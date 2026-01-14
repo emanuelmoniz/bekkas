@@ -18,18 +18,14 @@
             </p>
             <p><strong>{{ t('orders.paid') ?: 'Paid' }}:</strong> {{ $order->is_paid ? (t('orders.yes') ?: 'Yes') : (t('orders.no') ?: 'No') }}</p>
             <p><strong>{{ t('orders.refunded') ?: 'Refunded' }}:</strong> {{ $order->is_refunded ? (t('orders.yes') ?: 'Yes') : (t('orders.no') ?: 'No') }}</p>
-            @if ($order->tracking_number)
-                <p><strong>{{ t('orders.tracking') ?: 'Tracking' }}:</strong> {{ $order->tracking_number }}</p>
-            @endif
-            
-            @if($order->expected_delivery_date)
-                <p><strong>{{ t('orders.expected_delivery') ?: 'Expected Delivery' }}:</strong> {{ $order->expected_delivery_date->format('d/m/Y') }}</p>
-            @endif
-            
+
             @php
                 $trackingStatuses = json_decode(\App\Models\ShippingConfig::get('tracking_statuses', '["shipped","delivered"]'), true);
             @endphp
             @if(in_array($order->status, $trackingStatuses ?? []))
+                @if ($order->tracking_number)
+                    <p><strong>{{ t('orders.tracking') ?: 'Tracking' }}:</strong> {{ $order->tracking_number }}</p>
+                @endif
                 @if($order->tracking_url)
                     <p>
                         <a href="{{ $order->tracking_url }}" target="_blank" class="text-blue-600 hover:underline">
@@ -39,6 +35,10 @@
                 @else
                     <p class="text-gray-600 italic">{{ t('orders.no_tracking') ?: 'Your order does not have tracking information yet' }}</p>
                 @endif
+            @endif
+
+            @if($order->expected_delivery_date)
+                <p><strong>{{ t('orders.expected_delivery') ?: 'Expected Delivery' }}:</strong> {{ $order->expected_delivery_date->format('d/m/Y') }}</p>
             @endif
         </div>
 
