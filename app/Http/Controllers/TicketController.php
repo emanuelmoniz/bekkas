@@ -62,22 +62,30 @@ class TicketController extends Controller
     {
         $authUser = Auth::user();
 
-        $request->validate([
+        // Build validation rules; require reCAPTCHA only when configured
+        $rules = [
             'title' => 'required|string|max:255',
             'ticket_category_id' => 'required|exists:ticket_categories,id',
             'message' => 'required|string',
             'due_date' => 'nullable|date',
             'files.*' => 'nullable|file|max:20480',
-            'g-recaptcha-response' => ['required', new Recaptcha],
-        ], [
+        ];
+
+        $messages = [
             'title.required' => t('tickets.title_required') ?: 'Please enter a title.',
             'title.max' => t('tickets.title_max') ?: 'Title cannot exceed 255 characters.',
             'ticket_category_id.required' => t('tickets.category_required') ?: 'Please select a category.',
             'message.required' => t('tickets.message_required') ?: 'Please enter a message.',
             'due_date.date' => t('tickets.due_date_invalid') ?: 'Please enter a valid date.',
             'files.*.max' => t('tickets.file_max') ?: 'File cannot exceed 20 MB.',
-            'g-recaptcha-response.required' => t('tickets.recaptcha_required') ?: 'Please verify that you are not a robot.',
-        ]);
+        ];
+
+        if (! empty(config('services.recaptcha.secret_key'))) {
+            $rules['g-recaptcha-response'] = ['required', new Recaptcha];
+            $messages['g-recaptcha-response.required'] = t('tickets.recaptcha_required') ?: 'Please verify that you are not a robot.';
+        }
+
+        $request->validate($rules, $messages);
 
         // Client always creates ticket for themselves
         $ticket = Ticket::create([

@@ -60,11 +60,8 @@ Security notes: never commit real secrets to the repository. Use environment or 
 
 ---
 
-## 🧪 Tests & CI
+<!-- Tests & CI intentionally removed from top-level README until the test suite is stable. See `TESTING.md` for instructions to run tests safely on your server and notes about CI. -->
 
-There are currently no automated tests or CI workflows in the repository. Recommended next steps:
-- Add PHPUnit / Laravel feature tests for checkout and order placement.
-- Add a GitHub Actions workflow to run `composer test` and `npm run build` on PRs.
 
 ---
 

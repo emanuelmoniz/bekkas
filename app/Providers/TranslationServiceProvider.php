@@ -17,8 +17,12 @@ class TranslationServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Load translations into cache keyed by locale if the table exists
-        if (Schema::hasTable('static_translations')) {
-            $this->loadTranslationsToCache();
+        try {
+            if (Schema::hasTable('static_translations')) {
+                $this->loadTranslationsToCache();
+            }
+        } catch (\Throwable $e) {
+            // Database not available (e.g. sqlite driver missing during tests); skip loading translations
         }
 
         if (! function_exists('t')) {
@@ -64,10 +68,14 @@ class TranslationServiceProvider extends ServiceProvider
     {
         $cacheKey = 'static_translations_all';
 
-        if (! Cache::has($cacheKey)) {
-            Cache::forever($cacheKey, StaticTranslation::all()->groupBy('locale')->map(function ($group) {
-                return $group->pluck('value', 'key')->toArray();
-            })->toArray());
+        try {
+            if (! Cache::has($cacheKey)) {
+                Cache::forever($cacheKey, StaticTranslation::all()->groupBy('locale')->map(function ($group) {
+                    return $group->pluck('value', 'key')->toArray();
+                })->toArray());
+            }
+        } catch (\Throwable $e) {
+            // Skip caching translations when database is not available
         }
     }
 }

@@ -13,19 +13,27 @@ class ContactController extends Controller
 {
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        // Build validation rules, but make reCAPTCHA required ONLY when configured.
+        $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'message' => 'required|string|max:5000',
-            'g-recaptcha-response' => ['required', new Recaptcha],
-        ], [
+        ];
+
+        $messages = [
             'name.required' => t('validation.name_required') ?: 'Please enter your name.',
             'email.required' => t('validation.email_required') ?: 'Please enter your email address.',
             'email.email' => t('validation.email_invalid') ?: 'Please enter a valid email address.',
             'message.required' => t('validation.message_required') ?: 'Please enter your message.',
             'message.max' => t('validation.message_max') ?: 'Message cannot exceed 5000 characters.',
-            'g-recaptcha-response.required' => t('validation.recaptcha_required') ?: 'Please verify that you are not a robot.',
-        ]);
+        ];
+
+        if (! empty(config('services.recaptcha.secret_key'))) {
+            $rules['g-recaptcha-response'] = ['required', new Recaptcha];
+            $messages['g-recaptcha-response.required'] = t('validation.recaptcha_required') ?: 'Please verify that you are not a robot.';
+        }
+
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return redirect()->to(url()->previous() . '#contact')

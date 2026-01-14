@@ -29,12 +29,14 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        // Build rules; require reCAPTCHA only when configured
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email', 'confirmed'],
             'password' => ['required', 'confirmed', PasswordValidation::rules()],
-            'g-recaptcha-response' => ['required', new Recaptcha],
-        ], [
+        ];
+
+        $messages = [
             'name.required' => t('validation.name_required') ?: 'Please enter your name.',
             'name.max' => t('validation.name_max') ?: 'Name cannot exceed 255 characters.',
             'email.required' => t('validation.email_required') ?: 'Please enter your email address.',
@@ -44,8 +46,14 @@ class RegisteredUserController extends Controller
             'password.required' => t('validation.password_required') ?: 'Please enter a password.',
             'password.min' => t('validation.password_min') ?: 'Password must be at least :min characters.',
             'password.confirmed' => t('validation.password_mismatch') ?: 'Passwords do not match.',
-            'g-recaptcha-response.required' => t('validation.recaptcha_required') ?: 'Please verify that you are not a robot.',
-        ]);
+        ];
+
+        if (! empty(config('services.recaptcha.secret_key'))) {
+            $rules['g-recaptcha-response'] = ['required', new Recaptcha];
+            $messages['g-recaptcha-response.required'] = t('validation.recaptcha_required') ?: 'Please verify that you are not a robot.';
+        }
+
+        $request->validate($rules, $messages);
 
         $user = User::create([
             'name' => $request->name,

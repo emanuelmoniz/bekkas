@@ -23,13 +23,19 @@ class TicketMessageController extends Controller
             abort(403);
         }
 
-        $request->validate([
+        $rules = [
             'message' => 'required|string',
             'files.*' => 'nullable|file|max:20480',
-            'g-recaptcha-response' => ['required', new Recaptcha],
-        ], [
-            'g-recaptcha-response.required' => t('tickets.recaptcha_required') ?: 'Please verify that you are not a robot.',
-        ]);
+        ];
+
+        $messages = [];
+
+        if (! empty(config('services.recaptcha.secret_key'))) {
+            $rules['g-recaptcha-response'] = ['required', new Recaptcha];
+            $messages['g-recaptcha-response.required'] = t('tickets.recaptcha_required') ?: 'Please verify that you are not a robot.';
+        }
+
+        $request->validate($rules, $messages);
 
         // Create message
         $message = TicketMessage::create([
