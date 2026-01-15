@@ -99,8 +99,8 @@
 
                         <div>
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ t('home.contact.email') ?: 'Email' }}</h3>
-                            <a href="mailto:info@bekkas.pt" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium">
-                                info@bekkas.pt
+                            <a href="mailto:{{ config('mail.contact_address', config('mail.admin_address', 'info@bekkas.pt')) }}" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium">
+                                {{ config('mail.contact_address', config('mail.admin_address', 'info@bekkas.pt')) }}
                             </a>
                         </div>
 

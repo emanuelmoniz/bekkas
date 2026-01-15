@@ -150,4 +150,71 @@ class OrdersTest extends TestCase
         $product->refresh();
         $this->assertEquals(3, $product->stock);
     }
+
+    public function test_emails_sent_on_order_place()
+    {
+        \Illuminate\Support\Facades\Mail::fake();
+
+        $user = User::factory()->create(['language' => 'en-UK']);
+
+        $tax = Tax::create(['name' => 'VAT', 'percentage' => 23, 'is_active' => true]);
+
+        $product = Product::create([
+            'tax_id' => $tax->id,
+            'price' => 15.00,
+            'stock' => 5,
+            'weight' => 1.0,
+            'active' => true,
+        ]);
+
+        $country = Country::create(['name_pt' => 'Portugal', 'name_en' => 'Portugal', 'iso_alpha2' => 'PT', 'country_code' => '351', 'is_active' => true]);
+
+        $address = $user->addresses()->create([
+            'title' => 'Home',
+            'address_line_1' => 'Rua B',
+            'postal_code' => '1000-001',
+            'city' => 'Lisbon',
+            'country_id' => $country->id,
+            'is_default' => true,
+        ]);
+
+        $this->withSession(['cart' => [$product->id => 1]])
+            ->actingAs($user)
+            ->post(route('checkout.place'), ['address_id' => $address->id])
+            ->assertRedirect(route('orders.index'));
+
+        // Two mails queued: one to customer and one to admin
+        \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, 2);
+
+\Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, function ($mail) use ($user) {
+            return $mail->hasTo($user->email);
+        });
+
+        \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, function ($mail) {
+            // Admin mails must be in English and sent to configured admin address
+            return $mail->hasTo(config('mail.admin_address', 'info@bekkas.pt')) && ($mail->locale === 'en-UK' || $mail->locale === 'en');
+        });
+    }
+
+    public function test_client_receives_email_on_status_change()
+    {
+        \Illuminate\Support\Facades\Mail::fake();
+
+        $user = User::factory()->create(['language' => 'en-UK']);
+        $admin = User::factory()->create();
+        $role = Role::create(['name' => 'admin']);
+        $admin->roles()->attach($role->id);
+
+        $order = \Database\Factories\OrderFactory::new()->for($user)->create();
+
+        $this->actingAs($admin)
+            ->patch(route('admin.orders.update', $order), ['status' => 'SHIPPED'])
+            ->assertRedirect(route('admin.orders.show', $order));
+
+        \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, function ($mail) use ($user) {
+            // Ensure mail queued for customer is in customer's locale and contains status in that locale
+            return $mail->hasTo($user->email) && ($mail->statusLabel === (\App\Models\OrderStatus::where('code', (\App\Models\Order::first())->status)->first()?->translation($user->language ?? app()->getLocale())?->name ?? (\App\Models\Order::first())->status));
+        });
+    }
 }
+

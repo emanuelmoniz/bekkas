@@ -439,7 +439,9 @@ class OrderController extends Controller
         }
 
         try {
-            DB::transaction(function () use ($user, $cart, $address, $request) {
+            $createdOrder = null;
+
+            DB::transaction(function () use ($user, $cart, $address, $request, &$createdOrder) {
 
                 // Lock products for update to prevent race conditions
                 $products = Product::whereIn('id', array_keys($cart))
@@ -633,6 +635,9 @@ class OrderController extends Controller
                     $order->items()->create($item);
                 }
 
+                // Keep order reference for post-transaction actions
+                $createdOrder = $order;
+
                 // Log successful order
                 Log::info('Order created successfully', [
                     'user_id' => $user->id,
@@ -642,6 +647,23 @@ class OrderController extends Controller
 
                 session()->forget('cart');
             });
+
+            // Send emails after transaction completes
+            if ($createdOrder) {
+                $locale = $user->language ?? app()->getLocale();
+
+                // Resolve status translation for customer email
+                $statusObj = \App\Models\OrderStatus::where('code', $createdOrder->status)->first();
+                $customerStatusLabel = $statusObj?->translation($locale)?->name ?? $createdOrder->status;
+
+                \Illuminate\Support\Facades\Mail::to($user->email)->locale($locale)->queue(new \App\Mail\OrderNotification($createdOrder, t('orders.email.event.placed', ['status' => $customerStatusLabel]) ?: 'Order placed', $user->name, $customerStatusLabel));
+
+                // Notify admin (always in English)
+                $adminLocale = 'en-UK';
+                $adminStatusLabel = $statusObj?->translation($adminLocale)?->name ?? $createdOrder->status;
+                $adminEmail = config('mail.admin_address', 'info@bekkas.pt');
+                \Illuminate\Support\Facades\Mail::to($adminEmail)->locale($adminLocale)->queue(new \App\Mail\OrderNotification($createdOrder, t('orders.email.event.new', ['status' => $adminStatusLabel]) ?: 'New order', config('app.name'), $adminStatusLabel));
+            }
 
             return redirect()->route('orders.index')->with('success', 'Order placed successfully!');
         } catch (\Exception $e) {

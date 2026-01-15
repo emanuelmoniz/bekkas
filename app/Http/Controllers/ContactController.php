@@ -45,13 +45,13 @@ class ContactController extends Controller
 
         $locale = app()->getLocale();
 
-        Mail::to('info@bekkas.pt')->locale($locale)->send(new ContactMessage(
+        Mail::to(config('mail.admin_address', 'info@bekkas.pt'))->locale($locale)->queue(new ContactMessage(
             $validated['name'],
             $validated['email'],
             $validated['message']
         ));
 
-        Mail::to($validated['email'])->locale($locale)->send(new ContactConfirmation(
+        Mail::to($validated['email'])->locale($locale)->queue(new ContactConfirmation(
             $validated['name']
         ));
 

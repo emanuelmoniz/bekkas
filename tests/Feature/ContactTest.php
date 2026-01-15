@@ -37,7 +37,7 @@ class ContactTest extends TestCase
         $response->assertSessionHas('success');
 
         // Two messages should be sent: one to the admin and one to the sender
-        Mail::assertSent(\App\Mail\ContactMessage::class, 1);
-        Mail::assertSent(\App\Mail\ContactConfirmation::class, 1);
+        Mail::assertQueued(\App\Mail\ContactMessage::class, 1);
+        Mail::assertQueued(\App\Mail\ContactConfirmation::class, 1);
     }
 }

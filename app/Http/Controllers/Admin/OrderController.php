@@ -75,6 +75,8 @@ class OrderController extends Controller
             'tracking_url' => 'nullable|url|max:500',
         ]);
 
+        $oldStatus = $order->status;
+
         DB::transaction(function () use ($request, $order) {
             // Restore stock when order status changes to CANCELED (only if not already canceled)
             // Only restore stock for items that were NOT backordered (had stock when ordered)
@@ -112,6 +114,21 @@ class OrderController extends Controller
                 'tracking_url' => $request->tracking_url,
             ]);
         });
+
+        // If status changed notify the customer
+        $order->refresh();
+        if ($oldStatus !== $order->status && $order->user && $order->user->email) {
+            // Use user's language for customer email
+            $locale = $order->user->language ?? app()->getLocale();
+
+            // Resolve status translation in customer's locale
+            $statusObj = \App\Models\OrderStatus::where('code', $order->status)->first();
+            $statusLabel = $statusObj?->translation($locale)?->name ?? $order->status;
+
+            $eventLabel = t('orders.email.event.status_changed', ['status' => $statusLabel]) ?: ("Order status changed to {$statusLabel}");
+
+            \Illuminate\Support\Facades\Mail::to($order->user->email)->locale($locale)->queue(new \App\Mail\OrderNotification($order, $eventLabel, $order->user->name, $statusLabel));
+        }
 
         return redirect()->route('admin.orders.show', $order)->with('success', 'Order updated successfully!');
     }

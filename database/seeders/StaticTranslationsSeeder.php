@@ -802,6 +802,43 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.email.subject', 'locale' => 'pt-PT', 'value' => 'Ticket #:uuid – :event', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'tickets.email.subject', 'locale' => 'en-UK', 'value' => 'Ticket #:uuid – :event', 'created_at'=>$now,'updated_at'=>$now],
 
+            // Orders email translations
+            ['key' => 'orders.email.subject', 'locale' => 'pt-PT', 'value' => 'Encomenda #:order_number – :event', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.email.subject', 'locale' => 'en-UK', 'value' => 'Order #:order_number – :event', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.email.greeting', 'locale' => 'pt-PT', 'value' => 'Olá :name,', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.email.greeting', 'locale' => 'en-UK', 'value' => 'Hello :name,', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.email.order_label', 'locale' => 'pt-PT', 'value' => 'Encomenda', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.email.order_label', 'locale' => 'en-UK', 'value' => 'Order', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.email.status_label', 'locale' => 'pt-PT', 'value' => 'Estado', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.email.status_label', 'locale' => 'en-UK', 'value' => 'Status', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.email.total_label', 'locale' => 'pt-PT', 'value' => 'Total', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.email.total_label', 'locale' => 'en-UK', 'value' => 'Total', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.email.items_label', 'locale' => 'pt-PT', 'value' => 'Itens', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.email.items_label', 'locale' => 'en-UK', 'value' => 'Items', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.email.view_button', 'locale' => 'pt-PT', 'value' => 'Ver Encomenda', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.email.view_button', 'locale' => 'en-UK', 'value' => 'View Order', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.email.auto_sent', 'locale' => 'pt-PT', 'value' => 'Este email foi enviado automaticamente.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.email.auto_sent', 'locale' => 'en-UK', 'value' => 'This email was sent automatically.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.email.thanks', 'locale' => 'pt-PT', 'value' => 'Obrigado,', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.email.thanks', 'locale' => 'en-UK', 'value' => 'Thanks,', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.email.event.placed', 'locale' => 'pt-PT', 'value' => 'Encomenda efetuada', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.email.event.placed', 'locale' => 'en-UK', 'value' => 'Order placed', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.email.event.new', 'locale' => 'pt-PT', 'value' => 'Nova encomenda', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.email.event.new', 'locale' => 'en-UK', 'value' => 'New order', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'orders.email.event.status_changed', 'locale' => 'pt-PT', 'value' => 'Estado da encomenda atualizado para :status', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.email.event.status_changed', 'locale' => 'en-UK', 'value' => 'Order status changed to :status', 'created_at'=>$now,'updated_at'=>$now],
+
             ['key' => 'tickets.email.greeting', 'locale' => 'pt-PT', 'value' => 'Olá :name,', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'tickets.email.greeting', 'locale' => 'en-UK', 'value' => 'Hello :name,', 'created_at'=>$now,'updated_at'=>$now],
 

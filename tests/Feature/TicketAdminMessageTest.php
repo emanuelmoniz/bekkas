@@ -23,7 +23,7 @@ class TicketAdminMessageTest extends TestCase
         config(['services.recaptcha.secret_key' => null]);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function admin_can_post_a_message_to_a_ticket_and_it_is_stored()
     {
         Mail::fake();
@@ -60,11 +60,11 @@ class TicketAdminMessageTest extends TestCase
             'message' => 'Admin reply',
         ]);
 
-        // Ensure mails were queued/sent
-        Mail::assertSent(TicketNotification::class);
+        // Ensure mails were queued
+        Mail::assertQueued(TicketNotification::class);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function message_is_stored_even_if_notification_fails()
     {
         // Simulate mail failing
@@ -99,7 +99,7 @@ class TicketAdminMessageTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function admin_can_post_without_recaptcha_even_if_secret_is_set()
     {
         // Setup: enable recaptcha in config to simulate production

@@ -114,4 +114,16 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin & Contact Addresses
+    |--------------------------------------------------------------------------
+    |
+    | Provide configurable admin and public contact email addresses.
+    |
+    */
+    'admin_address' => env('MAIL_ADMIN', env('MAIL_FROM_ADDRESS', 'info@bekkas.pt')),
+
+    'contact_address' => env('MAIL_CONTACT', env('MAIL_ADMIN', env('MAIL_FROM_ADDRESS', 'info@bekkas.pt'))),
+
 ];

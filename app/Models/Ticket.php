@@ -99,7 +99,7 @@ class Ticket extends Model
 
         foreach ($recipients as $recipient) {
             Mail::to($recipient->email, $recipient->name)
-                ->send(new TicketNotification($this, $message, $eventLabel, $recipient->name));
+                ->queue(new TicketNotification($this, $message, $eventLabel, $recipient->name));
         }
     }
 }
