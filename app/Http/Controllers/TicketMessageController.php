@@ -30,41 +30,64 @@ class TicketMessageController extends Controller
 
         $messages = [];
 
-        if (! empty(config('services.recaptcha.secret_key'))) {
+        // If reCAPTCHA is configured, require it — but admins are exempt
+        if (! empty(config('services.recaptcha.secret_key')) && ! $user->hasRole('admin')) {
             $rules['g-recaptcha-response'] = ['required', new Recaptcha];
             $messages['g-recaptcha-response.required'] = t('tickets.recaptcha_required') ?: 'Please verify that you are not a robot.';
         }
 
-        $request->validate($rules, $messages);
+        try {
+            $request->validate($rules, $messages);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::info('Ticket message validation failed', [
+                'ticket_id' => $ticket->id,
+                'user_id' => $user->id,
+                'errors' => $e->validator->errors()->all(),
+                'input' => $request->only('message'),
+                'path' => request()->path(),
+            ]);
 
-        // Create message
-        $message = TicketMessage::create([
-            'ticket_id' => $ticket->id,
-            'user_id' => $user->id,
-            'message' => $request->message,
-        ]);
+            throw $e;
+        }
 
-	$ticket->notifyParticipants(
-    		$message,
-    		'New message',
-            $user->id
-	);
+        // Create message (log and fail gracefully)
+        try {
+            $message = TicketMessage::create([
+                'ticket_id' => $ticket->id,
+                'user_id' => $user->id,
+                'message' => $request->message,
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('Ticket message creation failed', [
+                'ticket_id' => $ticket->id,
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+                'input' => $request->only('message'),
+            ]);
 
-        // Attach files
+            return back()->withInput()->withErrors(['message' => t('tickets.message_failed') ?: 'Failed to save message. Please try again.']);
+        }
+
+        // Attach files (safe — don't fail entire request if an upload/store fails)
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $path = $file->store(
-                    'tickets/' . $ticket->uuid,
-                    'private'
-                );
+                try {
+                    $path = $file->store('tickets/' . $ticket->uuid, 'private');
 
-                TicketAttachment::create([
-                    'ticket_message_id' => $message->id,
-                    'original_name' => $file->getClientOriginalName(),
-                    'path' => $path,
-                    'mime' => $file->getMimeType(),
-                    'size' => $file->getSize(),
-                ]);
+                    TicketAttachment::create([
+                        'ticket_message_id' => $message->id,
+                        'original_name' => $file->getClientOriginalName(),
+                        'path' => $path,
+                        'mime' => $file->getMimeType(),
+                        'size' => $file->getSize(),
+                    ]);
+                } catch (\Throwable $e) {
+                    \Log::error('Ticket attachment save failed', [
+                        'ticket_id' => $ticket->id,
+                        'message_id' => $message->id,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
             }
         }
 
@@ -98,6 +121,21 @@ class TicketMessageController extends Controller
             'last_message_at' => now(),
             'read_state' => $state,
         ]);
+
+        // Notify participants (non-blocking; failures should not discard message)
+        try {
+            $ticket->notifyParticipants(
+                $message,
+                'New message',
+                $user->id
+            );
+        } catch (\Throwable $e) {
+            \Log::error('Ticket notification failed', [
+                'ticket_id' => $ticket->id,
+                'message_id' => $message->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
 
         return back();
     }
