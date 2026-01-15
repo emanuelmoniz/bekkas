@@ -9,6 +9,9 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: [8.1, 8.2]
     services:
       mysql:
         image: mysql:8.0
@@ -29,9 +32,9 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v4
         with:
-          php-version: 8.2
+          php-version: ${{ matrix.php-version }}
           coverage: none
-          extensions: mbstring, bcmath, gd, intl
+          extensions: mbstring, bcmath, gd, intl, pdo_sqlite
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -61,7 +64,7 @@ jobs:
           php artisan migrate --force
 
       - name: Run PHP CS (Pint)
-        run: ./vendor/bin/pint --test || true
+        run: ./vendor/bin/pint --test
 
       - name: Run Tests
         run: composer test --no-interaction

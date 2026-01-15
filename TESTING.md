@@ -10,8 +10,18 @@ Quick commands (recommended)
   - php artisan config:clear; ./bin/run-tests.sh
 
   Note: The helper script will try to use an isolated sqlite DB. `.env.testing` is optional — if present it will be loaded; otherwise the helper sets DB env vars inline. Be careful when running migrations on a live host.
-- Run a subset of tests (example: Checkout tests):
-  - ./bin/run-tests.sh --filter CheckoutTest
+- Run a subset of tests (examples):
+  - All Checkout tests:
+    - ./bin/run-tests.sh --filter CheckoutTest
+  - Orders tests only:
+    - ./bin/run-tests.sh --filter OrdersTest
+  - Payments integration tests only:
+    - ./bin/run-tests.sh --filter PaymentsIntegrationTest
+  - Run a single test method (example):
+    - ./bin/run-tests.sh --filter OrdersTest::test_admin_cancel_and_reinstate_updates_stock
+  - Run a single test file directly with PHPUnit (bypasses helper):
+    - ./vendor/bin/phpunit tests/Feature/PaymentsIntegrationTest.php
+
 - Run tests via composer (not isolated):
   - composer test
 
@@ -51,17 +61,24 @@ Notes:
 - The script sets APP_ENV=testing and DB_CONNECTION=sqlite and migrates only the temporary sqlite DB so your production DB and data remain untouched.
 - If your PHP build is missing SQLite support (pdo_sqlite), install `php-sqlite` and retry.
 - Tests disable reCAPTCHA validation during test runs even if RECAPTCHA keys are present on the server (the test suite sets `services.recaptcha.secret_key` to null to avoid external requests).
-- CSRF verification is disabled for tests (the test bootstrap calls `withoutMiddleware()` to disable middleware) so form POSTs from tests don't fail with 419.
+- CSRF verification is disabled for tests (the test bootstrap calls `withoutMiddleware()` to disable middleware) so form POSTs from tests don't fail with 419. Rate limiting (throttle middleware) is also disabled for tests to avoid 429 flaky failures during fast runs.
+- Test utilities you can use in tests:
+  - `Order::factory()->hasItems(n, $attributes)` — creates an order with n `order_items` using the optional attributes to reference specific products/quantities.
+  - `Tests\Fakes\PaymentGatewayFake` — a simple fake gateway you can inject via the container to simulate success/failure and webhooks.
 - If you want to inspect test logs, you can redirect output to a file: ./bin/run-tests.sh | tee /tmp/tests.log
 
 3) How CI (GitHub Actions) runs tests (overview)
 - When you push to a branch or open a pull request, the configured workflow (.github/workflows/ci.yml) performs these steps:
   1. Checkout repository
-  2. Setup PHP and Node versions
+  2. Setup PHP and Node versions (the workflow runs a PHP matrix e.g., 8.1 and 8.2)
   3. Install Composer and npm dependencies
   4. Create env (copy .env.example, generate app key)
   5. Prepare a database (usually SQLite in CI or a service like MySQL via Actions services)
   6. Run formatting checks (Pint), tests (phpunit), and build assets (npm run build)
+- Notes about CI specifics:
+  - The workflow runs tests against multiple PHP versions to catch compatibility problems early.
+  - Pint is now run in strict mode in CI; style failures will cause the workflow to fail (fix locally with `./vendor/bin/pint --fix`).
+  - Test artifacts (logs) are uploaded for debugging when runs fail.
 - CIs run in ephemeral runners (containers/VMs) and don't affect your production server.
 
 4) Recommendations for your setup

@@ -17,6 +17,10 @@ abstract class TestCase extends BaseTestCase
         // Keep auth and other middleware enabled for tests that assert middleware behavior.
         $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class);
 
+        // Disable rate-limiting (ThrottleRequests) middleware for tests to avoid
+        // flaky 429 failures when many tests or repeated requests run quickly.
+        $this->withoutMiddleware(\Illuminate\Routing\Middleware\ThrottleRequests::class);
+
         // Ensure the Blade `$errors` variable exists (normally provided by
         // ShareErrorsFromSession middleware). Tests disable CSRF only, so
         // share an empty ViewErrorBag to avoid undefined variable errors.
