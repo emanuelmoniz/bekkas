@@ -21,7 +21,7 @@
 
 	    <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
     		<div class="max-w-3xl">
-        	    @include('profile.partials.addresses', ['addresses' => auth()->user()->addresses])
+        	    @include('profile.partials.addresses', ['addresses' => auth()->user()->addresses()->orderByDesc('is_default')->get()])
     	    	</div>
 	    </div>
 

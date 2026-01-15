@@ -32,7 +32,17 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Merge session favorites to user account
+        $sessionFavorites = session('favorites', []);
+        if (!empty($sessionFavorites)) {
+            foreach ($sessionFavorites as $productId) {
+                $user->favorites()->firstOrCreate(['product_id' => $productId]);
+            }
+            session()->forget('favorites');
+        }
+
+        $defaultRoute = $user->isAdmin() ? route('admin.dashboard', absolute: false) : '/';
+        return redirect()->intended($defaultRoute);
     }
 
     public function destroy(Request $request): RedirectResponse

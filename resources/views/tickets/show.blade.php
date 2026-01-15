@@ -8,7 +8,7 @@
             <div class="flex gap-2">
                 <a href="{{ route('tickets.index') }}"
                    class="bg-gray-300 px-4 py-2 rounded text-sm">
-                    Back to tickets
+                    {{ t('tickets.back_to_tickets') ?: 'Back to tickets' }}
                 </a>
 
                 <form method="POST"
@@ -16,16 +16,9 @@
                     @csrf
                     <button type="submit"
                             class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded text-sm">
-                        Mark as unread
+                        {{ t('tickets.mark_as_unread') ?: 'Mark as unread' }}
                     </button>
                 </form>
-
-                @if(auth()->user()->hasRole('admin'))
-                    <a href="{{ route('admin.tickets.edit', $ticket) }}"
-                       class="bg-indigo-600 text-white px-4 py-2 rounded text-sm">
-                        Admin Edit
-                    </a>
-                @endif
             </div>
         </div>
     </x-slot>
@@ -35,40 +28,40 @@
         {{-- TICKET META --}}
         <div class="bg-white p-6 rounded shadow space-y-2">
             <div>
-                <strong>Ticket ID:</strong>
+                <strong>{{ t('tickets.ticket_id') ?: 'Ticket ID' }}:</strong>
                 <span class="font-mono text-sm">{{ $ticket->uuid }}</span>
             </div>
 
             <div>
-                <strong>User:</strong>
+                <strong>{{ t('tickets.user') ?: 'User' }}:</strong>
                 {{ $ticket->owner?->name ?? '—' }}
             </div>
 
             <div>
-                <strong>Category:</strong>
+                <strong>{{ t('tickets.category') ?: 'Category' }}:</strong>
                 {{ optional($ticket->category?->translation())->name ?? '—' }}
             </div>
 
             @if ($ticket->due_date)
                 <div>
-                    <strong>Due Date:</strong>
+                    <strong>{{ t('tickets.due_date') ?: 'Due Date' }}:</strong>
                     {{ $ticket->due_date->format('Y-m-d') }}
                 </div>
             @endif
 
             <div>
-                <strong>Status:</strong>
+                <strong>{{ t('tickets.status') ?: 'Status' }}:</strong>
                 {{ ucfirst($ticket->status) }}
             </div>
 
             <div>
-                <strong>Opened:</strong>
+                <strong>{{ t('tickets.opened') ?: 'Opened' }}:</strong>
                 {{ $ticket->opened_at }}
             </div>
 
             @if ($ticket->closed_at)
                 <div>
-                    <strong>Closed:</strong>
+                    <strong>{{ t('tickets.closed') ?: 'Closed' }}:</strong>
                     {{ $ticket->closed_at }}
                 </div>
             @endif
@@ -79,23 +72,23 @@
             @if ($ticket->status === 'open')
                 <form method="POST" action="{{ route('tickets.close', $ticket) }}">
                     @csrf
-                    <label class="block font-semibold mb-1">Close reason *</label>
+                    <label class="block font-semibold mb-1">{{ t('tickets.close_reason') ?: 'Close reason' }} *</label>
                     <textarea name="reason"
                               class="w-full border rounded px-3 py-2 mb-3"
                               required></textarea>
                     <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
-                        Close Ticket
+                        {{ t('tickets.close_ticket') ?: 'Close Ticket' }}
                     </button>
                 </form>
             @else
                 <form method="POST" action="{{ route('tickets.reopen', $ticket) }}">
                     @csrf
-                    <label class="block font-semibold mb-1">Reopen reason *</label>
+                    <label class="block font-semibold mb-1">{{ t('tickets.reopen_reason') ?: 'Reopen reason' }} *</label>
                     <textarea name="reason"
                               class="w-full border rounded px-3 py-2 mb-3"
                               required></textarea>
                     <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
-                        Reopen Ticket
+                        {{ t('tickets.reopen_ticket') ?: 'Reopen Ticket' }}
                     </button>
                 </form>
             @endif
@@ -106,7 +99,7 @@
             @foreach ($ticket->messages as $msg)
                 <div class="bg-white p-4 rounded shadow">
                     <div class="text-sm text-gray-600 mb-1">
-                        {{ $msg->is_system ? 'System' : ($msg->user?->name ?? '—') }}
+                        {{ $msg->is_system ? t('tickets.system', 'System') : ($msg->user?->name ?? '—') }}
                         · {{ $msg->created_at }}
                     </div>
 
@@ -138,20 +131,77 @@
                   class="bg-white p-6 rounded shadow space-y-4">
                 @csrf
 
-                <textarea name="message"
-                          rows="4"
-                          class="w-full border rounded px-3 py-2"
-                          required></textarea>
+                <div>
+                    <label class="block font-semibold mb-1">{{ t('tickets.new_message') ?: 'New message' }} *</label>
+                    <textarea name="message"
+                              rows="4"
+                              class="w-full border rounded px-3 py-2"
+                              required></textarea>
+                </div>
 
                 <input type="file" name="files[]" multiple>
 
+                <!-- Google reCAPTCHA -->
+                <div>
+                    <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                    @error('g-recaptcha-response')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <script>
+                (function(){
+                    var script = document.currentScript;
+                    var container = (script && script.previousElementSibling && script.previousElementSibling.classList && script.previousElementSibling.classList.contains('g-recaptcha')) ? script.previousElementSibling : (script && script.parentElement && script.parentElement.querySelector('.g-recaptcha')) || document.querySelector('.g-recaptcha[data-sitekey]');
+                    if (!container) { console.debug('[recaptcha] container not found (ticket show)'); return; }
+
+                    function loadRecaptcha(){
+                        if (window.__recaptchaLazyLoaded) return;
+                        window.__recaptchaLazyLoaded = true;
+                        console.debug('[recaptcha] loading script (ticket show)');
+                        var s = document.createElement('script');
+                        s.src = 'https://www.google.com/recaptcha/api.js';
+                        s.async = true; s.defer = true;
+                        s.onload = function(){
+                            console.debug('[recaptcha] script loaded (ticket show)');
+                            try{
+                                var key = container.getAttribute('data-sitekey');
+                                if (window.grecaptcha && typeof window.grecaptcha.render === 'function' && !container.querySelector('iframe')) {
+                                    window.grecaptcha.render(container, { 'sitekey': key });
+                                    console.debug('[recaptcha] rendered (ticket show)');
+                                }
+                            } catch(e) { console.error('[recaptcha] render error (ticket show)', e); }
+                        };
+                        s.onerror = function(e){ console.error('[recaptcha] failed to load (ticket show)', e); };
+                        document.head.appendChild(s);
+                    }
+
+                    container.addEventListener('click', loadRecaptcha, {once:true});
+                    container.addEventListener('mouseenter', loadRecaptcha, {once:true});
+                    var f = container.closest('form'); if (f){
+                        f.addEventListener('submit', loadRecaptcha, {once:true});
+                        f.addEventListener('focusin', loadRecaptcha, {once:true});
+                        f.querySelectorAll('input, textarea, button, select').forEach(function(el){ el.addEventListener('focus', loadRecaptcha, {once:true}); });
+                    }
+
+                    if ('IntersectionObserver' in window) {
+                        var io = new IntersectionObserver(function(entries){
+                            entries.forEach(function(entry){ if (entry.isIntersecting) { loadRecaptcha(); io.disconnect(); } });
+                        }, {rootMargin: '200px'});
+                        io.observe(container);
+                    }
+                })();
+                </script>
+
                 <div class="flex justify-end">
                     <button class="bg-blue-600 text-white px-6 py-2 rounded">
-                        Send
+                        {{ t('tickets.send') ?: 'Send' }}
                     </button>
                 </div>
             </form>
         @endif
 
     </div>
+
+
 </x-app-layout>

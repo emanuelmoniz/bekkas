@@ -10,8 +10,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Rules\Recaptcha;
+use App\Rules\PasswordValidation;
 
 class RegisteredUserController extends Controller
 {
@@ -28,16 +29,37 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        // Build rules; require reCAPTCHA only when configured
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email', 'confirmed'],
+            'password' => ['required', 'confirmed', PasswordValidation::rules()],
+        ];
+
+        $messages = [
+            'name.required' => t('validation.name_required') ?: 'Please enter your name.',
+            'name.max' => t('validation.name_max') ?: 'Name cannot exceed 255 characters.',
+            'email.required' => t('validation.email_required') ?: 'Please enter your email address.',
+            'email.email' => t('validation.email_invalid') ?: 'Please enter a valid email address.',
+            'email.unique' => t('validation.email_exists') ?: 'This email address is already registered.',
+            'email.confirmed' => t('validation.email_mismatch') ?: 'Email addresses do not match.',
+            'password.required' => t('validation.password_required') ?: 'Please enter a password.',
+            'password.min' => t('validation.password_min') ?: 'Password must be at least :min characters.',
+            'password.confirmed' => t('validation.password_mismatch') ?: 'Passwords do not match.',
+        ];
+
+        if (! empty(config('services.recaptcha.secret_key'))) {
+            $rules['g-recaptcha-response'] = ['required', new Recaptcha];
+            $messages['g-recaptcha-response.required'] = t('validation.recaptcha_required') ?: 'Please verify that you are not a robot.';
+        }
+
+        $request->validate($rules, $messages);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'is_active' => true,
         ]);
 
         // Assign default "client" role
@@ -51,6 +73,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        // New users are clients by default, redirect to home
+        return redirect()->intended('/');
     }
 }

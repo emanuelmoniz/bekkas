@@ -1,24 +1,26 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
     public function up(): void
     {
-        DB::statement("
-            ALTER TABLE products
-            ADD CONSTRAINT products_tax_id_foreign
-            FOREIGN KEY (tax_id) REFERENCES taxes(id)
-        ");
+        Schema::table('products', function (Blueprint $table) {
+            // Add tax_id column if it doesn't exist
+            if (!Schema::hasColumn('products', 'tax_id')) {
+                $table->foreignId('tax_id')->nullable()->after('id')->constrained('taxes');
+            }
+        });
     }
 
     public function down(): void
     {
-        DB::statement("
-            ALTER TABLE products
-            DROP FOREIGN KEY products_tax_id_foreign
-        ");
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropForeign(['tax_id']);
+            $table->dropColumn('tax_id');
+        });
     }
 };

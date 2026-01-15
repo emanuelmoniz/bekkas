@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800">
-            Order #{{ $order->id }}
+            Order {{ $order->order_number }}
         </h2>
     </x-slot>
 
@@ -12,16 +12,27 @@
         ======================= --}}
         <div class="bg-white shadow rounded p-4 grid md:grid-cols-2 gap-4">
             <div>
-                <p><strong>Status:</strong> {{ $order->status }}</p>
-                <p><strong>Paid:</strong> {{ $order->is_paid ? 'Yes' : 'No' }}</p>
-                <p><strong>Canceled:</strong> {{ $order->is_canceled ? 'Yes' : 'No' }}</p>
-                <p><strong>Refunded:</strong> {{ $order->is_refunded ? 'Yes' : 'No' }}</p>
+                <p><strong>Date:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
+                <p><strong>{{ t('orders.status') ?: 'Status' }}:</strong> 
+                    @php
+                        $currentStatus = $statuses->firstWhere('code', $order->status);
+                    @endphp
+                    {{ optional($currentStatus?->translation())->name ?? $order->status }}
+                </p>
+                <p><strong>{{ t('orders.paid') ?: 'Paid' }}:</strong> {{ $order->is_paid ? 'Yes' : 'No' }}</p>
+                <p><strong>{{ t('orders.refunded') ?: 'Refunded' }}:</strong> {{ $order->is_refunded ? 'Yes' : 'No' }}</p>
+                @if($order->shipping_tier_name)
+                    <p><strong>Shipping Tier:</strong> {{ $order->shipping_tier_name }}</p>
+                @endif
+                @if($order->expected_delivery_date)
+                    <p><strong>Expected Delivery:</strong> {{ $order->expected_delivery_date->format('d/m/Y') }}</p>
+                @endif
             </div>
 
             <div>
                 <p><strong>User:</strong> {{ $order->user->name }}</p>
                 <p><strong>Email:</strong> {{ $order->user->email }}</p>
-                <p><strong>NIF:</strong> {{ $order->address->nif }}</p>
+                <p><strong>NIF:</strong> {{ $order->address_nif }}</p>
                 @if ($order->tracking_number)
                     <p><strong>Tracking:</strong> {{ $order->tracking_number }}</p>
                 @endif
@@ -34,12 +45,14 @@
         <div class="bg-white shadow rounded p-4">
             <h3 class="font-semibold mb-2">Shipping Address</h3>
 
-            <p>{{ $order->address->title }}</p>
-            <p>{{ $order->address->address_line_1 }}</p>
-            <p>{{ $order->address->address_line_2 }}</p>
-            <p>{{ $order->address->postal_code }} {{ $order->address->city }}</p>
-            <p>{{ $order->address->country }}</p>
-            <p><strong>NIF:</strong> {{ $order->address->nif }}</p>
+            <p>{{ $order->address_title }}</p>
+            <p>{{ $order->address_line_1 }}</p>
+            @if($order->address_line_2)
+                <p>{{ $order->address_line_2 }}</p>
+            @endif
+            <p>{{ $order->address_postal_code }} {{ $order->address_city }}</p>
+            <p>{{ $order->address_country }}</p>
+            <p><strong>NIF:</strong> {{ $order->address_nif }}</p>
         </div>
 
         {{-- =======================
@@ -102,10 +115,10 @@
             <div>
                 <label class="block font-medium mb-1">Status</label>
                 <select name="status" class="border rounded px-3 py-2 w-full">
-                    @foreach (['PROCESSING','DISPATCHED','DELIVERED','CANCELED'] as $status)
-                        <option value="{{ $status }}"
-                            @selected($order->status === $status)>
-                            {{ $status }}
+                    @foreach ($statuses as $status)
+                        <option value="{{ $status->code }}"
+                            @selected($order->status === $status->code)>
+                            {{ optional($status->translation())->name ?? $status->code }}
                         </option>
                     @endforeach
                 </select>
@@ -117,20 +130,25 @@
                        value="{{ $order->tracking_number }}"
                        class="border rounded px-3 py-2 w-full">
             </div>
+            
+            <div>
+                <label class="block font-medium mb-1">Tracking URL</label>
+                <input name="tracking_url"
+                       value="{{ $order->tracking_url }}"
+                       type="url"
+                       placeholder="https://track.carrier.com/..."
+                       class="border rounded px-3 py-2 w-full">
+                <p class="text-sm text-gray-500 mt-1">Full URL to tracking page (optional)</p>
+            </div>
 
             <div class="flex gap-6">
                 <label class="flex items-center gap-2">
-                    <input type="checkbox" name="is_paid" @checked($order->is_paid)>
+                    <input type="checkbox" name="is_paid" value="1" @checked($order->is_paid)>
                     Paid
                 </label>
 
                 <label class="flex items-center gap-2">
-                    <input type="checkbox" name="is_canceled" @checked($order->is_canceled)>
-                    Canceled
-                </label>
-
-                <label class="flex items-center gap-2">
-                    <input type="checkbox" name="is_refunded" @checked($order->is_refunded)>
+                    <input type="checkbox" name="is_refunded" value="1" @checked($order->is_refunded)>
                     Refunded
                 </label>
             </div>

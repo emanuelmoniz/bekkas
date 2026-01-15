@@ -95,22 +95,24 @@ class ProductController extends Controller
         ]);
 
         $product = Product::create([
-            'tax_id'      => $request->tax_id,
-            'price'       => $request->price,
-            'promo_price' => $request->promo_price,
-            'stock'       => $request->stock,
-            'width'       => $request->width,
-            'length'      => $request->length,
-            'height'      => $request->height,
-            'weight'      => $request->weight,
+            'tax_id'         => $request->tax_id,
+            'price'          => $request->price,
+            'promo_price'    => $request->promo_price,
+            'stock'          => $request->stock,
+            'production_time' => $request->production_time ?? 0,
+            'width'          => $request->width,
+            'length'         => $request->length,
+            'height'         => $request->height,
+            'weight'         => $request->weight,
 
-            // ✅ BOOLEAN NORMALIZATION
-            'is_new'   => $request->boolean('is_new'),
-            'is_promo' => $request->boolean('is_promo'),
-            'active'   => $request->boolean('active'),
+            // BOOLEAN NORMALIZATION
+            'is_backorder' => $request->boolean('is_backorder', true),
+            'is_new'       => $request->boolean('is_new'),
+            'is_promo'     => $request->boolean('is_promo'),
+            'active'       => $request->boolean('active'),
         ]);
 
-        foreach (['pt-PT', 'en-UK'] as $locale) {
+        foreach (config('app.locales') as $locale => $name) {
             ProductTranslation::create([
                 'product_id' => $product->id,
                 'locale' => $locale,
@@ -148,22 +150,24 @@ class ProductController extends Controller
         ]);
 
         $product->update([
-            'tax_id'      => $request->tax_id,
-            'price'       => $request->price,
-            'promo_price' => $request->promo_price,
-            'stock'       => $request->stock,
-            'width'       => $request->width,
-            'length'      => $request->length,
-            'height'      => $request->height,
-            'weight'      => $request->weight,
+            'tax_id'         => $request->tax_id,
+            'price'          => $request->price,
+            'promo_price'    => $request->promo_price,
+            'stock'          => $request->stock,
+            'production_time' => $request->production_time ?? 0,
+            'width'          => $request->width,
+            'length'         => $request->length,
+            'height'         => $request->height,
+            'weight'         => $request->weight,
 
             // ✅ BOOLEAN NORMALIZATION
-            'is_new'   => $request->boolean('is_new'),
-            'is_promo' => $request->boolean('is_promo'),
-            'active'   => $request->boolean('active'),
+            'is_backorder' => $request->boolean('is_backorder'),
+            'is_new'       => $request->boolean('is_new'),
+            'is_promo'     => $request->boolean('is_promo'),
+            'active'       => $request->boolean('active'),
         ]);
 
-        foreach (['pt-PT', 'en-UK'] as $locale) {
+        foreach (config('app.locales') as $locale => $name) {
             $product->translations()
                 ->updateOrCreate(
                     ['locale' => $locale],

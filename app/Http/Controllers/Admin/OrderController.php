@@ -4,13 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
     public function index(Request $request)
     {
         $query = Order::with(['user', 'address']);
+
+        if ($request->filled('order_number')) {
+            $query->where('order_number', 'like', '%' . $request->order_number . '%');
+        }
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -38,6 +44,14 @@ class OrderController extends Controller
             });
         }
 
+        if ($request->filled('from_date')) {
+            $query->whereDate('created_at', '>=', $request->from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $query->whereDate('created_at', '<=', $request->to_date);
+        }
+
         $orders = $query->latest()->get();
 
         return view('admin.orders.index', compact('orders'));
@@ -46,8 +60,9 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         $order->load(['items.product', 'user', 'address']);
+        $statuses = OrderStatus::with('translations')->orderBy('sort_order')->get();
 
-        return view('admin.orders.show', compact('order'));
+        return view('admin.orders.show', compact('order', 'statuses'));
     }
 
     public function update(Request $request, Order $order)
@@ -55,23 +70,49 @@ class OrderController extends Controller
         $request->validate([
             'status' => 'required|string',
             'is_paid' => 'nullable|boolean',
-            'is_canceled' => 'nullable|boolean',
             'is_refunded' => 'nullable|boolean',
             'tracking_number' => 'nullable|string|max:255',
+            'tracking_url' => 'nullable|url|max:500',
         ]);
 
-        if ($request->filled('is_canceled') && $request->is_canceled) {
-            $order->status = 'CANCELED';
-            $order->is_canceled = true;
-        }
+        DB::transaction(function () use ($request, $order) {
+            // Restore stock when order status changes to CANCELED (only if not already canceled)
+            // Only restore stock for items that were NOT backordered (had stock when ordered)
+            if ($request->status === 'CANCELED' && $order->status !== 'CANCELED') {
+                foreach ($order->items as $item) {
+                    $product = $item->product;
+                    // Only restore stock if this item was NOT backordered
+                    if ($product && !$item->was_backordered) {
+                        $product->increment('stock', $item->quantity);
+                    }
+                }
+            }
 
-        $order->update([
-            'status' => $request->status,
-            'is_paid' => $request->has('is_paid'),
-            'is_refunded' => $request->has('is_refunded'),
-            'tracking_number' => $request->tracking_number,
-        ]);
+            // Decrement stock when order status changes from CANCELED to another status
+            if ($order->status === 'CANCELED' && $request->status !== 'CANCELED') {
+                foreach ($order->items as $item) {
+                    $product = $item->product;
+                    // Only decrement if item was NOT backordered originally
+                    if ($product && !$item->was_backordered) {
+                        if ($product->stock >= $item->quantity) {
+                            $product->decrement('stock', $item->quantity);
+                        } elseif ($product->stock > 0) {
+                            // Partial stock available
+                            $product->update(['stock' => 0]);
+                        }
+                    }
+                }
+            }
 
-        return redirect()->route('admin.orders.show', $order);
+            $order->update([
+                'status' => $request->status,
+                'is_paid' => $request->boolean('is_paid'),
+                'is_refunded' => $request->boolean('is_refunded'),
+                'tracking_number' => $request->tracking_number,
+                'tracking_url' => $request->tracking_url,
+            ]);
+        });
+
+        return redirect()->route('admin.orders.show', $order)->with('success', 'Order updated successfully!');
     }
 }

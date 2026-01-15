@@ -1,0 +1,68 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800">
+            Countries
+        </h2>
+    </x-slot>
+
+    <div class="py-6 max-w-6xl mx-auto sm:px-6 lg:px-8">
+        <div class="mb-4 flex justify-end">
+            <a href="{{ route('admin.countries.create') }}"
+               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                New Country
+            </a>
+        </div>
+
+        <div class="bg-white shadow rounded">
+            <table class="min-w-full border">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-4 py-2 text-left">Name PT</th>
+                        <th class="px-4 py-2 text-left">Name EN</th>
+                        <th class="px-4 py-2 text-left">ISO Alpha-2</th>
+                        <th class="px-4 py-2 text-left">Country Code</th>
+                        <th class="px-4 py-2 text-left">Active</th>
+                        <th class="px-4 py-2 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($countries as $country)
+                        <tr class="border-t">
+                            <td class="px-4 py-2">{{ $country->name_pt }}</td>
+                            <td class="px-4 py-2">{{ $country->name_en }}</td>
+                            <td class="px-4 py-2">{{ $country->iso_alpha2 }}</td>
+                            <td class="px-4 py-2">{{ $country->country_code }}</td>
+                            <td class="px-4 py-2">
+                                {{ $country->is_active ? 'Yes' : 'No' }}
+                            </td>
+                            <td class="px-4 py-2 text-right space-x-2">
+                                <a href="{{ route('admin.countries.edit', $country) }}"
+                                   class="text-blue-600 hover:underline">
+                                    Edit
+                                </a>
+
+                                <form method="POST"
+                                      action="{{ route('admin.countries.destroy', $country) }}"
+                                      class="inline"
+                                      onsubmit="return confirm('Delete this country?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="text-red-600 hover:underline">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6"
+                                class="px-4 py-6 text-center text-gray-500">
+                                No countries found.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</x-app-layout>

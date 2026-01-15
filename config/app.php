@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'BEKKAS - 3D Printing Studio'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://bekkas.pt'),
 
     /*
     |--------------------------------------------------------------------------
@@ -81,6 +81,20 @@ return [
     'locale' => env('APP_LOCALE', 'pt-PT'),
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en-UK'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Supported Locales
+    |--------------------------------------------------------------------------
+    |
+    | A simple map of supported locales used in the admin and front-end
+    | to build locale selectors. Controllers reference `config('app.locales')`.
+    |
+    */
+    'locales' => [
+        'pt-PT' => 'Português',
+        'en-UK' => 'English',
+    ],
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800">
-            Cart
+            {{ t('page.cart.title') ?: 'Cart' }}
         </h2>
     </x-slot>
 
@@ -10,7 +10,14 @@
 
             @if (empty($items))
                 <div class="bg-white p-6 rounded shadow text-center text-gray-600">
-                    Your cart is empty.
+                    {{ t('cart.empty') ?: 'Your cart is empty.' }}
+                    
+                    <div class="mt-4">
+                        <a href="{{ route('products.index') }}"
+                           class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded text-center font-medium">
+                            {{ t('cart.start_shopping') ?: 'Start Shopping' }}
+                        </a>
+                    </div>
                 </div>
             @else
                 <div class="bg-white rounded shadow divide-y">
@@ -37,14 +44,14 @@
                                            min="1"
                                            class="w-16 border rounded px-2 py-1">
                                     <button class="text-sm underline ml-2">
-                                        Update
+                                        {{ t('cart.update') ?: 'Update' }}
                                     </button>
                                 </form>
 
                                 <form method="POST" action="{{ route('cart.remove', $item['product']) }}">
                                     @csrf
                                     <button class="text-red-600 text-sm underline">
-                                        Remove
+                                        {{ t('cart.remove') ?: 'Remove' }}
                                     </button>
                                 </form>
                             </div>
@@ -54,33 +61,36 @@
 
                 <div class="bg-white p-6 rounded shadow space-y-2">
                     <div class="flex justify-between">
-                        <span>Products</span>
+                        <span>{{ t('cart.summary.products') ?: 'Products' }}</span>
                         <span>€{{ number_format($productsGross, 2) }}</span>
                     </div>
 
                     <div class="text-sm text-gray-500 flex justify-between">
-                        <span>Product tax</span>
+                        <span>{{ t('cart.summary.product_tax') ?: 'Product tax' }}</span>
                         <span>€{{ number_format($productsTax, 2) }}</span>
                     </div>
 
-                    <div class="flex justify-between">
-                        <span>Shipping</span>
-                        <span>€{{ number_format($shipping['gross'], 2) }}</span>
-                    </div>
-
-                    <div class="text-sm text-gray-500 flex justify-between">
-                        <span>Shipping tax</span>
-                        <span>€{{ number_format($shipping['tax'], 2) }}</span>
-                    </div>
-
                     <div class="border-t pt-2 flex justify-between font-semibold">
-                        <span>Total</span>
-                        <span>€{{ number_format($totalGross, 2) }}</span>
+                        <span>{{ t('cart.summary.subtotal') ?: 'Subtotal' }}</span>
+                        <span>€{{ number_format($productsGross, 2) }}</span>
                     </div>
 
-                    <div class="text-sm text-gray-600 flex justify-between">
-                        <span>Total tax</span>
-                        <span>€{{ number_format($totalTax, 2) }}</span>
+                    <div class="bg-blue-50 border border-blue-200 rounded p-3 text-sm text-blue-800">
+                        {{ t('cart.shipping_at_checkout') ?: 'The shipping cost will be calculated at checkout.' }}
+                    </div>
+
+                    <div class="pt-4">
+                        <a href="{{ route('checkout.index') }}"
+                           class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded text-center font-medium block">
+                            {{ t('cart.checkout') ?: 'Proceed to Checkout' }}
+                        </a>
+                    </div>
+
+                    <div class="pt-2">
+                        <a href="{{ route('products.index') }}"
+                           class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded text-center font-medium block">
+                            {{ t('cart.continue_shopping') ?: 'Continue Shopping' }}
+                        </a>
                     </div>
                 </div>
             @endif

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Tickets
+            {{ t('tickets.index_title') ?: 'Tickets' }}
         </h2>
     </x-slot>
 
@@ -11,7 +11,7 @@
         <div class="mb-4 flex justify-end">
             <a href="{{ route('tickets.create') }}"
                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-                New Ticket
+                {{ t('tickets.new') ?: 'New Ticket' }}
             </a>
         </div>
 
@@ -21,7 +21,7 @@
 
                 {{-- Ticket ID --}}
                 <div>
-                    <label class="block text-sm font-medium mb-1">Ticket ID</label>
+                    <label class="block text-sm font-medium mb-1">{{ t('tickets.ticket_id') ?: 'Ticket ID' }}</label>
                     <input
                         type="text"
                         name="ticket_id"
@@ -32,13 +32,13 @@
 
                 {{-- Ticket Title (NEW) --}}
                 <div>
-                    <label class="block text-sm font-medium mb-1">Title</label>
+                    <label class="block text-sm font-medium mb-1">{{ t('tickets.title') ?: 'Title' }}</label>
                     <input
                         type="text"
                         name="title"
                         value="{{ request('title') }}"
                         class="w-full border rounded px-3 py-2"
-                        placeholder="Search title"
+                        placeholder="{{ t('tickets.search_title') ?: 'Search title' }}"
                     >
                 </div>
 
@@ -47,7 +47,7 @@
                     x-data="{ open: false, search: '', selected: '{{ request('category_id') }}' }"
                     class="relative"
                 >
-                    <label class="block text-sm font-medium mb-1">Category</label>
+                    <label class="block text-sm font-medium mb-1">{{ t('tickets.category') ?: 'Category' }}</label>
                     <input type="hidden" name="category_id" :value="selected">
 
                     <button
@@ -63,7 +63,7 @@
                                 )->name ?? '—'
                             }}
                         @else
-                            Select category
+                            {{ t('tickets.select_category') ?: 'Select category' }}
                         @endif
                     </button>
 
@@ -75,7 +75,7 @@
                         <input
                             type="text"
                             x-model="search"
-                            placeholder="Search..."
+                            placeholder="{{ t('tickets.search') ?: 'Search...' }}"
                             class="w-full px-3 py-2 border-b"
                         >
 
@@ -96,42 +96,18 @@
                     </div>
                 </div>
 
-                {{-- Admin-only filters --}}
-                @if(auth()->user()->hasRole('admin'))
-                    <div>
-                        <label class="block text-sm font-medium mb-1">User</label>
-                        <input
-                            type="text"
-                            name="user"
-                            value="{{ request('user') }}"
-                            class="w-full border rounded px-3 py-2"
-                        >
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Email</label>
-                        <input
-                            type="text"
-                            name="email"
-                            value="{{ request('email') }}"
-                            class="w-full border rounded px-3 py-2"
-                        >
-                    </div>
-                @endif
-
                 {{-- Actions --}}
                 <div class="flex items-end gap-2">
+                    <a href="{{ route('tickets.index') }}"
+                       class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                        {{ t('tickets.reset') ?: 'Reset' }}
+                    </a>
                     <button
                         type="submit"
-                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
                     >
-                        Filter
+                        {{ t('tickets.filter') ?: 'Filter' }}
                     </button>
-
-                    <a href="{{ route('tickets.index') }}"
-                       class="text-sm text-gray-600 underline">
-                        Reset
-                    </a>
                 </div>
 
             </div>
@@ -142,11 +118,10 @@
             <table class="min-w-full border">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="px-4 py-2 text-left">Title</th>
-                        <th class="px-4 py-2 text-left">User</th>
-                        <th class="px-4 py-2 text-left">Category</th>
-                        <th class="px-4 py-2 text-left">Status</th>
-                        <th class="px-4 py-2 text-left">Last Update</th>
+                        <th class="px-4 py-2 text-left">{{ t('tickets.title') ?: 'Title' }}</th>
+                        <th class="px-4 py-2 text-left">{{ t('tickets.category') ?: 'Category' }}</th>
+                        <th class="px-4 py-2 text-left">{{ t('tickets.status') ?: 'Status' }}</th>
+                        <th class="px-4 py-2 text-left">{{ t('tickets.last_update') ?: 'Last Update' }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -163,10 +138,6 @@
                             </td>
 
                             <td class="px-4 py-2">
-                                {{ $ticket->owner?->name ?? '—' }}
-                            </td>
-
-                            <td class="px-4 py-2">
                                 {{ optional($ticket->category?->translation())->name ?? '—' }}
                             </td>
 
@@ -180,9 +151,9 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5"
+                            <td colspan="4"
                                 class="px-4 py-6 text-center text-gray-500">
-                                No tickets found.
+                                {{ t('tickets.no_tickets') ?: 'No tickets found.' }}
                             </td>
                         </tr>
                     @endforelse

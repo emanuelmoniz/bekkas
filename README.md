@@ -1,59 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# BEKKAS - 3D Printing Studio (Laravel)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern e-commerce and support site for a 3D printing studio built with Laravel 12, Vite, Tailwind CSS and Alpine.js.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Quickstart
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Requirements:**
+- PHP 8.2+
+- Composer
+- Node 18+ / npm
+- MySQL (or a supported DB)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Local setup (typical):**
 
-## Learning Laravel
+1. Clone the repository
+   - git clone <repo> && cd public_html
+2. Install PHP dependencies
+   - composer install
+3. Copy example env and generate an app key
+   - cp .env.example .env
+   - php artisan key:generate
+4. Configure `.env` (DB, Mail, RECAPTCHA keys, etc.)
+5. Run database migrations and seeders
+   - php artisan migrate --seed
+6. Build frontend assets
+   - npm install
+   - npm run build
+7. Create storage symlink
+   - php artisan storage:link
+8. Start a local server
+   - php artisan serve
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+> Tip: `composer setup` is available (runs migrations, npm install + build) as a convenience script.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🧭 Project overview
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Key components:
+- Laravel 12 (PHP ^8.2)
+- Frontend: Vite + Tailwind + Alpine.js
+- DB-driven static translations with `t()` helper (cached)
+- Features: Products catalog, Cart & Checkout, Orders (client + admin), Shipping Tiers, Tickets (support), Favorites, Admin area
+- Storage: a `private` local disk for attachments and `public` disk for media served via `storage:link`
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## ⚙️ Configuration (`.env`)
+
+Important env variables to set in your `.env` (see `.env.example`):
+- APP_URL, APP_ENV, APP_KEY
+- DB_CONNECTION, DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD
+- MAIL_MAILER, MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, MAIL_ENCRYPTION
+- RECAPTCHA_SITE_KEY, RECAPTCHA_SECRET_KEY (used on contact forms and registration)
+- FILESYSTEM_DISK (local or s3) + AWS_* vars if using S3
+
+Security notes: never commit real secrets to the repository. Use environment or vaults in CI/CD.
+
+---
+
+<!-- Tests & CI intentionally removed from top-level README until the test suite is stable. See `TESTING.md` for instructions to run tests safely on your server and notes about CI. -->
+
+
+---
+
+## 🔧 Development commands
+
+- Start dev server + assets (local):
+  - composer dev (concurrently runs the server, queue listener and vite)
+- Run migrations:
+  - php artisan migrate
+- Seed demo data:
+  - php artisan db:seed
+- Run queue worker:
+  - php artisan queue:work
+- Run tests (safe helper):
+  - chmod +x bin/run-tests.sh         # make the helper executable (once)
+  - ./bin/run-tests.sh                # run the full test suite using an isolated sqlite DB (recommended on single servers)
+  - FORCE=1 ./bin/run-tests.sh        # bypass safety check (use with care)
+  - composer test                     # alternative: runs `php artisan test` (not isolated)
+- Lint & format:
+  - vendor/bin/pint (Laravel Pint)
+
+---
+
+## 🔒 Security & Best Practices
+
+- Attachments are stored on a private disk and downloads are validated to belong to the user or admin.
+- Key endpoints use throttling to prevent abuse (e.g., adding to cart, favorites, checkout limited).
+- Use monitoring (Sentry/Logs) and daily backups for production databases.
+
+---
+
+## 🧾 Notes for maintainers
+
+- Translations: the `t()` helper will fetch DB-driven translations and fall back to Laravel files. After modifying translations, remember to clear cache if necessary.
+- Shipping: shipping tiers and regions are configurable in the admin panel and used both in checkout and a public endpoint to retrieve tiers for a postal code.
+
+---
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Contributions are welcome. Open a PR with a descriptive title and link to any relevant issue. Consider adding tests for new functionality.
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT

@@ -9,6 +9,7 @@ use App\Models\TicketAttachment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Rules\Recaptcha;
 
 class TicketController extends Controller
 {
@@ -16,19 +17,18 @@ class TicketController extends Controller
     {
         $user = Auth::user();
 
+        // Client index: always show only logged-in user's tickets
         $query = Ticket::with('category.translations', 'owner')
-            ->when(! $user->hasRole('admin'), function ($q) use ($user) {
-                $q->where('user_id', $user->id);
-            });
+            ->where('user_id', $user->id);
 
-        // Shared filters (admin + client)
+        // Client filters only
 
         // Ticket ID
         if ($request->filled('ticket_id')) {
             $query->where('id', 'like', '%' . trim($request->ticket_id) . '%');
         }
 
-        // Ticket title (NEW)
+        // Ticket title
         if ($request->filled('title')) {
             $query->where('title', 'like', '%' . trim($request->title) . '%');
         }
@@ -36,21 +36,6 @@ class TicketController extends Controller
         // Category
         if ($request->filled('category_id')) {
             $query->where('ticket_category_id', $request->category_id);
-        }
-
-        // Admin-only filters
-        if ($user->hasRole('admin')) {
-            if ($request->filled('user')) {
-                $query->whereHas('owner', function ($q) use ($request) {
-                    $q->where('name', 'like', '%' . trim($request->user) . '%');
-                });
-            }
-
-            if ($request->filled('email')) {
-                $query->whereHas('owner', function ($q) use ($request) {
-                    $q->where('email', 'like', '%' . trim($request->email) . '%');
-                });
-            }
         }
 
         $tickets = $query
@@ -66,38 +51,45 @@ class TicketController extends Controller
 
     public function create()
     {
-        $user = Auth::user();
-
         $categories = TicketCategory::with('translations')
             ->where('active', true)
             ->get();
 
-        $users = $user->hasRole('admin')
-            ? User::where('active', true)->get()
-            : collect();
-
-        return view('tickets.create', compact('categories', 'users'));
+        return view('tickets.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
         $authUser = Auth::user();
 
-        $request->validate([
+        // Build validation rules; require reCAPTCHA only when configured
+        $rules = [
             'title' => 'required|string|max:255',
             'ticket_category_id' => 'required|exists:ticket_categories,id',
             'message' => 'required|string',
             'due_date' => 'nullable|date',
-            'user_id' => 'nullable|exists:users,id',
             'files.*' => 'nullable|file|max:20480',
-        ]);
+        ];
 
-        $ownerId = $authUser->hasRole('admin') && $request->user_id
-            ? (int) $request->user_id
-            : $authUser->id;
+        $messages = [
+            'title.required' => t('tickets.title_required') ?: 'Please enter a title.',
+            'title.max' => t('tickets.title_max') ?: 'Title cannot exceed 255 characters.',
+            'ticket_category_id.required' => t('tickets.category_required') ?: 'Please select a category.',
+            'message.required' => t('tickets.message_required') ?: 'Please enter a message.',
+            'due_date.date' => t('tickets.due_date_invalid') ?: 'Please enter a valid date.',
+            'files.*.max' => t('tickets.file_max') ?: 'File cannot exceed 20 MB.',
+        ];
 
+        if (! empty(config('services.recaptcha.secret_key'))) {
+            $rules['g-recaptcha-response'] = ['required', new Recaptcha];
+            $messages['g-recaptcha-response.required'] = t('tickets.recaptcha_required') ?: 'Please verify that you are not a robot.';
+        }
+
+        $request->validate($rules, $messages);
+
+        // Client always creates ticket for themselves
         $ticket = Ticket::create([
-            'user_id' => $ownerId,
+            'user_id' => $authUser->id,
             'created_by' => $authUser->id,
             'ticket_category_id' => $request->ticket_category_id,
             'title' => $request->title,

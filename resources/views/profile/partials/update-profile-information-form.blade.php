@@ -1,11 +1,11 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Profile Information') }}
+            {{ t('profile.profile_information') ?: 'Profile Information' }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ t('profile.update_profile_info_desc') ?: "Update your account's profile information and email address." }}
         </p>
     </header>
 
@@ -31,24 +31,46 @@
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
                     <p class="text-sm mt-2 text-gray-800">
-                        {{ __('Your email address is unverified.') }}
+                        {{ t('profile.email_unverified') ?: 'Your email address is unverified.' }}
 
                         <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            {{ __('Click here to re-send the verification email.') }}
+                            {{ t('profile.resend_verification') ?: 'Click here to re-send the verification email.' }}
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
                         <p class="mt-2 font-medium text-sm text-green-600">
-                            {{ __('A new verification link has been sent to your email address.') }}
+                            {{ t('profile.verification_sent') ?: 'A new verification link has been sent to your email address.' }}
                         </p>
                     @endif
                 </div>
             @endif
         </div>
 
+        <div>
+            <x-input-label for="email_confirmation" :value="__('Confirm Email')" />
+            <x-text-input id="email_confirmation" name="email_confirmation" type="email" class="mt-1 block w-full" :value="old('email_confirmation', $user->email)" required autocomplete="email" />
+            <x-input-error class="mt-2" :messages="$errors->get('email_confirmation')" />
+        </div>
+
+        <div>
+            <x-input-label for="phone" :value="t('profile.phone') ?: 'Phone'" />
+            <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" autocomplete="tel" />
+            <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+        </div>
+
+        <div>
+            <x-input-label for="language" :value="t('profile.language') ?: 'Language'" />
+            <select id="language" name="language" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                @foreach(config('app.locales') as $key => $label)
+                    <option value="{{ $key }}" {{ old('language', $user->language ?? app()->getLocale()) == $key ? 'selected' : '' }}>{{ $label }}</option>
+                @endforeach
+            </select>
+            <x-input-error class="mt-2" :messages="$errors->get('language')" />
+        </div>
+
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+            <x-primary-button>{{ t('profile.save') ?: 'Save' }}</x-primary-button>
 
             @if (session('status') === 'profile-updated')
                 <p
@@ -57,7 +79,7 @@
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
                     class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+                >{{ t('profile.saved') ?: 'Saved.' }}</p>
             @endif
         </div>
     </form>

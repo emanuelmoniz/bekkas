@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800">
-            Order #{{ $order->id }}
+            Order {{ $order->order_number }}
         </h2>
     </x-slot>
 
@@ -9,35 +9,61 @@
 
         {{-- STATUS --}}
         <div class="bg-white shadow rounded p-4">
-            <p><strong>Status:</strong> {{ $order->status }}</p>
-            <p><strong>Paid:</strong> {{ $order->is_paid ? 'Yes' : 'No' }}</p>
-            <p><strong>Canceled:</strong> {{ $order->is_canceled ? 'Yes' : 'No' }}</p>
-            <p><strong>Refunded:</strong> {{ $order->is_refunded ? 'Yes' : 'No' }}</p>
-            @if ($order->tracking_number)
-                <p><strong>Tracking:</strong> {{ $order->tracking_number }}</p>
+            <p><strong>{{ t('orders.date') ?: 'Date' }}:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
+            <p><strong>{{ t('orders.status') ?: 'Status' }}:</strong> 
+                @php
+                    $statusObj = \App\Models\OrderStatus::where('code', $order->status)->first();
+                @endphp
+                {{ optional($statusObj?->translation())->name ?? $order->status }}
+            </p>
+            <p><strong>{{ t('orders.paid') ?: 'Paid' }}:</strong> {{ $order->is_paid ? (t('orders.yes') ?: 'Yes') : (t('orders.no') ?: 'No') }}</p>
+            <p><strong>{{ t('orders.refunded') ?: 'Refunded' }}:</strong> {{ $order->is_refunded ? (t('orders.yes') ?: 'Yes') : (t('orders.no') ?: 'No') }}</p>
+
+            @php
+                $trackingStatuses = json_decode(\App\Models\ShippingConfig::get('tracking_statuses', '["shipped","delivered"]'), true);
+            @endphp
+            @if(in_array($order->status, $trackingStatuses ?? []))
+                @if ($order->tracking_number)
+                    <p><strong>{{ t('orders.tracking') ?: 'Tracking' }}:</strong> {{ $order->tracking_number }}</p>
+                @endif
+                @if($order->tracking_url)
+                    <p>
+                        <a href="{{ $order->tracking_url }}" target="_blank" class="text-blue-600 hover:underline">
+                            {{ t('orders.track_shipment') ?: 'Track Your Shipment' }}
+                        </a>
+                    </p>
+                @else
+                    <p class="text-gray-600 italic">{{ t('orders.no_tracking') ?: 'Your order does not have tracking information yet' }}</p>
+                @endif
+            @endif
+
+            @if($order->expected_delivery_date)
+                <p><strong>{{ t('orders.expected_delivery') ?: 'Expected Delivery' }}:</strong> {{ $order->expected_delivery_date->format('d/m/Y') }}</p>
             @endif
         </div>
 
         {{-- ADDRESS --}}
         <div class="bg-white shadow rounded p-4">
-            <h3 class="font-semibold mb-2">Shipping Address</h3>
-            <p>{{ $order->address->title }}</p>
-            <p>{{ $order->address->address_line_1 }}</p>
-            <p>{{ $order->address->address_line_2 }}</p>
-            <p>{{ $order->address->postal_code }} {{ $order->address->city }}</p>
-            <p>{{ $order->address->country }}</p>
-            <p><strong>NIF:</strong> {{ $order->address->nif }}</p>
+            <h3 class="font-semibold mb-2">{{ t('orders.shipping_address') ?: 'Shipping Address' }}</h3>
+            <p>{{ $order->address_title }}</p>
+            <p>{{ $order->address_line_1 }}</p>
+            @if($order->address_line_2)
+                <p>{{ $order->address_line_2 }}</p>
+            @endif
+            <p>{{ $order->address_postal_code }} {{ $order->address_city }}</p>
+            <p>{{ $order->address_country }}</p>
+            <p><strong>{{ t('orders.nif') ?: 'NIF' }}:</strong> {{ $order->address_nif }}</p>
         </div>
 
         {{-- PRODUCTS --}}
         <div class="bg-white shadow rounded p-4">
-            <h3 class="font-semibold mb-2">Products</h3>
+            <h3 class="font-semibold mb-2">{{ t('orders.products') ?: 'Products' }}</h3>
             <table class="min-w-full border">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="px-3 py-2 text-left">Product</th>
-                        <th class="px-3 py-2">Qty</th>
-                        <th class="px-3 py-2">Gross</th>
+                        <th class="px-3 py-2 text-left">{{ t('orders.product') ?: 'Product' }}</th>
+                        <th class="px-3 py-2">{{ t('orders.qty') ?: 'Qty' }}</th>
+                        <th class="px-3 py-2">{{ t('orders.gross') ?: 'Gross' }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,13 +84,13 @@
 
         {{-- TOTALS --}}
         <div class="bg-white shadow rounded p-4 text-right space-y-1">
-            <p>Products (net): {{ number_format($order->products_total_net, 2) }} €</p>
-            <p>Products tax: {{ number_format($order->products_total_tax, 2) }} €</p>
-            <p>Shipping: {{ number_format($order->shipping_gross, 2) }} €</p>
-            <p>Shipping tax: {{ number_format($order->shipping_tax, 2) }} €</p>
+            <p>{{ t('orders.products_net') ?: 'Products (net)' }}: {{ number_format($order->products_total_net, 2) }} €</p>
+            <p>{{ t('orders.products_tax') ?: 'Products tax' }}: {{ number_format($order->products_total_tax, 2) }} €</p>
+            <p>{{ t('orders.shipping') ?: 'Shipping' }}: {{ number_format($order->shipping_gross, 2) }} €</p>
+            <p>{{ t('orders.shipping_tax') ?: 'Shipping tax' }}: {{ number_format($order->shipping_tax, 2) }} €</p>
             <hr>
             <p class="font-semibold">
-                Total: {{ number_format($order->total_gross, 2) }} €
+                {{ t('orders.total') ?: 'Total' }}: {{ number_format($order->total_gross, 2) }} €
             </p>
         </div>
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\ShippingTier;
+use App\Http\Requests\AddToCartRequest;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -14,10 +14,10 @@ class CartController extends Controller
 
         $products = Product::whereIn('id', array_keys($cart))
             ->where('active', true)
+            ->with(['tax'])
             ->get();
 
         $items = [];
-        $totalWeight = 0;
 
         $productsGross = 0;
         $productsTax = 0;
@@ -26,8 +26,8 @@ class CartController extends Controller
             $qty = $cart[$product->id];
             $unitGross = $product->promo_price ?? $product->price;
 
-            // ✅ EXPLICIT RELATION ACCESS (avoids "tax" column collision)
-            $taxPct = $product->tax()->first()->percentage;
+            // Safe tax retrieval (Laravel optional helper)
+            $taxPct = optional($product->tax)->percentage ?? 0;
 
             $lineGross = $unitGross * $qty;
             $lineNet = $lineGross / (1 + $taxPct / 100);
@@ -43,45 +43,58 @@ class CartController extends Controller
 
             $productsGross += $lineGross;
             $productsTax += $lineTax;
-
-            $totalWeight += ($product->weight * $qty);
         }
-
-        $shipping = $this->calculateShipping($totalWeight);
 
         return view('cart.index', [
             'items' => $items,
-            'totalWeight' => $totalWeight,
-
             'productsGross' => round($productsGross, 2),
             'productsTax' => round($productsTax, 2),
-
-            'shipping' => $shipping,
-
-            'totalGross' => round($productsGross + $shipping['gross'], 2),
-            'totalTax' => round($productsTax + $shipping['tax'], 2),
         ]);
     }
 
-    public function add(Request $request, Product $product)
+    public function add(AddToCartRequest $request, Product $product)
     {
-        $request->validate(['quantity' => 'required|integer|min:1']);
-
         if (! $product->active) {
             abort(404);
         }
 
+        // Check if product has stock (unless backorder is allowed)
+        if (!$product->is_backorder && $product->stock <= 0) {
+            return back()->with('error', 'This product is out of stock.');
+        }
+
         $cart = session()->get('cart', []);
-        $cart[$product->id] = ($cart[$product->id] ?? 0) + $request->quantity;
+        $currentQty = $cart[$product->id] ?? 0;
+        $newQty = $currentQty + $request->quantity;
+
+        // Validate requested quantity doesn't exceed available stock (unless backorder is allowed)
+        if (!$product->is_backorder && $newQty > $product->stock) {
+            return back()->with('error', str_replace(':stock', $product->stock, t('stock.only_available')));
+        }
+
+        $cart[$product->id] = $newQty;
 
         session()->put('cart', $cart);
+        
+        // Store the referrer URL so user can continue shopping from where they left off
+        if ($request->headers->get('referer') && !str_contains($request->headers->get('referer'), '/cart')) {
+            session()->put('shopping_return_url', $request->headers->get('referer'));
+        }
 
         return redirect()->route('cart.index');
     }
 
-    public function update(Request $request, Product $product)
+    public function update(AddToCartRequest $request, Product $product)
     {
-        $request->validate(['quantity' => 'required|integer|min:1']);
+        // Check if product has stock (unless backorder is allowed)
+        if (!$product->is_backorder && $product->stock <= 0) {
+            return back()->with('error', 'This product is out of stock.');
+        }
+
+        // Validate requested quantity doesn't exceed available stock (unless backorder is allowed)
+        if (!$product->is_backorder && $request->quantity > $product->stock) {
+            return back()->with('error', str_replace(':stock', $product->stock, t('stock.only_available')));
+        }
 
         $cart = session()->get('cart', []);
         $cart[$product->id] = $request->quantity;
@@ -99,48 +112,5 @@ class CartController extends Controller
         session()->put('cart', $cart);
 
         return redirect()->route('cart.index');
-    }
-
-    /**
-     * Correct weight-based, stackable shipping calculation
-     */
-    private function calculateShipping(int $totalWeight): array
-    {
-        if ($totalWeight <= 0) {
-            return ['net' => 0, 'tax' => 0, 'gross' => 0];
-        }
-
-        $tiers = ShippingTier::where('active', true)
-            ->with('tax')
-            ->orderBy('weight_to')
-            ->get();
-
-        $remaining = $totalWeight;
-        $gross = 0;
-        $net = 0;
-        $tax = 0;
-
-        while ($remaining > 0) {
-            $tier = $tiers->first(fn ($t) => $remaining <= $t->weight_to)
-                ?? $tiers->last();
-
-            $tierGross = $tier->cost_gross;
-            $tierTaxPct = $tier->tax->percentage;
-
-            $tierNet = $tierGross / (1 + $tierTaxPct / 100);
-            $tierTax = $tierGross - $tierNet;
-
-            $gross += $tierGross;
-            $net += $tierNet;
-            $tax += $tierTax;
-
-            $remaining -= $tier->weight_to;
-        }
-
-        return [
-            'gross' => round($gross, 2),
-            'net'   => round($net, 2),
-            'tax'   => round($tax, 2),
-        ];
     }
 }
