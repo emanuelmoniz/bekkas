@@ -75,7 +75,7 @@ class OrderController extends Controller
 
         foreach ($products as $product) {
             $qty = $cart[$product->id];
-            $unitGross = $product->promo_price ?? $product->price;
+            $unitGross = $product->is_promo ? ($product->promo_price ?? $product->price) : $product->price;
             $productsGross += $unitGross * $qty;
             $totalWeight += ($product->weight * $qty);
         }
@@ -274,7 +274,7 @@ class OrderController extends Controller
 
         foreach ($products as $product) {
             $qty = $cart[$product->id];
-            $unitGross = $product->promo_price ?? $product->price;
+            $unitGross = $product->is_promo ? ($product->promo_price ?? $product->price) : $product->price;
             
             // Safe tax retrieval (Laravel optional helper)
             $taxPct = optional($product->tax)->percentage ?? 0;
@@ -484,7 +484,7 @@ class OrderController extends Controller
                     $product = $products[$productId] ?? null;
                     if (! $product) continue;
 
-                    $unitGross = $product->promo_price ?? $product->price;
+                    $unitGross = $product->is_promo ? ($product->promo_price ?? $product->price) : $product->price;
                     
                     // Safe tax retrieval (Laravel optional helper)
                     $taxPct = optional($product->tax)->percentage ?? 0;
@@ -605,7 +605,7 @@ class OrderController extends Controller
 
                 $order = $user->orders()->create([
                     'address_id' => $address->id,
-                    'status' => 'PROCESSING',
+                    'status' => 'WAITING_PAYMENT',
 
                     // Address snapshot
                     'address_title' => $address->title,

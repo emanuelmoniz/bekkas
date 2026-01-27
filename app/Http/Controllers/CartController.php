@@ -24,7 +24,7 @@ class CartController extends Controller
 
         foreach ($products as $product) {
             $qty = $cart[$product->id];
-            $unitGross = $product->promo_price ?? $product->price;
+            $unitGross = $product->is_promo ? ($product->promo_price ?? $product->price) : $product->price;
 
             // Safe tax retrieval (Laravel optional helper)
             $taxPct = optional($product->tax)->percentage ?? 0;

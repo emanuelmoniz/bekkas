@@ -15,12 +15,10 @@ Quick commands (recommended)
     - ./bin/run-tests.sh --filter CheckoutTest
   - Orders tests only:
     - ./bin/run-tests.sh --filter OrdersTest
-  - Payments integration tests only:
-    - ./bin/run-tests.sh --filter PaymentsIntegrationTest
   - Run a single test method (example):
     - ./bin/run-tests.sh --filter OrdersTest::test_admin_cancel_and_reinstate_updates_stock
   - Run a single test file directly with PHPUnit (bypasses helper):
-    - ./vendor/bin/phpunit tests/Feature/PaymentsIntegrationTest.php
+    - ./vendor/bin/phpunit tests/Feature/OrdersTest.php
 
 - Run tests via composer (not isolated):
   - composer test
@@ -64,7 +62,7 @@ Notes:
 - CSRF verification is disabled for tests (the test bootstrap calls `withoutMiddleware()` to disable middleware) so form POSTs from tests don't fail with 419. Rate limiting (throttle middleware) is also disabled for tests to avoid 429 flaky failures during fast runs.
 - Test utilities you can use in tests:
   - `Order::factory()->hasItems(n, $attributes)` — creates an order with n `order_items` using the optional attributes to reference specific products/quantities.
-  - `Tests\Fakes\PaymentGatewayFake` — a simple fake gateway you can inject via the container to simulate success/failure and webhooks.
+  - (If present) use fakes for external services — inject via the container to simulate success/failure.
 - If you want to inspect test logs, you can redirect output to a file: ./bin/run-tests.sh | tee /tmp/tests.log
 
 3) How CI (GitHub Actions) runs tests (overview)

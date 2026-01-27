@@ -29,6 +29,7 @@ return new class extends Migration
         // Insert default statuses
         $now = now();
         $statuses = [
+            ['code' => 'WAITING_PAYMENT', 'sort_order' => 0, 'created_at' => $now, 'updated_at' => $now],
             ['code' => 'PROCESSING', 'sort_order' => 1, 'created_at' => $now, 'updated_at' => $now],
             ['code' => 'DISPATCHED', 'sort_order' => 2, 'created_at' => $now, 'updated_at' => $now],
             ['code' => 'DELIVERED', 'sort_order' => 3, 'created_at' => $now, 'updated_at' => $now],
@@ -49,6 +50,7 @@ return new class extends Migration
     private function getPortugueseName($code)
     {
         return match($code) {
+            'WAITING_PAYMENT' => 'Aguardando Pagamento',
             'PROCESSING' => 'Em Processamento',
             'DISPATCHED' => 'Enviado',
             'DELIVERED' => 'Entregue',
@@ -60,6 +62,7 @@ return new class extends Migration
     private function getEnglishName($code)
     {
         return match($code) {
+            'WAITING_PAYMENT' => 'Waiting Payment',
             'PROCESSING' => 'Processing',
             'DISPATCHED' => 'Dispatched',
             'DELIVERED' => 'Delivered',
