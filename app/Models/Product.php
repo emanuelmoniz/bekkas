@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'tax_id',        // ✅ REQUIRED
         'price',
@@ -24,6 +26,9 @@ class Product extends Model
         'weight',
     ];
 
+    /**
+     * Use UUIDs for public URL generation and route model binding.
+     */
     protected $casts = [
         'is_new'   => 'boolean',
         'is_promo' => 'boolean',
@@ -35,7 +40,28 @@ class Product extends Model
         'width' => 'decimal:2',
         'length' => 'decimal:2',
         'height' => 'decimal:2',
+        'uuid' => 'string',
     ];
+
+    /**
+     * Ensure a UUID is set when creating new products.
+     */
+    protected static function booted()
+    {
+        static::creating(function ($product) {
+            if (empty($product->uuid)) {
+                $product->uuid = (string) Str::uuid();
+            }
+        });
+    }
+
+    /**
+     * Tell Laravel to use the `uuid` column for route model binding
+     */
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 
     public function tax()
     {

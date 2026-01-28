@@ -60,11 +60,17 @@ class Order extends Model
         'expected_delivery_date' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'uuid' => 'string',
     ];
 
     protected static function booted()
     {
         static::creating(function ($order) {
+            // Ensure a UUID is set for the order
+            if (empty($order->uuid)) {
+                $order->uuid = (string) Str::uuid();
+            }
+
             // Generate unique order number like: ORD-A3F9-2B7E
             do {
                 $orderNumber = 'ORD-' . strtoupper(Str::random(4)) . '-' . strtoupper(Str::random(4));
@@ -72,6 +78,14 @@ class Order extends Model
             
             $order->order_number = $orderNumber;
         });
+    }
+
+    /**
+     * Use UUID as route model binding key so orders are addressed by UUIDs in URLs
+     */
+    public function getRouteKeyName()
+    {
+        return 'uuid';
     }
 
     /* =======================

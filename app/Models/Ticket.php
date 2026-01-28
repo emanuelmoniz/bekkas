@@ -30,7 +30,16 @@ class Ticket extends Model
         'closed_at' => 'datetime',
         'last_message_at' => 'datetime',
 	'due_date' => 'date',
+        'uuid' => 'string',
     ];
+
+    /**
+     * Use UUID for route model binding (public URLs)
+     */
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 
     protected static function booted()
     {
