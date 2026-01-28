@@ -258,6 +258,10 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'orders.last_update', 'locale' => 'en-UK', 'value' => 'Last Update', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'orders.not_paid', 'locale' => 'pt-PT', 'value' => 'Não', 'created_at'=>$now,'updated_at'=>$now],
+
+            // Pay now button (client-facing)
+            ['key' => 'orders.pay_now', 'locale' => 'pt-PT', 'value' => 'Pagar agora', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'orders.pay_now', 'locale' => 'en-UK', 'value' => 'Pay now', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'orders.not_paid', 'locale' => 'en-UK', 'value' => 'No', 'created_at'=>$now,'updated_at'=>$now],
 
             ['key' => 'orders.shipping_address', 'locale' => 'pt-PT', 'value' => 'Morada de envio', 'created_at'=>$now,'updated_at'=>$now],
