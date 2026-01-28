@@ -144,6 +144,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/{order}', [OrderController::class, 'show'])
         ->name('orders.show');
 
+    // Easypay: payment page for orders awaiting payment
+    Route::get('/orders/{order}/pay', [OrderController::class, 'pay'])
+        ->name('orders.pay');
+
+    // Create a new Easypay checkout session for an order (AJAX)
+    Route::post('/orders/{order}/pay/session', [OrderController::class, 'createPaySession'])
+        ->name('orders.pay.session');
+
     Route::post('/orders', [OrderController::class, 'store'])
         ->name('orders.store');
 

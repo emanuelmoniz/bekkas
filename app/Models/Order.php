@@ -106,4 +106,21 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    /**
+     * Easypay (1:1) payload for this order
+     */
+    public function easypayPayload()
+    {
+        return $this->hasOne(\App\Models\EasypayPayload::class);
+    }
+
+    /**
+     * Easypay checkout sessions (1:N)
+     */
+    public function easypayCheckoutSessions()
+    {
+        return $this->hasMany(\App\Models\EasypayCheckoutSession::class);
+    }
 }
+

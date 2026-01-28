@@ -10,6 +10,7 @@ use App\Models\ShippingConfig;
 use App\Services\ShippingCalculator;
 use App\Services\DeliveryDateCalculator;
 use App\Services\DefaultShippingTierResolver;
+use App\Services\EasypayService;
 use App\Http\Requests\StoreOrderRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -648,6 +649,17 @@ class OrderController extends Controller
                 session()->forget('cart');
             });
 
+            // Easypay: create payload + checkout session (non-blocking)
+            if ($createdOrder && config('easypay.enabled')) {
+                try {
+                    $payload = EasypayService::createOrGetPayload($createdOrder);
+                    EasypayService::createCheckoutSession($payload);
+                } catch (\Exception $e) {
+                    \Log::error('Easypay integration failed during order placement', ['order_id' => $createdOrder->id, 'error' => $e->getMessage()]);
+                    // Do not fail the order placement if Easypay is unavailable
+                }
+            }
+
             // Send emails after transaction completes
             if ($createdOrder) {
                 $locale = $user->language ?? app()->getLocale();
@@ -673,6 +685,54 @@ class OrderController extends Controller
             ]);
 
             return back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Show payment (Easypay) page for the order — displays payload + checkout sessions
+     */
+    public function pay(Order $order)
+    {
+        $this->authorize('view', $order);
+
+        // Only allow access if order is awaiting payment and belongs to the current user
+        if ($order->is_paid || $order->status !== 'WAITING_PAYMENT' || $order->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $order->loadMissing(['items.product', 'easypayPayload', 'easypayCheckoutSessions']);
+
+        return view('orders.pay', [
+            'order' => $order,
+            'payload' => $order->easypayPayload,
+            'sessions' => $order->easypayCheckoutSessions()->latest('created_at')->get(),
+        ]);
+    }
+
+    /**
+     * AJAX: create a new Easypay checkout session for an order
+     */
+    public function createPaySession(Order $order)
+    {
+        $this->authorize('view', $order);
+
+        if ($order->is_paid || $order->status !== 'WAITING_PAYMENT' || $order->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Order not available for payment'], 403);
+        }
+
+        try {
+            $payload = EasypayService::createOrGetPayload($order);
+            $session = EasypayService::createCheckoutSession($payload);
+
+            $html = view('orders._session', ['s' => $session])->render();
+
+            return response()->json([
+                'ok' => true,
+                'session' => $session,
+                'html' => $html,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json(['ok' => false, 'message' => $e->getMessage()], 500);
         }
     }
 

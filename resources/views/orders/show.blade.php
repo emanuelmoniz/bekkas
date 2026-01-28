@@ -19,6 +19,12 @@
             <p><strong>{{ t('orders.paid') ?: 'Paid' }}:</strong> {{ $order->is_paid ? (t('orders.yes') ?: 'Yes') : (t('orders.no') ?: 'No') }}</p>
             <p><strong>{{ t('orders.refunded') ?: 'Refunded' }}:</strong> {{ $order->is_refunded ? (t('orders.yes') ?: 'Yes') : (t('orders.no') ?: 'No') }}</p>
 
+            @if($order->status === 'WAITING_PAYMENT' && auth()->check() && auth()->id() === $order->user_id && ! $order->is_paid)
+                <div class="mt-3">
+                    <a href="{{ route('orders.pay', $order->uuid) }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold">{{ t('orders.pay_now') ?: 'Pay now' }}</a>
+                </div>
+            @endif
+
             @php
                 $trackingStatuses = json_decode(\App\Models\ShippingConfig::get('tracking_statuses', '["shipped","delivered"]'), true);
             @endphp
