@@ -36,6 +36,7 @@
                     <p><strong>Status:</strong> {{ $session->status ?? '-' }}</p>
                     <p><strong>Checkout ID:</strong> {{ $session->checkout_id ?? '-' }}</p>
                     <p><strong>Session token:</strong> {{ $session->session_id ?? '-' }}</p>
+                    <p><strong>Error code:</strong> {{ $session->error_code ?? '-' }}</p>
                 </div>
 
                 <div class="text-right">

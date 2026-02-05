@@ -11,6 +11,7 @@ use App\Services\ShippingCalculator;
 use App\Services\DeliveryDateCalculator;
 use App\Services\DefaultShippingTierResolver;
 use App\Services\EasypayService;
+use App\Models\EasypayCheckoutSession;
 use App\Http\Requests\StoreOrderRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -724,7 +725,7 @@ class OrderController extends Controller
             $payload = EasypayService::createOrGetPayload($order);
             $session = EasypayService::createCheckoutSession($payload);
 
-            $html = view('orders._session', ['s' => $session])->render();
+            $html = view('orders._session', ['s' => $session, 'order' => $session->order])->render();
 
             return response()->json([
                 'ok' => true,
@@ -734,6 +735,31 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return response()->json(['ok' => false, 'message' => $e->getMessage()], 500);
         }
+    }
+
+    /**
+     * AJAX: fetch Easypay checkout info for a given checkout session (client)
+     */
+    public function checkoutInfo(Order $order, EasypayCheckoutSession $session)
+    {
+        $this->authorize('view', $order);
+
+        // ensure the session belongs to the order and the order belongs to the current user
+        if ($order->user_id !== auth()->id() || $session->order_id !== $order->id) {
+            return response()->json(['ok' => false, 'message' => 'Not found or not permitted'], 403);
+        }
+
+        if (empty($session->checkout_id)) {
+            return response()->json(['ok' => false, 'message' => 'No checkout_id available for this session'], 404);
+        }
+
+        $res = \App\Services\EasypayService::fetchCheckout($session->checkout_id);
+
+        if (! empty($res['ok'])) {
+            return response()->json(['ok' => true, 'status' => $res['status'], 'body' => $res['body'] ?? null], 200);
+        }
+
+        return response()->json(['ok' => false, 'status' => $res['status'] ?? 500, 'message' => $res['message'] ?? 'Request failed'], $res['status'] ?? 500);
     }
 
     /**

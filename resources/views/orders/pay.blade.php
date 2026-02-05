@@ -30,7 +30,7 @@
                     <p class="text-gray-600">No checkout sessions created yet.</p>
                 @else
                     @foreach($sessions as $s)
-                        @include('orders._session', ['s' => $s])
+                        @include('orders._session', ['s' => $s, 'order' => $order])
                     @endforeach
                 @endif
             </div>
@@ -63,7 +63,7 @@
 
                         const json = await resp.json();
                         if (resp.status === 201 && json.ok) {
-                            // Insert returned HTML at the top
+                            // Insert returned HTML at the top (delegated listener handles new nodes)
                             const wrapper = document.createElement('div');
                             wrapper.innerHTML = json.html;
                             container.prepend(wrapper.firstElementChild);
@@ -77,6 +77,46 @@
                         btn.disabled = false;
                         spinner.classList.add('hidden');
                         label.textContent = 'Create checkout session';
+                    }
+                });
+
+                // Delegated handler for "Get checkout info" buttons (works for existing + dynamic sessions)
+                container.addEventListener('click', async function (ev) {
+                    const btn = ev.target.closest('.get-checkout-info');
+                    if (!btn) return;
+
+                    ev.preventDefault();
+                    const url = btn.dataset.url;
+                    const sessionEl = btn.closest('div.border');
+                    const panel = sessionEl?.querySelector('.checkout-info-panel');
+                    const pre = sessionEl?.querySelector('.checkout-info-pre');
+
+                    if (!panel || !pre) {
+                        console.warn('Checkout info UI missing for session');
+                        return;
+                    }
+
+                    btn.disabled = true;
+                    const origHtml = btn.innerHTML;
+                    btn.innerHTML = 'Loading...';
+
+                    try {
+                        const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+                        const json = await resp.json();
+
+                        panel.classList.remove('hidden');
+                        if (json.ok) {
+                            pre.textContent = JSON.stringify(json.body, null, 2);
+                        } else {
+                            pre.textContent = JSON.stringify(json, null, 2);
+                        }
+                    } catch (err) {
+                        panel.classList.remove('hidden');
+                        pre.textContent = String(err);
+                        console.error(err);
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = origHtml;
                     }
                 });
             })();

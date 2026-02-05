@@ -162,4 +162,43 @@ class EasypayService
 
         return $session;
     }
+
+    /**
+     * Fetch checkout details from Easypay `/checkout/{checkoutId}`
+     *
+     * Returns an array: ['ok' => bool, 'status' => int, 'body' => mixed, 'message' => string?]
+     */
+    public static function fetchCheckout(string $checkoutId): array
+    {
+        if (empty($checkoutId)) {
+            return ['ok' => false, 'status' => 404, 'message' => 'missing checkout_id'];
+        }
+
+        if (! config('easypay.enabled', false)) {
+            return ['ok' => false, 'status' => 503, 'message' => 'Easypay disabled'];
+        }
+
+        $url = config('easypay.base_url') . '/checkout/' . rawurlencode($checkoutId);
+
+        try {
+            $resp = Http::withHeaders([
+                'Accept' => 'application/json',
+                'accountId' => config('easypay.id'),
+                'apiKey' => config('easypay.api_key'),
+            ])->timeout(10)->get($url);
+
+            $status = $resp->status();
+
+            try {
+                $body = $resp->json();
+            } catch (\Throwable $e) {
+                $body = $resp->body();
+            }
+
+            return ['ok' => $status >= 200 && $status < 300, 'status' => $status, 'body' => $body];
+        } catch (\Exception $e) {
+            Log::error('Easypay /checkout/{id} request failed', ['checkout_id' => $checkoutId, 'error' => $e->getMessage()]);
+            return ['ok' => false, 'status' => 502, 'message' => $e->getMessage()];
+        }
+    }
 }

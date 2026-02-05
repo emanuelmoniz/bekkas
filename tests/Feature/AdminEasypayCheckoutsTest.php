@@ -87,7 +87,7 @@ class AdminEasypayCheckoutsTest extends TestCase
         $order->update(['order_number' => 'ORD-CH-SHOW']);
 
         $payload = EasypayPayload::create(['order_id' => $order->id, 'payload' => ['customer' => ['name' => 'ACME']]]);
-        $session = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'status' => 'created', 'message' => json_encode(['x' => 1])]);
+        $session = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'status' => 'created', 'message' => json_encode(['x' => 1]), 'error_code' => 123]);
 
         $this->actingAs($admin)
             ->get(route('admin.orders.checkouts.show', $session))
@@ -95,7 +95,9 @@ class AdminEasypayCheckoutsTest extends TestCase
             ->assertSee('Easypay checkout session')
             ->assertSee('Payload')
             ->assertSee('View payload')
-            ->assertSee('"x": 1');
+            ->assertSee('"x": 1')
+            ->assertSee('Error code')
+            ->assertSee('123');
     }
 
     public function test_order_show_includes_checkouts_link()
