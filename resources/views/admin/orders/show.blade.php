@@ -7,6 +7,13 @@
 
     <div class="py-6 max-w-6xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
+        <div class="mb-4">
+            <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">
+                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Orders</a>
+                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payloads</a>
+            </nav>
+        </div>
+
         {{-- =======================
              ORDER STATUS (READ)
         ======================= --}}
@@ -36,7 +43,11 @@
                 @if ($order->tracking_number)
                     <p><strong>Tracking:</strong> {{ $order->tracking_number }}</p>
                 @endif
-            </div>
+                @if($order->easypayPayload)
+                    <div class="mt-3">
+                        <a href="{{ route('admin.orders.payloads.show', $order->easypayPayload) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm">View payload</a>
+                    </div>
+                @endif            </div>
         </div>
 
         {{-- =======================

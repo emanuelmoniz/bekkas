@@ -5,6 +5,13 @@
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
 
+        <div class="mb-4">
+            <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">
+                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Orders</a>
+                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payloads</a>
+            </nav>
+        </div>
+
         <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
             <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
                 <input name="order_number" placeholder="Order Number"

@@ -247,6 +247,12 @@ Route::middleware(['auth', 'is_admin'])
         Route::get('/orders', [AdminOrderController::class, 'index'])
             ->name('orders.index');
 
+        // Easypay payloads (admin)
+        Route::get('/orders/payloads', [\App\Http\Controllers\Admin\EasypayPayloadController::class, 'index'])
+            ->name('orders.payloads.index');
+        Route::get('/orders/payloads/{payload}', [\App\Http\Controllers\Admin\EasypayPayloadController::class, 'show'])
+            ->name('orders.payloads.show');
+
         Route::get('/orders/{order}', [AdminOrderController::class, 'show'])
             ->name('orders.show');
 

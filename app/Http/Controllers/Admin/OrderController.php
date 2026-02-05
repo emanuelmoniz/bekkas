@@ -59,7 +59,7 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        $order->load(['items.product', 'user', 'address']);
+        $order->load(['items.product', 'user', 'address', 'easypayPayload']);
         $statuses = OrderStatus::with('translations')->orderBy('sort_order')->get();
 
         return view('admin.orders.show', compact('order', 'statuses'));
