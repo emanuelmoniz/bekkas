@@ -200,7 +200,9 @@ class AdminEasypayPayloadsTest extends TestCase
             ->get(route('admin.orders.show', $order))
             ->assertStatus(200)
             ->assertSee(route('admin.orders.payloads.show', $payload))
-            ->assertSee('View payload');
+            ->assertSee('View payload')
+            ->assertSee(route('admin.orders.checkouts.index', ['order_number' => $order->order_number]))
+            ->assertSee('View checkout sessions');
     }
 
     public function test_admin_can_create_payload_from_order_show()

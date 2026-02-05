@@ -7,7 +7,8 @@
         <div class="mb-4">
             <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">
                 <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded hover:bg-gray-50">Orders</a>
-                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded hover:bg-gray-50">Payloads</a>
+                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payloads</a>
+                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Checkouts</a>
             </nav>
         </div>
 
@@ -28,6 +29,8 @@
                 <div class="text-right">
                     @if($payload->order)
                         <a href="{{ route('admin.orders.show', $payload->order) }}" class="inline-block bg-gray-100 border px-4 py-2 rounded text-sm">View order</a>
+
+                        <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $payload->order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">View checkouts</a>
                     @endif
 
                     <form method="POST" action="{{ route('admin.orders.payloads.recreate', $payload) }}" class="inline-block ms-2" onsubmit="return confirm('Recreate payload from order snapshot? This will replace the stored payload.');">

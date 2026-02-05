@@ -260,6 +260,12 @@ Route::middleware(['auth', 'is_admin'])
         Route::delete('/orders/payloads/{payload}', [\App\Http\Controllers\Admin\EasypayPayloadController::class, 'destroy'])
             ->name('orders.payloads.destroy');
 
+        // Easypay checkout sessions (admin)
+        Route::get('/orders/checkouts', [\App\Http\Controllers\Admin\EasypayCheckoutSessionController::class, 'index'])
+            ->name('orders.checkouts.index');
+        Route::get('/orders/checkouts/{session}', [\App\Http\Controllers\Admin\EasypayCheckoutSessionController::class, 'show'])
+            ->name('orders.checkouts.show');
+
         Route::get('/orders/{order}', [AdminOrderController::class, 'show'])
             ->name('orders.show');
 
