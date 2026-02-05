@@ -3,7 +3,7 @@
         <div>
             <p class="text-sm text-gray-600">Created: {{ $s->created_at?->format('d/m/Y H:i:s') }}</p>
             <p class="text-sm">Status: <strong>{{ $s->status ?? ($s->in_error ? 'error' : 'unknown') }}</strong></p>
-            <p class="text-sm">Checkout ID: <code>{{ $s->checkout_id }}</code></p>
+            <p class="text-sm">Checkout ID: <span class="inline-block align-baseline font-mono" style="overflow-wrap:anywhere;word-break:break-word;max-width:100%;"><code>{{ $s->checkout_id }}</code></span></p>
 
             @if(! empty($s->checkout_id))
                 <p class="mt-2">
@@ -14,7 +14,7 @@
                 </p>
                 <div class="mt-3 bg-white border rounded p-3 hidden checkout-info-panel">
                     <p class="text-sm text-gray-600">Response:</p>
-                    <pre class="mt-2 text-sm checkout-info-pre" style="max-height:260px;overflow:auto"></pre>
+                    <pre class="mt-2 text-sm checkout-info-pre" style="max-height:260px;overflow:auto;overflow-wrap:anywhere;word-break:break-word"></pre>
                 </div>
             @endif
         </div>

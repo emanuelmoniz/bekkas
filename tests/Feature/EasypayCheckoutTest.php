@@ -47,7 +47,13 @@ class EasypayCheckoutTest extends TestCase
             'in_error' => false,
             'checkout_id' => '5db36b83-0664-4bc4-a760-7040ac3726f0',
             'is_active' => true,
+            'status' => 'pending',
         ]);
+
+        // Ensure we updated canonical updated_at (we removed last_update_timestamp)
+        $session = \App\Models\EasypayCheckoutSession::where('order_id', $order->id)->first();
+        $this->assertNotNull($session->updated_at, 'updated_at should be set after Easypay response');
+        $this->assertTrue($session->updated_at->gte($session->created_at));
 
         // Payload language must be ISO 639-1 alpha-2 uppercased (user was created with 'pt')
         $payload = \App\Models\EasypayPayload::where('order_id', $order->id)->first();
@@ -94,6 +100,7 @@ class EasypayCheckoutTest extends TestCase
         $this->assertFalse((bool) $session->is_active, 'Session must remain inactive when response lacks id/session');
         $this->assertTrue((bool) $session->in_error, 'Session must be marked in_error');
         $this->assertEquals(422, $session->error_code);
+        $this->assertEquals('error', $session->status, 'Session status must be set to error when response lacks id/session');
     }
 
     public function test_user_can_fetch_checkout_info_successfully()

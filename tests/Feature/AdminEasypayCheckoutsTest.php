@@ -96,6 +96,7 @@ class AdminEasypayCheckoutsTest extends TestCase
             ->assertSee('Payload')
             ->assertSee('View payload')
             ->assertSee('"x": 1')
+            ->assertSeeInOrder(['View order', 'Payload'])
             ->assertSee('Error code')
             ->assertSee('123');
     }

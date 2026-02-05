@@ -19,15 +19,11 @@ class EasypayCheckoutSession extends Model
         'error_code',
         'status',
         'message',
-        'timestamp',
-        'last_update_timestamp',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
         'in_error' => 'boolean',
-        'timestamp' => 'datetime',
-        'last_update_timestamp' => 'datetime',
     ];
 
     public function order(): BelongsTo

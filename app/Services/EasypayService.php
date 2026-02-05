@@ -93,12 +93,12 @@ class EasypayService
         $order = $payload->order;
 
         // Create session record as INACTIVE by default — it becomes active only when we receive both id and session
+        // Use Eloquent's created_at/updated_at instead of custom timestamp columns.
         $session = EasypayCheckoutSession::create([
             'order_id' => $order->id,
             'payload_id' => $payload->id,
             'is_active' => false,
             'in_error' => false,
-            'timestamp' => now(),
         ]);
 
         if (! config('easypay.enabled', false)) {
@@ -117,7 +117,8 @@ class EasypayService
                 'apiKey' => config('easypay.api_key'),
             ])->timeout(10)->post($url, $payload->payload);
 
-            $session->last_update_timestamp = now();
+            // rely on updated_at (Eloquent) instead of last_update_timestamp
+            // (we previously set last_update_timestamp = now() here)
 
             if ($resp->status() === 201) {
                 $body = $resp->json();
@@ -128,7 +129,8 @@ class EasypayService
 
                 $session->checkout_id = $body['id'] ?? null;
                 $session->session_id = $body['session'] ?? ($body['config'] ?? null);
-                $session->status = $body['status'] ?? 'created';
+                // Successful creation => mark as pending in our DB (Easypay's raw status is kept in message)
+                $session->status = 'pending';
                 $session->message = json_encode($body);
 
                 if ($hasId && $hasSession) {
@@ -140,6 +142,7 @@ class EasypayService
                     $session->is_active = false;
                     $session->in_error = true;
                     $session->error_code = 422;
+                    $session->status = 'error';
                     Log::warning('Easypay /checkout returned 201 but missing id/session', ['order_id' => $order->id, 'body' => $body]);
                 }
 
@@ -147,14 +150,16 @@ class EasypayService
             } else {
                 $session->in_error = true;
                 $session->error_code = $resp->status();
+                $session->status = 'error';
                 $session->message = json_encode($resp->json() ?: $resp->body());
                 $session->save();
                 Log::warning('Easypay /checkout returned non-201', ['order_id' => $order->id, 'status' => $resp->status(), 'body' => $resp->body()]);
             }
         } catch (\Exception $e) {
             $session->in_error = true;
+            $session->status = 'error';
             $session->message = $e->getMessage();
-            $session->last_update_timestamp = now();
+            // rely on Eloquent's updated_at instead of last_update_timestamp
             $session->save();
 
             Log::error('Easypay /checkout request failed', ['order_id' => $order->id, 'error' => $e->getMessage()]);

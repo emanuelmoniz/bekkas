@@ -13,6 +13,19 @@
         </div>
 
         <div class="bg-white shadow rounded p-4 space-y-4">
+            <!-- action buttons: top-right, single line -->
+            <div class="flex justify-end items-center gap-2 mb-2">
+                @if($session->order)
+                    <a href="{{ route('admin.orders.show', $session->order) }}" class="inline-flex items-center bg-gray-100 border px-4 py-2 rounded text-sm">View order</a>
+                @endif
+
+                @if($session->payload)
+                    <a href="{{ route('admin.orders.payloads.show', $session->payload) }}" class="inline-flex items-center bg-indigo-50 border-indigo-200 text-indigo-700 border px-4 py-2 rounded text-sm">View payload</a>
+                @endif
+
+                <a href="{{ route('admin.orders.checkouts.index') }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm">Back</a>
+            </div>
+
             <div class="flex justify-between items-start gap-4">
                 <div>
                     <p><strong>Session ID:</strong> {{ $session->id }}</p>
@@ -34,27 +47,21 @@
 
                     <p><strong>Created:</strong> {{ $session->created_at->format('d/m/Y H:i') }}</p>
                     <p><strong>Status:</strong> {{ $session->status ?? '-' }}</p>
-                    <p><strong>Checkout ID:</strong> {{ $session->checkout_id ?? '-' }}</p>
-                    <p><strong>Session token:</strong> {{ $session->session_id ?? '-' }}</p>
+                    <p><strong>Checkout ID:</strong>
+                        <span class="block mt-1 text-sm font-mono" style="overflow-wrap:anywhere;word-break:break-word;max-width:100%;">{{ $session->checkout_id ?? '-' }}</span>
+                    </p>
+                    <p><strong>Session token:</strong>
+                        <span class="block mt-1 text-sm font-mono" style="overflow-wrap:anywhere;word-break:break-word;max-width:100%;">{{ $session->session_id ?? '-' }}</span>
+                    </p>
                     <p><strong>Error code:</strong> {{ $session->error_code ?? '-' }}</p>
                 </div>
 
-                <div class="text-right">
-                    @if($session->order)
-                        <a href="{{ route('admin.orders.show', $session->order) }}" class="inline-block bg-gray-100 border px-4 py-2 rounded text-sm">View order</a>
-                    @endif
 
-                    @if($session->payload)
-                        <a href="{{ route('admin.orders.payloads.show', $session->payload) }}" class="inline-block bg-indigo-50 border-indigo-200 text-indigo-700 border px-4 py-2 rounded text-sm ms-2">View payload</a>
-                    @endif
-
-                    <a href="{{ route('admin.orders.checkouts.index') }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Back</a>
-                </div>
             </div>
 
             <div>
                 <h3 class="font-semibold mb-2">Gateway response / message</h3>
-                <pre class="whitespace-pre-wrap bg-gray-50 border rounded p-4 text-sm overflow-auto" style="max-height:48vh">{{ json_encode(json_decode($session->message ?: '{}'), JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) }}</pre>
+                <pre class="whitespace-pre-wrap bg-gray-50 border rounded p-4 text-sm overflow-auto" style="max-height:48vh;overflow-wrap:anywhere;word-break:break-word;">{{ json_encode(json_decode($session->message ?: '{}'), JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) }}</pre>
             </div>
         </div>
     </div>
