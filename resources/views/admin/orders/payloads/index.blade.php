@@ -66,7 +66,20 @@
                             <td class="px-3 py-2">{{ $p->created_at->format('d/m/Y H:i') }}</td>
                             <td class="px-3 py-2 text-right">
                                 @if($p->order)
-                                    <a href="{{ route('admin.orders.payloads.show', $p) }}" class="text-blue-600 hover:underline">View</a>
+                                    <div class="flex gap-2 justify-end items-center">
+                                        <a href="{{ route('admin.orders.payloads.show', $p) }}" class="text-sm bg-blue-50 border-blue-200 text-blue-700 border px-3 py-1 rounded">View</a>
+
+                                        <form method="POST" action="{{ route('admin.orders.payloads.recreate', $p) }}" onsubmit="return confirm('Recreate payload from order snapshot?');">
+                                            @csrf
+                                            <button class="text-sm bg-yellow-50 border-yellow-200 text-yellow-700 border px-3 py-1 rounded">Recreate</button>
+                                        </form>
+
+                                        <form method="POST" action="{{ route('admin.orders.payloads.destroy', $p) }}" onsubmit="return confirm('Delete payload?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="text-sm bg-red-50 border-red-200 text-red-700 border px-3 py-1 rounded">Delete</button>
+                                        </form>
+                                    </div>
                                 @else
                                     <span class="text-sm text-gray-500">No order</span>
                                 @endif

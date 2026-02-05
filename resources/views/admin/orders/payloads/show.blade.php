@@ -29,6 +29,18 @@
                     @if($payload->order)
                         <a href="{{ route('admin.orders.show', $payload->order) }}" class="inline-block bg-gray-100 border px-4 py-2 rounded text-sm">View order</a>
                     @endif
+
+                    <form method="POST" action="{{ route('admin.orders.payloads.recreate', $payload) }}" class="inline-block ms-2" onsubmit="return confirm('Recreate payload from order snapshot? This will replace the stored payload.');">
+                        @csrf
+                        <button class="bg-yellow-50 border-yellow-200 text-yellow-700 border px-4 py-2 rounded text-sm">Recreate</button>
+                    </form>
+
+                    <form method="POST" action="{{ route('admin.orders.payloads.destroy', $payload) }}" class="inline-block ms-2" onsubmit="return confirm('Delete this payload? This cannot be undone.');">
+                        @csrf
+                        @method('DELETE')
+                        <button class="bg-red-50 border-red-200 text-red-700 border px-4 py-2 rounded text-sm">Delete</button>
+                    </form>
+
                     <a href="{{ route('admin.orders.payloads.index') }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Back</a>
                 </div>
             </div>

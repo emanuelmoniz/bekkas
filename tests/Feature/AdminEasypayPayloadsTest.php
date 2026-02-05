@@ -42,7 +42,10 @@ class AdminEasypayPayloadsTest extends TestCase
         $resp->assertStatus(200)
             ->assertSee('Payloads')
             ->assertSee($order->order_number)
-            ->assertSee($payload->created_at->format('d/m/Y'));
+            ->assertSee($payload->created_at->format('d/m/Y'))
+            ->assertSee('View')
+            ->assertSee('Recreate')
+            ->assertSee('Delete');
     }
 
     public function test_filters_on_payloads_index_work()
@@ -109,9 +112,75 @@ class AdminEasypayPayloadsTest extends TestCase
             ->assertSee('Easypay payload')
             ->assertSee('ORD-SSH-1')
             ->assertSee('"customer"')
-            ->assertSee('ACME');
+            ->assertSee('ACME')
+            ->assertSee('Recreate')
+            ->assertSee('Delete');
+
+        // recreate should replace stored payload with fresh payload built from order
+        $order->update(['total_gross' => 99.99]);
+
+        $this->actingAs($admin)
+            ->post(route('admin.orders.payloads.recreate', $payload))
+            ->assertRedirect();
+
+        $new = \App\Models\EasypayPayload::where('order_id', $order->id)->first();
+        $this->assertNotNull($new);
+        $this->assertNotEquals($new->id, $payload->id);
+        $this->assertEquals(99.99, $new->payload['order']['value']);
     }
 
+    public function test_admin_can_delete_payload_from_show()
+    {
+        $role = Role::create(['name' => 'admin']);
+        $admin = User::factory()->create();
+        $admin->roles()->attach($role->id);
+
+        $country = \App\Models\Country::firstOrCreate(['iso_alpha2' => 'PT'], ['name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true]);
+        $user = User::factory()->create();
+        $addr = \App\Models\Address::factory()->create(['country_id' => $country->id, 'user_id' => $user->id]);
+
+        $order = Order::factory()->create(['user_id' => $user->id, 'address_id' => $addr->id]);
+        $payload = EasypayPayload::create(['order_id' => $order->id, 'payload' => ['x' => 1]]);
+
+        $this->actingAs($admin)
+            ->get(route('admin.orders.payloads.show', $payload))
+            ->assertStatus(200)
+            ->assertSee('Delete');
+
+        $this->actingAs($admin)
+            ->delete(route('admin.orders.payloads.destroy', $payload))
+            ->assertRedirect();
+
+        $this->assertDatabaseMissing('easypay_payloads', ['id' => $payload->id]);
+    }
+
+    public function test_admin_can_delete_payload_from_index()
+    {
+        $role = Role::create(['name' => 'admin']);
+        $admin = User::factory()->create();
+        $admin->roles()->attach($role->id);
+
+        $country = \App\Models\Country::firstOrCreate(['iso_alpha2' => 'PT'], ['name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true]);
+        $user = User::factory()->create();
+        $addr = \App\Models\Address::factory()->create(['country_id' => $country->id, 'user_id' => $user->id]);
+
+        $order = Order::factory()->create(['user_id' => $user->id, 'address_id' => $addr->id]);
+        $order->update(['order_number' => 'IDX-DEL-1']);
+        $p = EasypayPayload::create(['order_id' => $order->id, 'payload' => ['x' => 1]]);
+
+        $this->actingAs($admin)
+            ->get(route('admin.orders.payloads.index'))
+            ->assertStatus(200)
+            ->assertSee('Recreate')
+            ->assertSee('Delete')
+            ->assertSee('IDX-DEL-1');
+
+        $this->actingAs($admin)
+            ->delete(route('admin.orders.payloads.destroy', $p))
+            ->assertRedirect();
+
+        $this->assertDatabaseMissing('easypay_payloads', ['id' => $p->id]);
+    }
     public function test_order_show_includes_payload_button()
     {
         $role = Role::create(['name' => 'admin']);
@@ -132,5 +201,32 @@ class AdminEasypayPayloadsTest extends TestCase
             ->assertStatus(200)
             ->assertSee(route('admin.orders.payloads.show', $payload))
             ->assertSee('View payload');
+    }
+
+    public function test_admin_can_create_payload_from_order_show()
+    {
+        $role = Role::create(['name' => 'admin']);
+        $admin = User::factory()->create();
+        $admin->roles()->attach($role->id);
+
+        $country = \App\Models\Country::firstOrCreate(['iso_alpha2' => 'PT'], ['name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true]);
+        $user = User::factory()->create();
+        $addr = \App\Models\Address::factory()->create(['country_id' => $country->id, 'user_id' => $user->id]);
+
+        $order = Order::factory()->create(['user_id' => $user->id, 'address_id' => $addr->id]);
+        $order->update(['order_number' => 'ORD-CREATE-1']);
+
+        $this->assertDatabaseMissing('easypay_payloads', ['order_id' => $order->id]);
+
+        $this->actingAs($admin)
+            ->get(route('admin.orders.show', $order))
+            ->assertStatus(200)
+            ->assertSee('Create payload');
+
+        $this->actingAs($admin)
+            ->post(route('admin.orders.payloads.store', $order))
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('easypay_payloads', ['order_id' => $order->id]);
     }
 }

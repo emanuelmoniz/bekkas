@@ -47,6 +47,13 @@
                     <div class="mt-3">
                         <a href="{{ route('admin.orders.payloads.show', $order->easypayPayload) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm">View payload</a>
                     </div>
+                @else
+                    <div class="mt-3">
+                        <form method="POST" action="{{ route('admin.orders.payloads.store', $order) }}" onsubmit="return confirm('Create Easypay payload for this order?');" class="inline-block">
+                            @csrf
+                            <button class="bg-green-50 border-green-200 text-green-700 border px-4 py-2 rounded text-sm">Create payload</button>
+                        </form>
+                    </div>
                 @endif            </div>
         </div>
 
