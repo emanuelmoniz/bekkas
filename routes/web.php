@@ -148,13 +148,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/{order}/pay', [OrderController::class, 'pay'])
         ->name('orders.pay');
 
-    // Create a new Easypay checkout session for an order (AJAX)
-    Route::post('/orders/{order}/pay/session', [OrderController::class, 'createPaySession'])
-        ->name('orders.pay.session');
 
-    // Fetch Easypay checkout info for a specific checkout session (AJAX)
-    Route::get('/orders/{order}/pay/checkouts/{session}/info', [OrderController::class, 'checkoutInfo'])
-        ->name('orders.pay.checkout_info')->middleware('throttle:10,1');
 
     Route::post('/orders', [OrderController::class, 'store'])
         ->name('orders.store');

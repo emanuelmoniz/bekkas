@@ -720,57 +720,7 @@ class OrderController extends Controller
         ]);
     }
 
-    /**
-     * AJAX: create a new Easypay checkout session for an order
-     */
-    public function createPaySession(Order $order)
-    {
-        $this->authorize('view', $order);
 
-        if ($order->is_paid || $order->status !== 'WAITING_PAYMENT' || $order->user_id !== auth()->id()) {
-            return response()->json(['message' => 'Order not available for payment'], 403);
-        }
-
-        try {
-            $payload = EasypayService::createOrGetPayload($order);
-            $session = EasypayService::createCheckoutSession($payload);
-
-            $html = view('orders._session', ['s' => $session, 'order' => $session->order])->render();
-
-            return response()->json([
-                'ok' => true,
-                'session' => $session,
-                'html' => $html,
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json(['ok' => false, 'message' => $e->getMessage()], 500);
-        }
-    }
-
-    /**
-     * AJAX: fetch Easypay checkout info for a given checkout session (client)
-     */
-    public function checkoutInfo(Order $order, EasypayCheckoutSession $session)
-    {
-        $this->authorize('view', $order);
-
-        // ensure the session belongs to the order and the order belongs to the current user
-        if ($order->user_id !== auth()->id() || $session->order_id !== $order->id) {
-            return response()->json(['ok' => false, 'message' => 'Not found or not permitted'], 403);
-        }
-
-        if (empty($session->checkout_id)) {
-            return response()->json(['ok' => false, 'message' => 'No checkout_id available for this session'], 404);
-        }
-
-        $res = \App\Services\EasypayService::fetchCheckout($session->checkout_id);
-
-        if (! empty($res['ok'])) {
-            return response()->json(['ok' => true, 'status' => $res['status'], 'body' => $res['body'] ?? null], 200);
-        }
-
-        return response()->json(['ok' => false, 'status' => $res['status'] ?? 500, 'message' => $res['message'] ?? 'Request failed'], $res['status'] ?? 500);
-    }
 
     /**
      * Add working days (excluding weekends) to a date
