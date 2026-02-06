@@ -124,7 +124,7 @@ class CheckoutTest extends TestCase
             'is_backorder' => false,
         ]);
 
-        $country = Country::create(['name_pt' => 'Portugal', 'name_en' => 'Portugal', 'iso_alpha2' => 'PT', 'country_code' => '351', 'is_active' => true]);
+        $country = Country::firstOrCreate(['iso_alpha2' => 'PT'], ['name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true]);
 
         $address = $user->addresses()->create([
             'title' => 'Home',
@@ -162,8 +162,10 @@ class CheckoutTest extends TestCase
         $product->refresh();
         $this->assertEquals(3, $product->stock);
 
-        $this->assertDatabaseCount('orders', 1);
-        $order = Order::first();
+        // assert an order for this user was created and validate its totals (don't rely on global counts)
+        $this->assertDatabaseHas('orders', ['user_id' => $user->id]);
+        $order = Order::where('user_id', $user->id)->latest()->first();
+        $this->assertNotNull($order, 'Expected an order for the test user');
         $this->assertEquals($order->total_gross, round(2 * 20.00 + 5.00, 2));
     }
 }

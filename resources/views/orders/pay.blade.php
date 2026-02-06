@@ -4,6 +4,153 @@
     </x-slot>
 
     <div class="py-6 max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
+        {{-- Easypay inline container: placed BEFORE payload + sessions as requested --}}
+        @if(config('easypay.enabled') && env('EASYPAY_SDK_URL'))
+            <div id="easypay-inline-root" class="bg-white shadow rounded p-4" aria-live="polite">
+                <h3 class="font-semibold mb-2">Payment widget</h3>
+
+                <div id="easypay-checkout" class="min-h-[120px] flex items-center justify-center text-sm text-gray-600">
+                    <span id="easypay-checkout-loading">{{ t('checkout.pay.loading_widget') ?: 'Loading payment widget…' }}</span>
+                </div>
+
+                {{-- persisted manifest for the latest active/pending session (if present) --}}
+                @if(! empty($activeManifest))
+                    <script id="easypay-manifest" type="application/json">@json($activeManifest)</script>
+                @endif
+
+                {{-- load SDK (async) and initialise when manifest present; JS below will no-op safely if SDK not available --}}
+                <script async src="{{ env('EASYPAY_SDK_URL') }}" integrity="" crossorigin="anonymous"></script>
+
+                <script>
+                    (function () {
+                        const manifestEl = document.getElementById('easypay-manifest');
+                        if (!manifestEl) return; // nothing to initialise
+
+                        let manifest = null;
+                        try { manifest = JSON.parse(manifestEl.textContent); } catch (err) { console.error('Invalid Easypay manifest in page', err); return; }
+
+                        const testing = @json(config('easypay.env') === 'test');
+                        const mount = document.getElementById('easypay-checkout');
+                        const orderVerifyUrl = @json(url("/orders/{$order->uuid}/pay/verify"));
+
+                        function startWithGlobal(manifest) {
+                            // try known global entrypoints (SDK exposes window.easypayCheckout.startCheckout)
+                            const candidates = [
+                                ['window.startCheckout', () => window.startCheckout],
+                                ['window.Easypay.startCheckout', () => window.Easypay && window.Easypay.startCheckout],
+                                ['window.Easypay.checkout.startCheckout', () => window.Easypay && window.Easypay.checkout && window.Easypay.checkout.startCheckout],
+                                ['window.easypayCheckout.startCheckout', () => window.easypayCheckout && window.easypayCheckout.startCheckout],
+                                ['window.easypayCheckout.start', () => window.easypayCheckout && window.easypayCheckout.start]
+                            ];
+
+                            let starter = null;
+                            let used = null;
+                            for (const [name, fn] of candidates) {
+                                try { const f = fn(); if (typeof f === 'function') { starter = f; used = name; break; } } catch (err) { /* continue */ }
+                            }
+
+                            if (!starter) return false;
+
+                            try {
+                                starter(manifest, {
+                                    display: 'inline',
+                                    testing: testing,
+                                    container: '#easypay-checkout',
+                                    showLoading: true,
+                                    onSuccess: function (checkoutInfo) {
+                                        console.info('Easypay SDK onSuccess', checkoutInfo);
+
+                                        // try to notify server (best-effort) — endpoint may be handled server-side by existing verify logic
+                                        fetch(orderVerifyUrl, {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'Accept': 'application/json',
+                                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                            },
+                                            body: JSON.stringify({ checkout: checkoutInfo })
+                                        }).then(r => r.json()).then(j => {
+                                            console.info('verify response', j);
+                                            if (j?.ok) window.location.reload();
+                                        }).catch(err => {
+                                            console.warn('verify request failed', err);
+                                        });
+                                    },
+                                    onError: function (err) {
+                                        console.error('Easypay SDK error', err);
+                                        mount.classList.add('border', 'border-red-200');
+                                        mount.innerText = 'Payment widget failed to load — please try again.';
+                                    },
+                                    onPaymentError: function (err) {
+                                        console.error('Easypay payment error', err);
+                                        alert('Payment failed — please try another method or contact support.');
+                                    },
+                                    onClose: function () {
+                                        console.info('Easypay widget closed');
+                                    }
+                                });
+
+                                // remove our static loading placeholder if present (SDK will manage its own loading UI when showLoading=true)
+                                try {
+                                    const loader = document.getElementById('easypay-checkout-loading');
+                                    if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+
+                                    // fallback: if SDK appends an iframe, hide loader when iframe loads
+                                    const mo = new MutationObserver((records, obs) => {
+                                        const iframe = mount.querySelector('iframe');
+                                        if (!iframe) return;
+                                        iframe.addEventListener('load', () => {
+                                            const l = document.getElementById('easypay-checkout-loading');
+                                            if (l && l.parentNode) l.parentNode.removeChild(l);
+                                        });
+                                        obs.disconnect();
+                                    });
+                                    mo.observe(mount, { childList: true, subtree: true });
+                                } catch (err) {
+                                    console.warn('[easypay] could not remove loader element', err);
+                                }
+
+                                return true;
+                            } catch (err) {
+                                console.error('Failed to call Easypay startCheckout', err);
+                                return false;
+                            }
+                        }
+
+                        // If SDK already available call immediately, otherwise wait for global to appear
+                        if (!startWithGlobal(manifest)) {
+                            const maxWait = 10000; // give additional time for async script execution
+                            const start = Date.now();
+                            const i = setInterval(function () {
+                                if (startWithGlobal(manifest)) {
+                                    clearInterval(i);
+                                    return;
+                                }
+
+                                if (Date.now() - start > maxWait) {
+                                    clearInterval(i);
+
+                                    // diagnostic: list easypay-related globals so we can debug naming mismatches
+                                    const easypayGlobals = Object.keys(window).filter(k => /easypay/i.test(k));
+                                    console.warn('[easypay] starter not found after wait; detected globals:', easypayGlobals);
+
+                                    mount.innerHTML = '';
+                                    const errP = document.createElement('div');
+                                    errP.className = 'text-sm text-red-600';
+                                    errP.innerText = 'Could not load payment widget — SDK did not expose the expected API.';
+                                    const detail = document.createElement('pre');
+                                    detail.className = 'mt-2 text-xs text-gray-600 bg-gray-50 p-2 rounded';
+                                    detail.innerText = 'Detected globals: ' + (easypayGlobals.length ? easypayGlobals.join(', ') : '(none)') + '\nCheck Console for more details.';
+                                    mount.appendChild(errP);
+                                    mount.appendChild(detail);
+                                }
+                            }, 150);
+                        }
+                    })();
+                </script>
+            </div>
+        @endif
+
         <div class="bg-white shadow rounded p-4">
             <h3 class="font-semibold mb-2">Easypay payload</h3>
 
@@ -63,10 +210,35 @@
 
                         const json = await resp.json();
                         if (resp.status === 201 && json.ok) {
-                            // Insert returned HTML at the top (delegated listener handles new nodes)
+                            // Insert returned HTML at the top
                             const wrapper = document.createElement('div');
                             wrapper.innerHTML = json.html;
-                            container.prepend(wrapper.firstElementChild);
+                            const newEl = wrapper.firstElementChild;
+                            container.prepend(newEl);
+
+                            // If the new session contains an embedded manifest, surface it to the inline widget
+                            try {
+                                const manifestData = newEl?.dataset?.manifest;
+                                if (manifestData) {
+                                    // ensure manifest script exists/updated
+                                    let manifestEl = document.getElementById('easypay-manifest');
+                                    if (!manifestEl) {
+                                        manifestEl = document.createElement('script');
+                                        manifestEl.id = 'easypay-manifest';
+                                        manifestEl.type = 'application/json';
+                                        document.getElementById('easypay-inline-root')?.appendChild(manifestEl);
+                                    }
+                                    manifestEl.textContent = manifestData;
+
+                                    // attempt to start the SDK (best-effort)
+                                    const starter = window.startCheckout || (window.Easypay && window.Easypay.startCheckout);
+                                    if (starter) {
+                                        try { starter(JSON.parse(manifestData), { display: 'inline', testing: {{ json_encode(config('easypay.env') === 'test') }}, container: '#easypay-checkout' }); } catch (err) { console.warn('Could not auto-start Easypay after session create', err); }
+                                    }
+                                }
+                            } catch (err) {
+                                console.warn('Could not attach manifest from created session', err);
+                            }
                         } else {
                             alert(json.message || 'Failed to create checkout session');
                         }

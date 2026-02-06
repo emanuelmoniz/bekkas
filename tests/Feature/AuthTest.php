@@ -43,7 +43,7 @@ class AuthTest extends TestCase
     public function test_register_creates_user_and_logs_in()
     {
         // ensure 'client' role exists to avoid missing role lookup side-effects
-        Role::create(['name' => 'client']);
+        Role::firstOrCreate(['name' => 'client']);
 
         // Avoid external side-effects during registration
         \Illuminate\Support\Facades\Mail::fake();

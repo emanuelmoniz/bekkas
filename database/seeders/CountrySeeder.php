@@ -210,7 +210,9 @@ class CountrySeeder extends Seeder
         ];
 
         foreach ($countries as $country) {
-            Country::create($country);
+            Country::firstOrCreate([
+                'iso_alpha2' => $country['iso_alpha2'],
+            ], $country);
         }
     }
 }

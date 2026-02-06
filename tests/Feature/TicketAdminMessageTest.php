@@ -43,7 +43,7 @@ class TicketAdminMessageTest extends TestCase
         ]);
 
         // Create admin user and role
-        $role = Role::create(['name' => 'admin']);
+        $role = Role::firstOrCreate(['name' => 'admin']);
         $admin = User::factory()->create();
         $admin->roles()->attach($role->id);
 
@@ -82,7 +82,7 @@ class TicketAdminMessageTest extends TestCase
             'status' => 'open',
         ]);
 
-        $role = Role::create(['name' => 'admin']);
+        $role = Role::firstOrCreate(['name' => 'admin']);
         $admin = User::factory()->create();
         $admin->roles()->attach($role->id);
 
@@ -116,7 +116,7 @@ class TicketAdminMessageTest extends TestCase
             'status' => 'open',
         ]);
 
-        $role = Role::create(['name' => 'admin']);
+        $role = Role::firstOrCreate(['name' => 'admin']);
         $admin = User::factory()->create();
         $admin->roles()->attach($role->id);
 

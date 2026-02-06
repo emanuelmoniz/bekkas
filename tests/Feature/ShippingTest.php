@@ -72,7 +72,7 @@ class ShippingTest extends TestCase
             'production_time' => 3, // working days
         ]);
 
-        $country = Country::create(['name_pt' => 'Portugal', 'name_en' => 'Portugal', 'iso_alpha2' => 'PT', 'country_code' => '351', 'is_active' => true]);
+        $country = Country::firstOrCreate(['iso_alpha2' => 'PT'], ['name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true]);
 
         $address = $user->addresses()->create([
             'title' => 'Home',
@@ -107,13 +107,13 @@ class ShippingTest extends TestCase
             ])
             ->assertRedirect(route('orders.index'));
 
-        $this->assertDatabaseCount('orders', 1);
-        $order = Order::first();
+        // ensure an order was created for this user and compute expected delivery on that order
+        $this->assertDatabaseHas('orders', ['user_id' => $user->id]);
+        $order = Order::where('user_id', $user->id)->latest()->first();
 
         // expected working days = production_time (3) + shipping_days (2) = 5 working days
         // Compute expected date by adding working days (skip weekends) to the start date
-        $expected = Carbon::create(2026,1,15,9,0,0);
-        $daysAdded = 0;
+        $expected = Carbon::create(2026,1,15,9,0,0);        $daysAdded = 0;
         while ($daysAdded < 5) {
             $expected->addDay();
             if (! $expected->isWeekend()) {

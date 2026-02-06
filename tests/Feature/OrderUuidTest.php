@@ -17,10 +17,9 @@ class OrderUuidTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $country = Country::create([
+        $country = Country::firstOrCreate(['iso_alpha2' => 'PT'], [
             'name_pt' => 'Portugal',
             'name_en' => 'Portugal',
-            'iso_alpha2' => 'PT',
             'country_code' => '351',
         ]);
 
@@ -69,10 +68,9 @@ class OrderUuidTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $country = Country::create([
+        $country = Country::firstOrCreate(['iso_alpha2' => 'PT'], [
             'name_pt' => 'Portugal',
             'name_en' => 'Portugal',
-            'iso_alpha2' => 'PT',
             'country_code' => '351',
         ]);
 

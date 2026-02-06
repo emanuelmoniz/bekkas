@@ -21,7 +21,16 @@ class AddressFactory extends Factory
             'address_line_2' => null,
             'postal_code' => $this->faker->postcode,
             'city' => $this->faker->city,
-            'country_id' => Country::factory(),
+            'country_id' => function () {
+                return \App\Models\Country::firstOrCreate([
+                    'iso_alpha2' => 'PT',
+                ], [
+                    'name_pt' => 'Portugal',
+                    'name_en' => 'Portugal',
+                    'country_code' => '351',
+                    'is_active' => true,
+                ])->id;
+            },
             'is_default' => false,
             'user_id' => User::factory(),
         ];

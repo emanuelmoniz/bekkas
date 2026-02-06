@@ -703,10 +703,20 @@ class OrderController extends Controller
 
         $order->loadMissing(['items.product', 'easypayPayload', 'easypayCheckoutSessions']);
 
+        // expose the latest active/pending Easypay checkout session manifest (if any)
+        $activeSession = $order->easypayCheckoutSessions()
+            ->where('is_active', true)
+            ->where('status', 'pending')
+            ->latest('updated_at')
+            ->first();
+
+        $activeManifest = $activeSession ? json_decode($activeSession->message ?? 'null', true) : null;
+
         return view('orders.pay', [
             'order' => $order,
             'payload' => $order->easypayPayload,
             'sessions' => $order->easypayCheckoutSessions()->latest('created_at')->get(),
+            'activeManifest' => $activeManifest,
         ]);
     }
 

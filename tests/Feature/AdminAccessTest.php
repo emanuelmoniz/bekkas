@@ -30,7 +30,7 @@ class AdminAccessTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $role = Role::create(['name' => 'admin']);
+        $role = Role::firstOrCreate(['name' => 'admin']);
         $user->roles()->attach($role->id);
 
         $this->actingAs($user)

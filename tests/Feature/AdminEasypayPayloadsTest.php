@@ -15,7 +15,7 @@ class AdminEasypayPayloadsTest extends TestCase
 
     public function test_admin_can_view_payloads_index()
     {
-        $role = Role::create(['name' => 'admin']);
+        $role = Role::firstOrCreate(['name' => 'admin']);
         $admin = User::factory()->create();
         $admin->roles()->attach($role->id);
 
@@ -34,8 +34,10 @@ class AdminEasypayPayloadsTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('easypay_payloads', ['order_id' => $order->id]);
-        $this->assertEquals(1, \App\Models\EasypayPayload::count());
-        $this->assertNotNull(\App\Models\EasypayPayload::with('order')->first()->order);
+
+        // ensure at least one payload exists for this order (avoid asserting global counts which are brittle)
+        $this->assertNotNull(\App\Models\EasypayPayload::where('order_id', $order->id)->first());
+        $this->assertNotNull(\App\Models\EasypayPayload::with('order')->where('order_id', $order->id)->first()->order);
 
         $resp = $this->actingAs($admin)->get(route('admin.orders.payloads.index'));
 
@@ -50,7 +52,7 @@ class AdminEasypayPayloadsTest extends TestCase
 
     public function test_filters_on_payloads_index_work()
     {
-        $role = Role::create(['name' => 'admin']);
+        $role = Role::firstOrCreate(['name' => 'admin']);
         $admin = User::factory()->create();
         $admin->roles()->attach($role->id);
 
@@ -93,7 +95,7 @@ class AdminEasypayPayloadsTest extends TestCase
 
     public function test_admin_can_view_payload_show()
     {
-        $role = Role::create(['name' => 'admin']);
+        $role = Role::firstOrCreate(['name' => 'admin']);
         $admin = User::factory()->create();
         $admin->roles()->attach($role->id);
 
@@ -131,7 +133,7 @@ class AdminEasypayPayloadsTest extends TestCase
 
     public function test_admin_can_delete_payload_from_show()
     {
-        $role = Role::create(['name' => 'admin']);
+        $role = Role::firstOrCreate(['name' => 'admin']);
         $admin = User::factory()->create();
         $admin->roles()->attach($role->id);
 
@@ -156,7 +158,7 @@ class AdminEasypayPayloadsTest extends TestCase
 
     public function test_admin_can_delete_payload_from_index()
     {
-        $role = Role::create(['name' => 'admin']);
+        $role = Role::firstOrCreate(['name' => 'admin']);
         $admin = User::factory()->create();
         $admin->roles()->attach($role->id);
 
@@ -183,7 +185,7 @@ class AdminEasypayPayloadsTest extends TestCase
     }
     public function test_order_show_includes_payload_button()
     {
-        $role = Role::create(['name' => 'admin']);
+        $role = Role::firstOrCreate(['name' => 'admin']);
         $admin = User::factory()->create();
         $admin->roles()->attach($role->id);
 
@@ -207,7 +209,7 @@ class AdminEasypayPayloadsTest extends TestCase
 
     public function test_admin_can_create_payload_from_order_show()
     {
-        $role = Role::create(['name' => 'admin']);
+        $role = Role::firstOrCreate(['name' => 'admin']);
         $admin = User::factory()->create();
         $admin->roles()->attach($role->id);
 

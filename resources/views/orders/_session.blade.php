@@ -1,4 +1,4 @@
-<div class="border rounded p-3">
+<div class="border rounded p-3" @if($s->is_active && ($s->status ?? '') === 'pending') data-manifest='@json(json_decode($s->message ?? "null", true))' @endif>
     <div class="flex justify-between items-start">
         <div>
             <p class="text-sm text-gray-600">Created: {{ $s->created_at?->format('d/m/Y H:i:s') }}</p>
