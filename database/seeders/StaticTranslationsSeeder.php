@@ -184,6 +184,17 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.new_address_details', 'locale' => 'pt-PT', 'value' => 'Detalhes da nova morada', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'checkout.new_address_details', 'locale' => 'en-UK', 'value' => 'New address details', 'created_at'=>$now,'updated_at'=>$now],
 
+            // Easypay / Pay page messages
+            ['key' => 'checkout.pay.loading_widget', 'locale' => 'pt-PT', 'value' => 'A carregar o componente de pagamento…', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.loading_widget', 'locale' => 'en-UK', 'value' => 'Loading payment widget…', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.pay.unavailable', 'locale' => 'pt-PT', 'value' => 'O sistema de pagamentos está temporariamente indisponível — verifique os detalhes da encomenda dentro de momentos e tente novamente.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.unavailable', 'locale' => 'en-UK', 'value' => 'Payment system is temporarily unavailable — please check your order details in a moment and try again.', 'created_at'=>$now,'updated_at'=>$now],
+
+            // Shown only when APP_DEBUG=true (appends error details)
+            ['key' => 'checkout.pay.unavailable_debug', 'locale' => 'pt-PT', 'value' => 'Erro: :error', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.unavailable_debug', 'locale' => 'en-UK', 'value' => 'Error: :error', 'created_at'=>$now,'updated_at'=>$now],
+
             ['key' => 'checkout.address_title', 'locale' => 'pt-PT', 'value' => 'Nome da morada', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'checkout.address_title', 'locale' => 'en-UK', 'value' => 'Address name', 'created_at'=>$now,'updated_at'=>$now],
 

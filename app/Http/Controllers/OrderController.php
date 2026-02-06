@@ -11,6 +11,7 @@ use App\Services\ShippingCalculator;
 use App\Services\DeliveryDateCalculator;
 use App\Services\DefaultShippingTierResolver;
 use App\Services\EasypayService;
+use App\Services\EasypayOrchestrationService;
 use App\Models\EasypayCheckoutSession;
 use App\Http\Requests\StoreOrderRequest;
 use Illuminate\Http\Request;
@@ -691,32 +692,107 @@ class OrderController extends Controller
 
     /**
      * Show payment (Easypay) page for the order — displays payload + checkout sessions
+     *
+     * Behaviour (server-side orchestration):
+     * - Only allow orders WAITING_PAYMENT and not paid
+     * - If an active pending checkout session exists and is within TTL -> expose its manifest (start SDK)
+     * - Otherwise: ensure payload exists, create a fresh checkout session and expose its manifest
+     * - On any error show a graceful, translatable message; include full error when APP_DEBUG=true
      */
     public function pay(Order $order)
     {
         $this->authorize('view', $order);
 
-        // Only allow access if order is awaiting payment and belongs to the current user
+        // Strict access: only awaiting payment and not yet paid
         if ($order->is_paid || $order->status !== 'WAITING_PAYMENT' || $order->user_id !== auth()->id()) {
             abort(403);
         }
 
         $order->loadMissing(['items.product', 'easypayPayload', 'easypayCheckoutSessions']);
 
-        // expose the latest active/pending Easypay checkout session manifest (if any)
-        $activeSession = $order->easypayCheckoutSessions()
-            ->where('is_active', true)
-            ->where('status', 'pending')
-            ->latest('updated_at')
-            ->first();
+        // Short-circuit when Easypay is disabled: do not create payloads/sessions and always show a friendly message.
+        if (! config('easypay.enabled')) {
+            // Guard against t() returning the raw key when the DB translation is missing in the current locale.
+            $msg = t('checkout.gateways.disabled');
+            if ($msg === 'checkout.gateways.disabled') {
+                $msg = t('checkout.pay.unavailable');
+                if ($msg === 'checkout.pay.unavailable') {
+                    $msg = 'Payment system is temporarily unavailable — please check your order details in a moment and try again.';
+                }
+            }
 
-        $activeManifest = $activeSession ? json_decode($activeSession->message ?? 'null', true) : null;
+            return view('orders.pay', [
+                'order' => $order,
+                'payload' => $order->easypayPayload,
+                'sessions' => $order->easypayCheckoutSessions()->latest('created_at')->get(),
+                'activeManifest' => null,
+                'payUnavailableMessage' => $msg,
+            ]);
+        }
+
+        $ttl = (int) config('easypay.session_ttl', 1800);
+        $now = now();
+
+        $payUnavailableMessage = null;
+        $payUnavailableDebug = null;
+        $activeManifest = null;
+
+        try {
+            $orch = new EasypayOrchestrationService();
+
+            // Reuse a fresh manifest if present
+            $activeManifest = $orch->getLatestActiveManifest($order, $ttl);
+
+            // If no usable manifest, attempt payload+session creation (service is idempotent)
+            if (empty($activeManifest)) {
+                $res = $orch->ensurePayloadAndSession($order);
+                $activeManifest = $res['manifest'] ?? null;
+                $payUnavailableMessage = $res['message'] ?? null;
+
+                if (! empty($activeManifest)) {
+                    $payUnavailableMessage = null; // explicit clearing to preserve prior behaviour
+                }
+            }
+        } catch (\Exception $e) {
+            // Log and show a friendly, translatable message. Include full error only in debug.
+            Log::error('Easypay orchestration failed on pay page', ['order_id' => $order->id, 'error' => $e->getMessage()]);
+
+            $payUnavailableMessage = t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.';
+
+            if (config('app.debug')) {
+                $payUnavailableDebug = $e->getMessage();
+                $payUnavailableMessage = ($payUnavailableMessage . ' ' . ($payUnavailableDebug ? (t('checkout.pay.unavailable_debug', ['error' => $payUnavailableDebug]) ?: $payUnavailableDebug) : ''));
+            }
+        }
+
+        // If orchestration completed but we still don't have an active manifest, show graceful message
+        if (empty($activeManifest) && config('easypay.enabled')) {
+            $latest = $order->easypayCheckoutSessions()->latest('updated_at')->first();
+            $payUnavailableMessage = $payUnavailableMessage ?: (t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.');
+
+            if (config('app.debug') && $latest) {
+                $debug = is_string($latest->message) ? $latest->message : json_encode($latest->message);
+                $payUnavailableMessage = ($payUnavailableMessage . ' ' . (t('checkout.pay.unavailable_debug', ['error' => $debug]) ?: $debug));
+            }
+        }
+
+        // Final safety: if a DB session exists in error state, expose a friendly message (defensive)
+        if (empty($payUnavailableMessage)) {
+            $errored = \App\Models\EasypayCheckoutSession::where('order_id', $order->id)->where('in_error', true)->latest('updated_at')->first();
+            if ($errored) {
+                $payUnavailableMessage = t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.';
+                if (config('app.debug') && $errored->message) {
+                    $payUnavailableMessage = $payUnavailableMessage . ' ' . (t('checkout.pay.unavailable_debug', ['error' => $errored->message]) ?: $errored->message);
+                }
+            }
+        }
 
         return view('orders.pay', [
             'order' => $order,
             'payload' => $order->easypayPayload,
             'sessions' => $order->easypayCheckoutSessions()->latest('created_at')->get(),
             'activeManifest' => $activeManifest,
+            'payUnavailableMessage' => $payUnavailableMessage,
         ]);
     }
 

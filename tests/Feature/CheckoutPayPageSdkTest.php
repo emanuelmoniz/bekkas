@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\EasypayPayload;
 use App\Models\EasypayCheckoutSession;
+use Illuminate\Support\Facades\Config;
 
 class CheckoutPayPageSdkTest extends TestCase
 {
@@ -34,6 +35,12 @@ class CheckoutPayPageSdkTest extends TestCase
             'message' => json_encode($manifest),
         ]);
 
+        // Ensure server-side verification (fetchCheckout) succeeds so the manifest is exposed
+        \Illuminate\Support\Facades\Config::set('easypay.base_url', 'https://api.test.easypay.pt/2.0');
+        \Illuminate\Support\Facades\Http::fake([
+            'https://api.test.easypay.pt/2.0/checkout/test-checkout-123' => \Illuminate\Support\Facades\Http::response($manifest, 200),
+        ]);
+
         // Act: visit the pay page as the order owner
         $resp = $this->actingAs($user)->get(route('orders.pay', $order->uuid));
 
@@ -46,7 +53,32 @@ class CheckoutPayPageSdkTest extends TestCase
         // manifest should be present in the HTML (server-embedded)
         $resp->assertSee(json_encode($manifest), false);
 
+        // IMPORTANT: when a valid manifest/session exists the user must NOT see the unavailable message
+        $resp->assertDontSee('Payment system is temporarily unavailable', false);
+
         // when running in the test env the SDK initialiser should receive testing: true
         $this->assertStringContainsString('const testing = true', $resp->getContent());
+    }
+
+    public function test_pay_page_shows_unavailable_and_hides_sdk_when_easypay_disabled()
+    {
+        Config::set('easypay.enabled', false);
+
+        $user = User::factory()->create();
+        $order = Order::factory()->for($user)->create([ 'status' => 'WAITING_PAYMENT', 'is_paid' => false ]);
+
+        $resp = $this->actingAs($user)->get(route('orders.pay', $order->uuid));
+
+        $resp->assertStatus(200);
+
+        $resp->assertStatus(200);
+        $resp->assertSee(t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable', false);
+
+        // SDK section must not be rendered
+        $resp->assertDontSee('id="easypay-checkout"', false);
+        $resp->assertDontSee('id="easypay-manifest"', false);
+
+        // Back to order link must still be present
+        $resp->assertSee(route('orders.show', $order->uuid));
     }
 }

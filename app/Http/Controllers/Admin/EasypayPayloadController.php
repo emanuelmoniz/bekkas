@@ -53,6 +53,10 @@ class EasypayPayloadController extends Controller
      */
     public function store(Order $order)
     {
+        if (! config('easypay.enabled')) {
+            return redirect()->route('admin.orders.payloads.index')->with('error', 'Easypay is disabled in configuration');
+        }
+
         // createOrGetPayload is idempotent and returns the existing payload if present
         $payload = EasypayService::createOrGetPayload($order);
 
@@ -90,6 +94,10 @@ class EasypayPayloadController extends Controller
         $order = $payload->order;
         if (! $order) {
             return redirect()->back()->with('error', 'Payload has no associated order');
+        }
+
+        if (! config('easypay.enabled')) {
+            return redirect()->route('admin.orders.payloads.index')->with('error', 'Easypay is disabled in configuration');
         }
 
         \DB::transaction(function () use ($order) {

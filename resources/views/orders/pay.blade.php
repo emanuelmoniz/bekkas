@@ -5,9 +5,36 @@
 
     <div class="py-6 max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
         {{-- Easypay inline container (SDK only) --}}
+        {{-- Show orchestration errors/messages only when no active manifest is present (avoid showing stale errors) --}}
+        @if(empty($activeManifest))
+            @if(! empty($payUnavailableMessage))
+                <div class="mb-4 p-3 rounded bg-red-50 border border-red-100 text-sm text-red-800">
+                    {{ $payUnavailableMessage }}
+                </div>
+            @elseif(isset($sessions) && ($err = $sessions->firstWhere('in_error', true)))
+                {{-- Service recorded an errored session — show a friendly message and debug details when appropriate --}}
+                <div class="mb-4 p-3 rounded bg-red-50 border border-red-100 text-sm text-red-800">
+                    {{ t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.' }}
+                    @if(config('app.debug') && $err->message)
+                        <div class="mt-2 text-xs text-red-700">{{ t('checkout.pay.unavailable_debug', ['error' => $err->message]) ?: $err->message }}</div>
+                    @endif
+                </div>
+            @else
+                {{-- Final fallback: directly check DB for errored session (defensive for tests/runtime) --}}
+                @php $errDb = \App\Models\EasypayCheckoutSession::where('order_id', $order->id)->where('in_error', true)->latest('updated_at')->first(); @endphp
+                @if($errDb)
+                    <div class="mb-4 p-3 rounded bg-red-50 border border-red-100 text-sm text-red-800">
+                        {{ t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.' }}
+                        @if(config('app.debug') && $errDb->message)
+                            <div class="mt-2 text-xs text-red-700">{{ t('checkout.pay.unavailable_debug', ['error' => $errDb->message]) ?: $errDb->message }}</div>
+                        @endif
+                    </div>
+                @endif
+            @endif
+        @endif
+
         @if(config('easypay.enabled') && env('EASYPAY_SDK_URL'))
             <div id="easypay-inline-root" class="bg-white shadow rounded p-4" aria-live="polite">
-                <h3 class="font-semibold mb-2">Payment widget</h3>
 
                 <div id="easypay-checkout" class="min-h-[120px] flex items-center justify-center text-sm text-gray-600">
                     <span id="easypay-checkout-loading">{{ t('checkout.pay.loading_widget') ?: 'Loading payment widget…' }}</span>

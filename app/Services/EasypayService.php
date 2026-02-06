@@ -31,10 +31,10 @@ class EasypayService
         // Customer phone fallback: user profile -> order address -> null
         $phone = optional($order->user)->phone ?: $order->address_phone ?? null;
 
-        // Normalize language to ISO 639-1 alpha-2 (e.g. "PT", "EN")
+        // Normalize language to ISO 639-1 alpha-2 (e.g. "PT", "EN") at payload-creation time
         $userLangRaw = optional($order->user)->language ?? app()->getLocale();
         $userLangRaw = is_string($userLangRaw) ? $userLangRaw : '';
-        $language = strtoupper(substr($userLangRaw, 0, 2));
+        $language = self::normalizeLanguage($userLangRaw) ?? strtoupper(substr($userLangRaw, 0, 2));
 
         $payload = [
             'type' => ['single'],
@@ -70,12 +70,22 @@ class EasypayService
     }
 
     /**
-     * Create or return existing payload for the order
+     * Create or return existing payload for the order.
+     *
+     * IMPORTANT: when Easypay is disabled this method will NOT create a new payload and
+     * will return null (callers must handle the absence). Existing payloads are still
+     * returned so previously-created data remains readable.
      */
-    public static function createOrGetPayload(Order $order): EasypayPayload
+    public static function createOrGetPayload(Order $order): ?EasypayPayload
     {
         $existing = $order->easypayPayload;
         if ($existing) return $existing;
+
+        // Do not create new payloads when the integration is disabled via config/env
+        if (! config('easypay.enabled', false)) {
+            \Log::info('Easypay disabled — skipping payload creation', ['order_id' => $order->id]);
+            return null;
+        }
 
         $payloadArray = self::buildPayload($order);
 
@@ -109,13 +119,16 @@ class EasypayService
         $url = config('easypay.base_url') . '/checkout';
 
         try {
+            // Send the stored payload as-is. Payload creation is responsible for correct values (do not mutate stored payload here).
+            $toSend = $payload->payload ?? [];
+
             $resp = Http::withHeaders([
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
                 // pass accountId/apiKey as headers so they can be adapted easily if vendor requires different auth
                 'accountId' => config('easypay.id'),
                 'apiKey' => config('easypay.api_key'),
-            ])->timeout(10)->post($url, $payload->payload);
+            ])->timeout(10)->post($url, $toSend);
 
             // rely on updated_at (Eloquent) instead of last_update_timestamp
             // (we previously set last_update_timestamp = now() here)
@@ -205,5 +218,24 @@ class EasypayService
             Log::error('Easypay /checkout/{id} request failed', ['checkout_id' => $checkoutId, 'error' => $e->getMessage()]);
             return ['ok' => false, 'status' => 502, 'message' => $e->getMessage()];
         }
+    }
+
+    /**
+     * Normalize language values to ISO 639-1 alpha-2 uppercase (e.g. "PT", "EN").
+     * Accepts values like "pt-PT", "pt_PT", "pt", "pt.pt" and returns "PT".
+     */
+    private static function normalizeLanguage(?string $lang): ?string
+    {
+        if (empty($lang) || ! is_string($lang)) {
+            return null;
+        }
+
+        // Trim and replace separators with nothing, then capture first two alpha chars
+        $clean = preg_replace('/[^A-Za-z]/', '', $lang);
+        if (preg_match('/([A-Za-z]{2})/', $clean, $m)) {
+            return strtoupper($m[1]);
+        }
+
+        return null;
     }
 }
