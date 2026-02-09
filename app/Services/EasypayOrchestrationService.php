@@ -179,30 +179,78 @@ class EasypayOrchestrationService
             if ($paymentId) {
                 $single = (new \App\Services\EasypayService())->getSinglePayment($paymentId);
                 if ($single) {
-                    // Persist remote payment details robustly and reload the saved model
+                    // Build authoritative attrs from remote response
                     $attrs = [
+                        'payment_id' => data_get($single, 'id') ?? $paymentId,
                         'checkout_id' => $checkoutId,
                         'order_id' => $order->id,
                         'payment_status' => data_get($single,'payment_status') ?? data_get($single,'payment.status'),
+                        'paid_at' => data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : null,
                         'raw_response' => $single,
                     ];
 
-                    \App\Models\EasypayPayment::updateOrCreate(['payment_id' => data_get($single,'id')], $attrs);
+                    // Prefer an explicit order-scoped update (avoid accidental cross-order matches)
+                    $existing = \App\Models\EasypayPayment::where('payment_id', $attrs['payment_id'])->where('order_id', $order->id)->first();
 
-                    $stored = \App\Models\EasypayPayment::where('payment_id', data_get($single,'id'))->first();
+                    if ($existing) {
+                        $existing->fill(array_filter($attrs, fn ($v) => ! is_null($v)));
+                        $existing->save();
+                    } else {
+                        \App\Models\EasypayPayment::create($attrs);
+                    }
+
+                    // Ensure DB row(s) for this order+payment_id/checkout_id are updated (defensive, SQL-level)
+                    \App\Models\EasypayPayment::where('order_id', $order->id)
+                        ->where(function ($q) use ($attrs, $checkoutId) {
+                            $q->where('payment_id', $attrs['payment_id']);
+                            if (! empty($checkoutId)) {
+                                $q->orWhere('checkout_id', $checkoutId);
+                            }
+                        })
+                        ->update([
+                            'payment_status' => $attrs['payment_status'] ?? null,
+                            'paid_at' => $attrs['paid_at'] ?? null,
+                            'raw_response' => $attrs['raw_response'] ?? null,
+                        ]);
+
+                    // Authoritative reload (scoped to order + payment_id)
+                    $stored = \App\Models\EasypayPayment::where('payment_id', $attrs['payment_id'])->where('order_id', $order->id)->first();
                     $status = $stored ? $stored->payment_status : ($attrs['payment_status'] ?? null);
 
+
+
+                    // Fallback: if order-scoped row wasn't updated but remote shows paid, try a global update by payment_id
+                    $remoteStatus = $attrs['payment_status'] ?? null;
+                    if (! in_array($status, ['paid','success'], true) && in_array($remoteStatus, ['paid','success'], true)) {
+                        \App\Models\EasypayPayment::where('payment_id', $attrs['payment_id'])->update([
+                            'payment_status' => $remoteStatus,
+                            'paid_at' => $attrs['paid_at'],
+                            'raw_response' => $attrs['raw_response'],
+                        ]);
+
+                        $stored = \App\Models\EasypayPayment::where('payment_id', $attrs['payment_id'])->where('order_id', $order->id)->first() ?? \App\Models\EasypayPayment::where('payment_id', $attrs['payment_id'])->first();
+                        $status = $stored ? $stored->payment_status : $status;
+                    }
+
+                    // If remote indicates paid, make DB authoritative and mark order paid
                     if (in_array($status, ['paid','success'], true)) {
                         $order->is_paid = true;
                         $order->status = 'PROCESSING';
                         $order->save();
 
-                        // ensure stored payment reflects paid status
+                        if (app()->environment('testing')) {
+                            logger()->info('easypay.test-log: orchestration-mark-order-paid', ['order_id' => $order->id, 'payment_id' => $attrs['payment_id'], 'status' => $status]);
+                        }
+
                         if ($stored && $stored->payment_status !== $status) {
                             $stored->payment_status = $status;
-                            $stored->paid_at = data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : $stored->paid_at;
+                            $stored->paid_at = $stored->paid_at ?? $attrs['paid_at'];
                             $stored->raw_response = $single;
                             $stored->save();
+
+                            if (app()->environment('testing')) {
+                                logger()->info('easypay.test-log: orchestration-updated-payment-row', ['payment_id' => $stored->payment_id, 'order_id' => $stored->order_id, 'payment_status' => $stored->payment_status]);
+                            }
                         }
 
                         return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid')];

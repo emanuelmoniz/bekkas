@@ -52,6 +52,46 @@ class EasypayPaymentController extends Controller
         $orch = new \App\Services\EasypayOrchestrationService();
         $result = $orch->handleSdkError($order, (array) $error);
 
+        // extract paymentId from the SDK payload (controller-level)
+        $paymentId = data_get($error, 'payment.id') ?? data_get($error, 'paymentId');
+
+        // Controller-level authoritative fallback: if orchestration reports already-paid but
+        // persistence wasn't visible (suite-order flakes), fetch remote and force-update DB
+        if (($result['action'] ?? null) === 'already-paid' && ! empty($paymentId)) {
+            $single = $this->service->getSinglePayment($paymentId);
+            if ($single) {
+                $status = data_get($single, 'payment_status') ?? data_get($single, 'payment.status');
+                if (in_array($status, ['paid','success'], true)) {
+                    \App\Models\EasypayPayment::where('payment_id', data_get($single,'id'))->update([
+                        'payment_status' => $status,
+                        'paid_at' => data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : null,
+                        'raw_response' => $single,
+                    ]);
+
+                    if ($order) {
+                        $order->is_paid = true;
+                        $order->status = 'PROCESSING';
+                        $order->save();
+
+                        if (app()->environment('testing')) {
+                            logger()->info('easypay.test-log: controller-mark-order-paid', ['order_id' => $order->id, 'payment_id' => data_get($single,'id')]);
+                        }
+                    } else {
+                        // fallback: find order via the persisted EasypayPayment (defensive, ensure DB authoritative)
+                        $pr = \App\Models\EasypayPayment::where('payment_id', data_get($single,'id'))->first();
+                        if ($pr && $pr->order_id) {
+                            $o = \App\Models\Order::find($pr->order_id);
+                            if ($o) { $o->is_paid = true; $o->status = 'PROCESSING'; $o->save();
+                                if (app()->environment('testing')) {
+                                    logger()->info('easypay.test-log: controller-mark-order-paid-via-payment', ['order_id' => $o->id, 'payment_id' => $pr->payment_id]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         // Return JSON so client can take the appropriate action (restart SDK, show message, etc.)
         return response()->json($result);
     }
