@@ -38,7 +38,9 @@ class AdminEasypayCheckoutsTest extends TestCase
             ->assertSee('Checkout sessions')
             ->assertSee($order->order_number)
             ->assertSee($session->created_at->format('d/m/Y'))
-            ->assertSee('View');
+            ->assertSee('View')
+            ->assertSee(route('admin.orders.payments.index', ['order_number' => $order->order_number]))
+            ->assertSee('View payments');
     }
 
     public function test_filters_on_checkouts_index_work()

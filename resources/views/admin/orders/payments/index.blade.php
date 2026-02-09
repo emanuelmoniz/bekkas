@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">Checkout sessions</h2>
+        <h2 class="font-semibold text-xl text-gray-800">Payments</h2>
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -19,31 +19,32 @@
                        value="{{ request('order_number') }}"
                        class="border rounded px-3 py-2">
 
-                <input type="date" name="from_order_date" placeholder="Order from date"
-                       value="{{ request('from_order_date') }}"
+                <input type="date" name="from_paid_date" placeholder="Paid from date"
+                       value="{{ request('from_paid_date') }}"
                        class="border rounded px-3 py-2">
 
-                <input type="date" name="to_order_date" placeholder="Order to date"
-                       value="{{ request('to_order_date') }}"
+                <input type="date" name="to_paid_date" placeholder="Paid to date"
+                       value="{{ request('to_paid_date') }}"
                        class="border rounded px-3 py-2">
 
-                <input type="date" name="from_session_date" placeholder="Session from date"
-                       value="{{ request('from_session_date') }}"
-                       class="border rounded px-3 py-2">
-
-                <input type="date" name="to_session_date" placeholder="Session to date"
-                       value="{{ request('to_session_date') }}"
-                       class="border rounded px-3 py-2">
-
-                <select name="status" class="border rounded px-3 py-2">
+                <select name="payment_status" class="border rounded px-3 py-2">
                     <option value="">Any status</option>
-                    <option value="created" @selected(request('status') === 'created')>created</option>
-                    <option value="disabled" @selected(request('status') === 'disabled')>disabled</option>
+                    <option value="paid" @selected(request('payment_status') === 'paid')>paid</option>
+                    <option value="failed" @selected(request('payment_status') === 'failed')>failed</option>
+                    <option value="pending" @selected(request('payment_status') === 'pending')>pending</option>
                 </select>
+
+                <select name="payment_method" class="border rounded px-3 py-2">
+                    <option value="">Any method</option>
+                    <option value="card" @selected(request('payment_method') === 'card')>card</option>
+                    <option value="mb" @selected(request('payment_method') === 'mb')>mb</option>
+                </select>
+
+                <div></div>
             </div>
 
             <div class="mt-4 text-right flex justify-end gap-2">
-                <a href="{{ route('admin.orders.checkouts.index') }}" 
+                <a href="{{ route('admin.orders.payments.index') }}" 
                    class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
                     Reset
                 </a>
@@ -59,30 +60,30 @@
                     <tr>
                         <th class="px-3 py-2">Order Number</th>
                         <th class="px-3 py-2">Order Date</th>
-                        <th class="px-3 py-2">Session created at</th>
+                        <th class="px-3 py-2">Paid at</th>
                         <th class="px-3 py-2">Status</th>
+                        <th class="px-3 py-2">Method</th>
                         <th class="px-3 py-2"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($sessions as $s)
+                    @foreach ($payments as $p)
                         <tr class="border-t">
-                            <td class="px-3 py-2">{{ optional($s->order)->order_number ?? ('#' . $s->order_id) }}</td>
-                            <td class="px-3 py-2">{{ optional($s->order)->created_at?->format('d/m/Y H:i') ?? '-' }}</td>
-                            <td class="px-3 py-2">{{ $s->created_at->format('d/m/Y H:i') }}</td>
-                            <td class="px-3 py-2">{{ $s->status ?? '-' }}</td>
+                            <td class="px-3 py-2">{{ optional($p->order)->order_number ?? ('#' . $p->order_id) }}</td>
+                            <td class="px-3 py-2">{{ optional($p->order)->created_at?->format('d/m/Y H:i') ?? '-' }}</td>
+                            <td class="px-3 py-2">{{ $p->paid_at?->format('d/m/Y H:i') ?? '-' }}</td>
+                            <td class="px-3 py-2">{{ $p->payment_status ?? '-' }}</td>
+                            <td class="px-3 py-2">{{ $p->payment_method ?? '-' }}</td>
                             <td class="px-3 py-2 text-right">
-                                @if($s->order)
+                                @if($p->order)
                                     <div class="flex gap-2 justify-end items-center">
-                                        <a href="{{ route('admin.orders.checkouts.show', $s) }}" class="text-sm bg-blue-50 border-blue-200 text-blue-700 border px-3 py-1 rounded">View</a>
+                                        <a href="{{ route('admin.orders.payments.show', $p) }}" class="text-sm bg-blue-50 border-blue-200 text-blue-700 border px-3 py-1 rounded">View</a>
 
-                                        <a href="{{ route('admin.orders.show', $s->order) }}" class="text-sm bg-gray-50 border-gray-200 text-gray-700 border px-3 py-1 rounded">Order</a>
+                                        <a href="{{ route('admin.orders.show', $p->order) }}" class="text-sm bg-gray-50 border-gray-200 text-gray-700 border px-3 py-1 rounded">Order</a>
 
-                                        @if($s->payload)
-                                            <a href="{{ route('admin.orders.payloads.show', $s->payload) }}" class="text-sm bg-indigo-50 border-indigo-200 text-indigo-700 border px-3 py-1 rounded">Payload</a>
+                                        @if($p->checkoutSession)
+                                            <a href="{{ route('admin.orders.checkouts.show', $p->checkoutSession) }}" class="text-sm bg-indigo-50 border-indigo-200 text-indigo-700 border px-3 py-1 rounded">Checkout</a>
                                         @endif
-
-                                        <a href="{{ route('admin.orders.payments.index', ['order_number' => optional($s->order)->order_number]) }}" class="text-sm bg-indigo-50 border-indigo-200 text-indigo-700 border px-3 py-1 rounded">View payments</a>
                                     </div>
                                 @else
                                     <span class="text-sm text-gray-500">No order</span>

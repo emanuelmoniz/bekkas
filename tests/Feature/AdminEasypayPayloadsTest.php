@@ -47,7 +47,9 @@ class AdminEasypayPayloadsTest extends TestCase
             ->assertSee($payload->created_at->format('d/m/Y'))
             ->assertSee('View')
             ->assertSee('Recreate')
-            ->assertSee('Delete');
+            ->assertSee('Delete')
+            ->assertSee(route('admin.orders.payments.index', ['order_number' => $order->order_number]))
+            ->assertSee('View payments');
     }
 
     public function test_filters_on_payloads_index_work()

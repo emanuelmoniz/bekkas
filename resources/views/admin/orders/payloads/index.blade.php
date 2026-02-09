@@ -10,6 +10,7 @@
                 <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Orders</a>
                 <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payloads</a>
                 <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Checkouts</a>
+                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payments</a>
             </nav>
         </div>
 
@@ -72,8 +73,9 @@
 
                                         <a href="{{ route('admin.orders.checkouts.index', ['order_number' => optional($p->order)->order_number]) }}" class="text-sm bg-blue-50 border-blue-200 text-blue-700 border px-3 py-1 rounded ms-2">Checkouts</a>
 
+                                        <a href="{{ route('admin.orders.payments.index', ['order_number' => optional($p->order)->order_number]) }}" class="text-sm bg-indigo-50 border-indigo-200 text-indigo-700 border px-3 py-1 rounded ms-2">View payments</a>
+
                                         <form method="POST" action="{{ route('admin.orders.payloads.recreate', $p) }}" onsubmit="return confirm('Recreate payload from order snapshot?');">
-                                            @csrf
                                             <button class="text-sm bg-yellow-50 border-yellow-200 text-yellow-700 border px-3 py-1 rounded">Recreate</button>
                                         </form>
 

@@ -280,6 +280,12 @@ Route::middleware(['auth', 'is_admin'])
         Route::get('/orders/checkouts/{session}', [\App\Http\Controllers\Admin\EasypayCheckoutSessionController::class, 'show'])
             ->name('orders.checkouts.show');
 
+        // Easypay payments (admin)
+        Route::get('/orders/payments', [\App\Http\Controllers\Admin\EasypayPaymentController::class, 'index'])
+            ->name('orders.payments.index');
+        Route::get('/orders/payments/{payment}', [\App\Http\Controllers\Admin\EasypayPaymentController::class, 'show'])
+            ->name('orders.payments.show');
+
         Route::get('/orders/{order}', [AdminOrderController::class, 'show'])
             ->name('orders.show');
 
