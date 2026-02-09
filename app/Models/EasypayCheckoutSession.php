@@ -35,4 +35,9 @@ class EasypayCheckoutSession extends Model
     {
         return $this->belongsTo(EasypayPayload::class, 'payload_id');
     }
+
+    public function payments()
+    {
+        return $this->hasMany(EasypayPayment::class, 'checkout_id', 'checkout_id');
+    }
 }

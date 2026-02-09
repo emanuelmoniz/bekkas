@@ -195,6 +195,13 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.pay.unavailable_debug', 'locale' => 'pt-PT', 'value' => 'Erro: :error', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'checkout.pay.unavailable_debug', 'locale' => 'en-UK', 'value' => 'Error: :error', 'created_at'=>$now,'updated_at'=>$now],
 
+            // Additional Easypay messages
+            ['key' => 'checkout.pay.success', 'locale' => 'pt-PT', 'value' => 'Pagamento recebido — obrigado. A atualizar o estado da encomenda…', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.success', 'locale' => 'en-UK', 'value' => 'Payment received — thank you. Updating order status…', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.pay.widget_failed', 'locale' => 'pt-PT', 'value' => 'O componente de pagamento falhou ao carregar — por favor tente novamente.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.widget_failed', 'locale' => 'en-UK', 'value' => 'Payment widget failed to load — please try again.', 'created_at'=>$now,'updated_at'=>$now],
+
             ['key' => 'checkout.address_title', 'locale' => 'pt-PT', 'value' => 'Nome da morada', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'checkout.address_title', 'locale' => 'en-UK', 'value' => 'Address name', 'created_at'=>$now,'updated_at'=>$now],
 

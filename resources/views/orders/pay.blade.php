@@ -36,6 +36,8 @@
         @if(config('easypay.enabled') && env('EASYPAY_SDK_URL'))
             <div id="easypay-inline-root" class="bg-white shadow rounded p-4" aria-live="polite">
 
+                <div id="easypay-flash" class="mb-3" aria-live="polite" style="display:none"></div>
+
                 <div id="easypay-checkout" class="min-h-[120px] flex items-center justify-center text-sm text-gray-600">
                     <span id="easypay-checkout-loading">{{ t('checkout.pay.loading_widget') ?: 'Loading payment widget…' }}</span>
                 </div>
@@ -59,6 +61,7 @@
                         const testing = @json(config('easypay.env') === 'test');
                         const mount = document.getElementById('easypay-checkout');
                         const orderVerifyUrl = @json(url("/orders/{$order->uuid}/pay/verify"));
+                        const orderShowUrl = @json(url("/orders/{$order->uuid}"));
 
                         // Try known SDK globals and start inline checkout. Keep implementation minimal and robust.
                         const starterCandidates = [
@@ -84,9 +87,37 @@
                                                     method: 'POST',
                                                     headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') },
                                                     body: JSON.stringify({ checkout: checkoutInfo })
-                                                }).then(r => r.json()).then(j => { if (j?.ok) window.location.reload(); }).catch(() => {/* ignore */});
+                                                }).then(r => r.json()).then(j => {
+                                                    // Show a flash message above the widget instead of removing the SDK
+                                                    try {
+                                                        const flash = document.getElementById('easypay-flash');
+                                                        if (flash) {
+                                                            flash.style.display = 'block';
+                                                            flash.className = 'mb-3 p-3 rounded bg-green-50 border border-green-100 text-sm text-green-800';
+                                                            flash.innerText = @json(t('checkout.pay.success'));
+                                                        }
+                                                        mount.classList.remove('border', 'border-red-200');
+                                                    } catch (e) { /* ignore DOM issues */ }
+                                                }).catch(() => {/* ignore */});
                                             },
-                                            onError: function () { mount.classList.add('border', 'border-red-200'); mount.innerText = 'Payment widget failed to load — please try again.'; },
+                                            onClose: function () {
+                                                // Redirect user to order detail page when SDK signals close.
+                                                try {
+                                                    window.location.href = orderShowUrl;
+                                                } catch (e) { /* ignore */ }
+                                            },
+                                            onError: function (error) {
+                                                console.error('Easypay SDK onError', error);
+                                                try {
+                                                    fetch(@json(url('/easypay/sdk/error')), {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') },
+                                                        body: JSON.stringify({ error: error })
+                                                    }).catch(()=>{});
+                                                } catch (e) { /* ignore */ }
+                                                mount.classList.add('border', 'border-red-200');
+                                                mount.innerText = @json(t('checkout.pay.widget_failed'));
+                                            },
                                             onPaymentError: function () { alert('Payment failed — please try another method or contact support.'); }
                                         });
 

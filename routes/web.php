@@ -148,6 +148,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/{order}/pay', [OrderController::class, 'pay'])
         ->name('orders.pay');
 
+    // Endpoint for client SDK onSuccess handler to POST checkoutInfo
+    Route::post('/easypay/payments', [\App\Http\Controllers\EasypayPaymentController::class, 'store'])
+        ->name('easypay.payments.store');
+
+    // Backwards-compatible verify endpoint used by the pay page (posts checkoutInfo)
+    Route::post('/orders/{order}/pay/verify', [\App\Http\Controllers\EasypayPaymentController::class, 'store'])
+        ->name('orders.pay.verify');
+
+    // Client-side SDK error logging (debugging helper)
+    Route::post('/easypay/sdk/error', [\App\Http\Controllers\EasypayPaymentController::class, 'logSdkError'])
+        ->name('easypay.sdk.error');
+
 
 
     Route::post('/orders', [OrderController::class, 'store'])

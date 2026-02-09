@@ -8,14 +8,49 @@ use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Client\RequestException;
 
 class EasypayService
 {
+    protected string $baseUrl;
+
+    public function __construct()
+    {
+        $this->baseUrl = rtrim(config('easypay.base_url', env('EASYPAY_BASE_URL', 'https://api.test.easypay.pt/2.0')), '/');
+    }
+
+    /**
+     * Fetch single payment details from Easypay API
+     * @param string $paymentId
+     * @return array|null
+     */
+    public function getSinglePayment(string $paymentId): ?array
+    {
+        $url = $this->baseUrl . '/single/' . rawurlencode($paymentId);
+
+        $response = Http::withHeaders([
+            'AccountId' => config('easypay.id', env('EASYPAY_ID')),
+            'ApiKey' => config('easypay.api_key', env('EASYPAY_API_KEY')),
+            'Accept' => 'application/json',
+        ])->timeout(10)->get($url);
+
+        try {
+            $response->throw();
+        } catch (RequestException $e) {
+            Log::warning('Easypay getSinglePayment failed', ['payment_id' => $paymentId, 'error' => $e->getMessage()]);
+            return null;
+        }
+
+        return $response->json();
+    }
+
+    /**
+     * Build the checkout payload for an Order
+     */
     public static function buildPayload(Order $order): array
     {
         $methods = json_decode(config('easypay.payment_methods', '[]'), true) ?: [];
 
-        // Build items from order items (snapshot values)
         $items = $order->items->map(function ($it) {
             return [
                 'description' => optional($it->product->translation())->name ?? "Product #{$it->product_id}",
@@ -28,15 +63,13 @@ class EasypayService
         $mbTtl = (int) config('easypay.mb_ttl', 172800);
         $expiration = Carbon::now()->addSeconds($mbTtl)->setTimezone('UTC')->format('Y-m-d\TH:i:s\Z');
 
-        // Customer phone fallback: user profile -> order address -> null
         $phone = optional($order->user)->phone ?: $order->address_phone ?? null;
 
-        // Normalize language to ISO 639-1 alpha-2 (e.g. "PT", "EN") at payload-creation time
         $userLangRaw = optional($order->user)->language ?? app()->getLocale();
         $userLangRaw = is_string($userLangRaw) ? $userLangRaw : '';
         $language = self::normalizeLanguage($userLangRaw) ?? strtoupper(substr($userLangRaw, 0, 2));
 
-        $payload = [
+        return [
             'type' => ['single'],
             'payment' => [
                 'methods' => $methods,
@@ -65,25 +98,15 @@ class EasypayService
                 'key' => (string) $order->user_id,
             ],
         ];
-
-        return $payload;
     }
 
-    /**
-     * Create or return existing payload for the order.
-     *
-     * IMPORTANT: when Easypay is disabled this method will NOT create a new payload and
-     * will return null (callers must handle the absence). Existing payloads are still
-     * returned so previously-created data remains readable.
-     */
     public static function createOrGetPayload(Order $order): ?EasypayPayload
     {
         $existing = $order->easypayPayload;
         if ($existing) return $existing;
 
-        // Do not create new payloads when the integration is disabled via config/env
         if (! config('easypay.enabled', false)) {
-            \Log::info('Easypay disabled — skipping payload creation', ['order_id' => $order->id]);
+            Log::info('Easypay disabled — skipping payload creation', ['order_id' => $order->id]);
             return null;
         }
 
@@ -95,15 +118,10 @@ class EasypayService
         ]);
     }
 
-    /**
-     * Create a DB checkout session record, call Easypay /checkout and update the record with the response.
-     */
     public static function createCheckoutSession(EasypayPayload $payload): EasypayCheckoutSession
     {
         $order = $payload->order;
 
-        // Create session record as INACTIVE by default — it becomes active only when we receive both id and session
-        // Use Eloquent's created_at/updated_at instead of custom timestamp columns.
         $session = EasypayCheckoutSession::create([
             'order_id' => $order->id,
             'payload_id' => $payload->id,
@@ -116,33 +134,26 @@ class EasypayService
             return $session;
         }
 
-        $url = config('easypay.base_url') . '/checkout';
+        $url = rtrim(config('easypay.base_url'), '/') . '/checkout';
 
         try {
-            // Send the stored payload as-is. Payload creation is responsible for correct values (do not mutate stored payload here).
             $toSend = $payload->payload ?? [];
 
             $resp = Http::withHeaders([
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-                // pass accountId/apiKey as headers so they can be adapted easily if vendor requires different auth
                 'accountId' => config('easypay.id'),
                 'apiKey' => config('easypay.api_key'),
             ])->timeout(10)->post($url, $toSend);
 
-            // rely on updated_at (Eloquent) instead of last_update_timestamp
-            // (we previously set last_update_timestamp = now() here)
-
             if ($resp->status() === 201) {
                 $body = $resp->json();
 
-                // Require both id and session token to consider the session active
                 $hasId = ! empty($body['id']);
                 $hasSession = ! empty($body['session']) || ! empty($body['config']);
 
                 $session->checkout_id = $body['id'] ?? null;
                 $session->session_id = $body['session'] ?? ($body['config'] ?? null);
-                // Successful creation => mark as pending in our DB (Easypay's raw status is kept in message)
                 $session->status = 'pending';
                 $session->message = json_encode($body);
 
@@ -151,7 +162,6 @@ class EasypayService
                     $session->in_error = false;
                     $session->error_code = null;
                 } else {
-                    // Treat missing critical fields as an error — keep is_active = false
                     $session->is_active = false;
                     $session->in_error = true;
                     $session->error_code = 422;
@@ -172,7 +182,6 @@ class EasypayService
             $session->in_error = true;
             $session->status = 'error';
             $session->message = $e->getMessage();
-            // rely on Eloquent's updated_at instead of last_update_timestamp
             $session->save();
 
             Log::error('Easypay /checkout request failed', ['order_id' => $order->id, 'error' => $e->getMessage()]);
@@ -181,11 +190,6 @@ class EasypayService
         return $session;
     }
 
-    /**
-     * Fetch checkout details from Easypay `/checkout/{checkoutId}`
-     *
-     * Returns an array: ['ok' => bool, 'status' => int, 'body' => mixed, 'message' => string?]
-     */
     public static function fetchCheckout(string $checkoutId): array
     {
         if (empty($checkoutId)) {
@@ -196,7 +200,7 @@ class EasypayService
             return ['ok' => false, 'status' => 503, 'message' => 'Easypay disabled'];
         }
 
-        $url = config('easypay.base_url') . '/checkout/' . rawurlencode($checkoutId);
+        $url = rtrim(config('easypay.base_url'), '/') . '/checkout/' . rawurlencode($checkoutId);
 
         try {
             $resp = Http::withHeaders([
@@ -220,17 +224,12 @@ class EasypayService
         }
     }
 
-    /**
-     * Normalize language values to ISO 639-1 alpha-2 uppercase (e.g. "PT", "EN").
-     * Accepts values like "pt-PT", "pt_PT", "pt", "pt.pt" and returns "PT".
-     */
     private static function normalizeLanguage(?string $lang): ?string
     {
         if (empty($lang) || ! is_string($lang)) {
             return null;
         }
 
-        // Trim and replace separators with nothing, then capture first two alpha chars
         $clean = preg_replace('/[^A-Za-z]/', '', $lang);
         if (preg_match('/([A-Za-z]{2})/', $clean, $m)) {
             return strtoupper($m[1]);
