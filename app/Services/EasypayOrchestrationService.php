@@ -50,6 +50,11 @@ class EasypayOrchestrationService
      */
     public function ensurePayloadAndSession(Order $order): array
     {
+        // Defensive: do not attempt anything when Easypay is disabled
+        if (! config('easypay.enabled', false)) {
+            return ['manifest' => null, 'message' => t('checkout.gateways.disabled') ?: (t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.')];
+        }
+
         // Ensure payload exists (service returns existing if present)
         $payload = $order->easypayPayload ?? EasypayService::createOrGetPayload($order);
 
@@ -94,5 +99,173 @@ class EasypayOrchestrationService
         }
 
         return $msg;
+    }
+
+    /**
+     * Prepare SDK for the pay page: perform server-side checks and when necessary
+     * cancel pending sessions, refresh payment details and create a new session.
+     * Returns an array with keys: action (ok|already-paid|new-manifest|error), message, manifest
+     */
+    public function prepareSdkForOrder(Order $order): array
+    {
+        // Defensive: do not run when Easypay disabled
+        if (! config('easypay.enabled', false)) {
+            return ['action' => 'error', 'message' => t('checkout.gateways.disabled') ?: (t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable'), 'manifest' => null];
+        }
+
+        $latestSession = $order->easypayCheckoutSessions()->latest('updated_at')->first();
+        $lastPayment = $order->easypayPayments()->latest('created_at')->first();
+
+        if ($order->is_paid && $lastPayment && in_array($lastPayment->payment_status, ['paid', 'success'], true)) {
+            return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid') ?: 'Order already paid', 'manifest' => null];
+        }
+
+        if ($latestSession && $latestSession->is_active && $lastPayment && $lastPayment->payment_status === 'pending' && ! $order->is_paid) {
+            $cancel = \App\Services\EasypayService::cancelCheckout($latestSession->checkout_id);
+            $latestSession->update(['is_active' => false, 'status' => ($cancel['ok'] ? 'canceled' : 'error'), 'in_error' => $cancel['ok'] ? false : true]);
+
+            if ($lastPayment->payment_id) {
+                $single = (new \App\Services\EasypayService())->getSinglePayment($lastPayment->payment_id);
+                if ($single) {
+                    $lastPayment->update([
+                        'payment_status' => data_get($single, 'payment_status') ?? data_get($single, 'payment.status'),
+                        'paid_at' => data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : null,
+                        'raw_response' => $single,
+                    ]);
+
+                    if (in_array($lastPayment->payment_status, ['paid', 'success'], true)) {
+                        $order->is_paid = true; $order->status = 'PROCESSING'; $order->save();
+                        return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid') ?: 'Order already paid', 'manifest' => null];
+                    }
+                }
+            }
+
+            $payload = $order->easypayPayload ?? \App\Services\EasypayService::createOrGetPayload($order);
+            $new = \App\Services\EasypayService::createCheckoutSession($payload);
+            $manifest = $new->message ? json_decode($new->message, true) : null;
+
+            if ($manifest && $new->is_active) {
+                return ['action' => 'new-manifest', 'message' => t('checkout.pay.new_session_created') ?: 'New payment session created', 'manifest' => $manifest];
+            }
+
+            return ['action' => 'error', 'message' => self::buildPayUnavailableMessage($new->message ?? null), 'manifest' => null];
+        }
+
+        return ['action' => 'ok', 'message' => null, 'manifest' => null];
+    }
+
+    /**
+     * Handle SDK-originated errors server-side and return an action for client.
+     */
+    public function handleSdkError(Order $order, array $error): array
+    {
+        $code = $error['code'] ?? null;
+        $checkoutId = $error['checkoutId'] ?? $error['checkout_id'] ?? data_get($error, 'checkout.id');
+        $paymentId = data_get($error, 'payment.id') ?? data_get($error, 'paymentId');
+
+        if ($code === 'checkout-expired') {
+            $payload = $order->easypayPayload ?? \App\Services\EasypayService::createOrGetPayload($order);
+            $new = \App\Services\EasypayService::createCheckoutSession($payload);
+            $manifest = $new->message ? json_decode($new->message, true) : null;
+            return $manifest && $new->is_active ? ['action' => 'new-manifest', 'manifest' => $manifest] : ['action' => 'error', 'message' => self::buildPayUnavailableMessage($new->message ?? null)];
+        }
+
+        if ($code === 'already-paid') {
+            $lastPayment = $order->easypayPayments()->latest('created_at')->first();
+            if ($order->is_paid && $lastPayment && in_array($lastPayment->payment_status, ['paid','success'], true)) {
+                return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid')];
+            }
+
+            if ($paymentId) {
+                $single = (new \App\Services\EasypayService())->getSinglePayment($paymentId);
+                if ($single) {
+                    // Persist remote payment details robustly and reload the saved model
+                    $attrs = [
+                        'checkout_id' => $checkoutId,
+                        'order_id' => $order->id,
+                        'payment_status' => data_get($single,'payment_status') ?? data_get($single,'payment.status'),
+                        'raw_response' => $single,
+                    ];
+
+                    \App\Models\EasypayPayment::updateOrCreate(['payment_id' => data_get($single,'id')], $attrs);
+
+                    $stored = \App\Models\EasypayPayment::where('payment_id', data_get($single,'id'))->first();
+                    $status = $stored ? $stored->payment_status : ($attrs['payment_status'] ?? null);
+
+                    if (in_array($status, ['paid','success'], true)) {
+                        $order->is_paid = true;
+                        $order->status = 'PROCESSING';
+                        $order->save();
+
+                        // ensure stored payment reflects paid status
+                        if ($stored && $stored->payment_status !== $status) {
+                            $stored->payment_status = $status;
+                            $stored->paid_at = data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : $stored->paid_at;
+                            $stored->raw_response = $single;
+                            $stored->save();
+                        }
+
+                        return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid')];
+                    }
+                }
+            }
+
+            if ($checkoutId) {
+                \App\Services\EasypayService::cancelCheckout($checkoutId);
+                \App\Models\EasypayCheckoutSession::where('checkout_id', $checkoutId)->update(['is_active' => false, 'status' => 'canceled']);
+            }
+
+            $payload = $order->easypayPayload ?? \App\Services\EasypayService::createOrGetPayload($order);
+            $new = \App\Services\EasypayService::createCheckoutSession($payload);
+            $manifest = $new->message ? json_decode($new->message, true) : null;
+
+            return $manifest && $new->is_active ? ['action' => 'new-manifest', 'manifest' => $manifest] : ['action' => 'error', 'message' => self::buildPayUnavailableMessage($new->message ?? null)];
+        }
+
+        if (in_array($code, ['generic-error','payment-failure'], true)) {
+            if ($paymentId) {
+                $single = (new \App\Services\EasypayService())->getSinglePayment($paymentId);
+                if ($single) {
+                    $attrs = [
+                        'checkout_id' => $checkoutId,
+                        'order_id' => $order->id,
+                        'payment_status' => data_get($single,'payment_status') ?? data_get($single,'payment.status'),
+                        'raw_response' => $single,
+                    ];
+
+                    \App\Models\EasypayPayment::updateOrCreate(['payment_id' => data_get($single,'id')], $attrs);
+
+                    $stored = \App\Models\EasypayPayment::where('payment_id', data_get($single,'id'))->first();
+                    $status = $stored ? $stored->payment_status : ($attrs['payment_status'] ?? null);
+
+                    if (in_array($status, ['paid','success'], true)) {
+                        $order->is_paid = true; $order->status = 'PROCESSING'; $order->save();
+
+                        // ensure stored payment reflects paid status (persist paid_at/raw_response if needed)
+                        if ($stored && $stored->payment_status !== $status) {
+                            $stored->payment_status = $status;
+                            $stored->paid_at = data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : $stored->paid_at;
+                            $stored->raw_response = $single;
+                            $stored->save();
+                        }
+
+                        return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid')];
+                    }
+                }
+            }
+
+            if ($checkoutId) {
+                \App\Services\EasypayService::cancelCheckout($checkoutId);
+                \App\Models\EasypayCheckoutSession::where('checkout_id', $checkoutId)->update(['is_active' => false, 'status' => 'canceled']);
+            }
+
+            $payload = $order->easypayPayload ?? \App\Services\EasypayService::createOrGetPayload($order);
+            $new = \App\Services\EasypayService::createCheckoutSession($payload);
+            $manifest = $new->message ? json_decode($new->message, true) : null;
+
+            return $manifest && $new->is_active ? ['action' => 'new-manifest', 'manifest' => $manifest] : ['action' => 'error', 'message' => self::buildPayUnavailableMessage($new->message ?? null)];
+        }
+
+        return ['action' => 'error', 'message' => t('checkout.pay.unavailable')];
     }
 }

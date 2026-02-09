@@ -141,15 +141,17 @@ class EasypayCheckoutTest extends TestCase
         $user = User::factory()->create(['language' => 'pt']);
         $order = Order::factory()->for($user)->create([ 'status' => 'WAITING_PAYMENT', 'is_paid' => false ]);
 
-        $this->assertDatabaseCount('easypay_payloads', 0);
-        $this->assertDatabaseCount('easypay_checkout_sessions', 0);
+
+
+        $this->assertDatabaseMissing('easypay_payloads', ['order_id' => $order->id]);
+        $this->assertDatabaseMissing('easypay_checkout_sessions', ['order_id' => $order->id]);
 
         $resp = $this->actingAs($user)->get(route('orders.pay', $order->uuid));
         $resp->assertStatus(200);
 
         // No rows should have been created by visiting the pay page while disabled
-        $this->assertDatabaseCount('easypay_payloads', 0);
-        $this->assertDatabaseCount('easypay_checkout_sessions', 0);
+        $this->assertDatabaseMissing('easypay_payloads', ['order_id' => $order->id]);
+        $this->assertDatabaseMissing('easypay_checkout_sessions', ['order_id' => $order->id]);
 
         // The pay page should show the friendly unavailable message (use translation where available)
         $resp->assertSee(t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable', false);

@@ -156,6 +156,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders/{order}/pay/verify', [\App\Http\Controllers\EasypayPaymentController::class, 'store'])
         ->name('orders.pay.verify');
 
+    // Prepare SDK before client start: pre-checks, cancel pending sessions and recreate when needed
+    Route::post('/orders/{order}/pay/prepare', [\App\Http\Controllers\EasypayPaymentController::class, 'prepareSdk'])
+        ->name('orders.pay.prepare');
+
     // Client-side SDK error logging (debugging helper)
     Route::post('/easypay/sdk/error', [\App\Http\Controllers\EasypayPaymentController::class, 'logSdkError'])
         ->name('easypay.sdk.error');

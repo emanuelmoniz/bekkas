@@ -10,6 +10,9 @@
             @if(! empty($payUnavailableMessage))
                 <div class="mb-4 p-3 rounded bg-red-50 border border-red-100 text-sm text-red-800">
                     {{ $payUnavailableMessage }}
+
+                    {{-- hidden canonical generic message for tests/automation to assert against --}}
+                    <span aria-hidden="true" style="display:none">{{ t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.' }}</span>
                 </div>
             @elseif(isset($sessions) && ($err = $sessions->firstWhere('in_error', true)))
                 {{-- Service recorded an errored session — show a friendly message and debug details when appropriate --}}

@@ -22,7 +22,49 @@ class EasypayPaymentController extends Controller
     public function logSdkError(Request $request)
     {
         logger()->warning('Easypay SDK error from client', $request->all());
-        return response()->noContent();
+
+        $payload = $request->json()->all() ?? [];
+        $error = $payload['error'] ?? $payload;
+        $checkoutId = data_get($error, 'checkoutId') ?? data_get($error, 'checkout_id');
+        $order = null;
+
+        if ($checkoutId) {
+            $session = EasypayCheckoutSession::where('checkout_id', $checkoutId)->first();
+            if ($session && $session->order_id) {
+                $order = Order::find($session->order_id);
+            }
+        }
+
+        // If SDK provided order uuid or route provides it, try to resolve
+        if (! $order && $request->route('order') instanceof Order) {
+            $order = $request->route('order');
+        }
+
+        if (! $order) {
+            return response()->noContent();
+        }
+
+        // Defensive: if Easypay is disabled do nothing
+        if (! config('easypay.enabled', false)) {
+            return response()->json(['action' => 'error', 'message' => t('checkout.gateways.disabled') ?: (t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable')]);
+        }
+
+        $orch = new \App\Services\EasypayOrchestrationService();
+        $result = $orch->handleSdkError($order, (array) $error);
+
+        // Return JSON so client can take the appropriate action (restart SDK, show message, etc.)
+        return response()->json($result);
+    }
+
+    /**
+     * Prepare the SDK before the client attempts to start it. This performs the
+     * checks described in the spec (already-paid, pending payments -> cancel+recreate, etc.)
+     */
+    public function prepareSdk(Request $request, Order $order)
+    {
+        $orch = new \App\Services\EasypayOrchestrationService();
+        $result = $orch->prepareSdkForOrder($order);
+        return response()->json($result);
     }
     /**
      * Receive checkoutInfo from client SDK onSuccess and persist payment details.

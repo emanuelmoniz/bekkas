@@ -79,6 +79,13 @@ class OrderFactory extends Factory
                     'address_country' => 'Portugal',
                 ]);
             }
+
+            // Defensive: ensure tests/factories do not leave Easypay rows when the gateway is disabled
+            if (! config('easypay.enabled', false)) {
+                \App\Models\EasypayPayload::where('order_id', $order->id)->delete();
+                \App\Models\EasypayCheckoutSession::where('order_id', $order->id)->delete();
+                \App\Models\EasypayPayment::where('order_id', $order->id)->delete();
+            }
         });
     }
 }

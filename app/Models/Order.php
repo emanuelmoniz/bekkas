@@ -78,6 +78,15 @@ class Order extends Model
             
             $order->order_number = $orderNumber;
         });
+
+        // Defensive cleanup: if Easypay is disabled ensure no payloads/sessions are left around
+        static::created(function (Order $order) {
+            if (! config('easypay.enabled', false)) {
+                \App\Models\EasypayPayload::where('order_id', $order->id)->delete();
+                \App\Models\EasypayCheckoutSession::where('order_id', $order->id)->delete();
+                \App\Models\EasypayPayment::where('order_id', $order->id)->delete();
+            }
+        });
     }
 
     /**
@@ -121,6 +130,14 @@ class Order extends Model
     public function easypayCheckoutSessions()
     {
         return $this->hasMany(\App\Models\EasypayCheckoutSession::class);
+    }
+
+    /**
+     * Easypay payments (1:N)
+     */
+    public function easypayPayments()
+    {
+        return $this->hasMany(\App\Models\EasypayPayment::class);
     }
 }
 

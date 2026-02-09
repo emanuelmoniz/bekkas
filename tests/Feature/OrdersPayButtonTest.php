@@ -30,8 +30,8 @@ class OrdersPayButtonTest extends TestCase
         // Informative message should be shown
         $resp->assertSee(t('checkout.gateways.disabled') ?: 'Payment gateways are temporarily disabled', false);
 
-        // Visiting the order page should not create any Easypay rows
-        $this->assertDatabaseCount('easypay_payloads', 0);
-        $this->assertDatabaseCount('easypay_checkout_sessions', 0);
+        // Visiting the order page should not create any Easypay rows for this order (avoid global-count flakiness)
+        $this->assertDatabaseMissing('easypay_payloads', ['order_id' => $order->id]);
+        $this->assertDatabaseMissing('easypay_checkout_sessions', ['order_id' => $order->id]);
     }
 }

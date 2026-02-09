@@ -202,6 +202,19 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.pay.widget_failed', 'locale' => 'pt-PT', 'value' => 'O componente de pagamento falhou ao carregar — por favor tente novamente.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'checkout.pay.widget_failed', 'locale' => 'en-UK', 'value' => 'Payment widget failed to load — please try again.', 'created_at'=>$now,'updated_at'=>$now],
 
+            // Messages for SDK pre-checks / error-handling flows
+            ['key' => 'checkout.pay.already_paid', 'locale' => 'pt-PT', 'value' => 'A encomenda já foi paga. Obrigado.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.already_paid', 'locale' => 'en-UK', 'value' => 'This order has already been paid. Thank you.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.pay.new_session_created', 'locale' => 'pt-PT', 'value' => 'Criado um novo pedido de pagamento — por favor selecione o método e tente novamente.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.new_session_created', 'locale' => 'en-UK', 'value' => 'Created a new payment session — please select a method and try again.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.pay.cannot_start_sdk_paid', 'locale' => 'pt-PT', 'value' => 'A SDK não será iniciada porque a encomenda já está paga.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.cannot_start_sdk_paid', 'locale' => 'en-UK', 'value' => 'SDK will not start because the order is already paid.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.pay.session_cancelled', 'locale' => 'pt-PT', 'value' => 'Sessão de pagamento anterior cancelada. A criar nova sessão…', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.session_cancelled', 'locale' => 'en-UK', 'value' => 'Previous payment session cancelled. Creating a new session…', 'created_at'=>$now,'updated_at'=>$now],
+
             ['key' => 'checkout.address_title', 'locale' => 'pt-PT', 'value' => 'Nome da morada', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'checkout.address_title', 'locale' => 'en-UK', 'value' => 'Address name', 'created_at'=>$now,'updated_at'=>$now],
 
