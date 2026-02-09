@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "checkJs": false
+  },
+  "include": [
+    "types/**/*",
+    "cypress.config.ts",
+    "cypress/e2e/**/*"
+  ],
+  "exclude": ["node_modules", "vendor"]
+}
