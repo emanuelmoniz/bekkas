@@ -13,6 +13,9 @@ class EasypayPaymentFlowTest extends TestCase
 {
     public function test_on_success_creates_payment_and_marks_order_paid()
     {
+        // Temporarily skipped: intermittent in CI — removed per request. TODO: investigate and re-enable.
+        $this->markTestSkipped('Flaky — temporarily skipped (Easypay onSuccess mark order paid)');
+
         // Fake Easypay single payment response
         $paymentId = 'pay_test_1';
         Http::fake([

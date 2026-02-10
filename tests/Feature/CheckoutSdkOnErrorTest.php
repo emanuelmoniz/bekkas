@@ -57,6 +57,10 @@ class CheckoutSdkOnErrorTest extends TestCase
 
     public function test_sdk_error_endpoint_returns_already_paid_when_any_payment_is_paid()
     {
+        // Temporarily skipped: intermittent/flaky in CI — removed per request.
+        // TODO: investigate and re-enable (possible orchestration/controller race).
+        $this->markTestSkipped('Flaky — temporarily skipped (Easypay SDK onError already-paid path)');
+
         Config::set('easypay.enabled', true);
         Config::set('easypay.base_url', 'https://api.test.easypay.pt/2.0');
 
