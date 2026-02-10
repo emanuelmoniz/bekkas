@@ -46,13 +46,13 @@
 
         {{-- Payment information removed from the frontend per spec --}}
 
-        @if(config('easypay.enabled') && env('EASYPAY_SDK_URL'))
+        @if(config('easypay.enabled') && env('EASYPAY_SDK_URL') && $order->status === 'WAITING_PAYMENT' && ! $order->is_paid)
           <div id="easypay-inline-root" class="bg-white shadow rounded p-4" aria-live="polite">
             <div id="easypay-checkout" class="min-h-[120px] flex items-center justify-center text-sm text-gray-600">
               <span id="easypay-checkout-loading">{{ t('checkout.pay.loading_widget') ?: 'Loading payment widget…' }}</span>
             </div>
 
-            @if(! empty($activeManifest))
+            @if(! empty($activeManifest) && $order->status === 'WAITING_PAYMENT' && ! $order->is_paid)
               <script id="easypay-manifest" type="application/json">@json($activeManifest)</script>
             @endif
             <script async src="{{ env('EASYPAY_SDK_URL') }}" integrity="" crossorigin="anonymous"></script>

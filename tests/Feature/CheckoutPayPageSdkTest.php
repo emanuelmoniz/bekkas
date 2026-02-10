@@ -18,7 +18,8 @@ class CheckoutPayPageSdkTest extends TestCase
         $user = User::factory()->create();
         $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
-        // create a persisted checkout session (active + pending) with a sample manifest
+        // create a persisted checkout session (active + pending). The SDK manifest must be
+        // produced from DB fields (`checkout_id`/`session_id`) and has a strict shape.
         $manifest = [
             'checkout' => ['id' => 'test-checkout-123', 'status' => 'pending'],
             'payment' => ['id' => 'pay-1', 'status' => 'pending'],
@@ -32,6 +33,8 @@ class CheckoutPayPageSdkTest extends TestCase
             'status' => 'pending',
             'message' => json_encode($manifest),
         ]);
+
+        $expectedCanonical = ['id' => 'test-checkout-123', 'session' => 'sess-1', 'config' => null];
 
         // Ensure server-side verification (fetchCheckout) succeeds so the manifest is exposed
         \Illuminate\Support\Facades\Config::set('easypay.base_url', 'https://api.test.easypay.pt/2.0');
@@ -48,8 +51,8 @@ class CheckoutPayPageSdkTest extends TestCase
         $resp->assertSee('id="easypay-manifest"', false);
         $this->assertStringContainsString(env('EASYPAY_SDK_URL'), $resp->getContent());
 
-        // manifest should be present in the HTML (server-embedded)
-        $resp->assertSee(json_encode($manifest), false);
+        // manifest should be present in the HTML (server-embedded) and be the canonical shape
+        $resp->assertSee(json_encode($expectedCanonical), false);
 
         // IMPORTANT: when a valid manifest/session exists the user must NOT see the unavailable message
         $resp->assertDontSee('Payment system is temporarily unavailable', false);

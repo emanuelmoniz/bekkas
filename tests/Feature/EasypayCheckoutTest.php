@@ -64,8 +64,10 @@ class EasypayCheckoutTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('session-token-example');
 
-        // NOTE: public session creation endpoint removed — sessions are created automatically at order placement (or by admin). Ensure the automatic session exists.
-        $this->assertEquals(1, \App\Models\EasypayCheckoutSession::where('order_id', $order->id)->count());
+        // NOTE: public session creation endpoint removed — sessions are created automatically at order placement (or by admin).
+        // Ensure at least one session exists and exactly one *active* session is present (no duplicate active sessions).
+        $this->assertGreaterThanOrEqual(1, \App\Models\EasypayCheckoutSession::where('order_id', $order->id)->count());
+        $this->assertEquals(1, \App\Models\EasypayCheckoutSession::where('order_id', $order->id)->where('is_active', true)->count());
     }
 
     public function test_checkout_session_stays_inactive_when_response_missing_id_or_session()

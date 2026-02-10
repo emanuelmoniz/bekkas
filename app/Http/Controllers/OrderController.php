@@ -849,6 +849,17 @@ class OrderController extends Controller
             }
         }
 
+        // ENFORCE: only allow the SDK to be exposed when the order is explicitly
+        // in the WAITING_PAYMENT state AND the order is not marked paid. This is a
+        // defensive server-side guard against race conditions where a manifest
+        // might be produced while the order has moved to another status.
+        if (! ($order->status === 'WAITING_PAYMENT' && ! $order->is_paid)) {
+            // clear any manifest that may have been produced by orchestration
+            $activeManifest = null;
+            // ensure the view/controller treats SDK as suppressed
+            $latestRefresh['suppressSdk'] = true;
+        }
+
         return view('orders.pay', [
             'order' => $order,
             'payload' => $order->easypayPayload,

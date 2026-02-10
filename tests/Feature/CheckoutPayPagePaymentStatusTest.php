@@ -51,8 +51,9 @@ class CheckoutPayPagePaymentStatusTest extends TestCase
         $html = $view->render();
         $this->assertTrue(str_contains($html, 'Payment completed') || str_contains($html, 'Pagamento concluído'));
 
-        // SDK container is always rendered now; manifest may be absent when suppression is active
-        $this->assertStringContainsString('id="easypay-checkout"', $html);
+        // After remote 'paid' confirmation the order is moved out of WAITING_PAYMENT;
+        // the SDK container must NOT be exposed and no manifest should be present.
+        $this->assertStringNotContainsString('id="easypay-checkout"', $html);
         $this->assertStringNotContainsString('id="easypay-manifest"', $html);
 
         $this->assertDatabaseHas('easypay_payments', [
@@ -263,5 +264,29 @@ class CheckoutPayPagePaymentStatusTest extends TestCase
         // UI: SDK container is always rendered even when controller requests suppression
         $html = $view->render();
         $this->assertStringContainsString('id="easypay-checkout"', $html);
+    }
+
+    public function test_pay_page_hides_sdk_for_non_waiting_payment_status_even_if_session_exists()
+    {
+        Config::set('easypay.enabled', true);
+        putenv('EASYPAY_SDK_URL=https://sdk.test/easypay.js');
+
+        $user = User::factory()->create();
+        $order = Order::factory()->for($user)->create(['status' => 'PROCESSING', 'is_paid' => false]);
+
+        $payload = \App\Models\EasypayPayload::create(['order_id' => $order->id, 'payload' => ['x' => 1]]);
+        \App\Models\EasypayCheckoutSession::create([
+            'order_id' => $order->id,
+            'payload_id' => $payload->id,
+            'checkout_id' => 'chk_block',
+            'session_id' => 'sess_block',
+            'is_active' => true,
+            'status' => 'pending',
+            'message' => json_encode(['id' => 'chk_block','session' => 'sess_block']),
+        ]);
+
+        $resp = $this->actingAs($user)->get(route('orders.pay', $order->uuid));
+        $resp->assertStatus(403);
+        $this->assertStringNotContainsString('easypay-manifest', $resp->getContent() ?: '');
     }
 }

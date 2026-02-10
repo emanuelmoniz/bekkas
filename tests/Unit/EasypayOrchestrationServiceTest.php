@@ -50,8 +50,12 @@ class EasypayOrchestrationServiceTest extends TestCase
         $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
         // make the "fresh" session clearly inside small TTL windows for deterministic asserts
+        // Create a fresh session that includes canonical DB fields (the manifest is now
+        // derived from `checkout_id`/`session_id`, not from `message`).
         $fresh = EasypayCheckoutSession::create([
             'order_id' => $order->id,
+            'checkout_id' => 'c1',
+            'session_id' => 's1',
             'is_active' => true,
             'status' => 'pending',
             'message' => json_encode(['checkout' => ['id' => 'c1']]),
@@ -64,6 +68,8 @@ class EasypayOrchestrationServiceTest extends TestCase
 
         $old = EasypayCheckoutSession::create([
             'order_id' => $order->id,
+            'checkout_id' => 'c-old',
+            'session_id' => 's-old',
             'is_active' => true,
             'status' => 'pending',
             'message' => json_encode(['checkout' => ['id' => 'c-old']]),
@@ -75,11 +81,13 @@ class EasypayOrchestrationServiceTest extends TestCase
 
         $manifest = $orch->getLatestActiveManifest($order, 1800);
         $this->assertIsArray($manifest);
-        $this->assertEquals('c1', $manifest['checkout']['id']);
+        $this->assertEquals('c1', $manifest['id']);
+        $this->assertEquals('s1', $manifest['session']);
 
         // small TTL that still includes the fresh session (behaviour already covered by isSessionFresh tests)
         $manifest2 = $orch->getLatestActiveManifest($order, 30);
         $this->assertIsArray($manifest2);
+        $this->assertEquals('c1', $manifest2['id']);
 
         // if the latest session is not active (or not pending) we should get null
         $fresh->is_active = false;
