@@ -212,6 +212,29 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.pay.cannot_start_sdk_paid', 'locale' => 'pt-PT', 'value' => 'A SDK não será iniciada porque a encomenda já está paga.', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'checkout.pay.cannot_start_sdk_paid', 'locale' => 'en-UK', 'value' => 'SDK will not start because the order is already paid.', 'created_at'=>$now,'updated_at'=>$now],
 
+            // New: client-facing payment-status messages shown on the pay page when a persisted
+            // payment exists and is authoritative (refreshed from Easypay single-payment endpoint).
+            ['key' => 'checkout.pay.status.paid', 'locale' => 'pt-PT', 'value' => 'Pagamento concluído — a sua encomenda está a ser processada.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.status.paid', 'locale' => 'en-UK', 'value' => 'Payment completed — your order is being processed.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.pay.status.authorised', 'locale' => 'pt-PT', 'value' => 'Pagamento autorizado — o processamento está em curso, verifique os detalhes da encomenda dentro de momentos.', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.status.authorised', 'locale' => 'en-UK', 'value' => 'Payment authorised — processing is underway, please check your order details in a moment.', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.pay.payment_info_title', 'locale' => 'pt-PT', 'value' => 'Informação de pagamento', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.payment_info_title', 'locale' => 'en-UK', 'value' => 'Payment information', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.pay.mb_entity', 'locale' => 'pt-PT', 'value' => 'Entidade MB', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.mb_entity', 'locale' => 'en-UK', 'value' => 'MB entity', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.pay.mb_reference', 'locale' => 'pt-PT', 'value' => 'Referência MB', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.mb_reference', 'locale' => 'en-UK', 'value' => 'MB reference', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.pay.mb_expires', 'locale' => 'pt-PT', 'value' => 'Expira em', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.mb_expires', 'locale' => 'en-UK', 'value' => 'Expires at', 'created_at'=>$now,'updated_at'=>$now],
+
+            ['key' => 'checkout.pay.iban', 'locale' => 'pt-PT', 'value' => 'IBAN', 'created_at'=>$now,'updated_at'=>$now],
+            ['key' => 'checkout.pay.iban', 'locale' => 'en-UK', 'value' => 'IBAN', 'created_at'=>$now,'updated_at'=>$now],
+
             ['key' => 'checkout.pay.session_cancelled', 'locale' => 'pt-PT', 'value' => 'Sessão de pagamento anterior cancelada. A criar nova sessão…', 'created_at'=>$now,'updated_at'=>$now],
             ['key' => 'checkout.pay.session_cancelled', 'locale' => 'en-UK', 'value' => 'Previous payment session cancelled. Creating a new session…', 'created_at'=>$now,'updated_at'=>$now],
 

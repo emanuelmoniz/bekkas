@@ -717,6 +717,26 @@ class OrderController extends Controller
 
         $order->loadMissing(['items.product', 'easypayPayload', 'easypayCheckoutSessions']);
 
+        $order->loadMissing(['items.product', 'easypayPayload', 'easypayCheckoutSessions']);
+
+        // Delegate payment-refresh + decision logic to dedicated service (DB-first, then best-effort remote refresh).
+        $refresh = app(\App\Services\EasypayPaymentRefreshService::class)->refreshLatestPaymentForOrder($order);
+
+        // Ensure controller always provides these view vars (view no longer queries DB directly)
+        if (! empty($refresh['suppressSdk'])) {
+            return view('orders.pay', [
+                'order' => $order,
+                'payload' => $order->easypayPayload,
+                'sessions' => $order->easypayCheckoutSessions()->latest('created_at')->get(),
+                'activeManifest' => null,
+                'payUnavailableMessage' => null,
+                'suppressSdk' => (bool) $refresh['suppressSdk'],
+                'paymentInfo' => $refresh['paymentInfo'] ?? null,
+                'paymentStatus' => $refresh['paymentStatus'] ?? null,
+                'paymentStatusMessage' => $refresh['paymentStatusMessage'] ?? null,
+            ]);
+        }
+
         // Short-circuit when Easypay is disabled: do not create payloads/sessions and always show a friendly message.
         if (! config('easypay.enabled')) {
             // Prefer the DB translation when available; if the gateway-specific key is missing prefer the
@@ -779,6 +799,27 @@ class OrderController extends Controller
             }
         }
 
+        // Post-orchestration: re-run the same service to ensure UI reflects any
+        // payment state that may have changed as a result of orchestration.
+        try {
+            $post = app(\App\Services\EasypayPaymentRefreshService::class)->refreshLatestPaymentForOrder($order);
+            if (! empty($post['suppressSdk'])) {
+                return view('orders.pay', [
+                    'order' => $order,
+                    'payload' => $order->easypayPayload,
+                    'sessions' => $order->easypayCheckoutSessions()->latest('created_at')->get(),
+                    'activeManifest' => null,
+                    'payUnavailableMessage' => null,
+                    'suppressSdk' => (bool) $post['suppressSdk'],
+                    'paymentInfo' => $post['paymentInfo'] ?? null,
+                    'paymentStatus' => $post['paymentStatus'] ?? null,
+                    'paymentStatusMessage' => $post['paymentStatusMessage'] ?? null,
+                ]);
+            }
+        } catch (\Throwable $e) {
+            Log::warning('Easypay: post-orchestration payment refresh failed', ['order_id' => $order->id, 'error' => $e->getMessage()]);
+        }
+
         // Final safety: if a DB session exists in error state, expose a friendly message (defensive)
         if (empty($payUnavailableMessage)) {
             $errored = \App\Models\EasypayCheckoutSession::where('order_id', $order->id)->where('in_error', true)->latest('updated_at')->first();
@@ -790,12 +831,27 @@ class OrderController extends Controller
             }
         }
 
+        // Prefer post-orchestration refresh when available, otherwise fall back to initial refresh
+        $latestRefresh = $post ?? $refresh ?? ['suppressSdk' => false, 'paymentInfo' => null, 'paymentStatus' => null, 'paymentStatusMessage' => null];
+
+        // Defensive: if the refresh indicates SDK must be suppressed, ensure we do not
+        // expose an active manifest to the view under any circumstances.
+        if (! empty($latestRefresh['suppressSdk'])) {
+            $activeManifest = null;
+        }
+
         return view('orders.pay', [
             'order' => $order,
             'payload' => $order->easypayPayload,
             'sessions' => $order->easypayCheckoutSessions()->latest('created_at')->get(),
             'activeManifest' => $activeManifest,
             'payUnavailableMessage' => $payUnavailableMessage,
+
+            // Always supply payment-driven view flags (controller-authoritative)
+            'suppressSdk' => (bool) ($latestRefresh['suppressSdk'] ?? false),
+            'paymentInfo' => $latestRefresh['paymentInfo'] ?? null,
+            'paymentStatus' => $latestRefresh['paymentStatus'] ?? null,
+            'paymentStatusMessage' => $latestRefresh['paymentStatusMessage'] ?? null,
         ]);
     }
 

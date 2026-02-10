@@ -36,115 +36,104 @@
             @endif
         @endif
 
-        @if(config('easypay.enabled') && env('EASYPAY_SDK_URL'))
-            <div id="easypay-inline-root" class="bg-white shadow rounded p-4" aria-live="polite">
-
-                <div id="easypay-flash" class="mb-3" aria-live="polite" style="display:none"></div>
-
-                <div id="easypay-checkout" class="min-h-[120px] flex items-center justify-center text-sm text-gray-600">
-                    <span id="easypay-checkout-loading">{{ t('checkout.pay.loading_widget') ?: 'Loading payment widget…' }}</span>
-                </div>
-
-                {{-- persist-ed manifest for the latest active/pending session (if present) — server still persists manifests on order placement; the SDK will use it if present --}}
-                @if(! empty($activeManifest))
-                    <script id="easypay-manifest" type="application/json">@json($activeManifest)</script>
-                @endif
-
-                {{-- SDK (async) + minimal bootstrap for inline mode; no dev-only payload/session UI --}}
-                <script async src="{{ env('EASYPAY_SDK_URL') }}" integrity="" crossorigin="anonymous"></script>
-
-                <script>
-                    (function () {
-                        const manifestEl = document.getElementById('easypay-manifest');
-                        if (!manifestEl) return; // nothing to initialise
-
-                        let manifest = null;
-                        try { manifest = JSON.parse(manifestEl.textContent); } catch (err) { console.error('Invalid Easypay manifest in page', err); return; }
-
-                        const testing = @json(config('easypay.env') === 'test');
-                        const mount = document.getElementById('easypay-checkout');
-                        const orderVerifyUrl = @json(url("/orders/{$order->uuid}/pay/verify"));
-                        const orderShowUrl = @json(url("/orders/{$order->uuid}"));
-
-                        // Try known SDK globals and start inline checkout. Keep implementation minimal and robust.
-                        const starterCandidates = [
-                            () => window.easypayCheckout?.startCheckout,
-                            () => window.easypayCheckout?.start,
-                            () => window.Easypay?.startCheckout,
-                            () => window.startCheckout,
-                        ];
-
-                        function tryStart() {
-                            for (const cand of starterCandidates) {
-                                try {
-                                    const fn = cand();
-                                    if (typeof fn === 'function') {
-                                        fn(manifest, {
-                                            display: 'inline',
-                                            testing: testing,
-                                            container: '#easypay-checkout',
-                                            showLoading: true,
-                                            onSuccess: function (checkoutInfo) {
-                                                // Best-effort server verify; server side will mark paid if valid
-                                                fetch(orderVerifyUrl, {
-                                                    method: 'POST',
-                                                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') },
-                                                    body: JSON.stringify({ checkout: checkoutInfo })
-                                                }).then(r => r.json()).then(j => {
-                                                    // Show a flash message above the widget instead of removing the SDK
-                                                    try {
-                                                        const flash = document.getElementById('easypay-flash');
-                                                        if (flash) {
-                                                            flash.style.display = 'block';
-                                                            flash.className = 'mb-3 p-3 rounded bg-green-50 border border-green-100 text-sm text-green-800';
-                                                            flash.innerText = @json(t('checkout.pay.success'));
-                                                        }
-                                                        mount.classList.remove('border', 'border-red-200');
-                                                    } catch (e) { /* ignore DOM issues */ }
-                                                }).catch(() => {/* ignore */});
-                                            },
-                                            onClose: function () {
-                                                // Redirect user to order detail page when SDK signals close.
-                                                try {
-                                                    window.location.href = orderShowUrl;
-                                                } catch (e) { /* ignore */ }
-                                            },
-                                            onError: function (error) {
-                                                console.error('Easypay SDK onError', error);
-                                                try {
-                                                    fetch(@json(url('/easypay/sdk/error')), {
-                                                        method: 'POST',
-                                                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') },
-                                                        body: JSON.stringify({ error: error })
-                                                    }).catch(()=>{});
-                                                } catch (e) { /* ignore */ }
-                                                mount.classList.add('border', 'border-red-200');
-                                                mount.innerText = @json(t('checkout.pay.widget_failed'));
-                                            },
-                                            onPaymentError: function () { alert('Payment failed — please try another method or contact support.'); }
-                                        });
-
-                                        const loader = document.getElementById('easypay-checkout-loading');
-                                        if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
-                                        return true;
-                                    }
-                                } catch (err) { /* continue */ }
-                            }
-
-                            return false;
-                        }
-
-                        if (!tryStart()) {
-                            const maxWait = 10000;
-                            const start = Date.now();
-                            const i = setInterval(() => {
-                                if (tryStart() || Date.now() - start > maxWait) clearInterval(i);
-                            }, 150);
-                        }
-                    })();
-                </script>
+        {{-- Payment-status driven UI (server refreshed) --}}
+        {{-- Controller MUST provide: paymentStatusMessage, paymentInfo, suppressSdk — view no longer queries EasypayPayment directly. --}}
+        @if(! empty($paymentStatusMessage))
+            <div class="mb-4 p-3 rounded bg-green-50 border border-green-100 text-sm text-green-800">
+                {{ $paymentStatusMessage }}
             </div>
         @endif
+
+        @if(isset($paymentInfo) && $paymentInfo?->payment_status === 'pending')
+            <div class="mb-4 bg-white border rounded p-4 text-sm">
+                <h3 class="font-semibold mb-2">{{ t('checkout.pay.payment_info_title') ?: 'Payment information' }}</h3>
+                <div class="space-y-2 text-gray-700">
+                    @if($paymentInfo->mb_entity)
+                        <div><strong>{{ t('checkout.pay.mb_entity') ?: 'MB entity' }}:</strong> {{ $paymentInfo->mb_entity }}</div>
+                    @endif
+                    @if($paymentInfo->mb_reference)
+                        <div><strong>{{ t('checkout.pay.mb_reference') ?: 'MB reference' }}:</strong> {{ $paymentInfo->mb_reference }}</div>
+                    @endif
+                    @if($paymentInfo->mb_expiration_time)
+                        <div><strong>{{ t('checkout.pay.mb_expires') ?: 'MB expiration time' }}:</strong> {{ $paymentInfo->mb_expiration_time->toDayDateTimeString() }}</div>
+                    @endif
+                    @if($paymentInfo->iban)
+                        <div><strong>{{ t('checkout.pay.iban') ?: 'IBAN' }}:</strong> {{ $paymentInfo->iban }}</div>
+                    @endif
+                </div>
+            </div>
+        @endif
+
+        @if(config('easypay.enabled') && env('EASYPAY_SDK_URL'))
+  @unless(isset($paymentInfo) && ($paymentInfo?->payment_status === 'pending'))
+    @if(empty($suppressSdk))
+      <div id="easypay-inline-root" class="bg-white shadow rounded p-4" aria-live="polite">
+        <div id="easypay-flash" class="mb-3" aria-live="polite" style="display:none"></div>
+        <div id="easypay-checkout" class="min-h-[120px] flex items-center justify-center text-sm text-gray-600">
+          <span id="easypay-checkout-loading">{{ t('checkout.pay.loading_widget') ?: 'Loading payment widget…' }}</span>
+        </div>
+
+        <script id="easypay-manifest" type="application/json">@json($activeManifest)</script>
+        <script async src="{{ env('EASYPAY_SDK_URL') }}" integrity="" crossorigin="anonymous"></script>
+
+        <script>
+        (function () {
+          // Double-guard: do not initialise SDK if controller requested suppression.
+          if (@json((bool) ($suppressSdk ?? false))) return;
+
+          // Runtime defensive check: if the server provided a persisted payment in
+          // `paymentInfo` with status `pending`, do NOT start the SDK even if a
+          // manifest is present in the DOM (covers cache/mismatch/race cases).
+          const paymentInfo = @json($paymentInfo ?? null);
+          if (paymentInfo && paymentInfo.payment_status === 'pending') {
+            console.warn('Easypay: runtime guard — payment is pending, aborting SDK initialization.');
+            return;
+          }
+
+          const manifestEl = document.getElementById('easypay-manifest');
+          if (!manifestEl) return;
+
+          let manifest = null;
+          try { manifest = JSON.parse(manifestEl.textContent); } catch (err) { console.error('Invalid Easypay manifest in page', err); return; }
+
+          const mount = document.getElementById('easypay-checkout');
+          const testing = @json(config('easypay.env') === 'test');
+
+          const starterCandidates = [
+            () => window.easypayCheckout?.startCheckout,
+            () => window.easypayCheckout?.start,
+            () => window.Easypay?.startCheckout,
+            () => window.startCheckout,
+          ];
+
+          function tryStart() {
+            for (const cand of starterCandidates) {
+              try {
+                const fn = cand();
+                if (typeof fn === 'function') {
+                  fn(manifest, { display: 'inline', container: '#easypay-checkout', testing: @json(config('easypay.env') === 'test') });
+                  const loader = document.getElementById('easypay-checkout-loading');
+                  if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+                  return true;
+                }
+              } catch (err) { /* continue */ }
+            }
+            return false;
+          }
+
+          if (!tryStart()) {
+            const maxWait = 10000;
+            const start = Date.now();
+            const i = setInterval(() => {
+              if (tryStart() || Date.now() - start > maxWait) clearInterval(i);
+            }, 150);
+          }
+        })();
+        </script>
+      </div>
+    @endif
+  @endunless
+@endif
 
         <div class="text-right">
             <a href="{{ route('orders.show', $order->uuid) }}" class="text-sm text-gray-600 hover:underline">Back to order</a>

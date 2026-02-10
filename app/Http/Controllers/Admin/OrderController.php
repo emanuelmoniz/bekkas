@@ -76,8 +76,9 @@ class OrderController extends Controller
         ]);
 
         $oldStatus = $order->status;
+        $oldIsPaid = $order->is_paid;
 
-        DB::transaction(function () use ($request, $order) {
+        DB::transaction(function () use ($request, $order, $oldIsPaid) {
             // Restore stock when order status changes to CANCELED (only if not already canceled)
             // Only restore stock for items that were NOT backordered (had stock when ordered)
             if ($request->status === 'CANCELED' && $order->status !== 'CANCELED') {
@@ -106,13 +107,24 @@ class OrderController extends Controller
                 }
             }
 
+            // Decide paid transition explicitly so we can use the audit-friendly helper.
+            $shouldMarkPaid = (! $oldIsPaid && $request->boolean('is_paid'));
+
+            // Apply mass-updates but do NOT flip is_paid here when admin is marking as paid —
+            // we handle that below through the helper to ensure status/audit hooks run.
             $order->update([
                 'status' => $request->status,
-                'is_paid' => $request->boolean('is_paid'),
                 'is_refunded' => $request->boolean('is_refunded'),
                 'tracking_number' => $request->tracking_number,
                 'tracking_url' => $request->tracking_url,
             ]);
+
+            if ($shouldMarkPaid) {
+                $order->markAsPaidManually(auth()->id() ?: null);
+            } elseif ($request->has('is_paid') && ! $request->boolean('is_paid')) {
+                // Admin explicitly un-marked payment; allow that through a direct update
+                $order->update(['is_paid' => false]);
+            }
         });
 
         // If status changed notify the customer

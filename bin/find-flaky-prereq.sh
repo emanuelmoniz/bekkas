@@ -2,7 +2,9 @@
 set -euo pipefail
 cd "$(dirname "$0")/.." || exit 1
 PHPUNIT="./vendor/bin/phpunit"
-TARGET_TEST="Tests\\Feature\\EasypaySdkErrorHandlingTest::test_logSdkError_already_paid_with_pending_payment_updates_payment_and_marks_order_when_paid_remotely"
+# TARGET_TEST previously pointed at an Easypay SDK callback test that was removed.
+# Update this to a different flaky test when using the script.
+# TARGET_TEST="Tests\\Feature\\SomeOtherTest::test_example"
 
 echo "Finding interfering test class for: $TARGET_TEST"
 

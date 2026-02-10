@@ -15,7 +15,7 @@ Quickstart (dev):
    - npm run cypress:run   (headless)
 
 Scope of the included test:
-- `cypress/e2e/easypay-sdk.spec.js` loads a small test fixture at `/test-fixtures/easypay-pay-sim.html`.
+- (Removed) The easypay SDK client-callback E2E spec and its fixture (`easypay-pay-sim.html`) were removed — callbacks are no longer exercised by the client.
 - The fixture simulates the pay page and the SDK callbacks; the test stubs the network endpoints and asserts the client + server interactions.
 
 Notes:

@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Pay — MB fixture</title>
+  </head>
+  <body>
+    <main>
+      <section id="payment-status">
+        <p class="gov-notice">Payment is pending — complete the MB transfer.</p>
+      </section>
+
+      <section id="payment-information">
+        <dl>
+          <dt>MB Entity</dt>
+          <dd id="mb-entity">111</dd>
+          <dt>MB Reference</dt>
+          <dd id="mb-reference">222</dd>
+          <dt>MB Expiration</dt>
+          <dd id="mb-expiration">2026-03-01T12:00:00+00:00</dd>
+        </dl>
+      </section>
+
+      <!-- SDK must NOT be present for a persisted pending payment fixture -->
+      <!-- (no SDK container) -->
+    </main>
+  </body>
+</html>

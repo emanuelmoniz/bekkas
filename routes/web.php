@@ -148,21 +148,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/{order}/pay', [OrderController::class, 'pay'])
         ->name('orders.pay');
 
-    // Endpoint for client SDK onSuccess handler to POST checkoutInfo
-    Route::post('/easypay/payments', [\App\Http\Controllers\EasypayPaymentController::class, 'store'])
-        ->name('easypay.payments.store');
 
-    // Backwards-compatible verify endpoint used by the pay page (posts checkoutInfo)
-    Route::post('/orders/{order}/pay/verify', [\App\Http\Controllers\EasypayPaymentController::class, 'store'])
-        ->name('orders.pay.verify');
-
-    // Prepare SDK before client start: pre-checks, cancel pending sessions and recreate when needed
-    Route::post('/orders/{order}/pay/prepare', [\App\Http\Controllers\EasypayPaymentController::class, 'prepareSdk'])
-        ->name('orders.pay.prepare');
-
-    // Client-side SDK error logging (debugging helper)
-    Route::post('/easypay/sdk/error', [\App\Http\Controllers\EasypayPaymentController::class, 'logSdkError'])
-        ->name('easypay.sdk.error');
 
 
 
@@ -214,6 +200,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/tickets/attachments/{attachment}', [TicketAttachmentController::class, 'download'])
         ->name('tickets.attachments.download');
 });
+
+// Test-only helpers for Cypress (only available in local/testing). These
+// routes are intentionally non-authenticated and guarded by environment.
+if (app()->environment('local', 'testing')) {
+    Route::post('/__cypress/seed-order', [\App\Http\Controllers\TestHelpersController::class, 'seedOrder']);
+    Route::get('/__cypress/login/{token}', [\App\Http\Controllers\TestHelpersController::class, 'loginWithToken']);
+    Route::post('/__cypress/mock-easypay', [\App\Http\Controllers\TestHelpersController::class, 'mockEasypay']);
+}
 
 /*
 |--------------------------------------------------------------------------

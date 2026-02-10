@@ -116,7 +116,7 @@ class EasypayOrchestrationService
         $latestSession = $order->easypayCheckoutSessions()->latest('updated_at')->first();
         $lastPayment = $order->easypayPayments()->latest('created_at')->first();
 
-        if ($order->is_paid && $lastPayment && in_array($lastPayment->payment_status, ['paid', 'success'], true)) {
+        if ($order->is_paid && $lastPayment && $lastPayment->payment_status === 'paid') {
             return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid') ?: 'Order already paid', 'manifest' => null];
         }
 
@@ -133,8 +133,9 @@ class EasypayOrchestrationService
                         'raw_response' => $single,
                     ]);
 
-                    if (in_array($lastPayment->payment_status, ['paid', 'success'], true)) {
-                        $order->is_paid = true; $order->status = 'PROCESSING'; $order->save();
+                    // Only treat the remote payment as authoritative when it reports exactly 'paid'.
+                    if (($lastPayment->payment_status ?? null) === 'paid') {
+                        $order->markAsPaid('easypay', ['payment_id' => $lastPayment->payment_id]);
                         return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid') ?: 'Order already paid', 'manifest' => null];
                     }
                 }
@@ -172,7 +173,7 @@ class EasypayOrchestrationService
 
         if ($code === 'already-paid') {
             $lastPayment = $order->easypayPayments()->latest('created_at')->first();
-            if ($order->is_paid && $lastPayment && in_array($lastPayment->payment_status, ['paid','success'], true)) {
+            if ($order->is_paid && $lastPayment && $lastPayment->payment_status === 'paid') {
                 return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid')];
             }
 
@@ -232,8 +233,8 @@ class EasypayOrchestrationService
                         $status = $stored ? $stored->payment_status : $status;
                     }
 
-                    // If remote indicates paid, make DB authoritative and mark order paid
-                    if (in_array($status, ['paid','success'], true)) {
+                    // If remote indicates paid (authoritative), mark order paid. Do NOT treat other statuses as paid here.
+                    if ($status === 'paid') {
                         $order->is_paid = true;
                         $order->status = 'PROCESSING';
                         $order->save();
@@ -286,8 +287,9 @@ class EasypayOrchestrationService
                     $stored = \App\Models\EasypayPayment::where('payment_id', data_get($single,'id'))->first();
                     $status = $stored ? $stored->payment_status : ($attrs['payment_status'] ?? null);
 
-                    if (in_array($status, ['paid','success'], true)) {
-                        $order->is_paid = true; $order->status = 'PROCESSING'; $order->save();
+                    // Require authoritative remote confirmation (exactly 'paid').
+                    if ($status === 'paid') {
+                        $order->markAsPaid('easypay', ['payment_id' => data_get($single,'id')]);
 
                         // ensure stored payment reflects paid status (persist paid_at/raw_response if needed)
                         if ($stored && $stored->payment_status !== $status) {

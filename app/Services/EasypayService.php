@@ -26,6 +26,22 @@ class EasypayService
      */
     public function getSinglePayment(string $paymentId): ?array
     {
+        // Test override: when running locally/testing, allow Cypress to inject
+        // a canned response via the cache so E2E can control server-side calls.
+        // This path is guarded and only active in non-production environments.
+        if (app()->environment(['local', 'testing'])) {
+            try {
+                /** @var \Illuminate\Support\Facades\Cache $cache */
+                $mock = \Illuminate\Support\Facades\Cache::get('easypay:test_single:' . $paymentId);
+                if (! empty($mock)) {
+                    return $mock;
+                }
+            } catch (\Throwable $e) {
+                // swallow — continue to real request if cache lookup fails
+                Log::debug('EasypayService test-mock cache lookup failed', ['err' => $e->getMessage()]);
+            }
+        }
+
         $url = $this->baseUrl . '/single/' . rawurlencode($paymentId);
 
         $response = Http::withHeaders([
