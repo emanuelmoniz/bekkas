@@ -222,25 +222,45 @@ class EasypayService
         $url = rtrim(config('easypay.base_url'), '/').'/checkout/'.rawurlencode($checkoutId);
 
         try {
-            $resp = Http::withHeaders([
-                'Accept' => 'application/json',
-                'accountId' => config('easypay.id'),
-                'apiKey' => config('easypay.api_key'),
-            ])->timeout(10)->get($url);
+            $resp = Http::withHeaders(['Accept' => 'application/json', 'accountId' => config('easypay.id'), 'apiKey' => config('easypay.api_key')])->timeout(10)->get($url);
+            $body = $resp->json() ?: null;
 
-            $status = $resp->status();
+            return ['ok' => $resp->successful(), 'status' => $resp->status(), 'body' => $body];
+        } catch (\Exception $e) {
+            Log::warning('Easypay fetchCheckout failed', ['checkout_id' => $checkoutId, 'err' => $e->getMessage()]);
 
-            try {
-                $body = $resp->json();
-            } catch (\Throwable $e) {
-                $body = $resp->body();
+            return ['ok' => false, 'status' => 503, 'message' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Delete a single payment (DELETE /single/{id}). Returns an array with
+     * keys: ok(bool), status(int), body(mixed|null).
+     */
+    public function deleteSinglePayment(string $paymentId): array
+    {
+        if (empty($paymentId)) {
+            return ['ok' => false, 'status' => 400, 'body' => ['status' => 'error', 'message' => ['missing payment id']]];
+        }
+
+        if (! config('easypay.enabled', false)) {
+            return ['ok' => false, 'status' => 503, 'body' => ['status' => 'error', 'message' => ['easypay disabled']]];
+        }
+
+        $url = rtrim(config('easypay.base_url'), '/').'/single/'.rawurlencode($paymentId);
+
+        try {
+            $resp = Http::withHeaders(['Accept' => 'application/json', 'accountId' => config('easypay.id'), 'apiKey' => config('easypay.api_key')])->timeout(10)->delete($url);
+
+            if ($resp->status() === 204) {
+                return ['ok' => true, 'status' => 204, 'body' => null];
             }
 
-            return ['ok' => $status >= 200 && $status < 300, 'status' => $status, 'body' => $body];
+            $body = $resp->json() ?: $resp->body();
+            return ['ok' => $resp->successful(), 'status' => $resp->status(), 'body' => $body];
         } catch (\Exception $e) {
-            Log::error('Easypay /checkout/{id} request failed', ['checkout_id' => $checkoutId, 'error' => $e->getMessage()]);
-
-            return ['ok' => false, 'status' => 502, 'message' => $e->getMessage()];
+            Log::warning('Easypay deleteSinglePayment failed', ['payment_id' => $paymentId, 'err' => $e->getMessage()]);
+            return ['ok' => false, 'status' => 503, 'body' => ['status' => 'error', 'message' => [$e->getMessage()]]];
         }
     }
 

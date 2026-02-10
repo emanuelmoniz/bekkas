@@ -124,5 +124,142 @@ class CheckoutPayPageOrchestrationTest extends TestCase
         $this->assertTrue(str_contains($resp2->getContent(), 'Error') || \App\Models\EasypayCheckoutSession::where('order_id', $order->id)->where('in_error', true)->exists());
     }
 
+    public function test_preflight_deduplicates_active_sessions_inside_ttl()
+    {
+        Config::set('easypay.enabled', true);
+        Config::set('easypay.base_url', 'https://api.test.easypay.pt/2.0');
+        Config::set('easypay.session_ttl', 1800);
+
+        \Illuminate\Support\Facades\Http::fake([
+            'https://api.test.easypay.pt/2.0/checkout' => \Illuminate\Support\Facades\Http::response(['id' => 'chk-new', 'session' => 's-new', 'status' => 'created'], 201),
+        ]);
+
+        $user = User::factory()->create();
+        $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
+        $payload = EasypayPayload::create(['order_id' => $order->id, 'payload' => ['x' => 1]]);
+
+        // two active sessions inside TTL (both recent)
+        $a = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'checkout_id' => 'chk_a', 'is_active' => true, 'status' => 'pending', 'message' => json_encode(['id' => 'm-a','session' => 's-a'])]);
+        $b = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'checkout_id' => 'chk_b', 'is_active' => true, 'status' => 'pending', 'message' => json_encode(['id' => 'm-b','session' => 's-b'])]);
+
+        // make timestamps deterministic: a is older, b is newer
+        \Illuminate\Support\Facades\DB::table('easypay_checkout_sessions')->where('checkout_id', 'chk_a')->update(['updated_at' => now()->subMinutes(5)]);
+        \Illuminate\Support\Facades\DB::table('easypay_checkout_sessions')->where('checkout_id', 'chk_b')->update(['updated_at' => now()->subMinutes(1)]);
+
+        // ensure both appear fresh
+        $this->assertTrue((new \App\Services\EasypayOrchestrationService)->isSessionFresh(EasypayCheckoutSession::where('checkout_id','chk_a')->first(), 1800));
+        $this->assertTrue((new \App\Services\EasypayOrchestrationService)->isSessionFresh(EasypayCheckoutSession::where('checkout_id','chk_b')->first(), 1800));
+
+        // preflight should cancel the older one (a) and keep the most recent (b)
+        $resp = $this->actingAs($user)->get(route('orders.pay', $order->uuid));
+        $resp->assertStatus(200);
+
+        $aFresh = EasypayCheckoutSession::where('checkout_id', 'chk_a')->first();
+        $bFresh = EasypayCheckoutSession::where('checkout_id', 'chk_b')->first();
+
+        // Exactly one active session should remain (deduplicated)
+        $activeCount = $order->fresh()->easypayCheckoutSessions()->where('is_active', true)->count();
+        $this->assertEquals(1, $activeCount, 'Exactly one active session should remain after deduplication');
+
+        // At least one of the original sessions must have been cancelled
+        $this->assertTrue(! $aFresh->is_active || ! $bFresh->is_active, 'At least one original session must be inactive');
+
+        $this->assertStringContainsString('easypay-manifest', $resp->getContent());
+        $this->assertStringContainsString('easypay-checkout', $resp->getContent());
+    }
+
+    public function test_session_inside_ttl_with_payment_record_is_recreated_and_new_manifest_returned()
+    {
+        Config::set('easypay.enabled', true);
+        Config::set('easypay.base_url', 'https://api.test.easypay.pt/2.0');
+        Config::set('easypay.session_ttl', 1800);
+
+        Http::fake([
+            'https://api.test.easypay.pt/2.0/checkout/chk_old' => Http::response(['checkout' => ['id' => 'chk_old', 'status' => 'pending'], 'payment' => ['id' => 'pay_x']], 200),
+            'https://api.test.easypay.pt/2.0/single/*' => Http::response(['id' => 'pay_x', 'payment_status' => 'pending'], 200),
+            'https://api.test.easypay.pt/2.0/checkout' => Http::response(['id' => 'chk_new', 'session' => 'sess-new', 'status' => 'created'], 201),
+        ]);
+
+        $user = User::factory()->create();
+        $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
+        $payload = EasypayPayload::create(['order_id' => $order->id, 'payload' => ['x' => 1]]);
+
+        $old = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'checkout_id' => 'chk_old', 'is_active' => true, 'status' => 'pending', 'message' => json_encode(['id' => 'm-old','session' => 's-old'])]);
+
+        // corresponding payment exists
+        \App\Models\EasypayPayment::create(['order_id' => $order->id, 'checkout_id' => 'chk_old', 'payment_id' => 'pay_x', 'payment_status' => 'pending']);
+
+        $resp = $this->actingAs($user)->get(route('orders.pay', $order->uuid));
+        $resp->assertStatus(200);
+
+        $this->assertDatabaseMissing('easypay_checkout_sessions', ['checkout_id' => 'chk_old', 'is_active' => true]);
+        $this->assertDatabaseHas('easypay_checkout_sessions', ['checkout_id' => 'chk_new']);
+        $this->assertStringContainsString('easypay-manifest', $resp->getContent());
+    }
+
+    public function test_preflight_fetches_checkouts_then_cancels_expired_and_deletes_pending_payments()
+    {
+        Config::set('easypay.enabled', true);
+        Config::set('easypay.base_url', 'https://api.test.easypay.pt/2.0');
+        Config::set('easypay.session_ttl', 1800);
+
+        Http::fake(function ($request) {
+            $url = $request->url();
+            if (str_contains($url, '/checkout/old_chk')) {
+                return Http::response(['checkout' => ['id' => 'old_chk', 'status' => 'pending'], 'payment' => ['id' => 'pay_old']], 200);
+            }
+            if (str_contains($url, '/checkout/fresh_chk')) {
+                return Http::response(['checkout' => ['id' => 'fresh_chk', 'status' => 'pending'], 'payment' => ['id' => 'pay_fresh']], 200);
+            }
+            if (str_contains($url, '/single/pay_old') && $request->method() === 'GET') {
+                return Http::response(['id' => 'pay_old', 'payment_status' => 'pending'], 200);
+            }
+            if (str_contains($url, '/single/pay_old') && $request->method() === 'DELETE') {
+                return Http::response('', 204);
+            }
+
+            if (str_contains($url, '/single/pay_paid')) {
+                return Http::response(['id' => 'pay_paid', 'payment_status' => 'paid', 'paid_at' => now()->toIso8601String()], 200);
+            }
+
+            return Http::response('', 404);
+        });
+
+        $user = User::factory()->create();
+        $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
+        $payload = EasypayPayload::create(['order_id' => $order->id, 'payload' => ['x' => 1]]);
+
+        // expired session (should be cancelled)
+        $old = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'checkout_id' => 'old_chk', 'is_active' => true, 'status' => 'pending', 'message' => json_encode(['id' => 'old_chk','session' => 's-old'])]);
+        \Illuminate\Support\Facades\DB::table('easypay_checkout_sessions')->where('id', $old->id)->update(['updated_at' => now()->subHours(2)]);
+
+        // fresh session (kept)
+        $fresh = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'checkout_id' => 'fresh_chk', 'is_active' => true, 'status' => 'pending', 'message' => json_encode(['id' => 'fresh_chk','session' => 's-fresh'])]);
+
+        // payments
+        \App\Models\EasypayPayment::create(['order_id' => $order->id, 'checkout_id' => 'old_chk', 'payment_id' => 'pay_old', 'payment_status' => 'pending']);
+        \App\Models\EasypayPayment::create(['order_id' => $order->id, 'checkout_id' => 'fresh_chk', 'payment_id' => 'pay_paid', 'payment_status' => 'paid', 'paid_at' => now()]);
+
+        $this->actingAs($user);
+        $ctrl = app(\App\Http\Controllers\OrderController::class);
+        $resp = $ctrl->pay($order);
+
+        // remote checkout fetch should have been called for both sessions
+        \Illuminate\Support\Facades\Http::assertSent(function ($req) { return str_contains($req->url(), '/checkout/old_chk'); });
+        \Illuminate\Support\Facades\Http::assertSent(function ($req) { return str_contains($req->url(), '/checkout/fresh_chk'); });
+
+        // the expired session must be inactive locally
+        $this->assertFalse(EasypayCheckoutSession::where('checkout_id', 'old_chk')->first()->is_active);
+
+        // pending payment should have been deleted (and updated locally)
+        $this->assertDatabaseHas('easypay_payments', ['payment_id' => 'pay_old', 'payment_status' => 'canceled']);
+
+        // paid payment remains paid
+        $this->assertDatabaseHas('easypay_payments', ['payment_id' => 'pay_paid', 'payment_status' => 'paid']);
+
+        // DELETE single payment must have been called for the pending payment
+        \Illuminate\Support\Facades\Http::assertSent(function ($req) { return $req->method() === 'DELETE' && str_contains($req->url(), '/single/pay_old'); });
+    }
 
 }
+

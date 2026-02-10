@@ -44,53 +44,26 @@
             </div>
         @endif
 
-        @if(isset($paymentInfo) && $paymentInfo?->payment_status === 'pending')
-            <div class="mb-4 bg-white border rounded p-4 text-sm">
-                <h3 class="font-semibold mb-2">{{ t('checkout.pay.payment_info_title') ?: 'Payment information' }}</h3>
-                <div class="space-y-2 text-gray-700">
-                    @if($paymentInfo->mb_entity)
-                        <div><strong>{{ t('checkout.pay.mb_entity') ?: 'MB entity' }}:</strong> {{ $paymentInfo->mb_entity }}</div>
-                    @endif
-                    @if($paymentInfo->mb_reference)
-                        <div><strong>{{ t('checkout.pay.mb_reference') ?: 'MB reference' }}:</strong> {{ $paymentInfo->mb_reference }}</div>
-                    @endif
-                    @if($paymentInfo->mb_expiration_time)
-                        <div><strong>{{ t('checkout.pay.mb_expires') ?: 'MB expiration time' }}:</strong> {{ $paymentInfo->mb_expiration_time->toDayDateTimeString() }}</div>
-                    @endif
-                    @if($paymentInfo->iban)
-                        <div><strong>{{ t('checkout.pay.iban') ?: 'IBAN' }}:</strong> {{ $paymentInfo->iban }}</div>
-                    @endif
-                </div>
-            </div>
-        @endif
+        {{-- Payment information removed from the frontend per spec --}}
 
         @if(config('easypay.enabled') && env('EASYPAY_SDK_URL'))
-  @unless(isset($paymentInfo) && ($paymentInfo?->payment_status === 'pending'))
-    @if(empty($suppressSdk))
-      <div id="easypay-inline-root" class="bg-white shadow rounded p-4" aria-live="polite">
-        <div id="easypay-checkout" class="min-h-[120px] flex items-center justify-center text-sm text-gray-600">
-          <span id="easypay-checkout-loading">{{ t('checkout.pay.loading_widget') ?: 'Loading payment widget…' }}</span>
-        </div>
+          <div id="easypay-inline-root" class="bg-white shadow rounded p-4" aria-live="polite">
+            <div id="easypay-checkout" class="min-h-[120px] flex items-center justify-center text-sm text-gray-600">
+              <span id="easypay-checkout-loading">{{ t('checkout.pay.loading_widget') ?: 'Loading payment widget…' }}</span>
+            </div>
 
-        <script id="easypay-manifest" type="application/json">@json($activeManifest)</script>
-        <script async src="{{ env('EASYPAY_SDK_URL') }}" integrity="" crossorigin="anonymous"></script>
+            @if(! empty($activeManifest))
+              <script id="easypay-manifest" type="application/json">@json($activeManifest)</script>
+            @endif
+            <script async src="{{ env('EASYPAY_SDK_URL') }}" integrity="" crossorigin="anonymous"></script>
 
-        <script>
-        (function () {
-          // Double-guard: do not initialise SDK if controller requested suppression.
-          if (@json((bool) ($suppressSdk ?? false))) return;
+            <script>
+            (function () {
+              // NOTE: SDK container is always rendered. Do not suppress client-side initialization here;
+              // server-side orchestration decides which manifest (if any) is provided.
 
-          // Runtime defensive check: if the server provided a persisted payment in
-          // `paymentInfo` with status `pending`, do NOT start the SDK even if a
-          // manifest is present in the DOM (covers cache/mismatch/race cases).
-          const paymentInfo = @json($paymentInfo ?? null);
-          if (paymentInfo && paymentInfo.payment_status === 'pending') {
-            console.warn('Easypay: runtime guard — payment is pending, aborting SDK initialization.');
-            return;
-          }
-
-          const manifestEl = document.getElementById('easypay-manifest');
-          if (!manifestEl) return;
+              const manifestEl = document.getElementById('easypay-manifest');
+              if (!manifestEl) return;
 
           let manifest = null;
           try { manifest = JSON.parse(manifestEl.textContent); } catch (err) { console.error('Invalid Easypay manifest in page', err); return; }
@@ -273,8 +246,6 @@
         })();
         </script>
       </div>
-    @endif
-  @endunless
 @endif
 
         <div class="text-right">

@@ -739,23 +739,6 @@ class OrderController extends Controller
 
         $order->loadMissing(['items.product', 'easypayPayload', 'easypayCheckoutSessions']);
 
-        // Delegate payment-refresh + decision logic to dedicated service (DB-first, then best-effort remote refresh).
-        $refresh = app(\App\Services\EasypayPaymentRefreshService::class)->refreshLatestPaymentForOrder($order);
-
-        // Ensure controller always provides these view vars (view no longer queries DB directly)
-        if (! empty($refresh['suppressSdk'])) {
-            return view('orders.pay', [
-                'order' => $order,
-                'payload' => $order->easypayPayload,
-                'sessions' => $order->easypayCheckoutSessions()->latest('created_at')->get(),
-                'activeManifest' => null,
-                'payUnavailableMessage' => null,
-                'suppressSdk' => (bool) $refresh['suppressSdk'],
-                'paymentInfo' => $refresh['paymentInfo'] ?? null,
-                'paymentStatus' => $refresh['paymentStatus'] ?? null,
-                'paymentStatusMessage' => $refresh['paymentStatusMessage'] ?? null,
-            ]);
-        }
 
         // Short-circuit when Easypay is disabled: do not create payloads/sessions and always show a friendly message.
         if (! config('easypay.enabled')) {
@@ -783,18 +766,14 @@ class OrderController extends Controller
         try {
             $orch = new EasypayOrchestrationService;
 
-            // Reuse a fresh manifest if present
-            $activeManifest = $orch->getLatestActiveManifest($order, $ttl);
+            // Run preflight cleanup + decide which checkout session (if any) should be
+            // used by the SDK according to the new start logic (TTL + payment-record rules).
+            $res = $orch->getManifestForSdk($order, $ttl);
+            $activeManifest = $res['manifest'] ?? null;
+            $payUnavailableMessage = $res['message'] ?? null;
 
-            // If no usable manifest, attempt payload+session creation (service is idempotent)
-            if (empty($activeManifest)) {
-                $res = $orch->ensurePayloadAndSession($order);
-                $activeManifest = $res['manifest'] ?? null;
-                $payUnavailableMessage = $res['message'] ?? null;
-
-                if (! empty($activeManifest)) {
-                    $payUnavailableMessage = null; // explicit clearing to preserve prior behaviour
-                }
+            if (! empty($activeManifest)) {
+                $payUnavailableMessage = null; // explicit clearing to preserve prior behaviour
             }
         } catch (\Exception $e) {
             // Log and show a friendly, translatable message. Include full error only in debug.
@@ -823,7 +802,11 @@ class OrderController extends Controller
         // payment state that may have changed as a result of orchestration.
         try {
             $post = app(\App\Services\EasypayPaymentRefreshService::class)->refreshLatestPaymentForOrder($order);
-            if (! empty($post['suppressSdk'])) {
+
+            // Respect post-refresh suppression **only** when orchestration did not explicitly
+            // produce an active manifest for the SDK. This ensures the preflight/start
+            // decisions take precedence (per new requirements).
+            if (! empty($post['suppressSdk']) && empty($activeManifest)) {
                 return view('orders.pay', [
                     'order' => $order,
                     'payload' => $order->easypayPayload,
@@ -836,6 +819,8 @@ class OrderController extends Controller
                     'paymentStatusMessage' => $post['paymentStatusMessage'] ?? null,
                 ]);
             }
+
+            // otherwise keep the activeManifest produced by orchestration (if any)
         } catch (\Throwable $e) {
             Log::warning('Easypay: post-orchestration payment refresh failed', ['order_id' => $order->id, 'error' => $e->getMessage()]);
         }
@@ -854,10 +839,14 @@ class OrderController extends Controller
         // Prefer post-orchestration refresh when available, otherwise fall back to initial refresh
         $latestRefresh = $post ?? $refresh ?? ['suppressSdk' => false, 'paymentInfo' => null, 'paymentStatus' => null, 'paymentStatusMessage' => null];
 
-        // Defensive: if the refresh indicates SDK must be suppressed, ensure we do not
-        // expose an active manifest to the view under any circumstances.
+        // Defensive: if the refresh indicates SDK must be suppressed, only clear
+        // the manifest when orchestration did not explicitly produce one OR when
+        // the suppression is authoritative (order/payment confirmed `paid`).
         if (! empty($latestRefresh['suppressSdk'])) {
-            $activeManifest = null;
+            $authoritativePaid = $order->is_paid || (($latestRefresh['paymentStatus'] ?? null) === 'paid');
+            if (empty($activeManifest) || $authoritativePaid) {
+                $activeManifest = null;
+            }
         }
 
         return view('orders.pay', [

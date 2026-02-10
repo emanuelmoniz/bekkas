@@ -40,4 +40,35 @@ class EasypayCheckoutSession extends Model
     {
         return $this->hasMany(EasypayPayment::class, 'checkout_id', 'checkout_id');
     }
+
+    /**
+     * Return a canonical SDK manifest derived from authoritative DB fields.
+     *
+     * The SDK expects a manifest shaped like:
+     *  [ 'id' => <checkout_id>, 'session' => <session_id>, 'config' => null ]
+     *
+     * IMPORTANT: do NOT build the manifest from the stored `message` field
+     * — the message payload may include extra keys or different shapes. Use
+     * DB columns (`checkout_id`, `session_id`) as the single source of truth.
+     */
+    public function toManifest(): ?array
+    {
+        if (empty($this->checkout_id) || empty($this->session_id)) {
+            return null;
+        }
+
+        return [
+            'id' => (string) $this->checkout_id,
+            'session' => (string) $this->session_id,
+            'config' => null,
+        ];
+    }
+
+    /**
+     * Blade-friendly accessor: `$session->manifest`.
+     */
+    public function getManifestAttribute(): ?array
+    {
+        return $this->toManifest();
+    }
 }

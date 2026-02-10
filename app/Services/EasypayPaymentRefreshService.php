@@ -45,6 +45,16 @@ class EasypayPaymentRefreshService
         // is Easypay's single-payment endpoint — only that response may flip an order to paid.
         $dbStatus = $latest->payment_status;
 
+        // If the persisted payment was explicitly cancelled locally, do not attempt a
+        // remote refresh that could overwrite that authoritative local state.
+        if ($dbStatus === 'canceled') {
+            $result['paymentStatus'] = 'canceled';
+            $result['paymentInfo'] = $latest;
+            $result['suppressSdk'] = true;
+
+            return $result;
+        }
+
         // Always reflect DB status for the UI (so the customer sees the latest persisted info),
         // but require remote confirmation for state transitions that change the Order model.
         $result['paymentStatus'] = $dbStatus;

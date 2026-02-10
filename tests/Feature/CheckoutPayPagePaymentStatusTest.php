@@ -50,8 +50,10 @@ class CheckoutPayPagePaymentStatusTest extends TestCase
         $view = $ctrl->pay($order);
         $html = $view->render();
         $this->assertTrue(str_contains($html, 'Payment completed') || str_contains($html, 'Pagamento concluído'));
+
+        // SDK container is always rendered now; manifest may be absent when suppression is active
+        $this->assertStringContainsString('id="easypay-checkout"', $html);
         $this->assertStringNotContainsString('id="easypay-manifest"', $html);
-        $this->assertStringNotContainsString('id="easypay-checkout"', $html);
 
         $this->assertDatabaseHas('easypay_payments', [
             'payment_id' => 'pay_paid_1',
@@ -88,9 +90,9 @@ class CheckoutPayPagePaymentStatusTest extends TestCase
 
         $this->assertTrue(str_contains($html, 'Payment authorised') || str_contains($html, 'Pagamento autorizado'));
 
-        // SDK must NOT be rendered for authorised
-        $this->assertStringNotContainsString('id="easypay-manifest"', $html);
-        $this->assertStringNotContainsString('id="easypay-checkout"', $html);
+        // SDK container is always rendered; per new start logic a fresh manifest may be created
+        $this->assertStringContainsString('id="easypay-checkout"', $html);
+        $this->assertStringContainsString('id="easypay-manifest"', $html);
 
         $this->assertDatabaseHas('easypay_payments', [
             'payment_id' => 'pay_auth_1',
@@ -103,7 +105,12 @@ class CheckoutPayPagePaymentStatusTest extends TestCase
     public function test_pending_payment_shows_payment_information_and_suppresses_sdk_even_if_manifest_exists()
     {
         Config::set('easypay.enabled', true);
+        Config::set('easypay.base_url', 'https://api.test.easypay.pt/2.0');
         putenv('EASYPAY_SDK_URL=https://sdk.test/easypay.js');
+
+        \Illuminate\Support\Facades\Http::fake([
+            'https://api.test.easypay.pt/2.0/checkout' => \Illuminate\Support\Facades\Http::response(['id' => 'chk-new', 'session' => 's-new', 'status' => 'created'], 201),
+        ]);
 
         $user = User::factory()->create();
         $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
@@ -137,18 +144,17 @@ class CheckoutPayPagePaymentStatusTest extends TestCase
         $view = $ctrl->pay($order);
         $html = $view->render();
 
-        // UI shows payment info
-        $this->assertTrue(str_contains($html, 'Payment information') || str_contains($html, 'Informação de pagamento'));
-        $this->assertStringContainsString('12345', $html);
-        $this->assertStringContainsString('987654321', $html);
+        // Payment information removed from the frontend
+        $this->assertFalse(str_contains($html, 'Payment information') || str_contains($html, 'Informação de pagamento'));
+        $this->assertStringNotContainsString('12345', $html);
+        $this->assertStringNotContainsString('987654321', $html);
 
-        // SDK and manifest must NOT be present when a persisted pending payment exists
-        $this->assertStringNotContainsString('id="easypay-manifest"', $html);
-        $this->assertStringNotContainsString('id="easypay-checkout"', $html);
+        // SDK container + manifest should be available according to new start logic
+        $this->assertStringContainsString('id="easypay-manifest"', $html);
+        $this->assertStringContainsString('id="easypay-checkout"', $html);
 
-        // The SDK loader text must also NOT be rendered (localized or fallback)
-        $this->assertStringNotContainsString(t('checkout.pay.loading_widget') ?: 'Loading payment widget…', $html);
-        $this->assertStringNotContainsString('A carregar o componente de pagamento', $html);
+        // Loader text should be present
+        $this->assertStringContainsString(t('checkout.pay.loading_widget') ?: 'Loading payment widget…', $html);
     }
 
     /**
@@ -190,18 +196,12 @@ class CheckoutPayPagePaymentStatusTest extends TestCase
             'paymentStatus' => 'pending',
         ])->render();
 
-        // The page may either (A) include a manifest *and* a runtime guard, or
-        // (B) server-side hide the manifest entirely when a persisted payment is
-        // pending — both are acceptable and protected behaviors. Always assert
-        // the loader text is NOT present.
-        $this->assertStringNotContainsString(t('checkout.pay.loading_widget') ?: 'Loading payment widget…', $html);
-        $this->assertStringNotContainsString('A carregar o componente de pagamento', $html);
+        // Runtime guard was removed and payment information no longer rendered — the SDK container/loader should be present
+        $this->assertStringContainsString(t('checkout.pay.loading_widget') ?: 'Loading payment widget…', $html);
+        $this->assertStringContainsString('id="easypay-checkout"', $html);
 
-        // Either the manifest is absent (server suppressed it) OR it's present but
-        // guarded by the runtime check — assert one of those is true.
-        $manifestPresent = str_contains($html, 'easypay-manifest');
-        $guardPresent = str_contains($html, "paymentInfo.payment_status === 'pending'") || str_contains($html, 'runtime guard');
-        $this->assertTrue(! $manifestPresent || $guardPresent, 'Either manifest must be absent or a runtime guard must be present.');
+        // Ensure no runtime guard JS snippet remains on the page
+        $this->assertFalse(str_contains($html, "paymentInfo.payment_status === 'pending'") || str_contains($html, 'runtime guard'));
     }
 
     public function test_pay_page_refreshes_latest_payment_from_easypay_and_updates_db()
@@ -259,5 +259,9 @@ class CheckoutPayPagePaymentStatusTest extends TestCase
         $data = $view->getData();
         $this->assertTrue(data_get($data, 'suppressSdk') === true);
         $this->assertEquals('paid', data_get($data, 'paymentStatus'));
+
+        // UI: SDK container is always rendered even when controller requests suppression
+        $html = $view->render();
+        $this->assertStringContainsString('id="easypay-checkout"', $html);
     }
 }

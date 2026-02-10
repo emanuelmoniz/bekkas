@@ -38,7 +38,7 @@ class EasypayOrchestrationService
         }
 
         if (self::isSessionFresh($latest, $ttl)) {
-            return json_decode($latest->message ?? 'null', true);
+            return $latest->manifest; // authoritative manifest built from DB fields
         }
 
         return null;
@@ -84,11 +84,266 @@ class EasypayOrchestrationService
             ->latest('updated_at')
             ->first();
 
-        $manifest = $active ? json_decode($active->message ?? 'null', true) : null;
+        $manifest = $active ? $active->manifest : null;
 
         return ['manifest' => $manifest, 'message' => ($manifest ? null : (t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.'))];
     }
 
+    /**
+     * Preflight cleanup run on the pay page before any orchestration/SDK start.
+     * - cancel sessions older than TTL
+     * - when multiple active sessions inside TTL: cancel all but the most recent
+     * - fetch authoritative checkout details for persisted sessions and update DB
+     * - fetch single-payment details for cancelled sessions when applicable
+     */
+    public function preflightCleanup(Order $order, int $ttl): void
+    {
+        $now = now();
+        $sessions = $order->easypayCheckoutSessions()->get();
+
+        // NEW ORDER (per request):
+        // A) Fetch authoritative checkout details for *every* persisted session first.
+        foreach ($sessions as $s) {
+            try {
+                $f = EasypayService::fetchCheckout($s->checkout_id);
+                if (! empty($f) && array_key_exists('body', $f) && ! empty($f['body'])) {
+                    $body = is_array($f['body']) ? $f['body'] : json_decode((string) $f['body'], true);
+                    $s->message = json_encode($body);
+                    $s->checkout_id = data_get($body, 'checkout.id') ?? $s->checkout_id;
+                    $s->session_id = data_get($body, 'checkout.session') ?? data_get($body, 'session') ?? $s->session_id;
+
+                    $remoteStatus = data_get($body, 'checkout.status') ?? data_get($body, 'status');
+                    if (! empty($remoteStatus) && is_string($remoteStatus)) {
+                        // only apply remote status when the session is still in a neutral/active state
+                        if (empty($s->status) || in_array($s->status, ['pending', 'created'], true)) {
+                            $s->status = $remoteStatus;
+                            $s->is_active = in_array($remoteStatus, ['pending', 'created'], true);
+                            $s->in_error = $remoteStatus === 'failed';
+                        }
+                    }
+
+                    if (! empty($f['status']) && $f['status'] >= 400) {
+                        $s->error_code = $f['status'];
+                    }
+
+                    $s->save();
+                }
+            } catch (\Throwable $e) {
+                logger()->warning('EasypayOrchestration (preflight): initial fetchCheckout failed', ['checkout_id' => $s->checkout_id, 'err' => $e->getMessage()]);
+            }
+        }
+
+        // B) Cancel sessions that are active but older than TTL
+        foreach ($order->easypayCheckoutSessions()->get() as $s) {
+            $age = $s->updated_at ? ($now->getTimestamp() - $s->updated_at->getTimestamp()) : PHP_INT_MAX;
+            if ($s->is_active && $age >= $ttl) {
+                try {
+                    $res = EasypayService::cancelCheckout($s->checkout_id);
+                    $s->update(['is_active' => false, 'status' => ($res['ok'] ? 'canceled' : 'error'), 'in_error' => $res['ok'] ? false : true]);
+                } catch (\Throwable $e) {
+                    $s->update(['is_active' => false, 'status' => 'error', 'in_error' => true]);
+                    logger()->warning('EasypayOrchestration (preflight): failed to cancel expired checkout', ['checkout_id' => $s->checkout_id, 'err' => $e->getMessage()]);
+                }
+            }
+        }
+
+        // C) Deduplicate active sessions inside TTL: keep only the most-recent active one
+        $activeFresh = $order->easypayCheckoutSessions()->where('is_active', true)->get()->filter(fn($x) => self::isSessionFresh($x, $ttl));
+        if ($activeFresh->count() > 1) {
+            $keep = $activeFresh->sortByDesc('updated_at')->first();
+            $toCancel = $activeFresh->reject(fn($x) => $x->id === $keep->id);
+            foreach ($toCancel as $s) {
+                try {
+                    $res = EasypayService::cancelCheckout($s->checkout_id);
+                    $s->update(['is_active' => false, 'status' => ($res['ok'] ? 'canceled' : 'error'), 'in_error' => $res['ok'] ? false : true]);
+                } catch (\Throwable $e) {
+                    $s->update(['is_active' => false, 'status' => 'error', 'in_error' => true]);
+                    logger()->warning('EasypayOrchestration (preflight): failed to cancel duplicate active session', ['checkout_id' => $s->checkout_id, 'err' => $e->getMessage()]);
+                }
+            }
+        }
+
+        // D) For sessions that were canceled above, fetch authoritative checkout details again
+        foreach ($order->easypayCheckoutSessions()->where('is_active', false)->get() as $s) {
+            try {
+                $f = EasypayService::fetchCheckout($s->checkout_id);
+                if (! empty($f) && array_key_exists('body', $f) && ! empty($f['body'])) {
+                    $body = is_array($f['body']) ? $f['body'] : json_decode((string) $f['body'], true);
+                    $s->message = json_encode($body);
+                    $s->checkout_id = data_get($body, 'checkout.id') ?? $s->checkout_id;
+                    $s->session_id = data_get($body, 'checkout.session') ?? data_get($body, 'session') ?? $s->session_id;
+
+                    $remoteStatus = data_get($body, 'checkout.status') ?? data_get($body, 'status');
+                    if (! empty($remoteStatus) && is_string($remoteStatus)) {
+                        // do not overwrite authoritative local cancel/error state
+                        if (empty($s->status) || in_array($s->status, ['pending', 'created'], true)) {
+                            $s->status = $remoteStatus;
+                            $s->is_active = in_array($remoteStatus, ['pending', 'created'], true);
+                            $s->in_error = $remoteStatus === 'failed';
+                        }
+                    }
+
+                    if (! empty($f['status']) && $f['status'] >= 400) {
+                        $s->error_code = $f['status'];
+                    }
+
+                    $s->save();
+                }
+            } catch (\Throwable $e) {
+                logger()->warning('EasypayOrchestration (preflight): failed to fetch checkout for cancelled session', ['checkout_id' => $s->checkout_id, 'err' => $e->getMessage()]);
+            }
+        }
+
+        // E) Refresh all payments for the order (best-effort)
+        try {
+            $payments = $order->easypayPayments()->get();
+            foreach ($payments as $p) {
+                // Skip already-cancelled payments — once we've marked them cancelled locally
+                // we should not re-query and overwrite that authoritative state.
+                if (($p->payment_status ?? null) === 'canceled') {
+                    continue;
+                }
+
+                if (empty($p->payment_id)) {
+                    continue;
+                }
+
+                try {
+                    $single = (new \App\Services\EasypayService)->getSinglePayment($p->payment_id);
+                } catch (\Throwable $e) {
+                    logger()->warning('EasypayOrchestration (preflight): getSinglePayment failed', ['payment_id' => $p->payment_id, 'err' => $e->getMessage()]);
+                    $single = null;
+                }
+
+                if (is_array($single) && ! empty($single)) {
+                    $attrs = [
+                        'payment_status' => data_get($single, 'payment_status') ?? data_get($single, 'payment.status') ?? $p->payment_status,
+                        'paid_at' => data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : $p->paid_at,
+                        'mb_entity' => data_get($single, 'method.entity') ?? data_get($single, 'payment.entity') ?? $p->mb_entity,
+                        'mb_reference' => data_get($single, 'method.reference') ?? data_get($single, 'payment.reference') ?? $p->mb_reference,
+                        'mb_expiration_time' => data_get($single, 'multibanco.expiration_time') ? \Carbon\Carbon::parse(data_get($single, 'multibanco.expiration_time')) : $p->mb_expiration_time,
+                        'iban' => data_get($single, 'method.sdd_mandate.iban') ?? data_get($single, 'method.sdd_mandate') ?? $p->iban,
+                        'raw_response' => $single,
+                    ];
+
+                    try {
+                        $p->update(array_filter($attrs, fn ($v) => ! is_null($v)));
+                    } catch (\Throwable $e) {
+                        logger()->warning('EasypayOrchestration (preflight): failed to persist refreshed payment', ['payment_id' => $p->payment_id, 'err' => $e->getMessage()]);
+                    }
+                }
+
+                // F) If payment remains in `pending` state after refresh, attempt to DELETE it remotely
+                if (($p->fresh()->payment_status ?? null) === 'pending') {
+                    try {
+                        $del = (new \App\Services\EasypayService)->deleteSinglePayment($p->payment_id);
+                        if (! empty($del['ok']) && $del['status'] === 204) {
+                            $p->update(['payment_status' => 'canceled', 'raw_response' => array_merge($p->raw_response ?? [], ['deleted' => true])]);
+                        } else {
+                            logger()->info('EasypayOrchestration (preflight): deleteSinglePayment returned non-204', ['payment_id' => $p->payment_id, 'res' => $del]);
+                        }
+                    } catch (\Throwable $e) {
+                        logger()->warning('EasypayOrchestration (preflight): failed to delete pending payment', ['payment_id' => $p->payment_id, 'err' => $e->getMessage()]);
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            logger()->warning('EasypayOrchestration (preflight): payment refresh pass failed', ['order_id' => $order->id, 'err' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Decide which manifest (if any) should be provided to the client to start the
+     * SDK according to the product rules supplied in the ticket.
+     * Returns [ 'manifest' => ?array, 'message' => ?string ]
+     */
+    public function getManifestForSdk(Order $order, int $ttl): array
+    {
+        // Preflight: cancel/refresh/fetch as requested
+        $this->preflightCleanup($order, $ttl);
+
+        // 1) No sessions at all OR all sessions inactive -> create one and return its manifest
+        $sessions = $order->easypayCheckoutSessions()->latest('updated_at')->get();
+        $anyActive = $sessions->contains(fn($x) => $x->is_active && $x->status === 'pending');
+        if ($sessions->isEmpty() || ! $anyActive) {
+            $payload = $order->easypayPayload ?? EasypayService::createOrGetPayload($order);
+            $new = EasypayService::createCheckoutSession($payload);
+            $manifest = $new->manifest;
+
+            return $manifest && $new->is_active ? ['manifest' => $manifest, 'message' => null] : ['manifest' => null, 'message' => self::buildPayUnavailableMessage($new->message ?? null)];
+        }
+
+        // 2) There is at least one active session inside TTL — pick the most recent
+        $fresh = $sessions->filter(fn($x) => $x->is_active && $x->status === 'pending' && self::isSessionFresh($x, $ttl))->sortByDesc('updated_at');
+        $latest = $fresh->first();
+        if ($latest) {
+            // If there's NO corresponding payment record -> reuse this session
+            $hasPayment = $order->easypayPayments()->where('checkout_id', $latest->checkout_id)->exists();
+            if (! $hasPayment) {
+                return ['manifest' => $latest->manifest, 'message' => null];
+            }
+
+            // If there IS a corresponding payment record, cancel/re-fetch/update/create-new and return new manifest
+            try {
+                $res = EasypayService::cancelCheckout($latest->checkout_id);
+                $latest->update(['is_active' => false, 'status' => ($res['ok'] ? 'canceled' : 'error'), 'in_error' => $res['ok'] ? false : true]);
+            } catch (\Throwable $e) {
+                $latest->update(['is_active' => false, 'status' => 'error', 'in_error' => true]);
+                logger()->warning('EasypayOrchestration (getManifestForSdk): failed to cancel session with existing payment', ['checkout_id' => $latest->checkout_id, 'err' => $e->getMessage()]);
+            }
+
+            // Persist authoritative checkout + payment details (best-effort)
+            try {
+                $f = EasypayService::fetchCheckout($latest->checkout_id);
+                if (! empty($f) && array_key_exists('body', $f) && ! empty($f['body'])) {
+                    $body = is_array($f['body']) ? $f['body'] : json_decode((string) $f['body'], true);
+                    $latest->message = json_encode($body);
+                    $latest->checkout_id = data_get($body, 'checkout.id') ?? $latest->checkout_id;
+                    $latest->session_id = data_get($body, 'checkout.session') ?? data_get($body, 'session') ?? $latest->session_id;
+                    $latest->save();
+                }
+            } catch (\Throwable $e) {
+                logger()->warning('EasypayOrchestration (getManifestForSdk): failed to fetch checkout after cancel', ['checkout_id' => $latest->checkout_id, 'err' => $e->getMessage()]);
+            }
+
+            try {
+                $payments = $order->easypayPayments()->where('checkout_id', $latest->checkout_id)->get();
+                foreach ($payments as $p) {
+                    // Do not re-query payments we've explicitly marked as cancelled locally.
+                    if (($p->payment_status ?? null) === 'canceled') {
+                        continue;
+                    }
+
+                    if (empty($p->payment_id)) continue;
+
+                    $single = (new EasypayService)->getSinglePayment($p->payment_id);
+                    if (is_array($single) && ! empty($single)) {
+                        $p->update(array_filter([
+                            'payment_status' => data_get($single, 'payment_status') ?? data_get($single, 'payment.status') ?? $p->payment_status,
+                            'paid_at' => data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : $p->paid_at,
+                            'raw_response' => $single,
+                        ], fn($v) => ! is_null($v)));
+                    }
+                }
+            } catch (\Throwable $e) {
+                logger()->warning('EasypayOrchestration (getManifestForSdk): failed to refresh payments after cancelling session', ['checkout_id' => $latest->checkout_id, 'err' => $e->getMessage()]);
+            }
+
+            // Create a fresh session and return its manifest so the client starts SDK with the new session
+            $payload = $order->easypayPayload ?? EasypayService::createOrGetPayload($order);
+            $new = EasypayService::createCheckoutSession($payload);
+            $manifest = $new->manifest;
+
+            return $manifest && $new->is_active ? ['manifest' => $manifest, 'message' => null] : ['manifest' => null, 'message' => self::buildPayUnavailableMessage($new->message ?? null)];
+        }
+
+        // If we reached here there are active sessions but none are fresh — create a new one as a fallback
+        $payload = $order->easypayPayload ?? EasypayService::createOrGetPayload($order);
+        $new = EasypayService::createCheckoutSession($payload);
+        $manifest = $new->manifest;
+
+        return $manifest && $new->is_active ? ['manifest' => $manifest, 'message' => null] : ['manifest' => null, 'message' => self::buildPayUnavailableMessage($new->message ?? null)];
+    }
     /**
      * Build the user-facing unavailable message (append debug when available).
      */
@@ -178,7 +433,7 @@ class EasypayOrchestrationService
 
             $payload = $order->easypayPayload ?? \App\Services\EasypayService::createOrGetPayload($order);
             $new = \App\Services\EasypayService::createCheckoutSession($payload);
-            $manifest = $new->message ? json_decode($new->message, true) : null;
+            $manifest = $new->manifest;
 
             if ($manifest && $new->is_active) {
                 return ['action' => 'new-manifest', 'message' => t('checkout.pay.new_session_created') ?: 'New payment session created', 'manifest' => $manifest];
@@ -203,6 +458,11 @@ class EasypayOrchestrationService
         $refreshAllPayments = function () use ($order) {
             $payments = $order->easypayPayments()->get();
             foreach ($payments as $p) {
+                // Do not re-query or overwrite payments we've marked cancelled locally.
+                if (($p->payment_status ?? null) === 'canceled') {
+                    continue;
+                }
+
                 if (empty($p->payment_id)) {
                     continue;
                 }
@@ -321,7 +581,7 @@ class EasypayOrchestrationService
             $cancelAllSessions();
             $payload = $order->easypayPayload ?? \App\Services\EasypayService::createOrGetPayload($order);
             $new = \App\Services\EasypayService::createCheckoutSession($payload);
-            $manifest = $new->message ? json_decode($new->message, true) : null;
+            $manifest = $new->manifest;
 
             return $manifest && $new->is_active ? ['action' => 'new-manifest', 'manifest' => $manifest] : ['action' => 'error', 'message' => self::buildPayUnavailableMessage($new->message ?? null)];
         }
@@ -347,8 +607,13 @@ class EasypayOrchestrationService
 
                     $existing = \App\Models\EasypayPayment::where('payment_id', $attrs['payment_id'])->where('order_id', $order->id)->first();
                     if ($existing) {
-                        $existing->fill(array_filter($attrs, fn ($v) => ! is_null($v)));
-                        $existing->save();
+                        // Do not overwrite a payment we've explicitly marked as canceled locally.
+                        if (($existing->payment_status ?? null) === 'canceled') {
+                            logger()->debug('EasypayOrchestration: skipping update of locally-cancelled payment', ['payment_id' => $existing->payment_id, 'order_id' => $order->id]);
+                        } else {
+                            $existing->fill(array_filter($attrs, fn ($v) => ! is_null($v)));
+                            $existing->save();
+                        }
                     } else {
                         \App\Models\EasypayPayment::create($attrs);
                     }
@@ -370,7 +635,7 @@ class EasypayOrchestrationService
             $cancelAllSessions();
             $payload = $order->easypayPayload ?? \App\Services\EasypayService::createOrGetPayload($order);
             $new = \App\Services\EasypayService::createCheckoutSession($payload);
-            $manifest = $new->message ? json_decode($new->message, true) : null;
+            $manifest = $new->manifest;
 
             return $manifest && $new->is_active ? ['action' => 'new-manifest', 'manifest' => $manifest] : ['action' => 'error', 'message' => self::buildPayUnavailableMessage($new->message ?? null)];
         }
@@ -387,7 +652,7 @@ class EasypayOrchestrationService
             // Recreate a fresh session for the client to start
             $payload = $order->easypayPayload ?? \App\Services\EasypayService::createOrGetPayload($order);
             $new = \App\Services\EasypayService::createCheckoutSession($payload);
-            $manifest = $new->message ? json_decode($new->message, true) : null;
+            $manifest = $new->manifest;
 
             return $manifest && $new->is_active ? ['action' => 'new-manifest', 'manifest' => $manifest] : ['action' => 'error', 'message' => self::buildPayUnavailableMessage($new->message ?? null)];
         }
