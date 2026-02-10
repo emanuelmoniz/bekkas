@@ -9,6 +9,13 @@
 
         {{-- STATUS --}}
         <div class="bg-white shadow rounded p-4">
+
+            @if(! empty($paymentStatusMessage))
+                <div class="my-3 p-3 rounded bg-green-50 border border-green-100 text-sm text-green-800">
+                    {{ $paymentStatusMessage }}
+                </div>
+            @endif
+            
             <p><strong>{{ t('orders.date') ?: 'Date' }}:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
             <p><strong>{{ t('orders.status') ?: 'Status' }}:</strong> 
                 @php
@@ -43,12 +50,43 @@
 
             @if($order->status === 'WAITING_PAYMENT' && auth()->check() && auth()->id() === $order->user_id && ! $order->is_paid)
                 <div class="mt-3">
-                    @if(config('easypay.enabled'))
-                        <a href="{{ route('orders.pay', $order->uuid) }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold">{{ t('orders.pay_now') ?: 'Pay now' }}</a>
-                    @else
-                        <div class="p-3 rounded bg-yellow-50 border border-yellow-100 text-sm text-yellow-800">
-                            {{ t('checkout.gateways.disabled') ?: (t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.') }}
+                    @php $ps = $paymentStatus ?? null; @endphp
+
+                    {{-- If a persisted payment is pending, show payment information and a link to the pay page (change/payment) --}}
+                    @if(isset($paymentInfo) && $paymentInfo?->payment_status === 'pending')
+                        <div class="mb-4 bg-white border rounded p-4 text-sm">
+                            <h3 class="font-semibold mb-2">{{ t('checkout.pay.payment_info_title') ?: 'Payment information' }}</h3>
+                            <div class="space-y-2 text-gray-700">
+                                @if($paymentInfo->mb_entity)
+                                    <div><strong>{{ t('checkout.pay.mb_entity') ?: 'MB entity' }}:</strong> {{ $paymentInfo->mb_entity }}</div>
+                                @endif
+                                @if($paymentInfo->mb_reference)
+                                    <div><strong>{{ t('checkout.pay.mb_reference') ?: 'MB reference' }}:</strong> {{ $paymentInfo->mb_reference }}</div>
+                                @endif
+                                @if($paymentInfo->mb_expiration_time)
+                                    <div><strong>{{ t('checkout.pay.mb_expires') ?: 'MB expiration time' }}:</strong> {{ $paymentInfo->mb_expiration_time->toDayDateTimeString() }}</div>
+                                @endif
+                                @if($paymentInfo->iban)
+                                    <div><strong>{{ t('checkout.pay.iban') ?: 'IBAN' }}:</strong> {{ $paymentInfo->iban }}</div>
+                                @endif
+                            </div>
+
+                            <div class="mt-4 text-right">
+                                <a href="{{ route('orders.pay', $order->uuid) }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold">{{ t('orders.change_payment') ?: 'Change payment' }}</a>
+                            </div>
                         </div>
+
+                    {{-- Otherwise: show the regular pay button unless DB indicates pending/authorised (suppress) --}}
+                    @else
+                        @unless(in_array($ps, ['pending','authorised'], true))
+                            @if(config('easypay.enabled'))
+                                <a href="{{ route('orders.pay', $order->uuid) }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold">{{ t('orders.pay_now') ?: 'Pay now' }}</a>
+                            @else
+                                <div class="p-3 rounded bg-yellow-50 border border-yellow-100 text-sm text-yellow-800">
+                                    {{ t('checkout.gateways.disabled') ?: (t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.') }}
+                                </div>
+                            @endif
+                        @endunless
                     @endif
                 </div>
             @endif

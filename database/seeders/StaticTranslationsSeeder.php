@@ -328,6 +328,10 @@ class StaticTranslationsSeeder extends Seeder
             // Pay now button (client-facing)
             ['key' => 'orders.pay_now', 'locale' => 'pt-PT', 'value' => 'Pagar agora', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.pay_now', 'locale' => 'en-UK', 'value' => 'Pay now', 'created_at' => $now, 'updated_at' => $now],
+
+            // Shown on the order details page when a persisted payment exists (pending) — links to the pay page
+            ['key' => 'orders.change_payment', 'locale' => 'pt-PT', 'value' => 'Alterar pagamento', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.change_payment', 'locale' => 'en-UK', 'value' => 'Change payment', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.not_paid', 'locale' => 'en-UK', 'value' => 'No', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'orders.shipping_address', 'locale' => 'pt-PT', 'value' => 'Morada de envio', 'created_at' => $now, 'updated_at' => $now],

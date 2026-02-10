@@ -44,9 +44,28 @@ class OrderController extends Controller
             \App\Models\EasypayPayment::where('order_id', $order->id)->delete();
         }
 
-        $order->load(['items.product', 'address']);
+        $order->load(['items.product', 'address', 'easypayPayload', 'easypayCheckoutSessions', 'easypayPayments']);
 
-        return view('orders.show', compact('order'));
+        // If the most-recent payment row indicates a persisted state that should
+        // be reflected to the user (pending/paid/authorised), perform a best-effort
+        // refresh so the UI (and order model) are authoritative.
+        $latestPayment = $order->easypayPayments()->latest('created_at')->first();
+        $paymentRefresh = null;
+        if ($latestPayment && in_array($latestPayment->payment_status, ['pending', 'paid', 'authorised'], true)) {
+            $paymentRefresh = app(\App\Services\EasypayPaymentRefreshService::class)->refreshLatestPaymentForOrder($order);
+        }
+
+        $viewVars = ['order' => $order];
+        if (! empty($paymentRefresh)) {
+            $viewVars = array_merge($viewVars, [
+                'paymentInfo' => $paymentRefresh['paymentInfo'] ?? null,
+                'paymentStatus' => $paymentRefresh['paymentStatus'] ?? null,
+                'paymentStatusMessage' => $paymentRefresh['paymentStatusMessage'] ?? null,
+                'suppressSdk' => (bool) ($paymentRefresh['suppressSdk'] ?? false),
+            ]);
+        }
+
+        return view('orders.show', $viewVars);
     }
 
     /**
