@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Order;
 use App\Models\EasypayPayment;
-use Mockery;
+use App\Models\Order;
+use App\Models\User;
 use App\Services\EasypayService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
+use Mockery;
+use Tests\TestCase;
 
 class CheckoutPayPagePaymentStatusTest extends TestCase
 {
@@ -42,7 +42,7 @@ class CheckoutPayPagePaymentStatusTest extends TestCase
         $this->assertFalse($order->fresh()->is_paid);
 
         // When the authoritative Easypay endpoint confirms 'paid' the controller should mark the order
-        $single = [ 'id' => 'pay_paid_1', 'payment_status' => 'paid', 'paid_at' => now()->toIso8601String() ];
+        $single = ['id' => 'pay_paid_1', 'payment_status' => 'paid', 'paid_at' => now()->toIso8601String()];
         $mock = Mockery::mock(EasypayService::class);
         $mock->shouldReceive('getSinglePayment')->with('pay_paid_1')->andReturn($single);
         $this->app->instance(EasypayService::class, $mock);

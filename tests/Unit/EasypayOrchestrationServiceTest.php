@@ -2,14 +2,13 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\Order;
 use App\Models\EasypayCheckoutSession;
+use App\Models\Order;
 use App\Models\User;
-use App\Models\Product;
 use App\Services\EasypayOrchestrationService;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class EasypayOrchestrationServiceTest extends TestCase
 {
@@ -18,7 +17,7 @@ class EasypayOrchestrationServiceTest extends TestCase
     public function test_is_session_fresh_respects_ttl()
     {
         $user = User::factory()->create();
-        $order = Order::factory()->for($user)->create([ 'status' => 'WAITING_PAYMENT', 'is_paid' => false ]);
+        $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
         $s = EasypayCheckoutSession::create([
             'order_id' => $order->id,
@@ -48,7 +47,7 @@ class EasypayOrchestrationServiceTest extends TestCase
     public function test_get_latest_active_manifest_respects_ttl_and_parses_message()
     {
         $user = User::factory()->create();
-        $order = Order::factory()->for($user)->create([ 'status' => 'WAITING_PAYMENT', 'is_paid' => false ]);
+        $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
         // make the "fresh" session clearly inside small TTL windows for deterministic asserts
         $fresh = EasypayCheckoutSession::create([
@@ -72,7 +71,7 @@ class EasypayOrchestrationServiceTest extends TestCase
             'updated_at' => Carbon::now()->subSeconds(3600),
         ]);
 
-        $orch = new EasypayOrchestrationService();
+        $orch = new EasypayOrchestrationService;
 
         $manifest = $orch->getLatestActiveManifest($order, 1800);
         $this->assertIsArray($manifest);

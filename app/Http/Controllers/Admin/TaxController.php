@@ -11,6 +11,7 @@ class TaxController extends Controller
     public function index()
     {
         $taxes = Tax::orderBy('percentage')->get();
+
         return view('admin.taxes.index', compact('taxes'));
     }
 

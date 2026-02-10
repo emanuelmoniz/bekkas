@@ -8,8 +8,6 @@ class PasswordValidation
 {
     /**
      * Get the password validation rules used across the application.
-     * 
-     * @return \Illuminate\Validation\Rules\Password
      */
     public static function rules(): Password
     {

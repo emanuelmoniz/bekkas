@@ -19,7 +19,7 @@ class TicketCategory extends Model
         return $this->hasMany(TicketCategoryTranslation::class);
     }
 
-    public function translation(string $locale = null)
+    public function translation(?string $locale = null)
     {
         $locale = $locale ?? app()->getLocale();
 

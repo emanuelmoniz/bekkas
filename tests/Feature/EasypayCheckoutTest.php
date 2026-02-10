@@ -2,12 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\Product;
-use App\Models\User;
 use App\Models\Address;
 use App\Models\Order;
-use App\Models\EasypayPayload;
-use App\Models\EasypayCheckoutSession;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
@@ -34,7 +32,7 @@ class EasypayCheckoutTest extends TestCase
         $product = Product::factory()->create(['price' => 10.50, 'stock' => 10]);
         $address = Address::factory()->create(['user_id' => $user->id]);
 
-        $this->actingAs($user)->withSession(['cart' => [ $product->id => 1 ]])
+        $this->actingAs($user)->withSession(['cart' => [$product->id => 1]])
             ->post(route('checkout.place'), ['address_id' => $address->id])
             ->assertRedirect(route('orders.index'));
 
@@ -84,7 +82,7 @@ class EasypayCheckoutTest extends TestCase
         $product = Product::factory()->create(['price' => 10.50, 'stock' => 10]);
         $address = Address::factory()->create(['user_id' => $user->id]);
 
-        $this->actingAs($user)->withSession(['cart' => [ $product->id => 1 ]])
+        $this->actingAs($user)->withSession(['cart' => [$product->id => 1]])
             ->post(route('checkout.place'), ['address_id' => $address->id])
             ->assertRedirect(route('orders.index'));
 
@@ -115,7 +113,7 @@ class EasypayCheckoutTest extends TestCase
 
         $user = User::factory()->create(['language' => 'pt-PT']);
         $product = Product::factory()->create(['price' => 3.5, 'stock' => 5]);
-        $order = Order::factory()->for($user)->create([ 'status' => 'WAITING_PAYMENT', 'is_paid' => false ]);
+        $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
         // Act: create payload via the public API (idempotent creation path)
         $payload = \App\Services\EasypayService::createOrGetPayload($order);
@@ -128,6 +126,7 @@ class EasypayCheckoutTest extends TestCase
 
         \Illuminate\Support\Facades\Http::assertSent(function ($request) {
             $body = json_decode($request->body(), true);
+
             return isset($body['customer']['language']) && $body['customer']['language'] === 'PT';
         });
 
@@ -139,9 +138,7 @@ class EasypayCheckoutTest extends TestCase
         Config::set('easypay.enabled', false);
 
         $user = User::factory()->create(['language' => 'pt']);
-        $order = Order::factory()->for($user)->create([ 'status' => 'WAITING_PAYMENT', 'is_paid' => false ]);
-
-
+        $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
         $this->assertDatabaseMissing('easypay_payloads', ['order_id' => $order->id]);
         $this->assertDatabaseMissing('easypay_checkout_sessions', ['order_id' => $order->id]);
@@ -156,5 +153,4 @@ class EasypayCheckoutTest extends TestCase
         // The pay page should show the friendly unavailable message (use translation where available)
         $resp->assertSee(t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable', false);
     }
-
 }

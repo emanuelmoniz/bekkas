@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Rules\PasswordValidation;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,7 +12,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-use App\Rules\PasswordValidation;
 
 class NewPasswordController extends Controller
 {
@@ -36,7 +36,7 @@ class NewPasswordController extends Controller
             'password' => [
                 'required',
                 'confirmed',
-                PasswordValidation::rules()
+                PasswordValidation::rules(),
             ],
         ], [
             'email.required' => t('validation.email_required'),
@@ -66,6 +66,6 @@ class NewPasswordController extends Controller
         return $status == Password::PASSWORD_RESET
                     ? redirect()->route('login')->with('status', trans('passwords.reset'))
                     : back()->withInput($request->only('email'))
-                        ->withErrors(['email' => trans('passwords.' . $status)]);
+                        ->withErrors(['email' => trans('passwords.'.$status)]);
     }
 }

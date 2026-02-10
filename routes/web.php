@@ -1,34 +1,32 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\MaterialController;
-use App\Http\Controllers\Admin\ProductPhotoController;
-use App\Http\Controllers\Admin\TicketAdminController;
-use App\Http\Controllers\Admin\TicketCategoryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\OrderStatusController;
-use App\Http\Controllers\Admin\ShippingTierController;
-use App\Http\Controllers\Admin\ShippingConfigController;
-use App\Http\Controllers\Admin\TaxController;
-use App\Http\Controllers\Admin\CountryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductPhotoController;
 use App\Http\Controllers\Admin\RegionController;
+use App\Http\Controllers\Admin\ShippingConfigController;
+use App\Http\Controllers\Admin\ShippingTierController;
+use App\Http\Controllers\Admin\TaxController;
+use App\Http\Controllers\Admin\TicketAdminController;
+use App\Http\Controllers\Admin\TicketCategoryController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
-
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController as ClientProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TicketAttachmentController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketMessageController;
 use App\Http\Controllers\TicketStatusController;
-use App\Http\Controllers\TicketAttachmentController;
-use App\Http\Controllers\AddressController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\ProductController as ClientProductController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\FavoriteController;
-use App\Http\Controllers\ContactController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -148,9 +146,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/{order}/pay', [OrderController::class, 'pay'])
         ->name('orders.pay');
 
-
-
-
+    // SDK onSuccess endpoint — client SDK posts `checkout`/`payment` info here for persistence
+    Route::post('/orders/{order}/pay/verify', [\App\Http\Controllers\EasypayPaymentController::class, 'store'])
+        ->name('orders.pay.verify')
+        ->middleware('throttle:30,1');
 
     Route::post('/orders', [OrderController::class, 'store'])
         ->name('orders.store');
@@ -207,6 +206,7 @@ if (app()->environment('local', 'testing')) {
     Route::post('/__cypress/seed-order', [\App\Http\Controllers\TestHelpersController::class, 'seedOrder']);
     Route::get('/__cypress/login/{token}', [\App\Http\Controllers\TestHelpersController::class, 'loginWithToken']);
     Route::post('/__cypress/mock-easypay', [\App\Http\Controllers\TestHelpersController::class, 'mockEasypay']);
+    Route::get('/__cypress/flash', [\App\Http\Controllers\TestHelpersController::class, 'flash']);
 }
 
 /*
@@ -328,7 +328,7 @@ Route::middleware(['auth', 'is_admin'])
         Route::resource('regions', RegionController::class);
 
         /*
-        | 
+        |
         | Users
         */
 
@@ -387,4 +387,4 @@ Route::middleware(['auth', 'is_admin'])
             ->name('tickets.update');
     });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

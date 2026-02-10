@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\Favorite;
 use App\Models\Category;
+use App\Models\Favorite;
 use App\Models\Material;
+use App\Models\Product;
 use App\Services\DeliveryDateCalculator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +36,7 @@ class FavoriteController extends Controller
         // Name search filter
         if ($request->filled('name')) {
             $query->whereHas('translations', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->name . '%');
+                $q->where('name', 'like', '%'.$request->name.'%');
             });
         }
 
@@ -80,7 +80,7 @@ class FavoriteController extends Controller
             $q->whereIn('products.id', $favoriteIds)->where('active', true);
         })->with('translations')->get();
 
-        $hasFavorites = !empty($favoriteIds);
+        $hasFavorites = ! empty($favoriteIds);
 
         // Calculate delivery dates for products
         $deliveryDates = [];
@@ -113,7 +113,7 @@ class FavoriteController extends Controller
         } else {
             // Guest user - use session
             $favorites = session('favorites', []);
-            
+
             if (in_array($product->id, $favorites)) {
                 $favorites = array_diff($favorites, [$product->id]);
                 $isFavorite = false;
@@ -121,19 +121,19 @@ class FavoriteController extends Controller
                 $favorites[] = $product->id;
                 $isFavorite = true;
             }
-            
+
             session(['favorites' => array_values($favorites)]);
         }
 
         // Get updated favorites count
-        $favoritesCount = Auth::check() 
-            ? Auth::user()->favorites()->count() 
+        $favoritesCount = Auth::check()
+            ? Auth::user()->favorites()->count()
             : count(session('favorites', []));
 
         if ($request->expectsJson()) {
             return response()->json([
                 'isFavorite' => $isFavorite,
-                'favoritesCount' => $favoritesCount
+                'favoritesCount' => $favoritesCount,
             ]);
         }
 
@@ -158,15 +158,15 @@ class FavoriteController extends Controller
     public static function mergeFavoritesOnLogin($userId)
     {
         $sessionFavorites = session('favorites', []);
-        
-        if (!empty($sessionFavorites)) {
+
+        if (! empty($sessionFavorites)) {
             foreach ($sessionFavorites as $productId) {
                 Favorite::firstOrCreate([
                     'user_id' => $userId,
                     'product_id' => $productId,
                 ]);
             }
-            
+
             session()->forget('favorites');
         }
     }

@@ -2,17 +2,16 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
-use App\Models\Product;
-use App\Models\Tax;
-use App\Models\ShippingTier;
-use App\Models\ShippingConfig;
 use App\Models\Country;
-use App\Models\Address;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\ShippingConfig;
+use App\Models\ShippingTier;
+use App\Models\Tax;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ShippingTest extends TestCase
 {
@@ -52,7 +51,7 @@ class ShippingTest extends TestCase
         $json = $response->json();
         $this->assertFalse(empty($json['tiers']));
         $tiers = collect($json['tiers']);
-        $this->assertTrue($tiers->contains(fn($t) => ($t['id'] ?? null) === $paidTier->id));
+        $this->assertTrue($tiers->contains(fn ($t) => ($t['id'] ?? null) === $paidTier->id));
     }
 
     public function test_expected_delivery_date_includes_production_time_for_backorders()
@@ -113,7 +112,8 @@ class ShippingTest extends TestCase
 
         // expected working days = production_time (3) + shipping_days (2) = 5 working days
         // Compute expected date by adding working days (skip weekends) to the start date
-        $expected = Carbon::create(2026,1,15,9,0,0);        $daysAdded = 0;
+        $expected = Carbon::create(2026, 1, 15, 9, 0, 0);
+        $daysAdded = 0;
         while ($daysAdded < 5) {
             $expected->addDay();
             if (! $expected->isWeekend()) {

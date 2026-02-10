@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreOrderRequest;
+use App\Models\Address;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\Address;
-use App\Models\ShippingTier;
 use App\Models\ShippingConfig;
-use App\Services\ShippingCalculator;
-use App\Services\DeliveryDateCalculator;
+use App\Models\ShippingTier;
 use App\Services\DefaultShippingTierResolver;
-use App\Services\EasypayService;
 use App\Services\EasypayOrchestrationService;
-use App\Models\EasypayCheckoutSession;
-use App\Http\Requests\StoreOrderRequest;
+use App\Services\EasypayService;
+use App\Services\ShippingCalculator;
+use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -94,15 +92,15 @@ class OrderController extends Controller
         $freeShippingOver = floatval(ShippingConfig::get('free_shipping_over', 0));
         $qualifiesForFreeShipping = $productsGross >= $freeShippingOver && $freeShippingOver > 0;
         $freeShippingTier = null;
-        
+
         if ($qualifiesForFreeShipping) {
             // Use region-based default (even if inactive) - no weight check for free tier
             if ($postalCode) {
                 $freeShippingTier = DefaultShippingTierResolver::resolve($postalCode, 0);
             }
-            
+
             // Fallback to global default
-            if (!$freeShippingTier) {
+            if (! $freeShippingTier) {
                 $defaultTierId = ShippingConfig::get('default_shipping_tier_id');
                 $freeShippingTier = ShippingTier::withoutGlobalScopes()->find($defaultTierId);
             }
@@ -117,7 +115,7 @@ class OrderController extends Controller
                     $query->where('country_id', $countryId);
                 }
                 $query->where('postal_code_from', '<=', $postalCode)
-                      ->where('postal_code_to', '>=', $postalCode);
+                    ->where('postal_code_to', '>=', $postalCode);
             })
             ->orderBy('shipping_days', 'asc')
             ->get();
@@ -142,14 +140,14 @@ class OrderController extends Controller
                 ->where('weight_to', '>=', $totalWeight)
                 ->orderBy('shipping_days', 'asc')
                 ->get();
-            
+
             \Log::info('Using fallback tiers (no region match)', [
                 'fallback_tiers_count' => $tiers->count(),
             ]);
         }
 
         $tiersData = collect();
-        
+
         // Add free shipping tier if qualified
         if ($qualifiesForFreeShipping && $freeShippingTier) {
             $tiersData->push([
@@ -164,13 +162,13 @@ class OrderController extends Controller
                     'tax' => 0,
                 ],
             ]);
-            
+
             // Add all other tiers from the region (with cost) - exclude the free tier
-            $otherTiers = $tiers->filter(function($tier) use ($freeShippingTier) {
+            $otherTiers = $tiers->filter(function ($tier) use ($freeShippingTier) {
                 // Show all tiers except the one being used as free
                 return $tier->id !== $freeShippingTier->id;
             });
-            
+
             \Log::info('Other tiers filter', [
                 'free_tier_id' => $freeShippingTier->id,
                 'free_tier_days' => $freeShippingTier->shipping_days,
@@ -179,7 +177,7 @@ class OrderController extends Controller
                 'other_tier_ids' => $otherTiers->pluck('id')->toArray(),
                 'other_tier_names' => $otherTiers->pluck('name_en')->toArray(),
             ]);
-            
+
             foreach ($otherTiers as $tier) {
                 $taxPct = optional($tier->tax)->percentage ?? 0;
                 $gross = floatval($tier->cost_gross);
@@ -199,7 +197,7 @@ class OrderController extends Controller
                     ],
                 ]);
             }
-            
+
             \Log::info('Final tiers data', [
                 'tiers_count' => $tiersData->count(),
                 'tier_ids' => $tiersData->pluck('id')->toArray(),
@@ -261,7 +259,7 @@ class OrderController extends Controller
 
             $qty = $cart[$product->id];
             $productName = optional($product->translation())->name ?? "Product #{$product->id}";
-            
+
             if ($product->stock <= 0) {
                 $stockErrors[] = str_replace(':name', $productName, t('stock.is_out_of_stock'));
             } elseif ($qty > $product->stock) {
@@ -273,7 +271,7 @@ class OrderController extends Controller
             }
         }
 
-        if (!empty($stockErrors)) {
+        if (! empty($stockErrors)) {
             return redirect()->route('cart.index')->with('error', implode(' ', $stockErrors));
         }
 
@@ -285,7 +283,7 @@ class OrderController extends Controller
         foreach ($products as $product) {
             $qty = $cart[$product->id];
             $unitGross = $product->is_promo ? ($product->promo_price ?? $product->price) : $product->price;
-            
+
             // Safe tax retrieval (Laravel optional helper)
             $taxPct = optional($product->tax)->percentage ?? 0;
 
@@ -307,29 +305,29 @@ class OrderController extends Controller
 
         $addresses = Auth::user()->addresses()->get();
         $defaultAddress = $addresses->where('is_default', true)->first() ?? $addresses->first();
-        
+
         // Get free shipping threshold
         $freeShippingOver = floatval(ShippingConfig::get('free_shipping_over', 0));
         $qualifiesForFreeShipping = $productsGross >= $freeShippingOver && $freeShippingOver > 0;
-        
+
         // Get available shipping tiers
         $availableShippingTiers = collect([]);
         $selectedShippingTier = null;
         $freeShippingTier = null;
-        
+
         if ($qualifiesForFreeShipping && $defaultAddress && $defaultAddress->postal_code) {
             // Get region-based default free shipping tier (even if inactive)
             $freeShippingTier = DefaultShippingTierResolver::resolve($defaultAddress->postal_code, 0);
-            
+
             // Fallback to global default if no region-based tier found
-            if (!$freeShippingTier) {
+            if (! $freeShippingTier) {
                 $defaultTierId = ShippingConfig::get('default_shipping_tier_id');
                 $freeShippingTier = ShippingTier::withoutGlobalScopes()->find($defaultTierId);
             }
-            
+
             $selectedShippingTier = $freeShippingTier;
         }
-        
+
         if ($defaultAddress && $defaultAddress->postal_code) {
             // Get active shipping tiers matching the default address postal code
             $availableShippingTiers = ShippingTier::where('active', true)
@@ -337,11 +335,11 @@ class OrderController extends Controller
                 ->where('weight_to', '>=', $totalWeight)
                 ->whereHas('regions', function ($query) use ($defaultAddress) {
                     $query->where('postal_code_from', '<=', $defaultAddress->postal_code)
-                          ->where('postal_code_to', '>=', $defaultAddress->postal_code);
+                        ->where('postal_code_to', '>=', $defaultAddress->postal_code);
                 })
                 ->orderBy('shipping_days', 'asc')
                 ->get();
-            
+
             // If no tiers match postal code, get all active tiers matching weight
             if ($availableShippingTiers->isEmpty()) {
                 $availableShippingTiers = ShippingTier::where('active', true)
@@ -350,14 +348,14 @@ class OrderController extends Controller
                     ->orderBy('shipping_days', 'asc')
                     ->get();
             }
-            
+
             // If qualifying for free shipping, add free tier and keep all other tiers
             if ($qualifiesForFreeShipping && $freeShippingTier) {
                 // Add free tier to the collection (even if inactive)
                 $tiersCollection = collect([$freeShippingTier]);
 
                 // Add all other active tiers that are FASTER than the free one (exclude same or slower)
-                $otherTiers = $availableShippingTiers->filter(function($tier) use ($freeShippingTier) {
+                $otherTiers = $availableShippingTiers->filter(function ($tier) use ($freeShippingTier) {
                     return $tier->id !== $freeShippingTier->id && $tier->shipping_days < $freeShippingTier->shipping_days;
                 });
 
@@ -367,7 +365,7 @@ class OrderController extends Controller
                 $selectedShippingTier = $selectedShippingTier ?? $availableShippingTiers->first();
             }
         }
-        
+
         // Calculate shipping cost
         $shipping = ['gross' => 0, 'net' => 0, 'tax' => 0];
         if ($selectedShippingTier) {
@@ -376,30 +374,31 @@ class OrderController extends Controller
             $shipping['net'] = $taxPct > 0 ? $shipping['gross'] / (1 + $taxPct / 100) : $shipping['gross'];
             $shipping['tax'] = $shipping['gross'] - $shipping['net'];
         }
-        
+
         // Map available tiers for Alpine.js with shipping breakdown
-        $availableTiersFormatted = $availableShippingTiers->map(function($t) use ($qualifiesForFreeShipping, $freeShippingTier) {
+        $availableTiersFormatted = $availableShippingTiers->map(function ($t) use ($qualifiesForFreeShipping, $freeShippingTier) {
             $taxPct = optional($t->tax)->percentage ?? 0;
             $isFree = $qualifiesForFreeShipping && $freeShippingTier && $t->id === $freeShippingTier->id;
             $gross = $isFree ? 0 : $t->cost_gross;
             $net = $isFree ? 0 : ($taxPct > 0 ? $gross / (1 + $taxPct / 100) : $gross);
             $tax = $gross - $net;
+
             return [
                 'id' => $t->id,
                 'name' => $t->name_pt ?? $t->name_en,
                 'cost_gross' => $gross,
                 'shipping_days' => $t->shipping_days,
                 'is_free' => $isFree,
-                'regions' => $t->regions->map(fn($r) => [
+                'regions' => $t->regions->map(fn ($r) => [
                     'country_id' => $r->country_id,
                     'postal_code_from' => $r->postal_code_from,
-                    'postal_code_to' => $r->postal_code_to
+                    'postal_code_to' => $r->postal_code_to,
                 ])->toArray(),
                 'shipping' => [
                     'gross' => round($gross, 2),
                     'net' => round($net, 2),
                     'tax' => round($tax, 2),
-                ]
+                ],
             ];
         });
 
@@ -492,10 +491,12 @@ class OrderController extends Controller
 
                 foreach ($cart as $productId => $qty) {
                     $product = $products[$productId] ?? null;
-                    if (! $product) continue;
+                    if (! $product) {
+                        continue;
+                    }
 
                     $unitGross = $product->is_promo ? ($product->promo_price ?? $product->price) : $product->price;
-                    
+
                     // Safe tax retrieval (Laravel optional helper)
                     $taxPct = optional($product->tax)->percentage ?? 0;
 
@@ -542,31 +543,31 @@ class OrderController extends Controller
                 $shippingTierId = $request->input('shipping_tier_id');
                 $shippingTier = null;
                 $shippingTierName = null;
-                
+
                 if ($shippingTierId) {
                     $shippingTier = ShippingTier::find($shippingTierId);
                     $shippingTierName = $shippingTier ? ($shippingTier->name_en ?? $shippingTier->name_pt) : null;
                 }
-                
+
                 // Calculate shipping cost
                 $freeShippingOver = floatval(ShippingConfig::get('free_shipping_over', 0));
                 $qualifiesForFreeShipping = $productsGross >= $freeShippingOver && $freeShippingOver > 0;
-                
+
                 // Determine the free tier (region-based or global)
                 $freeTier = null;
                 if ($qualifiesForFreeShipping && $address && $address->postal_code) {
                     $freeTier = DefaultShippingTierResolver::resolve($address->postal_code, $totalWeight);
                 }
-                
+
                 // Fallback to global default
-                if ($qualifiesForFreeShipping && !$freeTier) {
+                if ($qualifiesForFreeShipping && ! $freeTier) {
                     $defaultTierId = ShippingConfig::get('default_shipping_tier_id');
                     $freeTier = ShippingTier::find($defaultTierId);
                 }
-                
+
                 // Check if user selected the free tier or a paid tier
                 $isUsingFreeTier = $qualifiesForFreeShipping && $freeTier && $shippingTier && $shippingTier->id == $freeTier->id;
-                
+
                 if ($isUsingFreeTier) {
                     // Free shipping
                     $shipping = ['gross' => 0, 'net' => 0, 'tax' => 0];
@@ -586,18 +587,18 @@ class OrderController extends Controller
                         $shipping = ShippingCalculator::calculate($totalWeight);
                     }
                 }
-                
+
                 // Get tier name if not set
-                if (!$shippingTierName && $qualifiesForFreeShipping && !$shippingTier) {
+                if (! $shippingTierName && $qualifiesForFreeShipping && ! $shippingTier) {
                     $shippingTier = ShippingTier::find($defaultTierId);
                     $shippingTierName = $shippingTier ? ($shippingTier->name_en ?? $shippingTier->name_pt) : null;
                 }
-                
+
                 // Calculate expected delivery date
                 $expectedDeliveryDate = null;
                 if ($shippingTier) {
                     $shippingDays = $shippingTier->shipping_days ?? 0;
-                    
+
                     // Find max production time from backordered items
                     $maxProductionDays = 0;
                     foreach ($items as $item) {
@@ -608,7 +609,7 @@ class OrderController extends Controller
                             }
                         }
                     }
-                    
+
                     $totalWorkingDays = $maxProductionDays + $shippingDays;
                     $expectedDeliveryDate = $this->addWorkingDays(Carbon::now(), $totalWorkingDays);
                 }
@@ -686,7 +687,7 @@ class OrderController extends Controller
                 \Illuminate\Support\Facades\Mail::to($adminEmail)->locale($adminLocale)->queue(new \App\Mail\OrderNotification($createdOrder, t('orders.email.event.new', ['status' => $adminStatusLabel]) ?: 'New order', config('app.name'), $adminStatusLabel));
             }
 
-            return redirect()->route('orders.index')->with('success', 'Order placed successfully!');
+            return redirect()->route('orders.index')->with('success', t('orders.placed_success') ?: 'Order placed successfully!');
         } catch (\Exception $e) {
             Log::error('Order creation failed', [
                 'user_id' => $user->id,
@@ -761,7 +762,7 @@ class OrderController extends Controller
         $activeManifest = null;
 
         try {
-            $orch = new EasypayOrchestrationService();
+            $orch = new EasypayOrchestrationService;
 
             // Reuse a fresh manifest if present
             $activeManifest = $orch->getLatestActiveManifest($order, $ttl);
@@ -784,7 +785,7 @@ class OrderController extends Controller
 
             if (config('app.debug')) {
                 $payUnavailableDebug = $e->getMessage();
-                $payUnavailableMessage = ($payUnavailableMessage . ' ' . ($payUnavailableDebug ? (t('checkout.pay.unavailable_debug', ['error' => $payUnavailableDebug]) ?: $payUnavailableDebug) : ''));
+                $payUnavailableMessage = ($payUnavailableMessage.' '.($payUnavailableDebug ? (t('checkout.pay.unavailable_debug', ['error' => $payUnavailableDebug]) ?: $payUnavailableDebug) : ''));
             }
         }
 
@@ -795,7 +796,7 @@ class OrderController extends Controller
 
             if (config('app.debug') && $latest) {
                 $debug = is_string($latest->message) ? $latest->message : json_encode($latest->message);
-                $payUnavailableMessage = ($payUnavailableMessage . ' ' . (t('checkout.pay.unavailable_debug', ['error' => $debug]) ?: $debug));
+                $payUnavailableMessage = ($payUnavailableMessage.' '.(t('checkout.pay.unavailable_debug', ['error' => $debug]) ?: $debug));
             }
         }
 
@@ -826,7 +827,7 @@ class OrderController extends Controller
             if ($errored) {
                 $payUnavailableMessage = t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.';
                 if (config('app.debug') && $errored->message) {
-                    $payUnavailableMessage = $payUnavailableMessage . ' ' . (t('checkout.pay.unavailable_debug', ['error' => $errored->message]) ?: $errored->message);
+                    $payUnavailableMessage = $payUnavailableMessage.' '.(t('checkout.pay.unavailable_debug', ['error' => $errored->message]) ?: $errored->message);
                 }
             }
         }
@@ -855,8 +856,6 @@ class OrderController extends Controller
         ]);
     }
 
-
-
     /**
      * Add working days (excluding weekends) to a date
      */
@@ -864,16 +863,16 @@ class OrderController extends Controller
     {
         $date = $startDate->copy();
         $daysAdded = 0;
-        
+
         while ($daysAdded < $workingDays) {
             $date->addDay();
-            
+
             // Skip weekends (Saturday = 6, Sunday = 0)
-            if (!$date->isWeekend()) {
+            if (! $date->isWeekend()) {
                 $daysAdded++;
             }
         }
-        
+
         return $date;
     }
 
@@ -882,4 +881,3 @@ class OrderController extends Controller
         return ShippingCalculator::calculate($totalWeight);
     }
 }
-

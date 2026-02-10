@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="$(app()->getLocale())"">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -119,11 +119,7 @@
 
                     <!-- Contact Form -->
                     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-                        @if(session('success'))
-                            <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-                                {{ session('success') }}
-                            </div>
-                        @endif
+                        @include('partials.flash')
 
                         <form method="POST" action="{{ route('contact.store') }}" class="space-y-6">
                             @csrf

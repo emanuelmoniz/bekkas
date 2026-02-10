@@ -19,7 +19,7 @@ class EasypayPayloadController extends Controller
 
         if ($request->filled('order_number')) {
             $query->whereHas('order', function ($q) use ($request) {
-                $q->where('order_number', 'like', '%' . $request->order_number . '%');
+                $q->where('order_number', 'like', '%'.$request->order_number.'%');
             });
         }
 
@@ -69,6 +69,7 @@ class EasypayPayloadController extends Controller
     public function show(EasypayPayload $payload)
     {
         $payload->load('order.user');
+
         return view('admin.orders.payloads.show', ['payload' => $payload]);
     }
 
@@ -116,4 +117,4 @@ class EasypayPayloadController extends Controller
 
         return redirect()->route('admin.orders.payloads.index')->with('error', 'Failed to recreate payload');
     }
-} 
+}

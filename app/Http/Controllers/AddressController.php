@@ -35,13 +35,13 @@ class AddressController extends Controller
             $data['is_default'] = true;
         }
 
-        if (!empty($data['is_default'])) {
+        if (! empty($data['is_default'])) {
             $user->addresses()->update(['is_default' => false]);
         }
 
         $user->addresses()->create([
             ...$data,
-            'is_default' => !empty($data['is_default']),
+            'is_default' => ! empty($data['is_default']),
         ]);
 
         return redirect()->route('profile.edit')->with('success', t('profile.address_added_success') ?: 'Address added successfully!');

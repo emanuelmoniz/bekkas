@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
-use App\Models\ProductTranslation;
 use App\Models\Category;
 use App\Models\Material;
+use App\Models\Product;
+use App\Models\ProductTranslation;
 use App\Models\Tax;
 use Illuminate\Http\Request;
 
@@ -19,7 +19,7 @@ class ProductController extends Controller
         // NAME (translation)
         if ($request->filled('name')) {
             $query->whereHas('translations', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . trim($request->name) . '%');
+                $q->where('name', 'like', '%'.trim($request->name).'%');
             });
         }
 
@@ -66,7 +66,7 @@ class ProductController extends Controller
         $products = $query->paginate(20)->withQueryString();
 
         $categories = Category::with('translations')->get();
-        $materials  = Material::with('translations')->get();
+        $materials = Material::with('translations')->get();
 
         return view('admin.products.index', compact(
             'products',
@@ -78,8 +78,8 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::with('translations')->get();
-        $materials  = Material::with('translations')->get();
-        $taxes      = Tax::where('is_active', true)->orderBy('percentage')->get();
+        $materials = Material::with('translations')->get();
+        $taxes = Tax::where('is_active', true)->orderBy('percentage')->get();
 
         return view('admin.products.create', compact(
             'categories',
@@ -95,21 +95,21 @@ class ProductController extends Controller
         ]);
 
         $product = Product::create([
-            'tax_id'         => $request->tax_id,
-            'price'          => $request->price,
-            'promo_price'    => $request->promo_price,
-            'stock'          => $request->stock,
+            'tax_id' => $request->tax_id,
+            'price' => $request->price,
+            'promo_price' => $request->promo_price,
+            'stock' => $request->stock,
             'production_time' => $request->production_time ?? 0,
-            'width'          => $request->width,
-            'length'         => $request->length,
-            'height'         => $request->height,
-            'weight'         => $request->weight,
+            'width' => $request->width,
+            'length' => $request->length,
+            'height' => $request->height,
+            'weight' => $request->weight,
 
             // BOOLEAN NORMALIZATION
             'is_backorder' => $request->boolean('is_backorder', true),
-            'is_new'       => $request->boolean('is_new'),
-            'is_promo'     => $request->boolean('is_promo'),
-            'active'       => $request->boolean('active'),
+            'is_new' => $request->boolean('is_new'),
+            'is_promo' => $request->boolean('is_promo'),
+            'active' => $request->boolean('active'),
         ]);
 
         foreach (config('app.locales') as $locale => $name) {
@@ -132,8 +132,8 @@ class ProductController extends Controller
         $product->load(['translations', 'categories', 'materials']);
 
         $categories = Category::with('translations')->get();
-        $materials  = Material::with('translations')->get();
-        $taxes      = Tax::where('is_active', true)->orderBy('percentage')->get();
+        $materials = Material::with('translations')->get();
+        $taxes = Tax::where('is_active', true)->orderBy('percentage')->get();
 
         return view('admin.products.edit', compact(
             'product',
@@ -150,21 +150,21 @@ class ProductController extends Controller
         ]);
 
         $product->update([
-            'tax_id'         => $request->tax_id,
-            'price'          => $request->price,
-            'promo_price'    => $request->promo_price,
-            'stock'          => $request->stock,
+            'tax_id' => $request->tax_id,
+            'price' => $request->price,
+            'promo_price' => $request->promo_price,
+            'stock' => $request->stock,
             'production_time' => $request->production_time ?? 0,
-            'width'          => $request->width,
-            'length'         => $request->length,
-            'height'         => $request->height,
-            'weight'         => $request->weight,
+            'width' => $request->width,
+            'length' => $request->length,
+            'height' => $request->height,
+            'weight' => $request->weight,
 
             // ✅ BOOLEAN NORMALIZATION
             'is_backorder' => $request->boolean('is_backorder'),
-            'is_new'       => $request->boolean('is_new'),
-            'is_promo'     => $request->boolean('is_promo'),
-            'active'       => $request->boolean('active'),
+            'is_new' => $request->boolean('is_new'),
+            'is_promo' => $request->boolean('is_promo'),
+            'active' => $request->boolean('active'),
         ]);
 
         foreach (config('app.locales') as $locale => $name) {
@@ -187,6 +187,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
+
         return redirect()->route('admin.products.index');
     }
 }

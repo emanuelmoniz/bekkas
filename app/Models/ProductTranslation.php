@@ -8,7 +8,7 @@ class ProductTranslation extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = ['product_id','locale','name','description'];
+    protected $fillable = ['product_id', 'locale', 'name', 'description'];
 
     public function product()
     {

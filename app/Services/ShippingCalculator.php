@@ -9,7 +9,7 @@ class ShippingCalculator
     /**
      * Calculate shipping cost based on total weight
      *
-     * @param float $weight Total weight in kg
+     * @param  float  $weight  Total weight in kg
      * @return array ['gross' => float, 'net' => float, 'tax' => float]
      */
     public static function calculate(float $weight): array
@@ -26,7 +26,7 @@ class ShippingCalculator
             ->first();
 
         // Fallback: use most expensive tier if weight exceeds all defined tiers
-        if (!$tier) {
+        if (! $tier) {
             $tier = ShippingTier::where('active', true)
                 ->orderBy('cost_gross', 'desc')
                 ->with('tax')
@@ -34,7 +34,7 @@ class ShippingCalculator
         }
 
         // If no tier exists at all, return zero shipping
-        if (!$tier) {
+        if (! $tier) {
             return ['gross' => 0, 'tax' => 0, 'net' => 0];
         }
 
@@ -44,21 +44,20 @@ class ShippingCalculator
     /**
      * Calculate shipping amounts from a tier
      *
-     * @param ShippingTier $tier
      * @return array ['gross' => float, 'net' => float, 'tax' => float]
      */
     private static function calculateFromTier(ShippingTier $tier): array
     {
         $gross = $tier->cost_gross;
-        
+
         // Safe tax retrieval (compatible with older PHP versions)
         $taxPct = optional($tier->tax)->percentage ?? 0;
-        
+
         // Avoid division by zero
-        $net = $taxPct > 0 
+        $net = $taxPct > 0
             ? $gross / (1 + $taxPct / 100)
             : $gross;
-        
+
         $tax = $gross - $net;
 
         return [

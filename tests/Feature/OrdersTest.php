@@ -2,17 +2,17 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
-use App\Models\Role;
-use App\Models\Product;
-use App\Models\Tax;
-use App\Models\Country;
 use App\Models\Address;
-use App\Models\ShippingTier;
-use App\Models\ShippingConfig;
+use App\Models\Country;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\Role;
+use App\Models\ShippingConfig;
+use App\Models\ShippingTier;
+use App\Models\Tax;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class OrdersTest extends TestCase
 {
@@ -179,15 +179,24 @@ class OrdersTest extends TestCase
             'is_default' => true,
         ]);
 
+        // Place the order and assert the session flash was set (no double POST)
         $this->withSession(['cart' => [$product->id => 1]])
             ->actingAs($user)
             ->post(route('checkout.place'), ['address_id' => $address->id])
-            ->assertRedirect(route('orders.index'));
+            ->assertRedirect(route('orders.index'))
+            ->assertSessionHas('success', t('orders.placed_success') ?: 'Order placed successfully! Thank you.');
+
+        // Ensure the layout renders the same flash when session contains it
+        $this->withSession(['success' => t('orders.placed_success')])
+            ->actingAs($user)
+            ->get(route('orders.index'))
+            ->assertSee('Close flash message')
+            ->assertSee('bg-green-100 border border-green-400');
 
         // Two mails queued: one to customer and one to admin
         \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, 2);
 
-\Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, function ($mail) use ($user) {
+        \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, function ($mail) use ($user) {
             return $mail->hasTo($user->email);
         });
 
@@ -218,4 +227,3 @@ class OrdersTest extends TestCase
         });
     }
 }
-

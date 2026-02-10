@@ -5,17 +5,20 @@ namespace App\Mail;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class TicketNotification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     public Ticket $ticket;
+
     public TicketMessage $ticketMessage;
+
     public string $eventLabel;
+
     public string $recipientName;
 
     public function __construct(Ticket $ticket, TicketMessage $message, string $eventLabel, string $recipientName)

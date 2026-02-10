@@ -9,20 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up(): void
-{
-    Schema::create('product_translations', function (Blueprint $table) {
-        $table->id();
+    public function up(): void
+    {
+        Schema::create('product_translations', function (Blueprint $table) {
+            $table->id();
 
-        $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-        $table->string('locale', 5); // pt-PT, en-UK
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->string('locale', 5); // pt-PT, en-UK
 
-        $table->string('name');
-        $table->text('description')->nullable();
+            $table->string('name');
+            $table->text('description')->nullable();
 
-        $table->unique(['product_id', 'locale']);
-    });
-}
+            $table->unique(['product_id', 'locale']);
+        });
+    }
 
     /**
      * Reverse the migrations.

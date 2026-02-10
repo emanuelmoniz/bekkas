@@ -15,7 +15,7 @@ class OrderController extends Controller
         $query = Order::with(['user', 'address']);
 
         if ($request->filled('order_number')) {
-            $query->where('order_number', 'like', '%' . $request->order_number . '%');
+            $query->where('order_number', 'like', '%'.$request->order_number.'%');
         }
 
         if ($request->filled('status')) {
@@ -28,19 +28,19 @@ class OrderController extends Controller
 
         if ($request->filled('user')) {
             $query->whereHas('user', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->user . '%');
+                $q->where('name', 'like', '%'.$request->user.'%');
             });
         }
 
         if ($request->filled('email')) {
             $query->whereHas('user', function ($q) use ($request) {
-                $q->where('email', 'like', '%' . $request->email . '%');
+                $q->where('email', 'like', '%'.$request->email.'%');
             });
         }
 
         if ($request->filled('nif')) {
             $query->whereHas('address', function ($q) use ($request) {
-                $q->where('nif', 'like', '%' . $request->nif . '%');
+                $q->where('nif', 'like', '%'.$request->nif.'%');
             });
         }
 
@@ -85,7 +85,7 @@ class OrderController extends Controller
                 foreach ($order->items as $item) {
                     $product = $item->product;
                     // Only restore stock if this item was NOT backordered
-                    if ($product && !$item->was_backordered) {
+                    if ($product && ! $item->was_backordered) {
                         $product->increment('stock', $item->quantity);
                     }
                 }
@@ -96,7 +96,7 @@ class OrderController extends Controller
                 foreach ($order->items as $item) {
                     $product = $item->product;
                     // Only decrement if item was NOT backordered originally
-                    if ($product && !$item->was_backordered) {
+                    if ($product && ! $item->was_backordered) {
                         if ($product->stock >= $item->quantity) {
                             $product->decrement('stock', $item->quantity);
                         } elseif ($product->stock > 0) {

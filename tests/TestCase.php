@@ -24,7 +24,7 @@ abstract class TestCase extends BaseTestCase
         // Ensure the Blade `$errors` variable exists (normally provided by
         // ShareErrorsFromSession middleware). Tests disable CSRF only, so
         // share an empty ViewErrorBag to avoid undefined variable errors.
-        $this->app['view']->share('errors', new \Illuminate\Support\ViewErrorBag());
+        $this->app['view']->share('errors', new \Illuminate\Support\ViewErrorBag);
 
         // Put a predictable CSRF token in the session and send it as a header
         // so VerifyCsrfToken middleware (if still active) accepts POST/JSON.

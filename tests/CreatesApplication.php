@@ -15,7 +15,7 @@ trait CreatesApplication
         // developer-provided test environment automatically.
         // This file is intentionally ignored by git (`.env.testing`) and a
         // `.env.testing.example` template is provided for convenience.
-        $envFile = dirname(__DIR__) . DIRECTORY_SEPARATOR . '.env.testing';
+        $envFile = dirname(__DIR__).DIRECTORY_SEPARATOR.'.env.testing';
         if (file_exists($envFile)) {
             // Use vlucas/phpdotenv via the Dotenv class Laravel already uses
             try {
@@ -26,7 +26,7 @@ trait CreatesApplication
             }
         }
 
-        $app = require __DIR__ . '/../bootstrap/app.php';
+        $app = require __DIR__.'/../bootstrap/app.php';
 
         $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 

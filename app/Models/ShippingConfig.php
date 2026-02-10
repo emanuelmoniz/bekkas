@@ -14,6 +14,7 @@ class ShippingConfig extends Model
     public static function get(string $key, $default = null)
     {
         $config = static::where('key', $key)->first();
+
         return $config ? $config->value : $default;
     }
 

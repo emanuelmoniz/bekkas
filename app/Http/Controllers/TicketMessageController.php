@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
-use App\Models\TicketMessage;
 use App\Models\TicketAttachment;
+use App\Models\TicketMessage;
+use App\Rules\Recaptcha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Rules\Recaptcha;
 
 class TicketMessageController extends Controller
 {
@@ -72,7 +72,7 @@ class TicketMessageController extends Controller
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 try {
-                    $path = $file->store('tickets/' . $ticket->uuid, 'private');
+                    $path = $file->store('tickets/'.$ticket->uuid, 'private');
 
                     TicketAttachment::create([
                         'ticket_message_id' => $message->id,

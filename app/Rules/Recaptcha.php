@@ -20,7 +20,7 @@ class Recaptcha implements ValidationRule
             'remoteip' => request()->ip(),
         ]);
 
-        if (!$response->successful() || !$response->json('success')) {
+        if (! $response->successful() || ! $response->json('success')) {
             $fail('The reCAPTCHA verification failed. Please try again.');
         }
     }

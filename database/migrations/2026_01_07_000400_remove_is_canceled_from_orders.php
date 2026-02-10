@@ -23,7 +23,7 @@ return new class extends Migration
             // Log the exception for visibility but do not fail migrations on drivers
             // that cannot handle dropColumn (e.g., SQLite test DB).
             // In production (MySQL/Postgres) the dropColumn will work normally.
-            \Log::warning('Could not drop column is_canceled on orders: ' . $e->getMessage());
+            \Log::warning('Could not drop column is_canceled on orders: '.$e->getMessage());
         }
     }
 

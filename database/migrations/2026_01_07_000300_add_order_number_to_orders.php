@@ -1,18 +1,17 @@
 <?php
 
+use App\Models\Order;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use App\Models\Order;
 
 return new class extends Migration
 {
     public function up(): void
     {
         // Add column only if it doesn't exist
-        if (!Schema::hasColumn('orders', 'order_number')) {
+        if (! Schema::hasColumn('orders', 'order_number')) {
             Schema::table('orders', function (Blueprint $table) {
                 $table->string('order_number')->nullable()->after('id');
             });
@@ -22,9 +21,9 @@ return new class extends Migration
         $orders = Order::whereNull('order_number')->get();
         foreach ($orders as $order) {
             do {
-                $orderNumber = 'ORD-' . strtoupper(Str::random(4)) . '-' . strtoupper(Str::random(4));
+                $orderNumber = 'ORD-'.strtoupper(Str::random(4)).'-'.strtoupper(Str::random(4));
             } while (Order::where('order_number', $orderNumber)->exists());
-            
+
             $order->update(['order_number' => $orderNumber]);
         }
 

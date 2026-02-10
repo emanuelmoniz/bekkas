@@ -68,7 +68,6 @@
   @unless(isset($paymentInfo) && ($paymentInfo?->payment_status === 'pending'))
     @if(empty($suppressSdk))
       <div id="easypay-inline-root" class="bg-white shadow rounded p-4" aria-live="polite">
-        <div id="easypay-flash" class="mb-3" aria-live="polite" style="display:none"></div>
         <div id="easypay-checkout" class="min-h-[120px] flex items-center justify-center text-sm text-gray-600">
           <span id="easypay-checkout-loading">{{ t('checkout.pay.loading_widget') ?: 'Loading payment widget…' }}</span>
         </div>
@@ -111,9 +110,72 @@
               try {
                 const fn = cand();
                 if (typeof fn === 'function') {
-                  fn(manifest, { display: 'inline', container: '#easypay-checkout', testing: @json(config('easypay.env') === 'test') });
+                  // Provide an onSuccess hook and expose a deterministic global for tests to invoke.
+                  const handleSdkSuccess = function (checkoutPayload) {
+                    // Always POST the checkout wrapper to the server endpoint that persists payments
+                    const url = '/orders/{{ $order->uuid }}/pay/verify';
+                    const body = { checkout: checkoutPayload };
+
+                    fetch(url, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                      },
+                      body: JSON.stringify(body),
+                      credentials: 'same-origin'
+                    }).then(r => r.json()).then(json => {
+                      try {
+                        // Use server-side session flash (rendered in the global flash area).
+                        // Expose the returned message to tests and then reload the page so the
+                        // Blade-rendered flash (layouts.app) becomes visible.
+                        if (json?.message) {
+                          // test-only hook for deterministic E2E assertions
+                          window.__easypay_lastServerMessage = json.message;
+
+                          // If authoritative+paid we navigate to the order page (preserve previous UX).
+                          // Otherwise, show the server message in-page (do NOT reload the whole page).
+                          if (json?.paymentStatus === 'paid' && json?.authoritative) {
+                            window.location.href = '/orders/{{ $order->uuid }}';
+                            return;
+                          }
+
+                          // Tell the global flash store to show the server message (no HTML injection)
+                          if (window.Alpine && Alpine.store && Alpine.store('flash')) {
+                            // prefer an explicit type from the server; otherwise infer from paymentStatus
+                            const inferred = json?.type || (json?.paymentStatus === 'paid' ? 'success' : (json?.paymentStatus === 'authorised' ? 'info' : 'warning'));
+                            Alpine.store('flash').showMessage(json.message || '', inferred);
+                          }
+
+                          return;
+                        }
+
+                        // If no message was returned, preserve previous behaviour (no-op)
+                      } catch (err) {
+                        console.error('Easypay onSuccess client handler error', err);
+                      }
+                    }).catch(err => {
+                      console.warn('Easypay: could not POST checkout to server', err);
+                    });
+                  };
+
+                  // Expose deterministic hooks for tests (Cypress) and also attempt to pass to the SDK
+                  window.__easypay_onSuccess = handleSdkSuccess;
+
+                  // SDK onClose: when the SDK 'end' button is pressed, navigate to the order details page.
+                  const handleSdkClose = function () {
+                      try {
+                          window.location.assign('/orders/{{ $order->uuid }}');
+                      } catch (e) { window.location.href = '/orders/{{ $order->uuid }}'; }
+                  };
+                  window.__easypay_onClose = handleSdkClose;
+
+                  // Pass onSuccess AND onClose in the options (SDK may accept them) as well as container/display
+                  fn(manifest, { display: 'inline', container: '#easypay-checkout', testing: @json(config('easypay.env') === 'test'), onSuccess: handleSdkSuccess, onClose: handleSdkClose });
                   const loader = document.getElementById('easypay-checkout-loading');
                   if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+
                   return true;
                 }
               } catch (err) { /* continue */ }

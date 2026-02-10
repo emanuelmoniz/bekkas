@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             // Add tax_id column if it doesn't exist
-            if (!Schema::hasColumn('products', 'tax_id')) {
+            if (! Schema::hasColumn('products', 'tax_id')) {
                 $table->foreignId('tax_id')->nullable()->after('id')->constrained('taxes');
             }
         });

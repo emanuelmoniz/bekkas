@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
 
         // Merge session favorites to user account
         $sessionFavorites = session('favorites', []);
-        if (!empty($sessionFavorites)) {
+        if (! empty($sessionFavorites)) {
             foreach ($sessionFavorites as $productId) {
                 $user->favorites()->firstOrCreate(['product_id' => $productId]);
             }
@@ -42,6 +42,7 @@ class AuthenticatedSessionController extends Controller
         }
 
         $defaultRoute = $user->isAdmin() ? route('admin.dashboard', absolute: false) : '/';
+
         return redirect()->intended($defaultRoute);
     }
 

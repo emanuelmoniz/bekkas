@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Http\Requests\AddToCartRequest;
-use Illuminate\Http\Request;
+use App\Models\Product;
 
 class CartController extends Controller
 {
@@ -59,7 +58,7 @@ class CartController extends Controller
         }
 
         // Check if product has stock (unless backorder is allowed)
-        if (!$product->is_backorder && $product->stock <= 0) {
+        if (! $product->is_backorder && $product->stock <= 0) {
             return back()->with('error', 'This product is out of stock.');
         }
 
@@ -68,16 +67,16 @@ class CartController extends Controller
         $newQty = $currentQty + $request->quantity;
 
         // Validate requested quantity doesn't exceed available stock (unless backorder is allowed)
-        if (!$product->is_backorder && $newQty > $product->stock) {
+        if (! $product->is_backorder && $newQty > $product->stock) {
             return back()->with('error', str_replace(':stock', $product->stock, t('stock.only_available')));
         }
 
         $cart[$product->id] = $newQty;
 
         session()->put('cart', $cart);
-        
+
         // Store the referrer URL so user can continue shopping from where they left off
-        if ($request->headers->get('referer') && !str_contains($request->headers->get('referer'), '/cart')) {
+        if ($request->headers->get('referer') && ! str_contains($request->headers->get('referer'), '/cart')) {
             session()->put('shopping_return_url', $request->headers->get('referer'));
         }
 
@@ -87,12 +86,12 @@ class CartController extends Controller
     public function update(AddToCartRequest $request, Product $product)
     {
         // Check if product has stock (unless backorder is allowed)
-        if (!$product->is_backorder && $product->stock <= 0) {
+        if (! $product->is_backorder && $product->stock <= 0) {
             return back()->with('error', 'This product is out of stock.');
         }
 
         // Validate requested quantity doesn't exceed available stock (unless backorder is allowed)
-        if (!$product->is_backorder && $request->quantity > $product->stock) {
+        if (! $product->is_backorder && $request->quantity > $product->stock) {
             return back()->with('error', str_replace(':stock', $product->stock, t('stock.only_available')));
         }
 

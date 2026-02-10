@@ -2,19 +2,17 @@
 
 namespace App\Services;
 
-use App\Models\ShippingTier;
 use App\Models\Region;
 use App\Models\ShippingConfig;
+use App\Models\ShippingTier;
 use Illuminate\Support\Facades\DB;
 
 class DefaultShippingTierResolver
 {
     /**
      * Get the default shipping tier for a postal code and weight
-     * 
-     * @param string $postalCode
-     * @param int $weight Weight in grams
-     * @return ShippingTier|null
+     *
+     * @param  int  $weight  Weight in grams
      */
     public static function resolve(string $postalCode, int $weight = 0): ?ShippingTier
     {
@@ -42,12 +40,13 @@ class DefaultShippingTierResolver
         $defaultTierId = ShippingConfig::get('default_shipping_tier_id');
         if ($defaultTierId) {
             $tier = ShippingTier::find($defaultTierId);
-            
+
             // Verify weight if specified
             if ($tier && $weight > 0) {
                 if ($tier->weight_from <= $weight && $tier->weight_to >= $weight) {
                     return $tier;
                 }
+
                 // Weight doesn't match, find any tier matching weight
                 return ShippingTier::where('active', true)
                     ->where('weight_from', '<=', $weight)
@@ -55,7 +54,7 @@ class DefaultShippingTierResolver
                     ->orderBy('shipping_days', 'asc')
                     ->first();
             }
-            
+
             return $tier;
         }
 

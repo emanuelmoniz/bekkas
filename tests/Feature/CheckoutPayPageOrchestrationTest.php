@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Models\Address;
+use App\Models\EasypayCheckoutSession;
+use App\Models\EasypayPayload;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
-use App\Models\Address;
-use App\Models\EasypayPayload;
-use App\Models\EasypayCheckoutSession;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
@@ -35,7 +35,7 @@ class CheckoutPayPageOrchestrationTest extends TestCase
         $address = Address::factory()->create(['user_id' => $user->id]);
 
         // create an order (awaiting payment) without payload or sessions
-        $order = Order::factory()->for($user)->create([ 'status' => 'WAITING_PAYMENT', 'is_paid' => false ]);
+        $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
         // ensure no payload/session exists yet
         $this->assertNull($order->fresh()->easypayPayload);
@@ -67,11 +67,11 @@ class CheckoutPayPageOrchestrationTest extends TestCase
 
         $user = User::factory()->create();
         $product = Product::factory()->create(['price' => 7.25, 'stock' => 5]);
-        $order = Order::factory()->for($user)->create([ 'status' => 'WAITING_PAYMENT', 'is_paid' => false ]);
+        $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
         // create a payload and an *expired* session (updated_at older than TTL)
         $payload = EasypayPayload::create(['order_id' => $order->id, 'payload' => ['x' => 1]]);
-        $old = EasypayCheckoutSession::create([ 'order_id' => $order->id, 'payload_id' => $payload->id, 'status' => 'pending', 'is_active' => true, 'message' => json_encode(['stub' => true]) ]);
+        $old = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'status' => 'pending', 'is_active' => true, 'message' => json_encode(['stub' => true])]);
         \Illuminate\Support\Facades\DB::table('easypay_checkout_sessions')->where('id', $old->id)->update(['updated_at' => now()->subSeconds(3600)]);
 
         $this->assertEquals(1, $order->fresh()->easypayCheckoutSessions()->count());
@@ -103,7 +103,7 @@ class CheckoutPayPageOrchestrationTest extends TestCase
 
         $user = User::factory()->create();
         $product = Product::factory()->create(['price' => 5.0, 'stock' => 5]);
-        $order = Order::factory()->for($user)->create([ 'status' => 'WAITING_PAYMENT', 'is_paid' => false ]);
+        $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
         $resp = $this->actingAs($user)->get(route('orders.pay', $order->uuid));
         $resp->assertStatus(200);
@@ -123,5 +123,4 @@ class CheckoutPayPageOrchestrationTest extends TestCase
         $resp2->assertStatus(200);
         $this->assertTrue(str_contains($resp2->getContent(), 'Error') || \App\Models\EasypayCheckoutSession::where('order_id', $order->id)->where('in_error', true)->exists());
     }
-
 }

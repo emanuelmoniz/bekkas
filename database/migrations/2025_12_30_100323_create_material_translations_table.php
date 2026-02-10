@@ -9,16 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up(): void
-{
-    Schema::create('material_translations', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('material_id')->constrained()->cascadeOnDelete();
-        $table->string('locale', 5);
-        $table->string('name');
-        $table->unique(['material_id', 'locale']);
-    });
-}
+    public function up(): void
+    {
+        Schema::create('material_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('material_id')->constrained()->cascadeOnDelete();
+            $table->string('locale', 5);
+            $table->string('name');
+            $table->unique(['material_id', 'locale']);
+        });
+    }
 
     /**
      * Reverse the migrations.

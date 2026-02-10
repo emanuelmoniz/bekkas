@@ -12,6 +12,7 @@ class MaterialController extends Controller
     public function index()
     {
         $materials = Material::with('translations')->get();
+
         return view('admin.materials.index', compact('materials'));
     }
 
@@ -38,6 +39,7 @@ class MaterialController extends Controller
     public function edit(Material $material)
     {
         $material->load('translations');
+
         return view('admin.materials.edit', compact('material'));
     }
 
@@ -57,6 +59,7 @@ class MaterialController extends Controller
     public function destroy(Material $material)
     {
         $material->delete();
+
         return redirect()->route('admin.materials.index');
     }
 }

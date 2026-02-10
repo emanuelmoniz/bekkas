@@ -14,13 +14,19 @@ return new class extends Migration
 
         foreach ($rows as $row) {
             $payload = json_decode($row->payload, true);
-            if (! is_array($payload)) continue;
+            if (! is_array($payload)) {
+                continue;
+            }
 
             $lang = $payload['customer']['language'] ?? null;
-            if (! $lang || ! is_string($lang)) continue;
+            if (! $lang || ! is_string($lang)) {
+                continue;
+            }
 
             $new = strtoupper(substr($lang, 0, 2));
-            if ($new === $lang) continue;
+            if ($new === $lang) {
+                continue;
+            }
 
             $payload['customer']['language'] = $new;
 

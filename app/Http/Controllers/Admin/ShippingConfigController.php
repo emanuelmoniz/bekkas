@@ -22,6 +22,7 @@ class ShippingConfigController extends Controller
             'delivered' => 'Delivered',
             'cancelled' => 'Cancelled',
         ];
+
         return view('admin.shipping-config.index', compact(
             'freeShippingOver',
             'defaultShippingTierId',

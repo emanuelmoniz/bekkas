@@ -2,10 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Order;
 use App\Models\EasypayCheckoutSession;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
+use App\Models\Order;
 
 /**
  * Small orchestration helpers for Easypay-related pay-page flows.
@@ -25,6 +23,7 @@ class EasypayOrchestrationService
         }
 
         $age = now()->getTimestamp() - $s->updated_at->getTimestamp();
+
         return $age < $ttl;
     }
 
@@ -34,7 +33,9 @@ class EasypayOrchestrationService
     public function getLatestActiveManifest(Order $order, int $ttl): ?array
     {
         $latest = $order->easypayCheckoutSessions()->latest('updated_at')->first();
-        if (! $latest) return null;
+        if (! $latest) {
+            return null;
+        }
 
         if (self::isSessionFresh($latest, $ttl)) {
             return json_decode($latest->message ?? 'null', true);
@@ -71,7 +72,7 @@ class EasypayOrchestrationService
             $msg = t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.';
             if (config('app.debug')) {
                 $debug = is_string($newSession->message) ? $newSession->message : json_encode($newSession->message);
-                $msg = ($msg . ' ' . (t('checkout.pay.unavailable_debug', ['error' => $debug]) ?: $debug));
+                $msg = ($msg.' '.(t('checkout.pay.unavailable_debug', ['error' => $debug]) ?: $debug));
             }
 
             return ['manifest' => null, 'message' => $msg];
@@ -95,7 +96,7 @@ class EasypayOrchestrationService
     {
         $msg = t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.';
         if (config('app.debug') && $debug) {
-            $msg = $msg . ' ' . (t('checkout.pay.unavailable_debug', ['error' => $debug]) ?: $debug);
+            $msg = $msg.' '.(t('checkout.pay.unavailable_debug', ['error' => $debug]) ?: $debug);
         }
 
         return $msg;
@@ -125,7 +126,7 @@ class EasypayOrchestrationService
             $latestSession->update(['is_active' => false, 'status' => ($cancel['ok'] ? 'canceled' : 'error'), 'in_error' => $cancel['ok'] ? false : true]);
 
             if ($lastPayment->payment_id) {
-                $single = (new \App\Services\EasypayService())->getSinglePayment($lastPayment->payment_id);
+                $single = (new \App\Services\EasypayService)->getSinglePayment($lastPayment->payment_id);
                 if ($single) {
                     $lastPayment->update([
                         'payment_status' => data_get($single, 'payment_status') ?? data_get($single, 'payment.status'),
@@ -136,6 +137,7 @@ class EasypayOrchestrationService
                     // Only treat the remote payment as authoritative when it reports exactly 'paid'.
                     if (($lastPayment->payment_status ?? null) === 'paid') {
                         $order->markAsPaid('easypay', ['payment_id' => $lastPayment->payment_id]);
+
                         return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid') ?: 'Order already paid', 'manifest' => null];
                     }
                 }
@@ -168,6 +170,7 @@ class EasypayOrchestrationService
             $payload = $order->easypayPayload ?? \App\Services\EasypayService::createOrGetPayload($order);
             $new = \App\Services\EasypayService::createCheckoutSession($payload);
             $manifest = $new->message ? json_decode($new->message, true) : null;
+
             return $manifest && $new->is_active ? ['action' => 'new-manifest', 'manifest' => $manifest] : ['action' => 'error', 'message' => self::buildPayUnavailableMessage($new->message ?? null)];
         }
 
@@ -178,14 +181,14 @@ class EasypayOrchestrationService
             }
 
             if ($paymentId) {
-                $single = (new \App\Services\EasypayService())->getSinglePayment($paymentId);
+                $single = (new \App\Services\EasypayService)->getSinglePayment($paymentId);
                 if ($single) {
                     // Build authoritative attrs from remote response
                     $attrs = [
                         'payment_id' => data_get($single, 'id') ?? $paymentId,
                         'checkout_id' => $checkoutId,
                         'order_id' => $order->id,
-                        'payment_status' => data_get($single,'payment_status') ?? data_get($single,'payment.status'),
+                        'payment_status' => data_get($single, 'payment_status') ?? data_get($single, 'payment.status'),
                         'paid_at' => data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : null,
                         'raw_response' => $single,
                     ];
@@ -218,11 +221,9 @@ class EasypayOrchestrationService
                     $stored = \App\Models\EasypayPayment::where('payment_id', $attrs['payment_id'])->where('order_id', $order->id)->first();
                     $status = $stored ? $stored->payment_status : ($attrs['payment_status'] ?? null);
 
-
-
                     // Fallback: if order-scoped row wasn't updated but remote shows paid, try a global update by payment_id
                     $remoteStatus = $attrs['payment_status'] ?? null;
-                    if (! in_array($status, ['paid','success'], true) && in_array($remoteStatus, ['paid','success'], true)) {
+                    if (! in_array($status, ['paid', 'success'], true) && in_array($remoteStatus, ['paid', 'success'], true)) {
                         \App\Models\EasypayPayment::where('payment_id', $attrs['payment_id'])->update([
                             'payment_status' => $remoteStatus,
                             'paid_at' => $attrs['paid_at'],
@@ -271,25 +272,25 @@ class EasypayOrchestrationService
             return $manifest && $new->is_active ? ['action' => 'new-manifest', 'manifest' => $manifest] : ['action' => 'error', 'message' => self::buildPayUnavailableMessage($new->message ?? null)];
         }
 
-        if (in_array($code, ['generic-error','payment-failure'], true)) {
+        if (in_array($code, ['generic-error', 'payment-failure'], true)) {
             if ($paymentId) {
-                $single = (new \App\Services\EasypayService())->getSinglePayment($paymentId);
+                $single = (new \App\Services\EasypayService)->getSinglePayment($paymentId);
                 if ($single) {
                     $attrs = [
                         'checkout_id' => $checkoutId,
                         'order_id' => $order->id,
-                        'payment_status' => data_get($single,'payment_status') ?? data_get($single,'payment.status'),
+                        'payment_status' => data_get($single, 'payment_status') ?? data_get($single, 'payment.status'),
                         'raw_response' => $single,
                     ];
 
-                    \App\Models\EasypayPayment::updateOrCreate(['payment_id' => data_get($single,'id')], $attrs);
+                    \App\Models\EasypayPayment::updateOrCreate(['payment_id' => data_get($single, 'id')], $attrs);
 
-                    $stored = \App\Models\EasypayPayment::where('payment_id', data_get($single,'id'))->first();
+                    $stored = \App\Models\EasypayPayment::where('payment_id', data_get($single, 'id'))->first();
                     $status = $stored ? $stored->payment_status : ($attrs['payment_status'] ?? null);
 
                     // Require authoritative remote confirmation (exactly 'paid').
                     if ($status === 'paid') {
-                        $order->markAsPaid('easypay', ['payment_id' => data_get($single,'id')]);
+                        $order->markAsPaid('easypay', ['payment_id' => data_get($single, 'id')]);
 
                         // ensure stored payment reflects paid status (persist paid_at/raw_response if needed)
                         if ($stored && $stored->payment_status !== $status) {

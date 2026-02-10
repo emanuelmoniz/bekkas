@@ -49,7 +49,7 @@ if (! function_exists('apply_t_replacements')) {
 
         $lookup = [];
         foreach ($replacements as $key => $replacement) {
-            $lookup[':' . ltrim($key, ':')] = $replacement;
+            $lookup[':'.ltrim($key, ':')] = $replacement;
         }
 
         return strtr($value, $lookup);

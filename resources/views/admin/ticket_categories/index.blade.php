@@ -8,11 +8,7 @@
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            @if (session('error'))
-                <div class="mb-4 bg-red-100 text-red-800 p-4 rounded">
-                    {{ session('error') }}
-                </div>
-            @endif
+            <!-- page-level flash removed — use global flash (session('error') will render in layout) -->
 
             <div class="mb-4 flex justify-end">
                 <a href="{{ route('admin.ticket-categories.create') }}"

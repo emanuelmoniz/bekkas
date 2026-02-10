@@ -58,16 +58,15 @@ class TicketStatusController extends Controller
         TicketMessage::create([
             'ticket_id' => $ticket->id,
             'user_id' => $user->id,
-            'message' => 'Ticket closed. Reason: ' . $request->reason,
+            'message' => 'Ticket closed. Reason: '.$request->reason,
             'is_system' => true,
         ]);
 
-	$ticket->notifyParticipants(
-    		$ticket->messages()->latest()->first(),
-    		'Ticket closed',
-    		$user->id
-	);
-
+        $ticket->notifyParticipants(
+            $ticket->messages()->latest()->first(),
+            'Ticket closed',
+            $user->id
+        );
 
         // ✅ Mark unread for other participant
         $this->updateReadStateForSystemMessage($ticket, $user->id);
@@ -100,15 +99,15 @@ class TicketStatusController extends Controller
         TicketMessage::create([
             'ticket_id' => $ticket->id,
             'user_id' => $user->id,
-            'message' => 'Ticket reopened. Reason: ' . $request->reason,
+            'message' => 'Ticket reopened. Reason: '.$request->reason,
             'is_system' => true,
         ]);
 
-	$ticket->notifyParticipants(
-    		$ticket->messages()->latest()->first(),
-    		'Ticket reopened',
-    		$user->id
-	);
+        $ticket->notifyParticipants(
+            $ticket->messages()->latest()->first(),
+            'Ticket reopened',
+            $user->id
+        );
 
         // ✅ Mark unread for other participant
         $this->updateReadStateForSystemMessage($ticket, $user->id);
@@ -129,7 +128,7 @@ class TicketStatusController extends Controller
 
         // Redirect based on which route was called
         $currentRoute = Route::currentRouteName();
-        
+
         return $currentRoute === 'admin.tickets.mark-unread'
             ? redirect()->route('admin.tickets.index')
             : redirect()->route('tickets.index');

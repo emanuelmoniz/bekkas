@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\Order;
+use App\Models\User;
 
 class OrderPolicy
 {
@@ -40,7 +40,8 @@ class OrderPolicy
     public function cancel(User $user, Order $order): bool
     {
         // User can cancel their own unpaid orders, or admin can cancel any
-        $canCancelOwn = $user->id === $order->user_id && !$order->is_paid;
+        $canCancelOwn = $user->id === $order->user_id && ! $order->is_paid;
+
         return $canCancelOwn || $user->isAdmin();
     }
 

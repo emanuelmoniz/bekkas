@@ -16,7 +16,7 @@ return new class extends Migration
 
             // Each region can have only one default shipping tier
             $table->unique('region_id');
-            
+
             // Index for faster lookups
             $table->index('shipping_tier_id');
         });

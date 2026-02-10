@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
+use App\Mail\TicketNotification;
+use App\Models\Role;
 use App\Models\Ticket;
 use App\Models\TicketCategory;
-use App\Models\Role;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\TicketNotification;
+use Tests\TestCase;
 
 class TicketAdminMessageTest extends TestCase
 {

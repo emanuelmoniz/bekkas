@@ -11,10 +11,10 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             // Drop the foreign key constraint first
             $table->dropForeign(['address_id']);
-            
+
             // Make address_id nullable (keep for reference but not enforced)
             $table->foreignId('address_id')->nullable()->change();
-            
+
             // Add address snapshot columns
             $table->string('address_title')->after('address_id');
             $table->string('address_nif')->nullable()->after('address_title');
@@ -39,7 +39,7 @@ return new class extends Migration
                 'address_city',
                 'address_country',
             ]);
-            
+
             // Restore foreign key constraint
             $table->foreignId('address_id')->change();
             $table->foreign('address_id')->references('id')->on('addresses');

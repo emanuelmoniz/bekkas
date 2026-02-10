@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use App\Mail\TicketNotification;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Notification;
-use App\Models\User;
-use App\Models\TicketMessage;
+use Illuminate\Support\Str;
 
 class Ticket extends Model
 {
@@ -29,7 +26,7 @@ class Ticket extends Model
         'opened_at' => 'datetime',
         'closed_at' => 'datetime',
         'last_message_at' => 'datetime',
-	'due_date' => 'date',
+        'due_date' => 'date',
         'uuid' => 'string',
     ];
 
@@ -93,16 +90,17 @@ class Ticket extends Model
     public function isUnreadFor(int $userId): bool
     {
         $lastRead = $this->read_state[$userId] ?? null;
+
         return ! $lastRead || $this->last_message_at > $lastRead;
     }
 
     /* ================= EMAIL NOTIFICATIONS  ================= */
-    public function notifyParticipants(TicketMessage $message, string $eventLabel, int $actorId): void 
+    public function notifyParticipants(TicketMessage $message, string $eventLabel, int $actorId): void
     {
-    	$recipients = User::where(function ($q) {
-            	$q->where('id', $this->user_id)
-              	->orWhereHas('roles', fn ($r) => $r->where('name', 'admin'));
-            })
+        $recipients = User::where(function ($q) {
+            $q->where('id', $this->user_id)
+                ->orWhereHas('roles', fn ($r) => $r->where('name', 'admin'));
+        })
             ->where('id', '!=', $actorId)
             ->get();
 

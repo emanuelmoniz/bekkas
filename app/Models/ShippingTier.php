@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ShippingTier extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name_pt',
         'name_en',

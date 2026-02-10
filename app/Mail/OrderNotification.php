@@ -4,17 +4,20 @@ namespace App\Mail;
 
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class OrderNotification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     public Order $order;
+
     public string $eventLabel;
+
     public string $recipientName;
+
     public ?string $statusLabel;
 
     public function __construct(Order $order, string $eventLabel, string $recipientName, ?string $statusLabel = null)

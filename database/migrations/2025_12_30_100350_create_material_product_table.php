@@ -9,15 +9,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up(): void
-{
-    Schema::create('material_product', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-        $table->foreignId('material_id')->constrained()->cascadeOnDelete();
-        $table->unique(['product_id', 'material_id']);
-    });
-}
+    public function up(): void
+    {
+        Schema::create('material_product', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('material_id')->constrained()->cascadeOnDelete();
+            $table->unique(['product_id', 'material_id']);
+        });
+    }
 
     /**
      * Reverse the migrations.

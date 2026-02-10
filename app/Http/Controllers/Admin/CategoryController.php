@@ -12,12 +12,14 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::with(['translations', 'parent.translations'])->get();
+
         return view('admin.categories.index', compact('categories'));
     }
 
     public function create()
     {
         $categories = Category::with('translations')->get();
+
         return view('admin.categories.create', compact('categories'));
     }
 

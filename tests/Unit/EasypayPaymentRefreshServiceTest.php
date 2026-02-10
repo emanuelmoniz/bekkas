@@ -2,14 +2,14 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-use App\Models\Order;
 use App\Models\EasypayPayment;
+use App\Models\Order;
 use App\Models\User;
 use App\Services\EasypayPaymentRefreshService;
 use App\Services\EasypayService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
+use Tests\TestCase;
 
 class EasypayPaymentRefreshServiceTest extends TestCase
 {
@@ -36,7 +36,7 @@ class EasypayPaymentRefreshServiceTest extends TestCase
         $this->assertFalse($order->fresh()->is_paid);
 
         // When Easypay authoritative endpoint confirms 'paid' the order becomes paid
-        $single = [ 'id' => 'pay_db_paid', 'payment_status' => 'paid', 'paid_at' => now()->toIso8601String() ];
+        $single = ['id' => 'pay_db_paid', 'payment_status' => 'paid', 'paid_at' => now()->toIso8601String()];
         $mock = Mockery::mock(EasypayService::class);
         $mock->shouldReceive('getSinglePayment')->with('pay_db_paid')->andReturn($single);
         $this->app->instance(EasypayService::class, $mock);
@@ -60,7 +60,7 @@ class EasypayPaymentRefreshServiceTest extends TestCase
             'payment_status' => 'pending',
         ]);
 
-        $single = [ 'id' => 'pay_remote_paid', 'payment_status' => 'paid', 'paid_at' => now()->toIso8601String() ];
+        $single = ['id' => 'pay_remote_paid', 'payment_status' => 'paid', 'paid_at' => now()->toIso8601String()];
 
         $mock = Mockery::mock(EasypayService::class);
         $mock->shouldReceive('getSinglePayment')->with('pay_remote_paid')->andReturn($single);

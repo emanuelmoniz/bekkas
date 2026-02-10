@@ -2,16 +2,15 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
-use App\Models\Product;
-use App\Models\Tax;
-use App\Models\ShippingTier;
-use App\Models\ShippingConfig;
 use App\Models\Country;
-use App\Models\Address;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\ShippingConfig;
+use App\Models\ShippingTier;
+use App\Models\Tax;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CheckoutTest extends TestCase
 {
@@ -106,7 +105,7 @@ class CheckoutTest extends TestCase
 
         $json = $response->json();
         $tiers = collect($json['tiers']);
-        $this->assertTrue($tiers->contains(fn($t) => ($t['is_free'] ?? false) === true));
+        $this->assertTrue($tiers->contains(fn ($t) => ($t['is_free'] ?? false) === true));
     }
 
     public function test_place_order_creates_order_and_decrements_stock()

@@ -30,10 +30,10 @@ class Product extends Model
      * Use UUIDs for public URL generation and route model binding.
      */
     protected $casts = [
-        'is_new'   => 'boolean',
+        'is_new' => 'boolean',
         'is_promo' => 'boolean',
         'is_backorder' => 'boolean',
-        'active'   => 'boolean',
+        'active' => 'boolean',
         'price' => 'decimal:2',
         'promo_price' => 'decimal:2',
         'weight' => 'decimal:3',
@@ -86,10 +86,11 @@ class Product extends Model
         // return a small object that mimics the Tax model interface used
         // by the rest of the app (`->percentage`, `->id`, `->is_active`).
         if (! is_null($value) && $value !== '') {
-            $obj = new \stdClass();
+            $obj = new \stdClass;
             $obj->id = $this->tax_id ?? null;
             $obj->percentage = is_numeric($value) ? (float) $value : null;
             $obj->is_active = null;
+
             return $obj;
         }
 
@@ -104,6 +105,7 @@ class Product extends Model
     public function translation($locale = null)
     {
         $locale = $locale ?? app()->getLocale();
+
         return $this->translations->where('locale', $locale)->first();
     }
 

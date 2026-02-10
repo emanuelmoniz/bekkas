@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
+use Tests\TestCase;
 
 class OrdersPayButtonTest extends TestCase
 {
@@ -19,7 +19,7 @@ class OrdersPayButtonTest extends TestCase
 
         $user = User::factory()->create();
         $product = Product::factory()->create(['price' => 5.0, 'stock' => 5]);
-        $order = Order::factory()->for($user)->create([ 'status' => 'WAITING_PAYMENT', 'is_paid' => false ]);
+        $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
         $resp = $this->actingAs($user)->get(route('orders.show', $order));
         $resp->assertStatus(200);

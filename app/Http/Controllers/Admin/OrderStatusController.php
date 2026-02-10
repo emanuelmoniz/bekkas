@@ -11,12 +11,14 @@ class OrderStatusController extends Controller
     public function index()
     {
         $statuses = OrderStatus::with('translations')->orderBy('sort_order')->get();
+
         return view('admin.order-statuses.index', compact('statuses'));
     }
 
     public function create()
     {
         $locales = config('app.locales');
+
         return view('admin.order-statuses.create', compact('locales'));
     }
 
@@ -49,13 +51,14 @@ class OrderStatusController extends Controller
     {
         $orderStatus->load('translations');
         $locales = config('app.locales');
+
         return view('admin.order-statuses.edit', compact('orderStatus', 'locales'));
     }
 
     public function update(Request $request, OrderStatus $orderStatus)
     {
         $request->validate([
-            'code' => 'required|string|max:255|unique:order_statuses,code,' . $orderStatus->id,
+            'code' => 'required|string|max:255|unique:order_statuses,code,'.$orderStatus->id,
             'sort_order' => 'required|integer',
             'translations' => 'required|array',
             'translations.*.locale' => 'required|string',
@@ -80,6 +83,7 @@ class OrderStatusController extends Controller
     public function destroy(OrderStatus $orderStatus)
     {
         $orderStatus->delete();
+
         return redirect()->route('admin.order-statuses.index')->with('success', 'Order status deleted successfully!');
     }
 }

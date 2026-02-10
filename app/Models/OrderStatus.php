@@ -17,6 +17,7 @@ class OrderStatus extends Model
     public function translation(?string $locale = null)
     {
         $locale = $locale ?? app()->getLocale();
+
         return $this->translations()->where('locale', $locale)->first();
     }
 }

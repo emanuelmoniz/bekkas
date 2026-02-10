@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 class Order extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'user_id',
         'address_id',
@@ -73,9 +74,9 @@ class Order extends Model
 
             // Generate unique order number like: ORD-A3F9-2B7E
             do {
-                $orderNumber = 'ORD-' . strtoupper(Str::random(4)) . '-' . strtoupper(Str::random(4));
+                $orderNumber = 'ORD-'.strtoupper(Str::random(4)).'-'.strtoupper(Str::random(4));
             } while (self::where('order_number', $orderNumber)->exists());
-            
+
             $order->order_number = $orderNumber;
         });
 
@@ -146,7 +147,7 @@ class Order extends Model
      *
      * @param  string|null  $source  source of the confirmation (for logging)
      * @param  array  $meta  optional metadata (payment_id, raw_response, actor)
-     * @return bool  true when transition occurred, false when already paid
+     * @return bool true when transition occurred, false when already paid
      */
     public function markAsPaid(?string $source = null, array $meta = []): bool
     {
@@ -177,11 +178,10 @@ class Order extends Model
         if ($ok) {
             try {
                 \Log::warning('order.marked_paid_manual', ['order_id' => $this->id, 'admin_id' => $adminUserId]);
-            } catch (\Throwable $e) { /* ignore */ }
+            } catch (\Throwable $e) { /* ignore */
+            }
         }
 
         return $ok;
     }
 }
-
-

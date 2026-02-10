@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Rules\PasswordValidation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Rules\PasswordValidation;
 
 class PasswordController extends Controller
 {
@@ -21,7 +21,7 @@ class PasswordController extends Controller
             'password' => [
                 'required',
                 'confirmed',
-                PasswordValidation::rules()
+                PasswordValidation::rules(),
             ],
         ], [
             'current_password.required' => t('validation.current_password_required'),

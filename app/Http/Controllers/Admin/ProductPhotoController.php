@@ -23,7 +23,7 @@ class ProductPhotoController extends Controller
 
             $product->photos()->create([
                 'path' => $path,
-                'is_primary' => !$hasPrimary && $index === 0,
+                'is_primary' => ! $hasPrimary && $index === 0,
             ]);
         }
 

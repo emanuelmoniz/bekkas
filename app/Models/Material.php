@@ -16,6 +16,7 @@ class Material extends Model
     public function translation($locale = null)
     {
         $locale = $locale ?? app()->getLocale();
+
         return $this->translations->where('locale', $locale)->first();
     }
 

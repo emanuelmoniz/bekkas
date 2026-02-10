@@ -2,13 +2,11 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Order;
-use App\Models\EasypayPayload;
-use App\Models\EasypayCheckoutSession;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
+use Tests\TestCase;
 
 class CheckoutPayPageSdkTest extends TestCase
 {
@@ -18,12 +16,12 @@ class CheckoutPayPageSdkTest extends TestCase
     {
         // Arrange: create user + order in WAITING_PAYMENT
         $user = User::factory()->create();
-        $order = Order::factory()->for($user)->create([ 'status' => 'WAITING_PAYMENT', 'is_paid' => false ]);
+        $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
         // create a persisted checkout session (active + pending) with a sample manifest
         $manifest = [
             'checkout' => ['id' => 'test-checkout-123', 'status' => 'pending'],
-            'payment' => ['id' => 'pay-1', 'status' => 'pending']
+            'payment' => ['id' => 'pay-1', 'status' => 'pending'],
         ];
 
         $session = \App\Models\EasypayCheckoutSession::create([
@@ -65,7 +63,7 @@ class CheckoutPayPageSdkTest extends TestCase
         Config::set('easypay.enabled', false);
 
         $user = User::factory()->create();
-        $order = Order::factory()->for($user)->create([ 'status' => 'WAITING_PAYMENT', 'is_paid' => false ]);
+        $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
         $resp = $this->actingAs($user)->get(route('orders.pay', $order->uuid));
 

@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Address;
 use App\Models\Order;
 use App\Models\User;
-use App\Models\Address;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OrderFactory extends Factory
 {
@@ -21,6 +21,7 @@ class OrderFactory extends Factory
         if (! empty($attributes)) {
             $factory->state($attributes);
         }
+
         return $this->has($factory, 'items');
     }
 

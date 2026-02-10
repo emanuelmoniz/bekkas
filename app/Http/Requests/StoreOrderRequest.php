@@ -44,29 +44,29 @@ class StoreOrderRequest extends FormRequest
             'address_id.required_without' => t('checkout.validation.address_required') ?: 'Please select an address or provide a new one.',
             'address_id.exists' => t('checkout.validation.address_invalid') ?: 'The selected address is invalid.',
             'address_id.integer' => t('checkout.validation.address_invalid') ?: 'The selected address is invalid.',
-            
+
             'title.required_without' => t('checkout.validation.title_required') ?: 'Please provide an address title.',
             'title.string' => t('checkout.validation.title_required') ?: 'Please provide an address title.',
             'title.max' => t('checkout.validation.title_max') ?: 'Address title is too long.',
-            
+
             'nif.string' => t('checkout.validation.nif_invalid') ?: 'NIF/VAT number format is invalid.',
             'nif.max' => t('checkout.validation.nif_max') ?: 'NIF/VAT number is too long.',
-            
+
             'address_line_1.required_without' => t('checkout.validation.address_line_1_required') ?: 'Address is required.',
             'address_line_1.string' => t('checkout.validation.address_line_1_required') ?: 'Address is required.',
             'address_line_1.max' => t('checkout.validation.address_line_1_max') ?: 'Address is too long.',
-            
+
             'address_line_2.string' => t('checkout.validation.address_line_2_invalid') ?: 'Address line 2 format is invalid.',
             'address_line_2.max' => t('checkout.validation.address_line_2_max') ?: 'Address line 2 is too long.',
-            
+
             'postal_code.required_without' => t('checkout.validation.postal_code_required') ?: 'Postal code is required.',
             'postal_code.string' => t('checkout.validation.postal_code_required') ?: 'Postal code is required.',
             'postal_code.max' => t('checkout.validation.postal_code_max') ?: 'Postal code is too long.',
-            
+
             'city.required_without' => t('checkout.validation.city_required') ?: 'City is required.',
             'city.string' => t('checkout.validation.city_required') ?: 'City is required.',
             'city.max' => t('checkout.validation.city_max') ?: 'City name is too long.',
-            
+
             'country_id.required_without' => t('checkout.validation.country_required') ?: 'Country is required.',
             'country_id.exists' => t('checkout.validation.country_invalid') ?: 'Please select a valid country.',
         ];

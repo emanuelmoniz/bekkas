@@ -37,7 +37,9 @@ class EasypayPaymentRefreshService
         ];
 
         $latest = $order->easypayPayments()->latest('created_at')->first();
-        if (! $latest) return $result;
+        if (! $latest) {
+            return $result;
+        }
 
         // Do NOT mark orders paid solely from stale DB state. The authoritative source
         // is Easypay's single-payment endpoint — only that response may flip an order to paid.
@@ -100,6 +102,7 @@ class EasypayPaymentRefreshService
                 $result['suppressSdk'] = false;
                 $result['paymentInfo'] = null;
                 $result['paymentStatus'] = null;
+
                 return $result;
             }
 
@@ -134,7 +137,7 @@ class EasypayPaymentRefreshService
                 $result['suppressSdk'] = true;
                 $result['paymentStatusMessage'] = t('checkout.pay.status.paid') ?: 'Payment completed — your order is being processed.';
 
-            // authorised is authoritative for suppressing SDK but does NOT mark paid
+                // authorised is authoritative for suppressing SDK but does NOT mark paid
             } elseif (($latest->payment_status ?? null) === 'authorised') {
                 $result['suppressSdk'] = true;
                 $result['paymentStatusMessage'] = t('checkout.pay.status.authorised') ?: 'Payment authorised — processing is underway, please check your order details in a moment.';

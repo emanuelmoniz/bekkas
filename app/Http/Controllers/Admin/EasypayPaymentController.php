@@ -17,7 +17,7 @@ class EasypayPaymentController extends Controller
 
         if ($request->filled('order_number')) {
             $query->whereHas('order', function ($q) use ($request) {
-                $q->where('order_number', 'like', '%' . $request->order_number . '%');
+                $q->where('order_number', 'like', '%'.$request->order_number.'%');
             });
         }
 
@@ -25,14 +25,14 @@ class EasypayPaymentController extends Controller
             // allow filtering by paid_at (preferred) or fall back to created_at for older rows
             $query->where(function ($q) use ($request) {
                 $q->whereDate('paid_at', '>=', $request->from_paid_date)
-                  ->orWhereDate('created_at', '>=', $request->from_paid_date);
+                    ->orWhereDate('created_at', '>=', $request->from_paid_date);
             });
         }
 
         if ($request->filled('to_paid_date')) {
             $query->where(function ($q) use ($request) {
                 $q->whereDate('paid_at', '<=', $request->to_paid_date)
-                  ->orWhereDate('created_at', '<=', $request->to_paid_date);
+                    ->orWhereDate('created_at', '<=', $request->to_paid_date);
             });
         }
 
@@ -55,6 +55,7 @@ class EasypayPaymentController extends Controller
     public function show(EasypayPayment $payment)
     {
         $payment->load(['order.user', 'checkoutSession']);
+
         return view('admin.orders.payments.show', ['payment' => $payment]);
     }
 }

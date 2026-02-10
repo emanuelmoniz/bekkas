@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
+use App\Models\TicketAttachment;
 use App\Models\TicketCategory;
 use App\Models\TicketMessage;
-use App\Models\TicketAttachment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,11 +29,11 @@ class TicketAdminController extends Controller
             'is_system' => true,
         ]);
 
-	$ticket->notifyParticipants(
-    		$message,
-    		'Administrative update',
-    		Auth::id()
-	);
+        $ticket->notifyParticipants(
+            $message,
+            'Administrative update',
+            Auth::id()
+        );
 
         // unread for other participant
         $state = $ticket->read_state ?? [];
@@ -71,11 +71,11 @@ class TicketAdminController extends Controller
         $query = Ticket::with('category.translations', 'owner');
 
         if ($request->filled('ticket_id')) {
-            $query->where('id', 'like', '%' . trim($request->ticket_id) . '%');
+            $query->where('id', 'like', '%'.trim($request->ticket_id).'%');
         }
 
         if ($request->filled('title')) {
-            $query->where('title', 'like', '%' . trim($request->title) . '%');
+            $query->where('title', 'like', '%'.trim($request->title).'%');
         }
 
         if ($request->filled('category_id')) {
@@ -84,13 +84,13 @@ class TicketAdminController extends Controller
 
         if ($request->filled('user')) {
             $query->whereHas('owner', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . trim($request->user) . '%');
+                $q->where('name', 'like', '%'.trim($request->user).'%');
             });
         }
 
         if ($request->filled('email')) {
             $query->whereHas('owner', function ($q) use ($request) {
-                $q->where('email', 'like', '%' . trim($request->email) . '%');
+                $q->where('email', 'like', '%'.trim($request->email).'%');
             });
         }
 
@@ -233,7 +233,7 @@ class TicketAdminController extends Controller
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $path = $file->store(
-                    'tickets/' . $ticket->uuid,
+                    'tickets/'.$ticket->uuid,
                     'private'
                 );
 

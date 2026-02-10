@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasColumn('order_items', 'was_backordered')) {
+        if (! Schema::hasColumn('order_items', 'was_backordered')) {
             Schema::table('order_items', function (Blueprint $table) {
                 $table->boolean('was_backordered')->default(false)->after('quantity');
             });

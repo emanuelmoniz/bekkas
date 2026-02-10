@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Region;
 use App\Models\Country;
+use App\Models\Region;
 use App\Models\ShippingTier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +17,7 @@ class RegionController extends Controller
 
         // Filter by name
         if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%');
+            $query->where('name', 'like', '%'.$request->name.'%');
         }
 
         // Filter by country
@@ -28,9 +28,9 @@ class RegionController extends Controller
         // Filter by postal code (matches if search is between from and to)
         if ($request->filled('postal_code')) {
             $postalCode = $request->postal_code;
-            $query->where(function($q) use ($postalCode) {
+            $query->where(function ($q) use ($postalCode) {
                 $q->where('postal_code_from', '<=', $postalCode)
-                  ->where('postal_code_to', '>=', $postalCode);
+                    ->where('postal_code_to', '>=', $postalCode);
             });
         }
 
@@ -48,6 +48,7 @@ class RegionController extends Controller
     public function create()
     {
         $countries = Country::where('is_active', true)->orderBy('name_en')->get();
+
         return view('admin.regions.create', compact('countries'));
     }
 
@@ -74,6 +75,7 @@ class RegionController extends Controller
     public function show(Region $region)
     {
         $region->load('country');
+
         return view('admin.regions.show', compact('region'));
     }
 
@@ -81,12 +83,12 @@ class RegionController extends Controller
     {
         $countries = Country::where('is_active', true)->orderBy('name_en')->get();
         $shippingTiers = ShippingTier::where('use_for_default', true)->orderBy('name_en')->get();
-        
+
         // Get current default shipping tier for this region
         $defaultShippingTierId = DB::table('region_default_shipping_tiers')
             ->where('region_id', $region->id)
             ->value('shipping_tier_id');
-        
+
         return view('admin.regions.edit', compact('region', 'countries', 'shippingTiers', 'defaultShippingTierId'));
     }
 
@@ -113,7 +115,7 @@ class RegionController extends Controller
             DB::table('region_default_shipping_tiers')
                 ->where('region_id', $region->id)
                 ->delete();
-            
+
             if ($request->filled('default_shipping_tier_id')) {
                 DB::table('region_default_shipping_tiers')->insert([
                     'region_id' => $region->id,
@@ -131,6 +133,7 @@ class RegionController extends Controller
     public function destroy(Region $region)
     {
         $region->delete();
+
         return redirect()->route('admin.regions.index');
     }
 }

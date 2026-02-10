@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Tests\TestCase;
 
 class UuidNotNullableTest extends TestCase
 {
@@ -18,8 +18,11 @@ class UuidNotNullableTest extends TestCase
 
         $find = function ($rows, $name) {
             foreach ($rows as $r) {
-                if ($r->name === $name) return $r;
+                if ($r->name === $name) {
+                    return $r;
+                }
             }
+
             return null;
         };
 

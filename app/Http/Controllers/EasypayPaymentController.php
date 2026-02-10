@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EasypayPayment;
 use App\Models\EasypayCheckoutSession;
+use App\Models\EasypayPayment;
 use App\Models\Order;
 use App\Services\EasypayService;
 use Illuminate\Http\Request;
@@ -49,7 +49,7 @@ class EasypayPaymentController extends Controller
             return response()->json(['action' => 'error', 'message' => t('checkout.gateways.disabled') ?: (t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable')]);
         }
 
-        $orch = new \App\Services\EasypayOrchestrationService();
+        $orch = new \App\Services\EasypayOrchestrationService;
         $result = $orch->handleSdkError($order, (array) $error);
 
         // extract paymentId from the SDK payload (controller-level)
@@ -63,21 +63,21 @@ class EasypayPaymentController extends Controller
                 $status = data_get($single, 'payment_status') ?? data_get($single, 'payment.status');
                 // Only treat 'paid' from the authoritative endpoint as confirmation.
                 if ($status === 'paid') {
-                    \App\Models\EasypayPayment::where('payment_id', data_get($single,'id'))->update([
+                    \App\Models\EasypayPayment::where('payment_id', data_get($single, 'id'))->update([
                         'payment_status' => $status,
                         'paid_at' => data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : null,
                         'raw_response' => $single,
                     ]);
 
                     if ($order) {
-                        $order->markAsPaid('easypay', ['payment_id' => data_get($single,'id')]);
+                        $order->markAsPaid('easypay', ['payment_id' => data_get($single, 'id')]);
 
                         if (app()->environment('testing')) {
-                            logger()->info('easypay.test-log: controller-mark-order-paid', ['order_id' => $order->id, 'payment_id' => data_get($single,'id')]);
+                            logger()->info('easypay.test-log: controller-mark-order-paid', ['order_id' => $order->id, 'payment_id' => data_get($single, 'id')]);
                         }
                     } else {
                         // fallback: find order via the persisted EasypayPayment (defensive, ensure DB authoritative)
-                        $pr = \App\Models\EasypayPayment::where('payment_id', data_get($single,'id'))->first();
+                        $pr = \App\Models\EasypayPayment::where('payment_id', data_get($single, 'id'))->first();
                         if ($pr && $pr->order_id && $pr->payment_status === 'paid') {
                             $o = \App\Models\Order::find($pr->order_id);
                             if ($o) {
@@ -103,10 +103,12 @@ class EasypayPaymentController extends Controller
      */
     public function prepareSdk(Request $request, Order $order)
     {
-        $orch = new \App\Services\EasypayOrchestrationService();
+        $orch = new \App\Services\EasypayOrchestrationService;
         $result = $orch->prepareSdkForOrder($order);
+
         return response()->json($result);
     }
+
     /**
      * Receive checkoutInfo from client SDK onSuccess and persist payment details.
      */
@@ -133,16 +135,18 @@ class EasypayPaymentController extends Controller
             $orderId = $routeOrder->id;
         }
 
-        if (!empty($checkoutId)) {
+        if (! empty($checkoutId)) {
             $session = EasypayCheckoutSession::where('checkout_id', $checkoutId)->first();
             if ($session && $session->order_id) {
                 $orderId = $session->order_id;
             }
         }
 
-        if (!$orderId && $request->has('order_uuid')) {
+        if (! $orderId && $request->has('order_uuid')) {
             $order = Order::where('uuid', $request->input('order_uuid'))->first();
-            if ($order) $orderId = $order->id;
+            if ($order) {
+                $orderId = $order->id;
+            }
         }
 
         // Persist the SDK-provided checkoutInfo immediately — the SDK always supplies a payment id.
@@ -171,7 +175,8 @@ class EasypayPaymentController extends Controller
         try {
             $record->save();
         } catch (\Exception $e) {
-            Log::error('EasypayPayment store (client-persist) error: ' . $e->getMessage(), ['payload' => $wrapper]);
+            Log::error('EasypayPayment store (client-persist) error: '.$e->getMessage(), ['payload' => $wrapper]);
+
             return response()->json(['error' => 'could not persist payment'], 500);
         }
 
@@ -210,7 +215,60 @@ class EasypayPaymentController extends Controller
             }
         }
 
-        // Contract: onSuccess must persist. Return the persisted row and whether we obtained authoritative data.
-        return response()->json(['ok' => true, 'payment' => $record, 'authoritative' => (bool) (! empty($single) && is_array($single))], 201);
+        // Contract: onSuccess must persist. Return the persisted row, whether we obtained authoritative data,
+        // and a user-facing message when appropriate so the client SDK can show immediate feedback.
+        $finalStatus = $remoteStatus ?? $clientStatus ?? $record->payment_status;
+
+        $message = null;
+        switch ($finalStatus) {
+            case 'paid':
+                // prefer the immediate "payment received" message for SDK success flows
+                $message = t('checkout.pay.success') ?: 'Payment received — thank you. Updating order status…';
+                break;
+
+            case 'authorised':
+                $message = t('checkout.pay.status.authorised') ?: 'Payment authorised — processing is underway, please check your order details in a moment.';
+                break;
+
+            case 'pending':
+                // payment info was created (MB/IBAN/etc.) — instruct the user to follow the payment method steps
+                $message = t('checkout.pay.on_success.pending') ?: 'Payment info created. Please follow the instructions to complete the payment and your order will be processed afterwards.';
+                break;
+
+            default:
+                $message = null;
+        }
+
+        // Only persist the flash to session when the server response is authoritative
+        // and represents a final 'paid' state (the client will navigate to the order page).
+        // For non-authoritative or informational messages show inline only (do not persist)
+        // — this prevents duplicate flashes when the client displays the message immediately.
+        $flashType = null;
+        if (! empty($message)) {
+            $flashType = match ($finalStatus) {
+                'paid' => 'success',
+                'authorised' => 'info',
+                'pending' => 'warning',
+                default => 'info',
+            };
+
+            $shouldPersistToSession = (! empty($single) && is_array($single) && $finalStatus === 'paid');
+
+            if ($shouldPersistToSession) {
+                // Persist only for authoritative paid responses so a following redirect
+                // (client-initiated) will show the server flash exactly once.
+                session()->flash('success', $message);
+                session()->flash('flash_type', $flashType);
+            }
+        }
+
+        return response()->json([
+            'ok' => true,
+            'payment' => $record,
+            'paymentStatus' => $finalStatus,
+            'authoritative' => (bool) (! empty($single) && is_array($single)),
+            'message' => $message,
+            'type' => $flashType ?? null,
+        ], 201);
     }
 }

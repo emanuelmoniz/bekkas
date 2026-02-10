@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Models\EasypayPayload;
 use App\Models\EasypayCheckoutSession;
+use App\Models\EasypayPayload;
 use App\Models\Order;
 use Carbon\Carbon;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Http\Client\RequestException;
 
 class EasypayService
 {
@@ -21,8 +21,6 @@ class EasypayService
 
     /**
      * Fetch single payment details from Easypay API
-     * @param string $paymentId
-     * @return array|null
      */
     public function getSinglePayment(string $paymentId): ?array
     {
@@ -32,7 +30,7 @@ class EasypayService
         if (app()->environment(['local', 'testing'])) {
             try {
                 /** @var \Illuminate\Support\Facades\Cache $cache */
-                $mock = \Illuminate\Support\Facades\Cache::get('easypay:test_single:' . $paymentId);
+                $mock = \Illuminate\Support\Facades\Cache::get('easypay:test_single:'.$paymentId);
                 if (! empty($mock)) {
                     return $mock;
                 }
@@ -42,7 +40,7 @@ class EasypayService
             }
         }
 
-        $url = $this->baseUrl . '/single/' . rawurlencode($paymentId);
+        $url = $this->baseUrl.'/single/'.rawurlencode($paymentId);
 
         $response = Http::withHeaders([
             'AccountId' => config('easypay.id', env('EASYPAY_ID')),
@@ -54,6 +52,7 @@ class EasypayService
             $response->throw();
         } catch (RequestException $e) {
             Log::warning('Easypay getSinglePayment failed', ['payment_id' => $paymentId, 'error' => $e->getMessage()]);
+
             return null;
         }
 
@@ -119,10 +118,13 @@ class EasypayService
     public static function createOrGetPayload(Order $order): ?EasypayPayload
     {
         $existing = $order->easypayPayload;
-        if ($existing) return $existing;
+        if ($existing) {
+            return $existing;
+        }
 
         if (! config('easypay.enabled', false)) {
             Log::info('Easypay disabled — skipping payload creation', ['order_id' => $order->id]);
+
             return null;
         }
 
@@ -147,10 +149,11 @@ class EasypayService
 
         if (! config('easypay.enabled', false)) {
             $session->update(['status' => 'disabled', 'message' => 'Easypay disabled in config']);
+
             return $session;
         }
 
-        $url = rtrim(config('easypay.base_url'), '/') . '/checkout';
+        $url = rtrim(config('easypay.base_url'), '/').'/checkout';
 
         try {
             $toSend = $payload->payload ?? [];
@@ -216,7 +219,7 @@ class EasypayService
             return ['ok' => false, 'status' => 503, 'message' => 'Easypay disabled'];
         }
 
-        $url = rtrim(config('easypay.base_url'), '/') . '/checkout/' . rawurlencode($checkoutId);
+        $url = rtrim(config('easypay.base_url'), '/').'/checkout/'.rawurlencode($checkoutId);
 
         try {
             $resp = Http::withHeaders([
@@ -236,6 +239,7 @@ class EasypayService
             return ['ok' => $status >= 200 && $status < 300, 'status' => $status, 'body' => $body];
         } catch (\Exception $e) {
             Log::error('Easypay /checkout/{id} request failed', ['checkout_id' => $checkoutId, 'error' => $e->getMessage()]);
+
             return ['ok' => false, 'status' => 502, 'message' => $e->getMessage()];
         }
     }
@@ -254,7 +258,7 @@ class EasypayService
             return ['ok' => false, 'status' => 503, 'message' => 'Easypay disabled'];
         }
 
-        $url = rtrim(config('easypay.base_url'), '/') . '/checkout/' . rawurlencode($checkoutId);
+        $url = rtrim(config('easypay.base_url'), '/').'/checkout/'.rawurlencode($checkoutId);
 
         try {
             $resp = Http::withHeaders([
@@ -264,11 +268,16 @@ class EasypayService
             ])->timeout(10)->delete($url);
 
             $status = $resp->status();
-            try { $body = $resp->json(); } catch (\Throwable $e) { $body = $resp->body(); }
+            try {
+                $body = $resp->json();
+            } catch (\Throwable $e) {
+                $body = $resp->body();
+            }
 
             return ['ok' => $status >= 200 && $status < 300, 'status' => $status, 'body' => $body];
         } catch (\Exception $e) {
             Log::error('Easypay DELETE /checkout/{id} request failed', ['checkout_id' => $checkoutId, 'error' => $e->getMessage()]);
+
             return ['ok' => false, 'status' => 502, 'message' => $e->getMessage()];
         }
     }

@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Models\TicketAttachment;
 use App\Models\TicketCategory;
 use App\Models\TicketMessage;
-use App\Models\TicketAttachment;
 use App\Models\User;
+use App\Rules\Recaptcha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Rules\Recaptcha;
 
 class TicketController extends Controller
 {
@@ -25,12 +25,12 @@ class TicketController extends Controller
 
         // Ticket ID
         if ($request->filled('ticket_id')) {
-            $query->where('id', 'like', '%' . trim($request->ticket_id) . '%');
+            $query->where('id', 'like', '%'.trim($request->ticket_id).'%');
         }
 
         // Ticket title
         if ($request->filled('title')) {
-            $query->where('title', 'like', '%' . trim($request->title) . '%');
+            $query->where('title', 'like', '%'.trim($request->title).'%');
         }
 
         // Category
@@ -111,7 +111,7 @@ class TicketController extends Controller
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $path = $file->store(
-                    'tickets/' . $ticket->uuid,
+                    'tickets/'.$ticket->uuid,
                     'private'
                 );
 

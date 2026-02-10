@@ -11,6 +11,7 @@ class CountryController extends Controller
     public function index()
     {
         $countries = Country::orderBy('name_pt')->get();
+
         return view('admin.countries.index', compact('countries'));
     }
 
@@ -49,7 +50,7 @@ class CountryController extends Controller
         $request->validate([
             'name_pt' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
-            'iso_alpha2' => 'required|string|size:2|unique:countries,iso_alpha2,' . $country->id,
+            'iso_alpha2' => 'required|string|size:2|unique:countries,iso_alpha2,'.$country->id,
             'country_code' => 'required|string|max:10',
         ]);
 
@@ -67,6 +68,7 @@ class CountryController extends Controller
     public function destroy(Country $country)
     {
         $country->delete();
+
         return redirect()->route('admin.countries.index');
     }
 }

@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Models\Role;
 use App\Models\Address;
 use App\Models\Country;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -19,17 +18,17 @@ class UserController extends Controller
 
         // NAME filter
         if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . trim($request->name) . '%');
+            $query->where('name', 'like', '%'.trim($request->name).'%');
         }
 
         // EMAIL filter
         if ($request->filled('email')) {
-            $query->where('email', 'like', '%' . trim($request->email) . '%');
+            $query->where('email', 'like', '%'.trim($request->email).'%');
         }
 
         // PHONE filter
         if ($request->filled('phone')) {
-            $query->where('phone', 'like', '%' . trim($request->phone) . '%');
+            $query->where('phone', 'like', '%'.trim($request->phone).'%');
         }
 
         // IS_ACTIVE filter
@@ -45,12 +44,14 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user->load('addresses.country', 'roles');
+
         return view('admin.users.show', compact('user'));
     }
 
     public function create()
     {
         $countries = Country::where('is_active', true)->orderBy('name_pt')->get();
+
         return view('admin.users.create', compact('countries'));
     }
 
@@ -61,7 +62,7 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['nullable', 'string', 'max:20'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            
+
             // Address fields
             'title' => ['nullable', 'string', 'max:255'],
             'nif' => ['nullable', 'string', 'max:50'],
@@ -101,6 +102,7 @@ class UserController extends Controller
     {
         $user->load('addresses.country');
         $countries = Country::where('is_active', true)->orderBy('name_pt')->get();
+
         return view('admin.users.edit', compact('user', 'countries'));
     }
 
@@ -108,7 +110,7 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
             'phone' => ['nullable', 'string', 'max:20'],
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -150,8 +152,8 @@ class UserController extends Controller
         ]);
 
         $address->update($request->only([
-            'title', 'nif', 'phone', 'address_line_1', 'address_line_2', 
-            'postal_code', 'city', 'country_id', 'is_default'
+            'title', 'nif', 'phone', 'address_line_1', 'address_line_2',
+            'postal_code', 'city', 'country_id', 'is_default',
         ]));
 
         return redirect()->route('admin.users.edit', $user);
@@ -186,4 +188,3 @@ class UserController extends Controller
         return redirect()->route('admin.users.edit', $user);
     }
 }
-

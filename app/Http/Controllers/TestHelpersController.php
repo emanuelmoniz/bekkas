@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EasypayPayment;
+use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use App\Models\Order;
-use App\Models\EasypayPayment;
 
 /**
  * Minimal test-only helpers used by Cypress E2E.
@@ -22,13 +22,13 @@ class TestHelpersController extends Controller
             abort(404);
         }
 
-        $paymentId = $request->input('payment_id', 'cypress-' . uniqid());
+        $paymentId = $request->input('payment_id', 'cypress-'.uniqid());
         $paymentStatus = $request->input('payment_status', 'pending');
 
         // Create a predictable user for Cypress to authenticate with
         $password = $request->input('password', 'password');
         $user = User::factory()->create([
-            'email' => $request->input('email', 'cypress+' . uniqid() . '@example.test'),
+            'email' => $request->input('email', 'cypress+'.uniqid().'@example.test'),
             'password' => Hash::make($password),
         ]);
 
@@ -55,7 +55,7 @@ class TestHelpersController extends Controller
             \App\Models\EasypayCheckoutSession::create([
                 'order_id' => $order->id,
                 'payload_id' => null,
-                'checkout_id' => $request->input('checkout_id') ?? ('cypress-chk-' . bin2hex(random_bytes(6))),
+                'checkout_id' => $request->input('checkout_id') ?? ('cypress-chk-'.bin2hex(random_bytes(6))),
                 'session_id' => $request->input('session_id') ?? null,
                 'is_active' => true,
                 'status' => 'pending',
@@ -65,7 +65,7 @@ class TestHelpersController extends Controller
 
         // Create a one-time login token and return a URL Cypress can visit to set the session cookie
         $token = bin2hex(random_bytes(12));
-        Cache::put('cypress:login:' . $token, $user->id, now()->addMinutes(10));
+        Cache::put('cypress:login:'.$token, $user->id, now()->addMinutes(10));
 
         return response()->json([
             'ok' => true,
@@ -76,7 +76,7 @@ class TestHelpersController extends Controller
                 'email' => $user->email,
                 'password' => $password,
             ],
-            'login_url' => url('/__cypress/login/' . $token),
+            'login_url' => url('/__cypress/login/'.$token),
         ]);
     }
 
@@ -86,7 +86,7 @@ class TestHelpersController extends Controller
             abort(404);
         }
 
-        $userId = Cache::pull('cypress:login:' . $token);
+        $userId = Cache::pull('cypress:login:'.$token);
         if (empty($userId)) {
             abort(404);
         }
@@ -95,7 +95,7 @@ class TestHelpersController extends Controller
         session()->regenerate();
 
         // Return a tiny page — visiting this page sets the session cookie in the browser
-        return response("<html><body>ok</body></html>")->header('Content-Type', 'text/html');
+        return response('<html><body>ok</body></html>')->header('Content-Type', 'text/html');
     }
 
     public function mockEasypay(Request $request)
@@ -112,8 +112,41 @@ class TestHelpersController extends Controller
         }
 
         // Cache the mocked single-payment response for a short TTL
-        Cache::put('easypay:test_single:' . $paymentId, $response, now()->addMinutes(10));
+        Cache::put('easypay:test_single:'.$paymentId, $response, now()->addMinutes(10));
 
         return response()->json(['ok' => true, 'payment_id' => $paymentId]);
+    }
+
+    /**
+     * Render a simple page with a server-side flash (test-only).
+     * Used by Cypress to assert the server-rendered flash close button works.
+     * Supports ?type=success|error|warning|info (defaults to success).
+     */
+    public function flash(Request $request)
+    {
+        if (! app()->environment(['local', 'testing'])) {
+            abort(404);
+        }
+
+        $message = $request->input('message', 'Test server flash');
+        $type = $request->input('type', 'success');
+        $allowed = ['success', 'error', 'warning', 'info'];
+        if (! in_array($type, $allowed, true)) {
+            $type = 'success';
+        }
+
+        // Flash for the next request (keeps parity with typical redirects) and also
+        // put the value into the session for immediate rendering in the same request
+        // (useful for the test helper which returns a view directly).
+        session()->flash($type, $message);
+        session()->put($type, $message);
+        // Ensure the value is available in the current request (useful for direct-render helper)
+        session()->now($type, $message);
+
+        // DEBUG: log what the controller sees (removed after debugging)
+        logger()->info('cypress.flash.invoke', ['type' => $type, 'message' => $message, 'session_now' => session($type)]);
+
+        // Return the welcome view which includes the global layout so the flash is visible
+        return view('welcome');
     }
 }

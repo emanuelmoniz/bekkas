@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactConfirmation;
+use App\Mail\ContactMessage;
+use App\Rules\Recaptcha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use App\Mail\ContactMessage;
-use App\Mail\ContactConfirmation;
-use App\Rules\Recaptcha;
 
 class ContactController extends Controller
 {
@@ -36,7 +36,7 @@ class ContactController extends Controller
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
-            return redirect()->to(url()->previous() . '#contact')
+            return redirect()->to(url()->previous().'#contact')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -55,6 +55,6 @@ class ContactController extends Controller
             $validated['name']
         ));
 
-        return redirect()->to(url()->previous() . '#contact')->with('success', t('contact.success_message') ?: 'Thank you for your message! We will get back to you soon.');
+        return redirect()->to(url()->previous().'#contact')->with('success', t('contact.success_message') ?: 'Thank you for your message! We will get back to you soon.');
     }
 }

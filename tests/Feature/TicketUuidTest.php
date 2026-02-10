@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Ticket;
-use App\Models\User;
 use App\Models\TicketCategory;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class TicketUuidTest extends TestCase
 {
@@ -28,7 +28,7 @@ class TicketUuidTest extends TestCase
         $url = route('tickets.show', $ticket);
 
         $this->assertStringContainsString($ticket->uuid, $url);
-        $this->assertStringNotContainsString('/' . $ticket->id, $url);
+        $this->assertStringNotContainsString('/'.$ticket->id, $url);
     }
 
     public function test_view_ticket_by_uuid_returns_ok()

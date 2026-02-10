@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\EasypayPayload;
+use App\Models\Order;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Order;
-use App\Models\EasypayPayload;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AdminEasypayPayloadsTest extends TestCase
 {
@@ -185,6 +185,7 @@ class AdminEasypayPayloadsTest extends TestCase
 
         $this->assertDatabaseMissing('easypay_payloads', ['id' => $p->id]);
     }
+
     public function test_order_show_includes_payload_button()
     {
         $role = Role::firstOrCreate(['name' => 'admin']);

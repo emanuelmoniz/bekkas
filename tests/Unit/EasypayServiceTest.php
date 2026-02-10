@@ -11,10 +11,10 @@ class EasypayServiceTest extends TestCase
     public function test_get_single_payment_returns_array()
     {
         Http::fake([
-            '*' => Http::response(['id' => 'pay_123', 'payment_status' => 'paid'], 200)
+            '*' => Http::response(['id' => 'pay_123', 'payment_status' => 'paid'], 200),
         ]);
 
-        $service = new EasypayService();
+        $service = new EasypayService;
         $resp = $service->getSinglePayment('pay_123');
 
         $this->assertIsArray($resp);
@@ -25,7 +25,7 @@ class EasypayServiceTest extends TestCase
     public function test_fetch_checkout_returns_ok_body()
     {
         Http::fake([
-            '*' => Http::response(['id' => 'checkout_1', 'session' => 'sess_tok'], 200)
+            '*' => Http::response(['id' => 'checkout_1', 'session' => 'sess_tok'], 200),
         ]);
 
         $res = EasypayService::fetchCheckout('checkout_1');

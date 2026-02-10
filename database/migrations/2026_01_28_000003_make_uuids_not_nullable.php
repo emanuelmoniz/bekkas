@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -14,7 +14,7 @@ return new class extends Migration
             $driver = DB::getDriverName();
 
             if ($driver === 'mysql') {
-                DB::statement("ALTER TABLE `products` MODIFY `uuid` VARCHAR(36) NOT NULL UNIQUE;");
+                DB::statement('ALTER TABLE `products` MODIFY `uuid` VARCHAR(36) NOT NULL UNIQUE;');
             } else {
                 // Use change() where supported (requires doctrine/dbal in some environments)
                 Schema::table('products', function (Blueprint $table) {
@@ -28,7 +28,7 @@ return new class extends Migration
             $driver = DB::getDriverName();
 
             if ($driver === 'mysql') {
-                DB::statement("ALTER TABLE `orders` MODIFY `uuid` VARCHAR(36) NOT NULL UNIQUE;");
+                DB::statement('ALTER TABLE `orders` MODIFY `uuid` VARCHAR(36) NOT NULL UNIQUE;');
             } else {
                 Schema::table('orders', function (Blueprint $table) {
                     $table->string('uuid', 36)->nullable(false)->change();
@@ -41,7 +41,7 @@ return new class extends Migration
             $driver = DB::getDriverName();
 
             if ($driver === 'mysql') {
-                DB::statement("ALTER TABLE `tickets` MODIFY `uuid` VARCHAR(36) NOT NULL UNIQUE;");
+                DB::statement('ALTER TABLE `tickets` MODIFY `uuid` VARCHAR(36) NOT NULL UNIQUE;');
             } else {
                 Schema::table('tickets', function (Blueprint $table) {
                     $table->uuid('uuid')->nullable(false)->change();
@@ -56,7 +56,7 @@ return new class extends Migration
         if (Schema::hasTable('products') && Schema::hasColumn('products', 'uuid')) {
             $driver = DB::getDriverName();
             if ($driver === 'mysql') {
-                DB::statement("ALTER TABLE `products` MODIFY `uuid` VARCHAR(36) NULL;");
+                DB::statement('ALTER TABLE `products` MODIFY `uuid` VARCHAR(36) NULL;');
             } else {
                 Schema::table('products', function (Blueprint $table) {
                     $table->string('uuid', 36)->nullable()->change();
@@ -67,7 +67,7 @@ return new class extends Migration
         if (Schema::hasTable('orders') && Schema::hasColumn('orders', 'uuid')) {
             $driver = DB::getDriverName();
             if ($driver === 'mysql') {
-                DB::statement("ALTER TABLE `orders` MODIFY `uuid` VARCHAR(36) NULL;");
+                DB::statement('ALTER TABLE `orders` MODIFY `uuid` VARCHAR(36) NULL;');
             } else {
                 Schema::table('orders', function (Blueprint $table) {
                     $table->string('uuid', 36)->nullable()->change();
@@ -78,7 +78,7 @@ return new class extends Migration
         if (Schema::hasTable('tickets') && Schema::hasColumn('tickets', 'uuid')) {
             $driver = DB::getDriverName();
             if ($driver === 'mysql') {
-                DB::statement("ALTER TABLE `tickets` MODIFY `uuid` VARCHAR(36) NULL;");
+                DB::statement('ALTER TABLE `tickets` MODIFY `uuid` VARCHAR(36) NULL;');
             } else {
                 Schema::table('tickets', function (Blueprint $table) {
                     $table->uuid('uuid')->nullable()->change();

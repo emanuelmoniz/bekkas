@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Product;
+use Tests\TestCase;
 
 class ProductUuidTest extends TestCase
 {

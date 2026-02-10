@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\Order;
-use App\Models\User;
-use App\Models\Role;
-use App\Models\EasypayPayload;
 use App\Models\EasypayCheckoutSession;
+use App\Models\EasypayPayload;
 use App\Models\EasypayPayment;
+use App\Models\Order;
+use App\Models\Role;
+use App\Models\User;
+use Tests\TestCase;
 
 class AdminEasypayPaymentsTest extends TestCase
 {
@@ -19,9 +19,9 @@ class AdminEasypayPaymentsTest extends TestCase
         $admin->roles()->attach($role->id);
 
         \Illuminate\Support\Facades\DB::table('countries')->updateOrInsert([
-            'iso_alpha2' => 'PT'
+            'iso_alpha2' => 'PT',
         ], [
-            'name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true
+            'name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true,
         ]);
 
         $countryId = \Illuminate\Support\Facades\DB::table('countries')->where('iso_alpha2', 'PT')->value('id');
@@ -59,9 +59,9 @@ class AdminEasypayPaymentsTest extends TestCase
         $admin->roles()->attach($role->id);
 
         \Illuminate\Support\Facades\DB::table('countries')->updateOrInsert([
-            'iso_alpha2' => 'PT'
+            'iso_alpha2' => 'PT',
         ], [
-            'name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true
+            'name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true,
         ]);
         $countryId = \Illuminate\Support\Facades\DB::table('countries')->where('iso_alpha2', 'PT')->value('id');
         $user = User::factory()->create();
@@ -118,9 +118,9 @@ class AdminEasypayPaymentsTest extends TestCase
         $admin->roles()->attach($role->id);
 
         \Illuminate\Support\Facades\DB::table('countries')->updateOrInsert([
-            'iso_alpha2' => 'PT'
+            'iso_alpha2' => 'PT',
         ], [
-            'name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true
+            'name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true,
         ]);
         $countryId = \Illuminate\Support\Facades\DB::table('countries')->where('iso_alpha2', 'PT')->value('id');
         $user = User::factory()->create();
@@ -143,9 +143,9 @@ class AdminEasypayPaymentsTest extends TestCase
         $admin->roles()->attach($role->id);
 
         \Illuminate\Support\Facades\DB::table('countries')->updateOrInsert([
-            'iso_alpha2' => 'PT'
+            'iso_alpha2' => 'PT',
         ], [
-            'name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true
+            'name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true,
         ]);
         $countryId = \Illuminate\Support\Facades\DB::table('countries')->where('iso_alpha2', 'PT')->value('id');
         $user = User::factory()->create();

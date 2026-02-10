@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\StaticTranslation;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class StaticTranslationController extends Controller
@@ -39,7 +39,7 @@ class StaticTranslationController extends Controller
             'value' => 'required|string',
         ]);
 
-        StaticTranslation::create($request->only(['key','locale','value']));
+        StaticTranslation::create($request->only(['key', 'locale', 'value']));
 
         // Invalidate cache
         Cache::forget('static_translations_all');

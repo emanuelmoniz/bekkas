@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Models\Category;
 use App\Models\Material;
+use App\Models\Product;
 use App\Services\DeliveryDateCalculator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +26,7 @@ class ProductController extends Controller
 
         if ($request->filled('name')) {
             $query->whereHas('translations', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->name . '%');
+                $q->where('name', 'like', '%'.$request->name.'%');
             });
         }
 
@@ -56,29 +56,29 @@ class ProductController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
 
-	$activeProducts = Product::where('active', true)
-    		->with(['categories', 'materials'])
-    		->get();
+        $activeProducts = Product::where('active', true)
+            ->with(['categories', 'materials'])
+            ->get();
 
-	$categoryIds = $activeProducts
-    		->pluck('categories')
-   		->flatten()
-    		->pluck('id')
-    		->unique();
+        $categoryIds = $activeProducts
+            ->pluck('categories')
+            ->flatten()
+            ->pluck('id')
+            ->unique();
 
-	$materialIds = $activeProducts
-    		->pluck('materials')
-    		->flatten()
-    		->pluck('id')
-    		->unique();
+        $materialIds = $activeProducts
+            ->pluck('materials')
+            ->flatten()
+            ->pluck('id')
+            ->unique();
 
-	$categories = Category::whereIn('id', $categoryIds)
-    		->with('translations')
-    		->get();
+        $categories = Category::whereIn('id', $categoryIds)
+            ->with('translations')
+            ->get();
 
-	$materials = Material::whereIn('id', $materialIds)
-    		->with('translations')
-    		->get();
+        $materials = Material::whereIn('id', $materialIds)
+            ->with('translations')
+            ->get();
 
         // Get favorite product IDs for the current user
         $favoriteIds = [];

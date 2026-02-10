@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -49,7 +49,7 @@ return new class extends Migration
 
     private function getPortugueseName($code)
     {
-        return match($code) {
+        return match ($code) {
             'WAITING_PAYMENT' => 'Aguardando Pagamento',
             'PROCESSING' => 'Em Processamento',
             'DISPATCHED' => 'Enviado',
@@ -61,7 +61,7 @@ return new class extends Migration
 
     private function getEnglishName($code)
     {
-        return match($code) {
+        return match ($code) {
             'WAITING_PAYMENT' => 'Waiting Payment',
             'PROCESSING' => 'Processing',
             'DISPATCHED' => 'Dispatched',

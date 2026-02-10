@@ -9,16 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up(): void
-{
-    Schema::create('product_photos', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-        $table->string('path');
-        $table->boolean('is_primary')->default(false);
-        $table->timestamps();
-    });
-}
+    public function up(): void
+    {
+        Schema::create('product_photos', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->string('path');
+            $table->boolean('is_primary')->default(false);
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.
