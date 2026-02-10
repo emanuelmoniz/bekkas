@@ -206,6 +206,10 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.pay.already_paid', 'locale' => 'pt-PT', 'value' => 'A encomenda já foi paga. Obrigado.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.pay.already_paid', 'locale' => 'en-UK', 'value' => 'This order has already been paid. Thank you.', 'created_at' => $now, 'updated_at' => $now],
 
+            // When SDK reports already-paid but remote does not confirm any paid payment for the order
+            ['key' => 'checkout.pay.error_contact_support', 'locale' => 'pt-PT', 'value' => 'Ocorreu um problema com o seu pagamento — por favor contacte o suporte.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'checkout.pay.error_contact_support', 'locale' => 'en-UK', 'value' => 'There is something in error with your payment, please contact support.', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'checkout.pay.new_session_created', 'locale' => 'pt-PT', 'value' => 'Criado um novo pedido de pagamento — por favor selecione o método e tente novamente.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.pay.new_session_created', 'locale' => 'en-UK', 'value' => 'Created a new payment session — please select a method and try again.', 'created_at' => $now, 'updated_at' => $now],
 

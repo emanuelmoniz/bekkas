@@ -151,6 +151,11 @@ Route::middleware('auth')->group(function () {
         ->name('orders.pay.verify')
         ->middleware('throttle:30,1');
 
+    // SDK error endpoint — SDK client will POST errors (onError/onPaymentError) here for server-side handling
+    Route::post('/orders/{order}/pay/sdk-error', [\App\Http\Controllers\EasypayPaymentController::class, 'logSdkError'])
+        ->name('orders.pay.sdk_error')
+        ->middleware('throttle:30,1');
+
     Route::post('/orders', [OrderController::class, 'store'])
         ->name('orders.store');
 

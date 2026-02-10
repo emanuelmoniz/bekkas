@@ -87,4 +87,37 @@ class EasypayOrchestrationServiceTest extends TestCase
         $manifest3 = $orch->getLatestActiveManifest($order, 1800);
         $this->assertNull($manifest3);
     }
+
+    public function test_prepareSdkForOrder_cancels_active_session_persists_checkout_details_and_recreates_session()
+    {
+        \Illuminate\Support\Facades\Config::set('easypay.enabled', true);
+        \Illuminate\Support\Facades\Config::set('easypay.base_url', 'https://api.test.easypay.pt/2.0');
+
+        \Illuminate\Support\Facades\Http::fake([
+            'https://api.test.easypay.pt/2.0/checkout/chk_live' => \Illuminate\Support\Facades\Http::response(['status' => 'success', 'checkout' => ['id' => 'chk_live', 'status' => 'success'], 'payment' => ['methods' => ['mb'], 'type' => 'single'], 'value' => 15.00], 200),
+            'https://api.test.easypay.pt/2.0/single/pay_pending' => \Illuminate\Support\Facades\Http::response(['id' => 'pay_pending', 'payment_status' => 'pending'], 200),
+            'https://api.test.easypay.pt/2.0/checkout' => \Illuminate\Support\Facades\Http::response(['id' => 'chk_new', 'session' => 'sess'], 201),
+        ]);
+
+        $user = \App\Models\User::factory()->create();
+        $order = \App\Models\Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
+
+        $payload = \App\Models\EasypayPayload::create(['order_id' => $order->id, 'payload' => ['x' => 1]]);
+        $active = \App\Models\EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'checkout_id' => 'chk_live', 'status' => 'pending', 'is_active' => true]);
+        \App\Models\EasypayPayment::create(['order_id' => $order->id, 'payment_id' => 'pay_pending', 'payment_status' => 'pending']);
+
+        $orch = new \App\Services\EasypayOrchestrationService;
+        $res = $orch->prepareSdkForOrder($order);
+
+        $this->assertEquals('new-manifest', $res['action']);
+        $this->assertArrayHasKey('manifest', $res);
+
+        $s = \App\Models\EasypayCheckoutSession::where('checkout_id', 'chk_live')->first();
+        $this->assertNotNull($s->message);
+        $this->assertStringContainsString('"checkout"', $s->message);
+        $this->assertStringContainsString('"status"', $s->message);
+        $this->assertEquals('canceled', $s->status);
+
+        $this->assertDatabaseHas('easypay_checkout_sessions', ['checkout_id' => 'chk_new']);
+    }
 }

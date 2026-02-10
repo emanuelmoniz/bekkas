@@ -171,8 +171,88 @@
                   };
                   window.__easypay_onClose = handleSdkClose;
 
-                  // Pass onSuccess AND onClose in the options (SDK may accept them) as well as container/display
-                  fn(manifest, { display: 'inline', container: '#easypay-checkout', testing: @json(config('easypay.env') === 'test'), onSuccess: handleSdkSuccess, onClose: handleSdkClose });
+                  // Pass onSuccess, onClose and error handlers in the options (SDK may accept them) as well as container/display
+                  // Client-side error handler: POST SDK error to server and act on returned 'action'
+                  const handleSdkError = async function (err) {
+                    try {
+                      const url = '/orders/{{ $order->uuid }}/pay/sdk-error';
+                      const res = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'Accept': 'application/json',
+                          'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify({ error: err })
+                      });
+
+                      const json = await res.json();
+
+                      if (json?.action === 'new-manifest' && json?.manifest) {
+                        // restart SDK with new manifest (preserve the same handlers)
+                        try {
+                          for (const cand of starterCandidates) {
+                            const fn = cand();
+                            if (typeof fn === 'function') {
+                              fn(json.manifest, { display: 'inline', container: '#easypay-checkout', testing: @json(config('easypay.env') === 'test'), onSuccess: handleSdkSuccess, onClose: handleSdkClose, onError: handleSdkError, onPaymentError: handleSdkPaymentError });
+                              return;
+                            }
+                          }
+                        } catch (e) { /* ignore restart failure */ }
+
+                        return;
+                      }
+
+                      if (json?.action === 'already-paid') {
+                        // server confirmed an authoritative paid payment — redirect to order
+                        if (json?.message) {
+                          window.__easypay_lastServerMessage = json.message;
+                        }
+                        window.location.href = '/orders/{{ $order->uuid }}';
+                        return;
+                      }
+
+                      // Generic error: show server message if present
+                      if (json?.message) {
+                        if (window.Alpine && Alpine.store && Alpine.store('flash')) {
+                          Alpine.store('flash').showMessage(json.message, 'warning');
+                        }
+
+                        // expose for tests
+                        window.__easypay_lastServerMessage = json.message;
+                      }
+
+                    } catch (e) {
+                      console.warn('Easypay onError client handler failed', e);
+                    }
+                  };
+
+                  const handleSdkPaymentError = async function (err) {
+                    // Recoverable payment error: forward to server for best-effort refresh and allow retry
+                    try {
+                      const url = '/orders/{{ $order->uuid }}/pay/sdk-error';
+                      const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' }, credentials: 'same-origin', body: JSON.stringify({ error: err }) });
+                      const j = await r.json();
+                      if (j?.action === 'new-manifest' && j?.manifest) {
+                        // restart SDK with new manifest
+                        for (const cand of starterCandidates) {
+                          const fn = cand();
+                          if (typeof fn === 'function') {
+                            fn(j.manifest, { display: 'inline', container: '#easypay-checkout', testing: @json(config('easypay.env') === 'test'), onSuccess: handleSdkSuccess, onClose: handleSdkClose, onError: handleSdkError, onPaymentError: handleSdkPaymentError });
+                            return;
+                          }
+                        }
+                      }
+
+                      if (j?.message && window.Alpine && Alpine.store && Alpine.store('flash')) {
+                        Alpine.store('flash').showMessage(j.message, 'warning');
+                        window.__easypay_lastServerMessage = j.message;
+                      }
+                    } catch (e) { /* ignore */ }
+                  };
+
+                  fn(manifest, { display: 'inline', container: '#easypay-checkout', testing: @json(config('easypay.env') === 'test'), onSuccess: handleSdkSuccess, onClose: handleSdkClose, onError: handleSdkError, onPaymentError: handleSdkPaymentError, onError: handleSdkError, onPaymentError: handleSdkPaymentError });
                   const loader = document.getElementById('easypay-checkout-loading');
                   if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
 

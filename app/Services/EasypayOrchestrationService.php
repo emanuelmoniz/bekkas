@@ -125,6 +125,39 @@ class EasypayOrchestrationService
             $cancel = \App\Services\EasypayService::cancelCheckout($latestSession->checkout_id);
             $latestSession->update(['is_active' => false, 'status' => ($cancel['ok'] ? 'canceled' : 'error'), 'in_error' => $cancel['ok'] ? false : true]);
 
+            // Persist checkout details for the cancelled session (best-effort) before fetching payments
+            try {
+                $f = \App\Services\EasypayService::fetchCheckout($latestSession->checkout_id);
+                if (! empty($f) && array_key_exists('body', $f) && ! empty($f['body'])) {
+                    $body = is_array($f['body']) ? $f['body'] : json_decode((string) $f['body'], true);
+
+                    $latestSession->message = json_encode($body);
+
+                    $remoteStatus = data_get($body, 'checkout.status') ?? data_get($body, 'status');
+                    if (! empty($remoteStatus) && is_string($remoteStatus)) {
+                        // Do not overwrite local authoritative cancel/error state
+                        if (empty($latestSession->status) || in_array($latestSession->status, ['pending', 'created'], true)) {
+                            $latestSession->status = $remoteStatus;
+                            $latestSession->is_active = in_array($remoteStatus, ['pending', 'created'], true);
+                            $latestSession->in_error = $remoteStatus === 'failed';
+                        } else {
+                            logger()->debug('EasypayOrchestration (prepareSdk): preserving local session.status over remote', ['checkout_id' => $latestSession->checkout_id, 'local_status' => $latestSession->status, 'remote_status' => $remoteStatus]);
+                        }
+                    }
+
+                    $latestSession->checkout_id = data_get($body, 'checkout.id') ?? $latestSession->checkout_id;
+                    $latestSession->session_id = data_get($body, 'checkout.session') ?? data_get($body, 'session') ?? $latestSession->session_id;
+
+                    if (! empty($f['status']) && $f['status'] >= 400) {
+                        $latestSession->error_code = $f['status'];
+                    }
+
+                    $latestSession->save();
+                }
+            } catch (\Throwable $e) {
+                logger()->warning('EasypayOrchestration: failed to fetch checkout after cancel (prepareSdk)', ['checkout_id' => $latestSession->checkout_id, 'err' => $e->getMessage()]);
+            }
+
             if ($lastPayment->payment_id) {
                 $single = (new \App\Services\EasypayService)->getSinglePayment($lastPayment->payment_id);
                 if ($single) {
@@ -166,7 +199,126 @@ class EasypayOrchestrationService
         $checkoutId = $error['checkoutId'] ?? $error['checkout_id'] ?? data_get($error, 'checkout.id');
         $paymentId = data_get($error, 'payment.id') ?? data_get($error, 'paymentId');
 
+        // Helper: refresh ALL persisted payments for the order using the authoritative endpoint.
+        $refreshAllPayments = function () use ($order) {
+            $payments = $order->easypayPayments()->get();
+            foreach ($payments as $p) {
+                if (empty($p->payment_id)) {
+                    continue;
+                }
+
+                try {
+                    $single = (new \App\Services\EasypayService)->getSinglePayment($p->payment_id);
+                } catch (\Throwable $e) {
+                    $single = null;
+                }
+
+                if (is_array($single) && ! empty($single)) {
+                    $attrs = [
+                        'payment_status' => data_get($single, 'payment_status') ?? data_get($single, 'payment.status') ?? $p->payment_status,
+                        'paid_at' => data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : $p->paid_at,
+                        'mb_entity' => data_get($single, 'method.entity') ?? data_get($single, 'payment.entity') ?? $p->mb_entity,
+                        'mb_reference' => data_get($single, 'method.reference') ?? data_get($single, 'payment.reference') ?? $p->mb_reference,
+                        'mb_expiration_time' => data_get($single, 'multibanco.expiration_time') ? \Carbon\Carbon::parse(data_get($single, 'multibanco.expiration_time')) : $p->mb_expiration_time,
+                        'iban' => data_get($single, 'method.sdd_mandate.iban') ?? data_get($single, 'method.sdd_mandate') ?? $p->iban,
+                        'raw_response' => $single,
+                    ];
+
+                    try {
+                        $p->update(array_filter($attrs, fn ($v) => ! is_null($v)));
+                    } catch (\Throwable $e) {
+                        logger()->warning('EasypayOrchestration: failed to refresh payment', ['payment_id' => $p->payment_id, 'err' => $e->getMessage()]);
+                    }
+                }
+            }
+
+            // If any payment now reports authoritative 'paid', mark the order paid and persist details
+            $paid = $order->easypayPayments()->whereIn('payment_status', ['paid', 'success'])->latest('created_at')->first();
+            if ($paid && ($paid->payment_status === 'paid' || $paid->payment_status === 'success')) {
+                try {
+                    $order->markAsPaid('easypay', ['payment_id' => $paid->payment_id]);
+                } catch (\Throwable $e) {
+                    logger()->warning('EasypayOrchestration: markAsPaid failed', ['order_id' => $order->id, 'err' => $e->getMessage()]);
+                }
+
+                // ensure stored payment reflects paid_at/raw_response
+                if (empty($paid->paid_at) && data_get($paid->raw_response, 'paid_at')) {
+                    $paid->paid_at = \Carbon\Carbon::parse(data_get($paid->raw_response, 'paid_at'));
+                    $paid->save();
+                }
+
+                return true;
+            }
+
+            return false;
+        };
+
+        // Helper: cancel ALL active checkout sessions for the order (best-effort)
+        // After cancelling, fetch the authoritative checkout details and persist them to DB
+        $cancelAllSessions = function () use ($order) {
+            $active = $order->easypayCheckoutSessions()->where('is_active', true)->get();
+            foreach ($active as $s) {
+                try {
+                    $res = \App\Services\EasypayService::cancelCheckout($s->checkout_id);
+                    $s->update(['is_active' => false, 'status' => ($res['ok'] ? 'canceled' : 'error'), 'in_error' => $res['ok'] ? false : true]);
+                } catch (\Throwable $e) {
+                    $s->update(['is_active' => false, 'status' => 'error', 'in_error' => true]);
+                    logger()->warning('EasypayOrchestration: failed to cancel checkout', ['checkout_id' => $s->checkout_id, 'err' => $e->getMessage()]);
+                }
+
+                // Best-effort: fetch checkout details from Easypay and persist the response (include status mapping)
+                try {
+                    $f = \App\Services\EasypayService::fetchCheckout($s->checkout_id);
+                    if (! empty($f) && array_key_exists('body', $f) && ! empty($f['body'])) {
+                        $body = is_array($f['body']) ? $f['body'] : json_decode((string) $f['body'], true);
+
+                        // persist raw response
+                        $s->message = json_encode($body);
+
+                        // Map authoritative checkout status into the session row when available
+                        $remoteStatus = data_get($body, 'checkout.status') ?? data_get($body, 'status');
+                        if (! empty($remoteStatus) && is_string($remoteStatus)) {
+                            // Do not overwrite authoritative local state produced by cancellation/error.
+                            // Only apply remote status when the session is still in a neutral/active state.
+                            if (empty($s->status) || in_array($s->status, ['pending', 'created'], true)) {
+                                $s->status = $remoteStatus;
+                                // maintain `is_active` semantics: pending/created => active, otherwise inactive
+                                $s->is_active = in_array($remoteStatus, ['pending', 'created'], true);
+                                $s->in_error = $remoteStatus === 'failed';
+                            } else {
+                                // keep local authoritative status (e.g. 'canceled'/'error') but keep remote in message
+                                logger()->debug('EasypayOrchestration: preserving local session.status over remote', ['checkout_id' => $s->checkout_id, 'local_status' => $s->status, 'remote_status' => $remoteStatus]);
+                            }
+                        }
+
+                        // If the remote returned explicit checkout/session ids, persist them too
+                        $s->checkout_id = data_get($body, 'checkout.id') ?? $s->checkout_id;
+                        $s->session_id = data_get($body, 'checkout.session') ?? data_get($body, 'session') ?? $s->session_id;
+
+                        // If HTTP-level status indicates error, persist as error_code (best-effort)
+                        if (! empty($f['status']) && $f['status'] >= 400) {
+                            $s->error_code = $f['status'];
+                        }
+
+                        $s->save();
+                    }
+                } catch (\Throwable $e) {
+                    logger()->warning('EasypayOrchestration: failed to fetch checkout after cancel', ['checkout_id' => $s->checkout_id, 'err' => $e->getMessage()]);
+                }
+            }
+        };
+
+        // Codes that should attempt a full refresh + recreate session
+        $recreateCodes = ['checkout-expired', 'checkout-canceled', 'generic-error', 'payment-failure'];
+
         if ($code === 'checkout-expired') {
+            // Refresh persisted payments first — if any is authoritative/paid, short-circuit
+            if ($refreshAllPayments()) {
+                return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid')];
+            }
+
+            // Cancel any active sessions and create a new one
+            $cancelAllSessions();
             $payload = $order->easypayPayload ?? \App\Services\EasypayService::createOrGetPayload($order);
             $new = \App\Services\EasypayService::createCheckoutSession($payload);
             $manifest = $new->message ? json_decode($new->message, true) : null;
@@ -175,15 +327,15 @@ class EasypayOrchestrationService
         }
 
         if ($code === 'already-paid') {
-            $lastPayment = $order->easypayPayments()->latest('created_at')->first();
-            if ($order->is_paid && $lastPayment && $lastPayment->payment_status === 'paid') {
+            // Always attempt to refresh all payments for the order (paymentId may be absent)
+            if ($refreshAllPayments()) {
                 return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid')];
             }
 
+            // If the SDK supplied a specific payment id, try to refresh it explicitly
             if ($paymentId) {
                 $single = (new \App\Services\EasypayService)->getSinglePayment($paymentId);
-                if ($single) {
-                    // Build authoritative attrs from remote response
+                if (is_array($single) && ! empty($single)) {
                     $attrs = [
                         'payment_id' => data_get($single, 'id') ?? $paymentId,
                         'checkout_id' => $checkoutId,
@@ -193,9 +345,7 @@ class EasypayOrchestrationService
                         'raw_response' => $single,
                     ];
 
-                    // Prefer an explicit order-scoped update (avoid accidental cross-order matches)
                     $existing = \App\Models\EasypayPayment::where('payment_id', $attrs['payment_id'])->where('order_id', $order->id)->first();
-
                     if ($existing) {
                         $existing->fill(array_filter($attrs, fn ($v) => ! is_null($v)));
                         $existing->save();
@@ -203,68 +353,21 @@ class EasypayOrchestrationService
                         \App\Models\EasypayPayment::create($attrs);
                     }
 
-                    // Ensure DB row(s) for this order+payment_id/checkout_id are updated (defensive, SQL-level)
-                    \App\Models\EasypayPayment::where('order_id', $order->id)
-                        ->where(function ($q) use ($attrs, $checkoutId) {
-                            $q->where('payment_id', $attrs['payment_id']);
-                            if (! empty($checkoutId)) {
-                                $q->orWhere('checkout_id', $checkoutId);
-                            }
-                        })
-                        ->update([
-                            'payment_status' => $attrs['payment_status'] ?? null,
-                            'paid_at' => $attrs['paid_at'] ?? null,
-                            'raw_response' => $attrs['raw_response'] ?? null,
-                        ]);
-
-                    // Authoritative reload (scoped to order + payment_id)
                     $stored = \App\Models\EasypayPayment::where('payment_id', $attrs['payment_id'])->where('order_id', $order->id)->first();
                     $status = $stored ? $stored->payment_status : ($attrs['payment_status'] ?? null);
 
-                    // Fallback: if order-scoped row wasn't updated but remote shows paid, try a global update by payment_id
-                    $remoteStatus = $attrs['payment_status'] ?? null;
-                    if (! in_array($status, ['paid', 'success'], true) && in_array($remoteStatus, ['paid', 'success'], true)) {
-                        \App\Models\EasypayPayment::where('payment_id', $attrs['payment_id'])->update([
-                            'payment_status' => $remoteStatus,
-                            'paid_at' => $attrs['paid_at'],
-                            'raw_response' => $attrs['raw_response'],
-                        ]);
-
-                        $stored = \App\Models\EasypayPayment::where('payment_id', $attrs['payment_id'])->where('order_id', $order->id)->first() ?? \App\Models\EasypayPayment::where('payment_id', $attrs['payment_id'])->first();
-                        $status = $stored ? $stored->payment_status : $status;
-                    }
-
-                    // If remote indicates paid (authoritative), mark order paid. Do NOT treat other statuses as paid here.
                     if ($status === 'paid') {
                         $order->is_paid = true;
                         $order->status = 'PROCESSING';
                         $order->save();
-
-                        if (app()->environment('testing')) {
-                            logger()->info('easypay.test-log: orchestration-mark-order-paid', ['order_id' => $order->id, 'payment_id' => $attrs['payment_id'], 'status' => $status]);
-                        }
-
-                        if ($stored && $stored->payment_status !== $status) {
-                            $stored->payment_status = $status;
-                            $stored->paid_at = $stored->paid_at ?? $attrs['paid_at'];
-                            $stored->raw_response = $single;
-                            $stored->save();
-
-                            if (app()->environment('testing')) {
-                                logger()->info('easypay.test-log: orchestration-updated-payment-row', ['payment_id' => $stored->payment_id, 'order_id' => $stored->order_id, 'payment_status' => $stored->payment_status]);
-                            }
-                        }
 
                         return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid')];
                     }
                 }
             }
 
-            if ($checkoutId) {
-                \App\Services\EasypayService::cancelCheckout($checkoutId);
-                \App\Models\EasypayCheckoutSession::where('checkout_id', $checkoutId)->update(['is_active' => false, 'status' => 'canceled']);
-            }
-
+            // No authoritative paid payment found — cancel sessions and recreate
+            $cancelAllSessions();
             $payload = $order->easypayPayload ?? \App\Services\EasypayService::createOrGetPayload($order);
             $new = \App\Services\EasypayService::createCheckoutSession($payload);
             $manifest = $new->message ? json_decode($new->message, true) : null;
@@ -272,44 +375,16 @@ class EasypayOrchestrationService
             return $manifest && $new->is_active ? ['action' => 'new-manifest', 'manifest' => $manifest] : ['action' => 'error', 'message' => self::buildPayUnavailableMessage($new->message ?? null)];
         }
 
-        if (in_array($code, ['generic-error', 'payment-failure'], true)) {
-            if ($paymentId) {
-                $single = (new \App\Services\EasypayService)->getSinglePayment($paymentId);
-                if ($single) {
-                    $attrs = [
-                        'checkout_id' => $checkoutId,
-                        'order_id' => $order->id,
-                        'payment_status' => data_get($single, 'payment_status') ?? data_get($single, 'payment.status'),
-                        'raw_response' => $single,
-                    ];
+        if (in_array($code, $recreateCodes, true)) {
+            // Always attempt to cancel existing sessions first (best-effort).
+            $cancelAllSessions();
 
-                    \App\Models\EasypayPayment::updateOrCreate(['payment_id' => data_get($single, 'id')], $attrs);
-
-                    $stored = \App\Models\EasypayPayment::where('payment_id', data_get($single, 'id'))->first();
-                    $status = $stored ? $stored->payment_status : ($attrs['payment_status'] ?? null);
-
-                    // Require authoritative remote confirmation (exactly 'paid').
-                    if ($status === 'paid') {
-                        $order->markAsPaid('easypay', ['payment_id' => data_get($single, 'id')]);
-
-                        // ensure stored payment reflects paid status (persist paid_at/raw_response if needed)
-                        if ($stored && $stored->payment_status !== $status) {
-                            $stored->payment_status = $status;
-                            $stored->paid_at = data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : $stored->paid_at;
-                            $stored->raw_response = $single;
-                            $stored->save();
-                        }
-
-                        return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid')];
-                    }
-                }
+            // Then refresh all payments — if any authoritative paid exists, short-circuit
+            if ($refreshAllPayments()) {
+                return ['action' => 'already-paid', 'message' => t('checkout.pay.already_paid')];
             }
 
-            if ($checkoutId) {
-                \App\Services\EasypayService::cancelCheckout($checkoutId);
-                \App\Models\EasypayCheckoutSession::where('checkout_id', $checkoutId)->update(['is_active' => false, 'status' => 'canceled']);
-            }
-
+            // Recreate a fresh session for the client to start
             $payload = $order->easypayPayload ?? \App\Services\EasypayService::createOrGetPayload($order);
             $new = \App\Services\EasypayService::createCheckoutSession($payload);
             $manifest = $new->message ? json_decode($new->message, true) : null;
