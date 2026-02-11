@@ -43,15 +43,19 @@ class ContactController extends Controller
 
         $validated = $validator->validated();
 
-        $locale = app()->getLocale();
+        // Determine user locale: prefer authenticated user's preference when available,
+        // otherwise fall back to the app locale.
+        $userLocale = auth()->check() ? (auth()->user()->language ?? app()->getLocale()) : app()->getLocale();
 
-        Mail::to(config('mail.admin_address', 'info@bekkas.pt'))->locale($locale)->queue(new ContactMessage(
+        // Admin emails must always be English (admin surface is English-only)
+        Mail::to(config('mail.admin_address', 'info@bekkas.pt'))->locale('en-UK')->queue(new ContactMessage(
             $validated['name'],
             $validated['email'],
             $validated['message']
         ));
 
-        Mail::to($validated['email'])->locale($locale)->queue(new ContactConfirmation(
+        // Confirmation to the sender should respect their configured language where possible
+        Mail::to($validated['email'])->locale($userLocale)->queue(new ContactConfirmation(
             $validated['name']
         ));
 

@@ -199,13 +199,24 @@ class OrdersTest extends TestCase
         // Two mails queued: one to customer and one to admin
         \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, 2);
 
+        // Customer mail must be queued (locale correctness covered in dedicated tests).
         \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, function ($mail) use ($user) {
             return $mail->hasTo($user->email);
         });
 
-        \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, function ($mail) {
-            // Admin mails must be in English and sent to configured admin address
-            return $mail->hasTo(config('mail.admin_address', 'info@bekkas.pt')) && ($mail->locale === 'en-UK' || $mail->locale === 'en');
+        // Sanity: building the mailable with the customer's locale yields an English subject
+        $m = new \App\Mail\OrderNotification($order, 'orders.email.event.placed', $user->name, ($order->status ?? null), ['status' => ($order->status ?? null)]);
+        // Simulate the mailer applying the user's locale when building the mailable
+        $prev = app()->getLocale();
+        app()->setLocale($user->language);
+        $this->assertStringContainsString('Order', $m->build()->subject);
+        app()->setLocale($prev);
+
+        \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, function ($mail) use ($order) {
+            // Admin mails must be in English and sent to configured admin address and link to admin order page
+            return $mail->hasTo(config('mail.admin_address', 'info@bekkas.pt'))
+                && ($mail->locale === 'en-UK' || $mail->locale === 'en')
+                && ($mail->actionUrl === route('admin.orders.show', $order));
         });
     }
 

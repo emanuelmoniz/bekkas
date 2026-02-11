@@ -137,9 +137,10 @@ class OrderController extends Controller
             $statusObj = \App\Models\OrderStatus::where('code', $order->status)->first();
             $statusLabel = $statusObj?->translation($locale)?->name ?? $order->status;
 
-            $eventLabel = t('orders.email.event.status_changed', ['status' => $statusLabel]) ?: ("Order status changed to {$statusLabel}");
+            // Pass translation key and params so the Mailable resolves the correct locale at send-time
+            $eventKey = 'orders.email.event.status_changed';
 
-            \Illuminate\Support\Facades\Mail::to($order->user->email)->locale($locale)->queue(new \App\Mail\OrderNotification($order, $eventLabel, $order->user->name, $statusLabel));
+            \Illuminate\Support\Facades\Mail::to($order->user->email)->locale($locale)->queue(new \App\Mail\OrderNotification($order, $eventKey, $order->user->name, $statusLabel, ['status' => $statusLabel]));
         }
 
         return redirect()->route('admin.orders.show', $order)->with('success', 'Order updated successfully!');

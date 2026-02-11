@@ -876,6 +876,21 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.email.subject', 'locale' => 'pt-PT', 'value' => 'Ticket #:uuid – :event', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.subject', 'locale' => 'en-UK', 'value' => 'Ticket #:uuid – :event', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'tickets.email.event.new_message', 'locale' => 'en-UK', 'value' => 'New message', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.event.new_message', 'locale' => 'pt-PT', 'value' => 'Nova mensagem', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'tickets.email.event.created', 'locale' => 'en-UK', 'value' => 'New ticket created', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.event.created', 'locale' => 'pt-PT', 'value' => 'Novo ticket criado', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'tickets.email.event.admin_update', 'locale' => 'en-UK', 'value' => 'Administrative update', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.event.admin_update', 'locale' => 'pt-PT', 'value' => 'Atualização administrativa', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'tickets.email.event.closed', 'locale' => 'en-UK', 'value' => 'Ticket closed', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.event.closed', 'locale' => 'pt-PT', 'value' => 'Ticket fechado', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'tickets.email.event.reopened', 'locale' => 'en-UK', 'value' => 'Ticket reopened', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.event.reopened', 'locale' => 'pt-PT', 'value' => 'Ticket reaberto', 'created_at' => $now, 'updated_at' => $now],
+
             // Orders email translations
             ['key' => 'orders.email.subject', 'locale' => 'pt-PT', 'value' => 'Encomenda #:order_number – :event', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.email.subject', 'locale' => 'en-UK', 'value' => 'Order #:order_number – :event', 'created_at' => $now, 'updated_at' => $now],
@@ -912,6 +927,9 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'orders.email.event.status_changed', 'locale' => 'pt-PT', 'value' => 'Estado da encomenda atualizado para :status', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.email.event.status_changed', 'locale' => 'en-UK', 'value' => 'Order status changed to :status', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'orders.email.event.paid', 'locale' => 'en-UK', 'value' => 'Payment received — your order is now being processed', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.email.event.paid', 'locale' => 'pt-PT', 'value' => 'Pagamento recebido — o seu pedido está a ser processado', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.email.greeting', 'locale' => 'pt-PT', 'value' => 'Olá :name,', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.greeting', 'locale' => 'en-UK', 'value' => 'Hello :name,', 'created_at' => $now, 'updated_at' => $now],

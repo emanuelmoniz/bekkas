@@ -64,8 +64,9 @@ class TicketStatusController extends Controller
 
         $ticket->notifyParticipants(
             $ticket->messages()->latest()->first(),
-            'Ticket closed',
-            $user->id
+            'tickets.email.event.closed',
+            $user->id,
+            ['reason' => $request->reason]
         );
 
         // ✅ Mark unread for other participant
@@ -105,8 +106,9 @@ class TicketStatusController extends Controller
 
         $ticket->notifyParticipants(
             $ticket->messages()->latest()->first(),
-            'Ticket reopened',
-            $user->id
+            'tickets.email.event.reopened',
+            $user->id,
+            ['reason' => $request->reason]
         );
 
         // ✅ Mark unread for other participant

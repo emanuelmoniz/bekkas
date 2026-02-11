@@ -105,7 +105,13 @@ class Ticket extends Model
             ->get();
 
         foreach ($recipients as $recipient) {
+            // Admin recipients must always receive English emails; customers receive their configured language.
+            $recipientLocale = $recipient->roles()->where('name', 'admin')->exists()
+                ? 'en-UK'
+                : ($recipient->language ?? app()->getLocale());
+
             Mail::to($recipient->email, $recipient->name)
+                ->locale($recipientLocale)
                 ->queue(new TicketNotification($this, $message, $eventLabel, $recipient->name));
         }
     }

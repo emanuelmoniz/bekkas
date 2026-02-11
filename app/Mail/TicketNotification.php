@@ -21,16 +21,26 @@ class TicketNotification extends Mailable implements ShouldQueue
 
     public string $recipientName;
 
-    public function __construct(Ticket $ticket, TicketMessage $message, string $eventLabel, string $recipientName)
+    /**
+     * @var array|null Translation params when using a translation key
+     */
+    public ?array $eventParams = null;
+
+    public function __construct(Ticket $ticket, TicketMessage $message, string $event, string $recipientName, ?array $eventParams = null)
     {
         $this->ticket = $ticket;
         $this->ticketMessage = $message;
-        $this->eventLabel = $eventLabel;
+        $this->eventLabel = $event; // key or literal; resolved in build()
         $this->recipientName = $recipientName;
+        $this->eventParams = $eventParams;
     }
 
     public function build(): self
     {
+        // Resolve event label at build time so the Mailable's locale is respected.
+        $label = t($this->eventLabel, $this->eventParams ?? []) ?: $this->eventLabel;
+        $this->eventLabel = $label;
+
         return $this
             ->from(config('mail.from.address'), config('mail.from.name', config('app.name', 'BEKKAS')))
             ->subject(t('tickets.email.subject', ['uuid' => $this->ticket->uuid, 'event' => $this->eventLabel]) ?: "Ticket #{$this->ticket->uuid} – {$this->eventLabel}")

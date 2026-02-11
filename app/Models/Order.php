@@ -165,6 +165,29 @@ class Order extends Model
             // do not break flow if logging fails
         }
 
+        // Send transactional email to customer when the payment source is authoritative (Easypay)
+        // Keep this quiet on failures so payment processing is not impacted.
+        if ($source === 'easypay' && $this->user && filter_var($this->user->email ?? '', FILTER_VALIDATE_EMAIL)) {
+            try {
+                $locale = $this->user->language ?? app()->getLocale();
+
+                $statusObj = \App\Models\OrderStatus::where('code', $this->status)->first();
+                $statusLabel = $statusObj?->translation($locale)?->name ?? $this->status;
+
+                \Illuminate\Support\Facades\Mail::to($this->user->email)
+                    ->locale($locale)
+                    ->queue(new \App\Mail\OrderNotification(
+                        $this,
+                        'orders.email.event.paid',
+                        $this->user->name,
+                        $statusLabel,
+                        ['status' => $statusLabel]
+                    ));
+            } catch (\Throwable $e) {
+                \Log::warning('order.payment_email_failed', ['order_id' => $this->id, 'err' => $e->getMessage()]);
+            }
+        }
+
         return true;
     }
 

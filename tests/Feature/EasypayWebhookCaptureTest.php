@@ -34,6 +34,12 @@ class EasypayWebhookCaptureTest extends TestCase
 
         $payload = ['id' => 'pay_web_1', 'type' => 'capture', 'status' => 'success'];
 
+        // Ensure mails are captured
+        \Illuminate\Support\Facades\Mail::fake();
+
+        // Ensure the order's user has an explicit language so we can assert it is respected
+        $order->user->update(['language' => 'en-UK']);
+
         // Act
         $resp = $this->withHeaders([
             'PHP_AUTH_USER' => 'webhook-user',
@@ -54,5 +60,7 @@ class EasypayWebhookCaptureTest extends TestCase
         $session->refresh();
         $this->assertStringContainsString('chk_web_1', $session->message);
         $this->assertEquals('paid', $session->status);
+
+
     }
 }

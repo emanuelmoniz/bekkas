@@ -17,7 +17,7 @@
 @endforeach
 @endif
 
-@component('mail::button', ['url' => route('orders.show', $order)])
+@component('mail::button', ['url' => $actionUrl ?? route('orders.show', $order)])
 {{ t('orders.email.view_button') ?: 'View Order' }}
 @endcomponent
 

@@ -697,13 +697,28 @@ class OrderController extends Controller
                 $statusObj = \App\Models\OrderStatus::where('code', $createdOrder->status)->first();
                 $customerStatusLabel = $statusObj?->translation($locale)?->name ?? $createdOrder->status;
 
-                \Illuminate\Support\Facades\Mail::to($user->email)->locale($locale)->queue(new \App\Mail\OrderNotification($createdOrder, t('orders.email.event.placed', ['status' => $customerStatusLabel]) ?: 'Order placed', $user->name, $customerStatusLabel));
+                // Customer: pass translation key + params so the Mailable resolves it at build time
+                \Illuminate\Support\Facades\Mail::to($user->email)->locale($locale)->queue(new \App\Mail\OrderNotification(
+                    $createdOrder,
+                    'orders.email.event.placed',
+                    $user->name,
+                    $customerStatusLabel,
+                    ['status' => $customerStatusLabel]
+                ));
 
-                // Notify admin (always in English)
+                // Notify admin (always in English) — pass the translation key and let the Mailable
+                // resolve the label using the admin locale.
                 $adminLocale = 'en-UK';
                 $adminStatusLabel = $statusObj?->translation($adminLocale)?->name ?? $createdOrder->status;
                 $adminEmail = config('mail.admin_address', 'info@bekkas.pt');
-                \Illuminate\Support\Facades\Mail::to($adminEmail)->locale($adminLocale)->queue(new \App\Mail\OrderNotification($createdOrder, t('orders.email.event.new', ['status' => $adminStatusLabel]) ?: 'New order', config('app.name'), $adminStatusLabel));
+                \Illuminate\Support\Facades\Mail::to($adminEmail)->locale($adminLocale)->queue(new \App\Mail\OrderNotification(
+                    $createdOrder,
+                    'orders.email.event.new',
+                    config('app.name'),
+                    $adminStatusLabel,
+                    ['status' => $adminStatusLabel],
+                    route('admin.orders.show', $createdOrder)
+                ));
             }
 
             return redirect()->route('orders.pay', $createdOrder)->with('success', t('orders.placed_success') ?: 'Order placed successfully!');

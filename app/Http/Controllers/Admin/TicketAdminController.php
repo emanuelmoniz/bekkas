@@ -31,7 +31,7 @@ class TicketAdminController extends Controller
 
         $ticket->notifyParticipants(
             $message,
-            'Administrative update',
+            'tickets.email.event.admin_update',
             Auth::id()
         );
 

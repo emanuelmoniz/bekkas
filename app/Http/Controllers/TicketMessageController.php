@@ -126,8 +126,9 @@ class TicketMessageController extends Controller
         try {
             $ticket->notifyParticipants(
                 $message,
-                'New message',
-                $user->id
+                'tickets.email.event.new_message',
+                $user->id,
+                // eventParams (optional) — message body is displayed in the email body, not the label
             );
         } catch (\Throwable $e) {
             \Log::error('Ticket notification failed', [

@@ -127,7 +127,7 @@ class TicketController extends Controller
 
         $ticket->notifyParticipants(
             $message,
-            'New ticket created',
+            'tickets.email.event.created',
             $authUser->id
         );
 
