@@ -147,13 +147,16 @@ class CheckoutTest extends TestCase
 
         ShippingConfig::set('default_shipping_tier_id', $tier->id);
 
-        $this->withSession(['cart' => [$product->id => 2]])
+        $response = $this->withSession(['cart' => [$product->id => 2]])
             ->actingAs($user)
             ->post(route('checkout.place'), [
                 'address_id' => $address->id,
                 'shipping_tier_id' => $tier->id,
-            ])
-            ->assertRedirect(route('orders.index'))
+            ]);
+
+        $order = \App\Models\Order::where('user_id', $user->id)->latest()->first();
+
+        $response->assertRedirect(route('orders.pay', $order))
             ->assertSessionHas('success');
 
         $this->assertDatabaseHas('orders', ['user_id' => $user->id]);

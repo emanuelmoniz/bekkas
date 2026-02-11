@@ -706,7 +706,7 @@ class OrderController extends Controller
                 \Illuminate\Support\Facades\Mail::to($adminEmail)->locale($adminLocale)->queue(new \App\Mail\OrderNotification($createdOrder, t('orders.email.event.new', ['status' => $adminStatusLabel]) ?: 'New order', config('app.name'), $adminStatusLabel));
             }
 
-            return redirect()->route('orders.index')->with('success', t('orders.placed_success') ?: 'Order placed successfully!');
+            return redirect()->route('orders.pay', $createdOrder)->with('success', t('orders.placed_success') ?: 'Order placed successfully!');
         } catch (\Exception $e) {
             Log::error('Order creation failed', [
                 'user_id' => $user->id,

@@ -180,10 +180,13 @@ class OrdersTest extends TestCase
         ]);
 
         // Place the order and assert the session flash was set (no double POST)
-        $this->withSession(['cart' => [$product->id => 1]])
+        $response = $this->withSession(['cart' => [$product->id => 1]])
             ->actingAs($user)
-            ->post(route('checkout.place'), ['address_id' => $address->id])
-            ->assertRedirect(route('orders.index'))
+            ->post(route('checkout.place'), ['address_id' => $address->id]);
+
+        $order = \App\Models\Order::where('user_id', $user->id)->latest()->first();
+
+        $response->assertRedirect(route('orders.pay', $order))
             ->assertSessionHas('success', t('orders.placed_success') ?: 'Order placed successfully! Thank you.');
 
         // Ensure the layout renders the same flash when session contains it

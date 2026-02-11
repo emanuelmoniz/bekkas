@@ -98,13 +98,16 @@ class ShippingTest extends TestCase
         // Freeze time to compute expected date deterministically
         Carbon::setTestNow(Carbon::create(2026, 1, 15, 9, 0, 0));
 
-        $this->withSession(['cart' => [$product->id => 1]])
+        $response = $this->withSession(['cart' => [$product->id => 1]])
             ->actingAs($user)
             ->post(route('checkout.place'), [
                 'address_id' => $address->id,
                 'shipping_tier_id' => $tier->id,
-            ])
-            ->assertRedirect(route('orders.index'));
+            ]);
+
+        $order = \App\Models\Order::where('user_id', $user->id)->latest()->first();
+
+        $response->assertRedirect(route('orders.pay', $order));
 
         // ensure an order was created for this user and compute expected delivery on that order
         $this->assertDatabaseHas('orders', ['user_id' => $user->id]);

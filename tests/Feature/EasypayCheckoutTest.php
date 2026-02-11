@@ -32,12 +32,13 @@ class EasypayCheckoutTest extends TestCase
         $product = Product::factory()->create(['price' => 10.50, 'stock' => 10]);
         $address = Address::factory()->create(['user_id' => $user->id]);
 
-        $this->actingAs($user)->withSession(['cart' => [$product->id => 1]])
-            ->post(route('checkout.place'), ['address_id' => $address->id])
-            ->assertRedirect(route('orders.index'));
+        $response = $this->actingAs($user)->withSession(['cart' => [$product->id => 1]])
+            ->post(route('checkout.place'), ['address_id' => $address->id]);
 
         $order = Order::where('user_id', $user->id)->latest()->first();
         $this->assertNotNull($order);
+
+        $response->assertRedirect(route('orders.pay', $order));
 
         $this->assertDatabaseHas('easypay_payloads', ['order_id' => $order->id]);
 
@@ -84,12 +85,13 @@ class EasypayCheckoutTest extends TestCase
         $product = Product::factory()->create(['price' => 10.50, 'stock' => 10]);
         $address = Address::factory()->create(['user_id' => $user->id]);
 
-        $this->actingAs($user)->withSession(['cart' => [$product->id => 1]])
-            ->post(route('checkout.place'), ['address_id' => $address->id])
-            ->assertRedirect(route('orders.index'));
+        $response = $this->actingAs($user)->withSession(['cart' => [$product->id => 1]])
+            ->post(route('checkout.place'), ['address_id' => $address->id]);
 
         $order = Order::where('user_id', $user->id)->latest()->first();
         $this->assertNotNull($order);
+
+        $response->assertRedirect(route('orders.pay', $order));
 
         $session = \App\Models\EasypayCheckoutSession::where('order_id', $order->id)->first();
         $this->assertNotNull($session);
