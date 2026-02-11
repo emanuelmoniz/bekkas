@@ -9,4 +9,10 @@ return [
     'payment_methods' => env('EASYPAY_PAYMENT_METHODS', '[]'),
     'session_ttl' => env('EASYPAY_SESSION_TTL', 1800),
     'mb_ttl' => env('EASYPAY_MB_TTL', 172800),
+
+    /* Webhook / Notifications (used by /webhooks/easypay) */
+    'webhook_secret' => env('EASYPAY_WEBHOOK_SECRET'),
+    'webhook_header' => env('EASYPAY_WEBHOOK_HEADER', 'x-easypay-code'),
+    'webhook_user' => env('EASYPAY_WEBHOOK_USER'),
+    'webhook_pass' => env('EASYPAY_WEBHOOK_PASS'),
 ];

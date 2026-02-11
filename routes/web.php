@@ -68,6 +68,11 @@ Route::get('/architecture', function () {
 Route::post('/contact', [ContactController::class, 'store'])
     ->name('contact.store');
 
+// Easypay generic notifications (webhook) — server-to-server. Exempt from CSRF and secured via BasicAuth + header.
+Route::post('/webhooks/easypay', [\App\Http\Controllers\Webhooks\EasypayController::class, 'generic'])
+    ->name('webhooks.easypay')
+    ->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class);
+
 Route::get('/cart', [CartController::class, 'index'])
     ->name('cart.index');
 
