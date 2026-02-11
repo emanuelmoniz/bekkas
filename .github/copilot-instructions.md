@@ -84,6 +84,16 @@ If anything above is unclear or you'd like added examples (e.g. a sample unit te
 - Key files: `app/Services/*`, `app/helpers.php` (`t()`), `database/seeders/StaticTranslationsSeeder.php`, `app/Models/ShippingConfig.php`, `app/Models/ShippingTier.php`, `routes/web.php`, `bin/run-tests.sh`, `TESTING.md`, `AdminUserSeeder`.
 - Commands (exact): `composer setup`, `composer dev`, `npm run dev`, `npm run build`, `chmod +x bin/run-tests.sh`, `./bin/run-tests.sh`, `FORCE=1 ./bin/run-tests.sh`, `composer test`, `./vendor/bin/pint`.
 - Tests: helper creates `database/testing.sqlite`, sets `APP_ENV=testing`, `DB_CONNECTION=sqlite`, `MAIL_MAILER=array`, disables CSRF & throttles—use it for safe local runs.
-- Conventions: always use `t('...')`, put business rules in `app/Services`, update seeders/tests together when changing checkout/shipping/tax logic.
+- Conventions: always use `t('...')`, put business rules in `app/Services`, update seeders/tests together when changing checkout/shipping/tax logic.~
+- Allways use a deterministica approach to debug and find errors.
+- This is the server that i am runing. Allways run cmds to clear cache, views, routes, configs, etc. after changes when needed:
+  - `php artisan view:clear`
+  - `php artisan cache:clear`
+  - `php artisan route:clear`
+  - `php artisan config:clear`
+  and run migrations when needed:
+  - `php artisan migrate`
+  and npm run build when needed:
+  - `npm run build`
 
 ---

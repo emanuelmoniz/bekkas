@@ -71,6 +71,62 @@
           const mount = document.getElementById('easypay-checkout');
           const testing = @json(config('easypay.env') === 'test');
 
+          // Inject application locale (fallback) so the client can map server/user locale formats to
+          // the Easypay SDK expected values without changing server-side language logic.
+          const appLocale = @json(app()->getLocale());
+
+          // Map existing language values (server/user) to Easypay SDK expected values.
+          // - keep server logic untouched: prefer manifest.customer.language when present
+          // - supported SDK values: "en", "pt_PT", "es_ES"
+          function mapEasypayLanguage(raw) {
+            if (!raw || typeof raw !== 'string') return null;
+            const r = raw.trim();
+
+            // Common canonical forms -> quick returns
+            const lower = r.toLowerCase();
+            if (lower === 'en' || lower === 'en_us' || lower === 'en-us') return 'en';
+            if (lower === 'pt' || lower === 'pt_pt' || lower === 'pt-pt') return 'pt_PT';
+            if (lower === 'es' || lower === 'es_es' || lower === 'es-es') return 'es_ES';
+
+            // Server sometimes supplies 2-letter uppercase (e.g. "PT", "EN"). Handle that.
+            if (/^[A-Za-z]{2}$/.test(r)) {
+              const up = r.toUpperCase();
+              if (up === 'PT') return 'pt_PT';
+              if (up === 'ES') return 'es_ES';
+              if (up === 'EN') return 'en';
+            }
+
+            // If already in SDK format, pass-through
+            if (/^pt[_-]pt$/i.test(r)) return 'pt_PT';
+            if (/^es[_-]es$/i.test(r)) return 'es_ES';
+            if (/^en([_-]us)?$/i.test(r)) return 'en';
+
+            return null;
+          }
+
+          function buildEasypayOptions(manifest) {
+            const langSource = (manifest && manifest.customer && manifest.customer.language) ? manifest.customer.language : appLocale;
+            const mapped = mapEasypayLanguage(langSource);
+
+            // Build a minimal options object and only attach handler properties when they
+            // are actual functions — avoids passing `undefined` (which some SDKs treat as
+            // a present-but-invalid callback and will raise an error).
+            const opts = {
+              display: 'inline',
+              container: '#easypay-checkout',
+              testing: testing,
+              showLoading: true,
+            };
+
+            if (typeof window.__easypay_onSuccess === 'function') opts.onSuccess = window.__easypay_onSuccess;
+            if (typeof window.__easypay_onClose === 'function') opts.onClose = window.__easypay_onClose;
+            if (typeof window.__easypay_onError === 'function') opts.onError = window.__easypay_onError;
+            if (typeof window.__easypay_onPaymentError === 'function') opts.onPaymentError = window.__easypay_onPaymentError;
+
+            if (mapped) opts.language = mapped;
+            return opts;
+          }
+
           const starterCandidates = [
             () => window.easypayCheckout?.startCheckout,
             () => window.easypayCheckout?.start,
@@ -168,7 +224,7 @@
                           for (const cand of starterCandidates) {
                             const fn = cand();
                             if (typeof fn === 'function') {
-                              fn(json.manifest, { display: 'inline', container: '#easypay-checkout', testing: @json(config('easypay.env') === 'test'), onSuccess: handleSdkSuccess, onClose: handleSdkClose, onError: handleSdkError, onPaymentError: handleSdkPaymentError });
+                              fn(json.manifest, buildEasypayOptions(json.manifest));
                               return;
                             }
                           }
@@ -212,7 +268,7 @@
                         for (const cand of starterCandidates) {
                           const fn = cand();
                           if (typeof fn === 'function') {
-                            fn(j.manifest, { display: 'inline', container: '#easypay-checkout', testing: @json(config('easypay.env') === 'test'), onSuccess: handleSdkSuccess, onClose: handleSdkClose, onError: handleSdkError, onPaymentError: handleSdkPaymentError });
+                            fn(j.manifest, buildEasypayOptions(j.manifest));
                             return;
                           }
                         }
@@ -225,7 +281,13 @@
                     } catch (e) { /* ignore */ }
                   };
 
-                  fn(manifest, { display: 'inline', container: '#easypay-checkout', testing: @json(config('easypay.env') === 'test'), onSuccess: handleSdkSuccess, onClose: handleSdkClose, onError: handleSdkError, onPaymentError: handleSdkPaymentError, onError: handleSdkError, onPaymentError: handleSdkPaymentError });
+                  // Expose handlers so buildEasypayOptions can attach them safely; this
+                  // prevents passing `undefined` into the SDK which triggers the
+                  // "onError callback must be a function" message observed in production.
+                  window.__easypay_onError = handleSdkError;
+                  window.__easypay_onPaymentError = handleSdkPaymentError;
+
+                  fn(manifest, buildEasypayOptions(manifest));
                   const loader = document.getElementById('easypay-checkout-loading');
                   if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
 
