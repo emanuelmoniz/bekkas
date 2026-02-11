@@ -262,16 +262,14 @@ class EasypayWebhookService
             $order = \App\Models\Order::find($p->order_id);
             if ($order && ! $order->is_refunded) {
                 try {
-                    $order->is_refunded = true;
-                    $order->save();
+                    // Centralize transition + email/logging behaviour on the model
+                    $order->markAsRefunded('easypay', ['payment_id' => $p->payment_id, 'refund_id' => $refundId]);
 
                     // Ensure local payment row reflects the refunded state as well
                     if (($p->payment_status ?? '') !== 'refunded') {
                         $p->payment_status = 'refunded';
                         $p->save();
                     }
-
-                    Log::info('easypay.webhook.refund_marked_refunded', ['order_id' => $order->id, 'payment_id' => $p->payment_id, 'refund_id' => $refundId]);
                 } catch (\Throwable $e) {
                     Log::warning('easypay.webhook.refund_mark_refunded_failed', ['order_id' => $p->order_id, 'err' => $e->getMessage()]);
                 }

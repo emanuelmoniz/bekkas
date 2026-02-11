@@ -931,6 +931,10 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'orders.email.event.paid', 'locale' => 'en-UK', 'value' => 'Payment received — your order is now being processed', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.email.event.paid', 'locale' => 'pt-PT', 'value' => 'Pagamento recebido — o seu pedido está a ser processado', 'created_at' => $now, 'updated_at' => $now],
 
+            // Refund event (used when an order is marked refunded by the payment gateway)
+            ['key' => 'orders.email.event.refunded', 'locale' => 'en-UK', 'value' => 'Refund issued', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.email.event.refunded', 'locale' => 'pt-PT', 'value' => 'Reembolso efetuado', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'tickets.email.greeting', 'locale' => 'pt-PT', 'value' => 'Olá :name,', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.greeting', 'locale' => 'en-UK', 'value' => 'Hello :name,', 'created_at' => $now, 'updated_at' => $now],
 

@@ -207,4 +207,74 @@ class Order extends Model
 
         return $ok;
     }
+
+    /**
+     * Idempotent: mark this order as refunded. Use when an authoritative refund
+     * confirmation is available (e.g. Easypay webhook). When the $source is
+     * authoritative we send the transactional email to the customer.
+     *
+     * @param  string|null  $source
+     * @param  array  $meta
+     * @return bool
+     */
+    public function markAsRefunded(?string $source = null, array $meta = []): bool
+    {
+        if ($this->is_refunded) {
+            return false;
+        }
+
+        $prevStatus = $this->status;
+
+        // If currently PROCESSING, transition to CANCELED and set the cancellation flag.
+        // Otherwise keep the current status unchanged (per requirements).
+        if ($prevStatus === 'PROCESSING') {
+            $this->status = 'CANCELED';
+
+            // Restore stock for non-backordered items (mirror admin behaviour)
+            try {
+                foreach ($this->items()->with('product')->get() as $item) {
+                    $product = $item->product;
+                    if ($product && ! $item->was_backordered) {
+                        $product->increment('stock', $item->quantity);
+                    }
+                }
+            } catch (\Throwable $e) {
+                // Non-fatal: do not prevent refund marking if stock restore fails
+                \Log::warning('order.refund_stock_restore_failed', ['order_id' => $this->id, 'err' => $e->getMessage()]);
+            }
+        }
+
+        $this->is_refunded = true;
+        $this->save();
+
+        try {
+            \Log::info('order.marked_refunded', array_merge(['order_id' => $this->id, 'source' => $source, 'prev_status' => $prevStatus, 'status' => $this->status], $meta));
+        } catch (\Throwable $e) {
+            // do not break flow if logging fails
+        }
+
+        // Send transactional email to customer for authoritative sources (Easypay webhook)
+        if ($source === 'easypay' && $this->user && filter_var($this->user->email ?? '', FILTER_VALIDATE_EMAIL)) {
+            try {
+                $locale = $this->user->language ?? app()->getLocale();
+
+                // Use a friendly label for the "refunded" status in the mail's status block
+                $statusLabel = t('orders.refunded') ?: 'Refunded';
+
+                \Illuminate\Support\Facades\Mail::to($this->user->email)
+                    ->locale($locale)
+                    ->queue(new \App\Mail\OrderNotification(
+                        $this,
+                        'orders.email.event.refunded',
+                        $this->user->name,
+                        $statusLabel,
+                        ['status' => $statusLabel]
+                    ));
+            } catch (\Throwable $e) {
+                \Log::warning('order.refund_email_failed', ['order_id' => $this->id, 'err' => $e->getMessage()]);
+            }
+        }
+
+        return true;
+    }
 }
