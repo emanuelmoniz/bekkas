@@ -4,10 +4,15 @@ namespace Tests\Unit;
 
 use App\Services\EasypayService;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Order;
+use App\Models\ShippingTier;
 use Tests\TestCase;
 
 class EasypayServiceTest extends TestCase
 {
+    use RefreshDatabase;
     public function test_get_single_payment_returns_array()
     {
         Http::fake([
@@ -34,5 +39,50 @@ class EasypayServiceTest extends TestCase
         $this->assertEquals(200, $res['status']);
         $this->assertIsArray($res['body']);
         $this->assertEquals('checkout_1', $res['body']['id']);
+    }
+
+    public function test_build_payload_includes_shipping_item_when_shipping_present()
+    {
+        Config::set('easypay.enabled', true);
+
+        $tier = ShippingTier::factory()->create(["name_en" => 'Express', 'cost_gross' => 4.5]);
+
+        $order = Order::factory()->hasItems(1)->create([
+            'shipping_gross' => 4.50,
+            'shipping_tier_name' => 'Express',
+            'total_gross' => 12.30 + 4.50,
+        ]);
+
+        $payload = EasypayService::buildPayload($order);
+
+        $items = $payload['order']['items'];
+
+        $this->assertTrue(collect($items)->contains(function ($it) use ($tier) {
+            return ($it['description'] === 'Express')
+                && ($it['quantity'] === 1)
+                && ((string) $tier->id === (string) $it['key'])
+                && (round(4.5, 2) == $it['value']);
+        }));
+
+        $this->assertGreaterThanOrEqual(1, count($items));
+    }
+
+    public function test_build_payload_omits_shipping_item_for_free_shipping()
+    {
+        Config::set('easypay.enabled', true);
+
+        $order = Order::factory()->hasItems(1)->create([
+            'shipping_gross' => 0.00,
+            'shipping_tier_name' => 'Free tier',
+            'total_gross' => 12.30,
+        ]);
+
+        $payload = EasypayService::buildPayload($order);
+
+        $items = $payload['order']['items'];
+
+        $this->assertFalse(collect($items)->contains(function ($it) {
+            return ($it['description'] === 'Free tier') || ($it['value'] == 0.00);
+        }));
     }
 }

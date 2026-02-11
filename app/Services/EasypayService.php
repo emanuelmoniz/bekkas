@@ -75,6 +75,27 @@ class EasypayService
             ];
         })->toArray();
 
+        // Add shipping tier as an item when the order has a shipping cost.
+        // Do NOT add an item for free shipping (shipping_gross === 0).
+        if (! empty($order->shipping_gross) && round($order->shipping_gross, 2) > 0) {
+            $shippingDescription = $order->shipping_tier_name ?? 'Shipping';
+
+            // Try to resolve a ShippingTier id by name (best-effort). If not found
+            // fall back to a stable string key made from the name.
+            $shippingTier = \App\Models\ShippingTier::where('name_en', $shippingDescription)
+                ->orWhere('name_pt', $shippingDescription)
+                ->first();
+
+            $shippingKey = $shippingTier ? (string) $shippingTier->id : ('shipping:'.\Illuminate\Support\Str::slug($shippingDescription ?? 'shipping'));
+
+            $items[] = [
+                'description' => $shippingDescription,
+                'quantity' => 1,
+                'key' => $shippingKey,
+                'value' => round($order->shipping_gross, 2),
+            ];
+        }
+
         $mbTtl = (int) config('easypay.mb_ttl', 172800);
         $expiration = Carbon::now()->addSeconds($mbTtl)->setTimezone('UTC')->format('Y-m-d\TH:i:s\Z');
 
