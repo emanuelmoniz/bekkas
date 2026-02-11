@@ -289,6 +289,9 @@ Route::middleware(['auth', 'is_admin'])
             ->name('orders.payments.index');
         Route::get('/orders/payments/{payment}', [\App\Http\Controllers\Admin\EasypayPaymentController::class, 'show'])
             ->name('orders.payments.show');
+        // Admin: request a refund for a single payment (Easypay)
+        Route::post('/orders/payments/{payment}/refund', [\App\Http\Controllers\Admin\EasypayPaymentController::class, 'refund'])
+            ->name('orders.payments.refund');
 
         Route::get('/orders/{order}', [AdminOrderController::class, 'show'])
             ->name('orders.show');

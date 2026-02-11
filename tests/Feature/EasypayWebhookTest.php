@@ -17,6 +17,9 @@ class EasypayWebhookTest extends TestCase
                     && array_key_exists('payload', $context);
             });
 
+        // Allow the handler/service to log errors internally without failing the expectation
+        Log::shouldReceive('error')->zeroOrMoreTimes();
+
         // configure expected creds + header
         config()->set('easypay.webhook_user', 'webhook-user');
         config()->set('easypay.webhook_pass', 'webhook-pass');

@@ -20,7 +20,15 @@ class EasypayWebhookCaptureTest extends TestCase
 
         // Fake Easypay API: single -> paid, checkout -> paid body
         Http::fake([
-            'https://api.test.easypay.pt/2.0/single/pay_web_1' => Http::response(['id' => 'pay_web_1', 'payment_status' => 'paid', 'paid_at' => now()->toIso8601String(), 'checkout' => ['id' => 'chk_web_1']], 200),
+            'https://api.test.easypay.pt/2.0/single/pay_web_1' => Http::response([
+                'id' => 'pay_web_1',
+                'payment_status' => 'paid',
+                'paid_at' => now()->toIso8601String(),
+                'checkout' => ['id' => 'chk_web_1'],
+                'captures' => [
+                    ['id' => 'cap_1', 'status' => 'success', 'value' => 11]
+                ],
+            ], 200),
             'https://api.test.easypay.pt/2.0/checkout/chk_web_1' => Http::response(['checkout' => ['id' => 'chk_web_1', 'status' => 'paid']], 200),
         ]);
 
@@ -54,6 +62,9 @@ class EasypayWebhookCaptureTest extends TestCase
         $payment->refresh();
         $this->assertEquals('paid', $payment->payment_status);
         $this->assertNotNull($payment->paid_at);
+
+        // capture_id must be persisted when captures are present in the remote response
+        $this->assertEquals('cap_1', $payment->capture_id);
 
         $this->assertTrue(Order::find($order->id)->is_paid);
 

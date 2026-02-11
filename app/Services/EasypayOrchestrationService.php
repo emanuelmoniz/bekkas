@@ -321,6 +321,7 @@ class EasypayOrchestrationService
                         $p->update(array_filter([
                             'payment_status' => data_get($single, 'payment_status') ?? data_get($single, 'payment.status') ?? $p->payment_status,
                             'paid_at' => data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : $p->paid_at,
+                            'capture_id' => data_get($single, 'captures.0.id') ?? null,
                             'raw_response' => $single,
                         ], fn($v) => ! is_null($v)));
                     }

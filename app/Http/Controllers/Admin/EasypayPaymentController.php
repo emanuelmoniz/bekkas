@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\EasypayPayment;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class EasypayPaymentController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of Easypay payments (admin).
      */
@@ -57,5 +59,56 @@ class EasypayPaymentController extends Controller
         $payment->load(['order.user', 'checkoutSession']);
 
         return view('admin.orders.payments.show', ['payment' => $payment]);
+    }
+
+    /**
+     * Admin: trigger a refund request against Easypay for a given payment id.
+     * Does NOT mutate local order/payment state — webhook will notify actual outcome.
+     */
+    public function refund(\Illuminate\Http\Request $request, EasypayPayment $payment)
+    {
+        $payment->load('order');
+
+        // Authorization: reuse Order policy
+        $this->authorize('refund', $payment->order);
+
+        if (strtolower((string) $payment->payment_status) !== 'paid' || ! optional($payment->order)->is_paid) {
+            return redirect()->back()->with('error', 'Refund could not be processed.');
+        }
+
+        $value = (float) optional($payment->order)->total_gross ?: 0.0;
+
+        try {
+            $svc = app(\App\Services\EasypayService::class);
+
+            // Prefer capture_id when available (refunds operate on captures when present)
+            $idToUse = $payment->capture_id ?: $payment->payment_id ?: (string) $payment->id;
+
+            $resp = $svc->refundSinglePayment($idToUse, $value);
+
+            if (is_array($resp) && isset($resp['status']) && (int) $resp['status'] === 201) {
+                // Persist refund id when supplied by Easypay
+                $refundId = data_get($resp, 'body.id') ?? data_get($resp, 'body.refund_id') ?? data_get($resp, 'body', [])['id'] ?? null;
+                if (! empty($refundId)) {
+                    try {
+                        $payment->refund_id = (string) $refundId;
+                        $payment->save();
+                    } catch (\Throwable $e) {
+                        logger()->warning('easypay.refund.persist_failed', ['payment_id' => $payment->id, 'refund_id' => $refundId, 'err' => $e->getMessage()]);
+                    }
+                }
+
+                return redirect()->back()->with('success', 'Refund request was submited');
+            }
+
+            // Explicit fallback for any non-201 response
+            logger()->info('easypay.refund.response', ['resp' => $resp, 'id_used' => $idToUse]);
+            session()->flash('error', 'Refund could not be processed.');
+
+            return redirect()->back();
+        } catch (\Throwable $e) {
+            logger()->warning('Admin refund request failed', ['payment_id' => $payment->id, 'err' => $e->getMessage()]);
+            return redirect()->back()->with('error', 'Refund could not be processed.');
+        }
     }
 }

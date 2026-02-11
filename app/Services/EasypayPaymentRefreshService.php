@@ -129,6 +129,7 @@ class EasypayPaymentRefreshService
                 'mb_reference' => data_get($single, 'method.reference') ?? data_get($single, 'payment.reference') ?? $latest->mb_reference,
                 'mb_expiration_time' => data_get($single, 'multibanco.expiration_time') ? \Carbon\Carbon::parse(data_get($single, 'multibanco.expiration_time')) : $latest->mb_expiration_time,
                 'iban' => data_get($single, 'method.sdd_mandate.iban') ?? data_get($single, 'method.sdd_mandate') ?? $latest->iban,
+                'capture_id' => data_get($single, 'captures.0.id') ?? null,
                 'raw_response' => $single,
             ];
 

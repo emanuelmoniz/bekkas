@@ -11,6 +11,8 @@ class EasypayPayment extends Model
 
     protected $fillable = [
         'payment_id',
+        'capture_id',
+        'refund_id',
         'checkout_id',
         'order_id',
         'payment_status',

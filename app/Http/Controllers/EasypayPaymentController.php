@@ -66,6 +66,7 @@ class EasypayPaymentController extends Controller
                     \App\Models\EasypayPayment::where('payment_id', data_get($single, 'id'))->update([
                         'payment_status' => $status,
                         'paid_at' => data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : null,
+                        'capture_id' => data_get($single, 'captures.0.id') ?? null,
                         'raw_response' => $single,
                     ]);
 
@@ -196,6 +197,7 @@ class EasypayPaymentController extends Controller
                 'mb_reference' => data_get($single, 'method.reference') ?? data_get($single, 'payment.reference') ?? $record->mb_reference,
                 'mb_expiration_time' => data_get($single, 'multibanco.expiration_time') ? \Carbon\Carbon::parse(data_get($single, 'multibanco.expiration_time')) : $record->mb_expiration_time,
                 'iban' => data_get($single, 'method.sdd_mandate.iban') ?? data_get($single, 'method.sdd_mandate') ?? $record->iban,
+                'capture_id' => data_get($single, 'captures.0.id') ?? $record->capture_id,
                 'raw_response' => $single,
             ];
 

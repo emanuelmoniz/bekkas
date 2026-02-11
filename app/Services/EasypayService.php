@@ -286,6 +286,84 @@ class EasypayService
     }
 
     /**
+     * Request a refund for a single/frequent transaction (POST /refund/{id}).
+     * Returns ['ok' => bool, 'status' => int, 'body' => mixed].
+     *
+     * NOTE: this call does NOT mutate local Order/EasypayPayment state — the
+     * authoritative update will come via Easypay webhook notifications.
+     */
+    public function refundSinglePayment(string $paymentId, float $value, array $extra = []): array
+    {
+        if (empty($paymentId)) {
+            return ['ok' => false, 'status' => 400, 'body' => ['status' => 'error', 'message' => ['missing payment id']]];
+        }
+
+        if (! config('easypay.enabled', false)) {
+            return ['ok' => false, 'status' => 503, 'body' => ['status' => 'error', 'message' => ['easypay disabled']]];
+        }
+
+        $url = rtrim($this->baseUrl, '/').'/refund/'.rawurlencode($paymentId);
+        $payload = array_merge(['value' => round($value, 2)], $extra);
+
+        try {
+            $resp = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+                'accountId' => config('easypay.id'),
+                'apiKey' => config('easypay.api_key'),
+            ])->timeout(10)->post($url, $payload);
+
+            $status = $resp->status();
+            try {
+                $body = $resp->json();
+            } catch (\Throwable $e) {
+                $body = $resp->body();
+            }
+
+            return ['ok' => $status >= 200 && $status < 300, 'status' => $status, 'body' => $body];
+        } catch (\Exception $e) {
+            Log::warning('Easypay POST /refund/{id} request failed', ['payment_id' => $paymentId, 'err' => $e->getMessage()]);
+            return ['ok' => false, 'status' => 502, 'body' => ['status' => 'error', 'message' => [$e->getMessage()]]];
+        }
+    }
+
+    /**
+     * Fetch refund details (GET /refund/{id}). Returns ['ok' => bool, 'status' => int, 'body' => mixed]
+     */
+    public function getRefund(string $refundId): array
+    {
+        if (empty($refundId)) {
+            return ['ok' => false, 'status' => 400, 'body' => ['status' => 'error', 'message' => ['missing refund id']]];
+        }
+
+        if (! config('easypay.enabled', false)) {
+            return ['ok' => false, 'status' => 503, 'body' => ['status' => 'error', 'message' => ['easypay disabled']]];
+        }
+
+        $url = rtrim($this->baseUrl, '/').'/refund/'.rawurlencode($refundId);
+
+        try {
+            $resp = Http::withHeaders([
+                'Accept' => 'application/json',
+                'accountId' => config('easypay.id'),
+                'apiKey' => config('easypay.api_key'),
+            ])->timeout(10)->get($url);
+
+            $status = $resp->status();
+            try {
+                $body = $resp->json();
+            } catch (\Throwable $e) {
+                $body = $resp->body();
+            }
+
+            return ['ok' => $resp->successful(), 'status' => $status, 'body' => $body];
+        } catch (\Exception $e) {
+            Log::warning('Easypay GET /refund/{id} request failed', ['refund_id' => $refundId, 'err' => $e->getMessage()]);
+            return ['ok' => false, 'status' => 502, 'body' => ['status' => 'error', 'message' => [$e->getMessage()]]];
+        }
+    }
+
+    /**
      * Cancel a checkout session (DELETE /checkout/{id}).
      * Returns ['ok' => bool, 'status' => int, 'body' => mixed]
      */

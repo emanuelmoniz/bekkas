@@ -14,19 +14,7 @@
         </div>
 
         <div class="bg-white shadow rounded p-4 space-y-4">
-            <div class="flex justify-end items-center gap-2 mb-2">
-                @if($payment->order)
-                    <a href="{{ route('admin.orders.show', $payment->order) }}" class="inline-flex items-center bg-gray-100 border px-4 py-2 rounded text-sm">View order</a>
-                @endif
-
-                @if($payment->checkoutSession)
-                    <a href="{{ route('admin.orders.checkouts.show', $payment->checkoutSession) }}" class="inline-flex items-center bg-indigo-50 border-indigo-200 text-indigo-700 border px-4 py-2 rounded text-sm">View checkout</a>
-                @endif
-
-                <a href="{{ route('admin.orders.payments.index') }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm">Back</a>
-            </div>
-
-            <div class="flex justify-between items-start gap-4">
+            <div class="grid md:grid-cols-2 gap-4 items-start">
                 <div>
                     <p><strong>Payment ID:</strong> {{ $payment->payment_id ?? $payment->id }}</p>
                     <p><strong>Order:</strong>
@@ -53,8 +41,30 @@
                     <p><strong>Card last digits:</strong> {{ $payment->card_last_digits ?? '-' }}</p>
                     <p><strong>MB entity / reference:</strong> {{ $payment->mb_entity ?? '-' }} / {{ $payment->mb_reference ?? '-' }}</p>
                     <p><strong>IBAN:</strong> {{ $payment->iban ?? '-' }}</p>
+                    <p><strong>Capture:</strong> {{ $payment->capture_id ?? '-' }}</p>
+                    <p><strong>Refund request ID:</strong> {{ $payment->refund_id ?? '-' }}</p>
                 </div>
 
+                <div class="flex flex-col items-end gap-2">
+                    <div class="w-full text-right">
+                        @if($payment->order)
+                            <a href="{{ route('admin.orders.show', $payment->order) }}" class="inline-flex items-center bg-gray-100 border px-4 py-2 rounded text-sm">View order</a>
+                        @endif
+
+                        @if($payment->checkoutSession)
+                            <a href="{{ route('admin.orders.checkouts.show', $payment->checkoutSession) }}" class="inline-flex items-center bg-indigo-50 border-indigo-200 text-indigo-700 border px-4 py-2 rounded text-sm ms-2">View checkout</a>
+                        @endif
+
+                        @if(strtolower((string) $payment->payment_status) === 'paid' && optional($payment->order)->is_paid)
+                            <form method="POST" action="{{ route('admin.orders.payments.refund', $payment) }}" onsubmit="return confirm('Confirm refund request?');" class="inline-block ms-2">
+                                @csrf
+                                <button type="submit" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm text-red-600 hover:bg-red-50">Refund</button>
+                            </form>
+                        @endif
+
+                        <a href="{{ route('admin.orders.payments.index') }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">Back</a>
+                    </div>
+                </div>
             </div>
 
             <div>
