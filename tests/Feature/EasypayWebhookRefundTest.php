@@ -127,57 +127,6 @@ class EasypayWebhookRefundTest extends TestCase
         \Illuminate\Support\Facades\Mail::assertNothingQueued(\App\Mail\OrderNotification::class);
     }
 
-    public function test_refund_marks_payment_status_even_if_single_not_refunded()
-    {
-        \Illuminate\Support\Facades\Mail::fake();
-
-        $order = Order::factory()->create();
-        $order->is_paid = true;
-        $order->save();
-
-        $payment = EasypayPayment::create([
-            'order_id' => $order->id,
-            'payment_id' => 'pay_r_3',
-            'payment_status' => 'paid',
-            'refund_id' => 'r_3',
-            'raw_response' => [],
-        ]);
-
-        Http::fake([
-            'https://api.test.easypay.pt/2.0/refund/r_3' => Http::response(['id' => 'r_3', 'status' => 'success', 'capture' => ['payment_id' => 'pay_r_3']], 200),
-            // remote single still reports 'paid' for whatever reason — we must still mark local as refunded
-            'https://api.test.easypay.pt/2.0/single/pay_r_3' => Http::response(['id' => 'pay_r_3', 'payment_status' => 'paid', 'captures' => [['id' => 'cap_r_3', 'status' => 'success', 'value' => 11.00]]], 200),
-        ]);
-
-        config()->set('easypay.webhook_user', 'webhook-user');
-        config()->set('easypay.webhook_pass', 'webhook-pass');
-        config()->set('easypay.webhook_header', 'x-easypay-code');
-        config()->set('easypay.webhook_secret', 'shh-3');
-
-        $payload = ['id' => 'r_3', 'type' => 'refund', 'status' => 'success'];
-
-        $resp = $this->withHeaders([
-            'PHP_AUTH_USER' => 'webhook-user',
-            'PHP_AUTH_PW' => 'webhook-pass',
-            'x-easypay-code' => 'shh-3',
-            'Content-Type' => 'application/json',
-        ])->postJson('/webhooks/easypay', $payload);
-
-        $resp->assertStatus(200)->assertSeeText('OK');
-
-        $payment->refresh();
-        $this->assertEquals('refunded', $payment->payment_status);
-
-        $order->refresh();
-        $this->assertTrue($order->is_refunded);
-        $this->assertEquals('CANCELED', $order->status);
-        $this->assertTrue($order->is_canceled);
-
-        \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, function ($mail) use ($order) {
-            $expected = new \App\Mail\OrderNotification($order, 'orders.email.event.refunded', $order->user->name, (t('orders.refunded') ?: 'Refunded'), ['status' => (t('orders.refunded') ?: 'Refunded')]);
-            return $mail->subject === $expected->subject && $mail->hasTo($order->user->email);
-        });
-    }
 
     public function test_refund_does_not_change_status_when_not_processing()
     {

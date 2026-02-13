@@ -23,6 +23,7 @@ class ConfigurationController extends Controller
             'store_enabled' => 'nullable|boolean',
             'send_mails_enabled' => 'nullable|boolean',
             'easypay_enabled' => 'nullable|boolean',
+            'tax_enabled' => 'nullable|boolean',
             'mail_admin' => 'nullable|string',
             'mail_contact' => 'nullable|string',
             'smtp_server_host' => 'nullable|string',
@@ -50,6 +51,7 @@ class ConfigurationController extends Controller
         $data['store_enabled'] = $request->has('store_enabled') ? (bool) $request->input('store_enabled') : false;
         $data['send_mails_enabled'] = $request->has('send_mails_enabled') ? (bool) $request->input('send_mails_enabled') : false;
         $data['easypay_enabled'] = $request->has('easypay_enabled') ? (bool) $request->input('easypay_enabled') : false;
+        $data['tax_enabled'] = $request->has('tax_enabled') ? (bool) $request->input('tax_enabled') : false;
 
         $last = Configuration::latest()->first();
 

@@ -14,6 +14,7 @@ class Configuration extends Model
         'store_enabled',
         'send_mails_enabled',
         'easypay_enabled',
+        'tax_enabled',
         'mail_admin',
         'mail_contact',
         'smtp_server_host',
@@ -42,6 +43,7 @@ class Configuration extends Model
         'store_enabled' => 'boolean',
         'send_mails_enabled' => 'boolean',
         'easypay_enabled' => 'boolean',
+        'tax_enabled' => 'boolean',
         'easypay_session_ttl' => 'integer',
         'easypay_mb_ttl' => 'integer',
     ];

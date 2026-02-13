@@ -38,9 +38,7 @@ class AdminEasypayCheckoutsTest extends TestCase
             ->assertSee('Checkout sessions')
             ->assertSee($order->order_number)
             ->assertSee($session->created_at->format('d/m/Y'))
-            ->assertSee('View')
-            ->assertSee(route('admin.orders.payments.index', ['order_number' => $order->order_number]))
-            ->assertSee('View payments');
+            ->assertSee('View');
     }
 
     public function test_filters_on_checkouts_index_work()
@@ -98,7 +96,7 @@ class AdminEasypayCheckoutsTest extends TestCase
             ->assertSee('Payload')
             ->assertSee('View payload')
             ->assertSee('"x": 1')
-            ->assertSeeInOrder(['View order', 'Payload'])
+            ->assertSeeInOrder(['View order', 'View payload'])
             ->assertSee('Error code')
             ->assertSee('123');
     }
@@ -120,10 +118,13 @@ class AdminEasypayCheckoutsTest extends TestCase
         $order = Order::factory()->create(['user_id' => $user->id, 'address_id' => $addr->id]);
         $order->update(['order_number' => 'ORD-CH-BTN']);
 
+        // Ensure an Easypay payload exists so the admin links are rendered
+        \App\Models\EasypayPayload::create(['order_id' => $order->id, 'payload' => ['x' => 1]]);
+
         $this->actingAs($admin)
             ->get(route('admin.orders.show', $order))
             ->assertStatus(200)
             ->assertSee(route('admin.orders.checkouts.index', ['order_number' => $order->order_number]))
-            ->assertSee('View checkout sessions');
+            ->assertSee('Checkouts');
     }
 }

@@ -15,7 +15,7 @@
                 <input name="app_name" value="{{ old('app_name', $c->app_name ?? config('app.name')) }}" class="w-full border rounded px-3 py-2">
             </div>
 
-            <div class="grid grid-cols-3 gap-4">
+            <div class="grid grid-cols-4 gap-4">
                 <label class="inline-flex items-center">
                     <input type="checkbox" name="store_enabled" value="1" @checked(old('store_enabled', $c->store_enabled ?? true)) class="mr-2">
                     <span>Store enabled</span>
@@ -29,6 +29,11 @@
                 <label class="inline-flex items-center">
                     <input type="checkbox" name="easypay_enabled" value="1" @checked(old('easypay_enabled', $c->easypay_enabled ?? false)) class="mr-2">
                     <span>Easypay enabled</span>
+                </label>
+
+                <label class="inline-flex items-center">
+                    <input type="checkbox" name="tax_enabled" value="1" @checked(old('tax_enabled', $c->tax_enabled ?? false)) class="mr-2">
+                    <span>Tax enabled</span>
                 </label>
             </div>
 

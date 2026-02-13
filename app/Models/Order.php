@@ -229,6 +229,7 @@ class Order extends Model
         // Otherwise keep the current status unchanged (per requirements).
         if ($prevStatus === 'PROCESSING') {
             $this->status = 'CANCELED';
+            $this->is_canceled = true;
 
             // Restore stock for non-backordered items (mirror admin behaviour)
             try {

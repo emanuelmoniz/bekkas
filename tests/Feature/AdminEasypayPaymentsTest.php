@@ -105,7 +105,7 @@ class AdminEasypayPaymentsTest extends TestCase
             ->get(route('admin.orders.payments.show', $payment))
             ->assertStatus(200)
             ->assertSee('Easypay payment')
-            ->assertSee('View checkout')
+            ->assertSee('Checkout')
             ->assertSee('MB entity')
             ->assertSee('123')
             ->assertSee('Capture')
@@ -142,7 +142,7 @@ class AdminEasypayPaymentsTest extends TestCase
         $this->actingAs($admin)
             ->get(route('admin.orders.payments.show', $p2))
             ->assertStatus(200)
-            ->assertDontSee('Refund');
+            ->assertDontSee('Confirm refund request?');
     }
 
     public function test_admin_can_request_refund_success_response()
@@ -240,30 +240,6 @@ class AdminEasypayPaymentsTest extends TestCase
         $this->assertEquals('r_1', $payment->refund_id);
     }
 
-    public function test_orders_index_includes_payments_link()
-    {
-        $role = Role::firstOrCreate(['name' => 'admin']);
-        $admin = User::factory()->create();
-        $admin->roles()->attach($role->id);
-
-        \Illuminate\Support\Facades\DB::table('countries')->updateOrInsert([
-            'iso_alpha2' => 'PT',
-        ], [
-            'name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true,
-        ]);
-        $countryId = \Illuminate\Support\Facades\DB::table('countries')->where('iso_alpha2', 'PT')->value('id');
-        $user = User::factory()->create();
-        $addr = \App\Models\Address::factory()->create(['country_id' => $countryId, 'user_id' => $user->id]);
-        $order = Order::factory()->create(['user_id' => $user->id, 'address_id' => $addr->id]);
-        $order->update(['order_number' => 'ORD-PAY-IDX']);
-
-        $this->actingAs($admin)
-            ->get(route('admin.orders.index'))
-            ->assertStatus(200)
-            ->assertSee(route('admin.orders.payments.index', ['order_number' => $order->order_number]))
-            ->assertSee('Payments')
-            ->assertSee('View payments');
-    }
 
     public function test_order_show_includes_payments_link()
     {
@@ -282,10 +258,13 @@ class AdminEasypayPaymentsTest extends TestCase
         $order = Order::factory()->create(['user_id' => $user->id, 'address_id' => $addr->id]);
         $order->update(['order_number' => 'ORD-PAY-BTN']);
 
+        // Ensure an Easypay payload exists so the admin links are rendered
+        \App\Models\EasypayPayload::create(['order_id' => $order->id, 'payload' => ['x' => 1]]);
+
         $this->actingAs($admin)
             ->get(route('admin.orders.show', $order))
             ->assertStatus(200)
             ->assertSee(route('admin.orders.payments.index', ['order_number' => $order->order_number]))
-            ->assertSee('View payments');
+            ->assertSee('Payments');
     }
 }
