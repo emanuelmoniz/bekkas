@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\TicketAdminController;
 use App\Http\Controllers\Admin\TicketCategoryController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\ConfigurationController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FavoriteController;
@@ -298,6 +299,14 @@ Route::middleware(['auth', 'is_admin'])
 
         Route::patch('/orders/{order}', [AdminOrderController::class, 'update'])
             ->name('orders.update');
+
+        /*
+        | App Configurations (history kept)
+        */
+        Route::get('/configurations', [ConfigurationController::class, 'index'])
+            ->name('configurations.index');
+        Route::put('/configurations', [ConfigurationController::class, 'update'])
+            ->name('configurations.update');
 
         /*
         | Shipping Config

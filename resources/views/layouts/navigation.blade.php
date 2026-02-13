@@ -102,7 +102,7 @@
 
                         {{-- Configuration with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->is('admin/countries*') || request()->is('admin/regions*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*') || request()->is('admin/shipping-tiers*') || request()->is('admin/shipping-config*')">
+                            <x-nav-button :active="request()->is('admin/countries*') || request()->is('admin/regions*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*') || request()->is('admin/shipping-tiers*') || request()->is('admin/shipping-config*') || request()->is('admin/configurations*')" @click="window.location.href='{{ route('admin.configurations.index') }}'">
                                 Configuration
                             </x-nav-button>
                             <div x-show="open"
@@ -348,12 +348,14 @@
 
                 {{-- Configuration --}}
                 <div x-data="{ open: false }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">
-                        <span>Configuration</span>
-                        <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
+                    <div class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">
+                        <a href="{{ route('admin.configurations.index') }}" class="flex-1">Configuration</a>
+                        <button @click="open = !open" class="ml-2">
+                            <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </div>
                     <div x-show="open" class="pl-4 space-y-1">
                         <x-responsive-nav-link :href="route('admin.shipping-config.index')" :active="request()->is('admin/shipping-config*')">
                             Shipping
