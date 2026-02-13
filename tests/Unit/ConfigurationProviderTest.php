@@ -11,7 +11,7 @@ class ConfigurationProviderTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function database_configuration_overrides_config_values()
     {
         // Create a DB configuration with some fields populated
@@ -34,7 +34,7 @@ class ConfigurationProviderTest extends TestCase
         $this->assertEquals('https://sdk.db.test/easypay.js', config('easypay.sdk_url'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function if_configuration_is_missing_env_values_remain_as_fallback()
     {
         // ensure no DB configuration exists

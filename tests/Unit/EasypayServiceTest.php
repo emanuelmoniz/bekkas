@@ -85,4 +85,42 @@ class EasypayServiceTest extends TestCase
             return ($it['description'] === 'Free tier') || ($it['value'] == 0.00);
         }));
     }
+
+    public function test_build_payload_uses_address_phone_when_user_phone_missing()
+    {
+        Config::set('easypay.enabled', true);
+
+        $address = \App\Models\Address::factory()->create(['phone' => '999888777']);
+        $user = \App\Models\User::factory()->create(); // no phone on user
+
+        $order = Order::factory()->hasItems(1)->create([
+            'user_id' => $user->id,
+            'address_id' => $address->id,
+            'total_gross' => 10.00,
+        ]);
+
+        $payload = EasypayService::buildPayload($order);
+
+        $this->assertArrayHasKey('customer', $payload);
+        $this->assertEquals('999888777', $payload['customer']['phone']);
+    }
+
+    public function test_build_payload_sets_empty_phone_when_none_available()
+    {
+        Config::set('easypay.enabled', true);
+
+        $user = \App\Models\User::factory()->create(); // no phone
+        $address = \App\Models\Address::factory()->create(['phone' => null]);
+
+        $order = Order::factory()->hasItems(1)->create([
+            'user_id' => $user->id,
+            'address_id' => $address->id,
+            'total_gross' => 10.00,
+        ]);
+
+        $payload = EasypayService::buildPayload($order);
+
+        $this->assertArrayHasKey('customer', $payload);
+        $this->assertNull($payload['customer']['phone']);
+    }
 }

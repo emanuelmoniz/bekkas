@@ -99,7 +99,9 @@ class EasypayService
         $mbTtl = (int) config('easypay.mb_ttl', 172800);
         $expiration = Carbon::now()->addSeconds($mbTtl)->setTimezone('UTC')->format('Y-m-d\TH:i:s\Z');
 
-        $phone = optional($order->user)->phone ?: $order->address_phone ?? null;
+        // Prefer the user's phone (profile). If missing, fall back to the selected
+        // shipping address phone. Only use null when neither exist.
+        $phone = optional($order->user)->phone ?: ($order->address?->phone ?? null);
 
         $userLangRaw = optional($order->user)->language ?? app()->getLocale();
         $userLangRaw = is_string($userLangRaw) ? $userLangRaw : '';
