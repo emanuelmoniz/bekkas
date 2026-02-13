@@ -9,22 +9,12 @@
                 <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Orders</a>
                 <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payloads</a>
                 <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Checkouts</a>
+                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payments</a>
             </nav>
         </div>
 
         <div class="bg-white shadow rounded p-4 space-y-4">
-            <!-- action buttons: top-right, single line -->
-            <div class="flex justify-end items-center gap-2 mb-2">
-                @if($session->order)
-                    <a href="{{ route('admin.orders.show', $session->order) }}" class="inline-flex items-center bg-gray-100 border px-4 py-2 rounded text-sm">View order</a>
-                @endif
 
-                @if($session->payload)
-                    <a href="{{ route('admin.orders.payloads.show', $session->payload) }}" class="inline-flex items-center bg-indigo-50 border-indigo-200 text-indigo-700 border px-4 py-2 rounded text-sm">View payload</a>
-                @endif
-
-                <a href="{{ route('admin.orders.checkouts.index') }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm">Back</a>
-            </div>
 
             <div class="flex justify-between items-start gap-4">
                 <div>
@@ -51,11 +41,45 @@
                         <span class="block mt-1 text-sm font-mono" style="overflow-wrap:anywhere;word-break:break-word;max-width:100%;">{{ $session->checkout_id ?? '-' }}</span>
                     </p>
                     <p><strong>Session token:</strong>
-                        <span class="block mt-1 text-sm font-mono" style="overflow-wrap:anywhere;word-break:break-word;max-width:100%;">{{ $session->session_id ?? '-' }}</span>
+                        @php
+                            $token = $session->session_id ?? null;
+                            $display = '-';
+                            if (! empty($token)) {
+                                $display = strlen($token) > 20
+                                    ? substr($token, 0, 10)."…".substr($token, -10)
+                                    : $token;
+                            }
+                        @endphp
+                        <span title="{{ $token ?? '' }}" class="block mt-1 text-sm font-mono" style="overflow-wrap:anywhere;word-break:break-word;max-width:100%;">{{ $display }}</span>
                     </p>
                     <p><strong>Error code:</strong> {{ $session->error_code ?? '-' }}</p>
                 </div>
 
+                <div class="flex flex-col items-end gap-2">
+                    <div class="w-full flex flex-wrap justify-end items-center gap-2 text-right">
+                        @if($session->order)
+                            <a href="{{ route('admin.orders.show', $session->order) }}" class="inline-flex items-center bg-gray-100 border px-4 py-2 rounded text-sm">View order</a>
+                        @endif
+
+                        @if($session->payload)
+                            <a href="{{ route('admin.orders.payloads.show', $session->payload) }}" class="inline-flex items-center bg-indigo-50 border-indigo-200 text-indigo-700 border px-4 py-2 rounded text-sm ms-2">View payload</a>
+                        @endif
+
+                        <a href="{{ route('admin.orders.payments.index', ['order_number' => optional($session->order)->order_number]) }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">View payments</a>
+
+                        <form method="POST" action="{{ route('admin.orders.checkouts.refresh', $session) }}" class="inline-block ms-2">
+                            @csrf
+                            <button class="bg-yellow-50 border-yellow-200 text-yellow-700 border px-4 py-2 rounded text-sm" title="Refresh / fetch checkout details">Update</button>
+                        </form>
+
+                        <form method="POST" action="{{ route('admin.orders.checkouts.cancel', $session) }}" class="inline-block ms-2" onsubmit="return confirm('Cancel this checkout at Easypay?');">
+                            @csrf
+                            <button class="bg-red-50 border-red-200 text-red-700 border px-4 py-2 rounded text-sm" title="Cancel checkout">Cancel</button>
+                        </form>
+
+                        <a href="{{ route('admin.orders.checkouts.index') }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">Back</a>
+                    </div>
+                </div>
 
             </div>
 

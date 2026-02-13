@@ -75,14 +75,6 @@
                                 @if($s->order)
                                     <div class="flex gap-2 justify-end items-center">
                                         <a href="{{ route('admin.orders.checkouts.show', $s) }}" class="text-sm bg-blue-50 border-blue-200 text-blue-700 border px-3 py-1 rounded">View</a>
-
-                                        <a href="{{ route('admin.orders.show', $s->order) }}" class="text-sm bg-gray-50 border-gray-200 text-gray-700 border px-3 py-1 rounded">Order</a>
-
-                                        @if($s->payload)
-                                            <a href="{{ route('admin.orders.payloads.show', $s->payload) }}" class="text-sm bg-indigo-50 border-indigo-200 text-indigo-700 border px-3 py-1 rounded">Payload</a>
-                                        @endif
-
-                                        <a href="{{ route('admin.orders.payments.index', ['order_number' => optional($s->order)->order_number]) }}" class="text-sm bg-indigo-50 border-indigo-200 text-indigo-700 border px-3 py-1 rounded">View payments</a>
                                     </div>
                                 @else
                                     <span class="text-sm text-gray-500">No order</span>

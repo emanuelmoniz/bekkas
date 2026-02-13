@@ -27,7 +27,7 @@
                     <p><strong>Created:</strong> {{ $payload->created_at->format('d/m/Y H:i') }}</p>
                 </div>
 
-                <div class="text-right">
+                <div class="text-right flex flex-wrap justify-end items-center gap-2">
                     @if($payload->order)
                         <a href="{{ route('admin.orders.show', $payload->order) }}" class="inline-block bg-gray-100 border px-4 py-2 rounded text-sm">Order</a>
 
@@ -35,12 +35,14 @@
 
                         <a href="{{ route('admin.orders.payments.index', ['order_number' => $payload->order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Payments</a>
 
-                    @endif
+                        @if($payload->order)
+                            <form method="POST" action="{{ route('admin.orders.checkouts.store', $payload->order) }}" class="inline-block ms-2">
+                                @csrf
+                                <button class="bg-green-50 border-green-200 text-green-700 border px-4 py-2 rounded text-sm">Create checkout</button>
+                            </form>
+                        @endif
 
-                    <form method="POST" action="{{ route('admin.orders.payloads.store', $payload->order) }}" class="inline-block ms-2">
-                        @csrf
-                        <button class="bg-green-50 border-green-200 text-green-700 border px-4 py-2 rounded text-sm">Create</button>
-                    </form>
+                    @endif
 
                     <form method="POST" action="{{ route('admin.orders.payloads.destroy', $payload) }}" class="inline-block ms-2" onsubmit="return confirm('Delete this payload? This cannot be undone.');">
                         @csrf

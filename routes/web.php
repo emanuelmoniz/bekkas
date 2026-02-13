@@ -283,11 +283,25 @@ Route::middleware(['auth', 'is_admin'])
         Route::get('/orders/checkouts/{session}', [\App\Http\Controllers\Admin\EasypayCheckoutSessionController::class, 'show'])
             ->name('orders.checkouts.show');
 
+        // Admin: create / refresh / cancel checkout sessions via Easypay API
+        Route::post('/orders/{order}/checkouts', [\App\Http\Controllers\Admin\EasypayCheckoutSessionController::class, 'store'])
+            ->name('orders.checkouts.store');
+        Route::post('/orders/checkouts/{session}/refresh', [\App\Http\Controllers\Admin\EasypayCheckoutSessionController::class, 'refresh'])
+            ->name('orders.checkouts.refresh');
+        Route::post('/orders/checkouts/{session}/cancel', [\App\Http\Controllers\Admin\EasypayCheckoutSessionController::class, 'cancel'])
+            ->name('orders.checkouts.cancel');
+
         // Easypay payments (admin)
         Route::get('/orders/payments', [\App\Http\Controllers\Admin\EasypayPaymentController::class, 'index'])
             ->name('orders.payments.index');
         Route::get('/orders/payments/{payment}', [\App\Http\Controllers\Admin\EasypayPaymentController::class, 'show'])
             ->name('orders.payments.show');
+        // Admin: refresh payment details from Easypay (single payment endpoint)
+        Route::post('/orders/payments/{payment}/refresh', [\App\Http\Controllers\Admin\EasypayPaymentController::class, 'refresh'])
+            ->name('orders.payments.refresh');
+        // Admin: refresh refund details from Easypay (refund endpoint)
+        Route::post('/orders/payments/{payment}/refund/refresh', [\App\Http\Controllers\Admin\EasypayPaymentController::class, 'refreshRefund'])
+            ->name('orders.payments.refund.refresh');
         // Admin: request a refund for a single payment (Easypay)
         Route::post('/orders/payments/{payment}/refund', [\App\Http\Controllers\Admin\EasypayPaymentController::class, 'refund'])
             ->name('orders.payments.refund');

@@ -46,13 +46,27 @@
                 </div>
 
                 <div class="flex flex-col items-end gap-2">
-                    <div class="w-full text-right">
+                    <div class="w-full flex flex-wrap justify-end items-center gap-2 text-right">
                         @if($payment->order)
-                            <a href="{{ route('admin.orders.show', $payment->order) }}" class="inline-flex items-center bg-gray-100 border px-4 py-2 rounded text-sm">View order</a>
+                            <a href="{{ route('admin.orders.show', $payment->order) }}" class="inline-flex items-center bg-gray-100 border px-4 py-2 rounded text-sm">Order</a>
+
+                            {{-- Payload: prefer checkoutSession->payload, fall back to order->easypayPayload --}}
+                            @php
+                                $payload = $payment->checkoutSession?->payload ?? $payment->order?->easypayPayload ?? null;
+                            @endphp
+                            @if($payload)
+                                <a href="{{ route('admin.orders.payloads.show', $payload) }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">Payload</a>
+                            @endif
                         @endif
 
                         @if($payment->checkoutSession)
-                            <a href="{{ route('admin.orders.checkouts.show', $payment->checkoutSession) }}" class="inline-flex items-center bg-indigo-50 border-indigo-200 text-indigo-700 border px-4 py-2 rounded text-sm ms-2">View checkout</a>
+                            <a href="{{ route('admin.orders.checkouts.show', $payment->checkoutSession) }}" class="inline-flex items-center bg-indigo-50 border-indigo-200 text-indigo-700 border px-4 py-2 rounded text-sm ms-2">Checkout</a>
+
+                            {{-- Update: refresh payment details from Easypay (single payment endpoint) --}}
+                            <form method="POST" action="{{ route('admin.orders.payments.refresh', $payment) }}" class="inline-block ms-2">
+                                @csrf
+                                <button class="bg-yellow-50 border-yellow-200 text-yellow-700 border px-4 py-2 rounded text-sm">Update</button>
+                            </form>
                         @endif
 
                         @if(strtolower((string) $payment->payment_status) === 'paid' && optional($payment->order)->is_paid)
@@ -60,6 +74,13 @@
                                 @csrf
                                 <button type="submit" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm text-red-600 hover:bg-red-50">Refund</button>
                             </form>
+
+                            @if(! empty($payment->refund_id))
+                                <form method="POST" action="{{ route('admin.orders.payments.refund.refresh', $payment) }}" class="inline-block ms-2">
+                                    @csrf
+                                    <button type="submit" class="inline-flex items-center bg-amber-50 border-amber-200 text-amber-700 border px-4 py-2 rounded text-sm">Update refund</button>
+                                </form>
+                            @endif
                         @endif
 
                         <a href="{{ route('admin.orders.payments.index') }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">Back</a>

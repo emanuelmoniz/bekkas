@@ -78,12 +78,6 @@
                                 @if($p->order)
                                     <div class="flex gap-2 justify-end items-center">
                                         <a href="{{ route('admin.orders.payments.show', $p) }}" class="text-sm bg-blue-50 border-blue-200 text-blue-700 border px-3 py-1 rounded">View</a>
-
-                                        <a href="{{ route('admin.orders.show', $p->order) }}" class="text-sm bg-gray-50 border-gray-200 text-gray-700 border px-3 py-1 rounded">Order</a>
-
-                                        @if($p->checkoutSession)
-                                            <a href="{{ route('admin.orders.checkouts.show', $p->checkoutSession) }}" class="text-sm bg-indigo-50 border-indigo-200 text-indigo-700 border px-3 py-1 rounded">Checkout</a>
-                                        @endif
                                     </div>
                                 @else
                                     <span class="text-sm text-gray-500">No order</span>

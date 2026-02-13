@@ -11,6 +11,8 @@
             <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">
                 <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Orders</a>
                 <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payloads</a>
+                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Checkouts</a>
+                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payments</a>
             </nav>
         </div>
 
@@ -45,11 +47,11 @@
                 @endif
                 @if($order->easypayPayload)
                     <div class="mt-3">
-                        <a href="{{ route('admin.orders.payloads.show', $order->easypayPayload) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm">View payload</a>
+                        <a href="{{ route('admin.orders.payloads.show', $order->easypayPayload) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm">Payload</a>
 
-                        <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">View checkout sessions</a>
+                        <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Checkouts</a>
 
-                        <a href="{{ route('admin.orders.payments.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">View payments</a>
+                        <a href="{{ route('admin.orders.payments.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Payments</a>
                     </div>
                 @else
                     <div class="mt-3">
@@ -57,12 +59,9 @@
                             @csrf
                             <button class="bg-green-50 border-green-200 text-green-700 border px-4 py-2 rounded text-sm">Create payload</button>
                         </form>
-
-                        <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-indigo-50 border-indigo-200 text-indigo-700 border px-4 py-2 rounded text-sm ms-2">View checkout sessions</a>
-
-                        <a href="{{ route('admin.orders.payments.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-indigo-50 border-indigo-200 text-indigo-700 border px-4 py-2 rounded text-sm ms-2">View payments</a>
                     </div>
-                @endif            </div>
+                @endif            
+            </div>
         </div>
 
         {{-- =======================
