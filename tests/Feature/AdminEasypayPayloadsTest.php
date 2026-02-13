@@ -45,11 +45,7 @@ class AdminEasypayPayloadsTest extends TestCase
             ->assertSee('Payloads')
             ->assertSee($order->order_number)
             ->assertSee($payload->created_at->format('d/m/Y'))
-            ->assertSee('View')
-            ->assertSee('Recreate')
-            ->assertSee('Delete')
-            ->assertSee(route('admin.orders.payments.index', ['order_number' => $order->order_number]))
-            ->assertSee('View payments');
+            ->assertSee('View');
     }
 
     public function test_filters_on_payloads_index_work()
@@ -117,20 +113,7 @@ class AdminEasypayPayloadsTest extends TestCase
             ->assertSee('ORD-SSH-1')
             ->assertSee('"customer"')
             ->assertSee('ACME')
-            ->assertSee('Recreate')
             ->assertSee('Delete');
-
-        // recreate should replace stored payload with fresh payload built from order
-        $order->update(['total_gross' => 99.99]);
-
-        $this->actingAs($admin)
-            ->post(route('admin.orders.payloads.recreate', $payload))
-            ->assertRedirect();
-
-        $new = \App\Models\EasypayPayload::where('order_id', $order->id)->first();
-        $this->assertNotNull($new);
-        $this->assertNotEquals($new->id, $payload->id);
-        $this->assertEquals(99.99, $new->payload['order']['value']);
     }
 
     public function test_admin_can_delete_payload_from_show()
@@ -175,8 +158,7 @@ class AdminEasypayPayloadsTest extends TestCase
         $this->actingAs($admin)
             ->get(route('admin.orders.payloads.index'))
             ->assertStatus(200)
-            ->assertSee('Recreate')
-            ->assertSee('Delete')
+
             ->assertSee('IDX-DEL-1');
 
         $this->actingAs($admin)

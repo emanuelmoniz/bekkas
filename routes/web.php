@@ -274,8 +274,6 @@ Route::middleware(['auth', 'is_admin'])
         // Create a payload for an order (admin)
         Route::post('/orders/{order}/payloads', [\App\Http\Controllers\Admin\EasypayPayloadController::class, 'store'])
             ->name('orders.payloads.store');
-        Route::post('/orders/payloads/{payload}/recreate', [\App\Http\Controllers\Admin\EasypayPayloadController::class, 'recreate'])
-            ->name('orders.payloads.recreate');
         Route::delete('/orders/payloads/{payload}', [\App\Http\Controllers\Admin\EasypayPayloadController::class, 'destroy'])
             ->name('orders.payloads.destroy');
 

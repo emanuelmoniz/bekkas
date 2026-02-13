@@ -86,35 +86,5 @@ class EasypayPayloadController extends Controller
         return redirect()->route('admin.orders.payloads.index')->with('success', 'Payload deleted');
     }
 
-    /**
-     * Recreate payload from the authoritative order snapshot.
-     * Deletes existing payload and creates a fresh one using EasypayService::createOrGetPayload
-     */
-    public function recreate(EasypayPayload $payload)
-    {
-        $order = $payload->order;
-        if (! $order) {
-            return redirect()->back()->with('error', 'Payload has no associated order');
-        }
 
-        if (! config('easypay.enabled')) {
-            return redirect()->route('admin.orders.payloads.index')->with('error', 'Easypay is disabled in configuration');
-        }
-
-        \DB::transaction(function () use ($order) {
-            // remove any existing payload(s) for the order
-            \App\Models\EasypayPayload::where('order_id', $order->id)->delete();
-            // create a fresh payload based on current order data
-            \App\Services\EasypayService::createOrGetPayload($order);
-        });
-
-        // load the newly created payload to redirect to its show page
-        $new = $order->fresh()->easypayPayload;
-
-        if ($new) {
-            return redirect()->route('admin.orders.payloads.show', $new)->with('success', 'Payload recreated');
-        }
-
-        return redirect()->route('admin.orders.payloads.index')->with('error', 'Failed to recreate payload');
-    }
 }

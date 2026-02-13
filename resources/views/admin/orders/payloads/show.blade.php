@@ -8,7 +8,8 @@
             <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">
                 <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded hover:bg-gray-50">Orders</a>
                 <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payloads</a>
-                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Checkouts</a>
+                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Checkouts</a>                
+                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payments</a>            
             </nav>
         </div>
 
@@ -28,14 +29,17 @@
 
                 <div class="text-right">
                     @if($payload->order)
-                        <a href="{{ route('admin.orders.show', $payload->order) }}" class="inline-block bg-gray-100 border px-4 py-2 rounded text-sm">View order</a>
+                        <a href="{{ route('admin.orders.show', $payload->order) }}" class="inline-block bg-gray-100 border px-4 py-2 rounded text-sm">Order</a>
 
-                        <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $payload->order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">View checkouts</a>
+                        <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $payload->order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Checkouts</a>
+
+                        <a href="{{ route('admin.orders.payments.index', ['order_number' => $payload->order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Payments</a>
+
                     @endif
 
-                    <form method="POST" action="{{ route('admin.orders.payloads.recreate', $payload) }}" class="inline-block ms-2" onsubmit="return confirm('Recreate payload from order snapshot? This will replace the stored payload.');">
+                    <form method="POST" action="{{ route('admin.orders.payloads.store', $payload->order) }}" class="inline-block ms-2">
                         @csrf
-                        <button class="bg-yellow-50 border-yellow-200 text-yellow-700 border px-4 py-2 rounded text-sm">Recreate</button>
+                        <button class="bg-green-50 border-green-200 text-green-700 border px-4 py-2 rounded text-sm">Create</button>
                     </form>
 
                     <form method="POST" action="{{ route('admin.orders.payloads.destroy', $payload) }}" class="inline-block ms-2" onsubmit="return confirm('Delete this payload? This cannot be undone.');">
