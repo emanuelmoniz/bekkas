@@ -43,6 +43,17 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
+        // Block login when the email address is not yet verified
+        $user = \App\Models\User::where('email', $this->string('email'))->first();
+
+        if ($user && ! $user->email_verified_at) {
+            session()->flash('unverified_email', $user->email);
+
+            throw ValidationException::withMessages([
+                'email' => t('auth.email_unverified') ?: 'Your email address is not verified. Please check your inbox.',
+            ]);
+        }
+
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 

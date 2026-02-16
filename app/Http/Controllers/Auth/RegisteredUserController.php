@@ -21,6 +21,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
+        // Ensure guest auth pages always render using the active site locale (session or app fallback).
+        app()->setLocale(session('locale') ?? config('app.locale'));
+
         return view('auth.register');
     }
 
@@ -29,6 +32,18 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // If an account already exists and is not verified, prompt to resend instead of creating a new account
+        if ($request->filled('email')) {
+            $existing = User::where('email', $request->email)->first();
+
+            if ($existing && ! $existing->email_verified_at) {
+                return back()
+                    ->withErrors(['email' => t('auth.email_unverified') ?: 'This email address exists but has not been verified.'])
+                    ->withInput()
+                    ->with('unverified_email', $request->email);
+            }
+        }
+
         // Build rules; require reCAPTCHA only when configured
         $rules = [
             'name' => ['required', 'string', 'max:255'],
@@ -60,6 +75,8 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'is_active' => true,
+            // set initial language from active locale so verification email uses current site language
+            'language' => app()->getLocale(),
         ]);
 
         // Assign default "client" role
@@ -69,11 +86,18 @@ class RegisteredUserController extends Controller
             $user->roles()->attach($clientRole->id);
         }
 
+        // Fire Registered event (framework will send the verification notification).
         event(new Registered($user));
 
-        Auth::login($user);
+        // Do NOT log the user in until they verify their email.
+        return redirect()->route('verification.sent')->with('email', $user->email);
+    }
 
-        // New users are clients by default, redirect to home
-        return redirect()->intended('/');
+    /**
+     * Show guest "check your email" page after registration.
+     */
+    public function verifyEmailSent(): View
+    {
+        return view('auth.verify-email-sent');
     }
 }

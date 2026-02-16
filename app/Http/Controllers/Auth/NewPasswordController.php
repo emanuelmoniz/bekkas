@@ -20,6 +20,9 @@ class NewPasswordController extends Controller
      */
     public function create(Request $request): View
     {
+        // Ensure the reset-password form uses the active site locale (guest context).
+        app()->setLocale(session('locale') ?? config('app.locale'));
+
         return view('auth.reset-password', ['request' => $request]);
     }
 

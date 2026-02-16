@@ -13,6 +13,9 @@ class AuthenticatedSessionController extends Controller
 {
     public function create(): View
     {
+        // Render login page with the active site locale (session locale) — do not use any stored user language.
+        app()->setLocale(session('locale') ?? config('app.locale'));
+
         return view('auth.login');
     }
 
@@ -22,7 +25,7 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        if (! $user->active) {
+        if (! $user->is_active) {
             Auth::logout();
 
             return back()->withErrors([

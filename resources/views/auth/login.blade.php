@@ -2,6 +2,21 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    @if(session('unverified_email'))
+        <div class="mb-4 text-sm text-red-600">
+            {{ t('auth.email_unverified_notice') ?: 'Your account has not been confirmed. Check your email for the verification link.' }}
+            <div class="mt-2 text-xs text-gray-600">{{ t('auth.check_spam') ?: 'If you do not see the message, please check your spam folder.' }}</div>
+        </div>
+
+        <form method="POST" action="{{ route('verification.resend.guest') }}" class="mb-6">
+            @csrf
+            <input type="hidden" name="email" value="{{ session('unverified_email') }}">
+            <x-primary-button>
+                {{ t('auth.resend_activation') ?: 'Resend activation email' }}
+            </x-primary-button>
+        </form>
+    @endif
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
 

@@ -652,6 +652,31 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'auth.failed', 'locale' => 'pt-PT', 'value' => 'Credenciais inválidas. Verifique o e-mail e a palavra-passe.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.failed', 'locale' => 'en-UK', 'value' => 'Invalid credentials. Please check your email and password.', 'created_at' => $now, 'updated_at' => $now],
 
+            // Email verification / activation (guest flows)
+            ['key' => 'auth.email_unverified', 'locale' => 'pt-PT', 'value' => 'Esta conta ainda não foi confirmada. Verifique o seu email para o link de ativação.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.email_unverified', 'locale' => 'en-UK', 'value' => 'This account has not been confirmed. Please check your email for the activation link.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.email_unverified_notice', 'locale' => 'pt-PT', 'value' => 'Existe uma conta registada com este email, mas ainda não foi confirmada.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.email_unverified_notice', 'locale' => 'en-UK', 'value' => 'An account exists for this email but it has not been confirmed.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.resend_activation', 'locale' => 'pt-PT', 'value' => 'Reenviar email de ativação', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.resend_activation', 'locale' => 'en-UK', 'value' => 'Resend activation email', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.activation_sent', 'locale' => 'pt-PT', 'value' => 'Um novo email de ativação foi enviado para o seu endereço de email.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.activation_sent', 'locale' => 'en-UK', 'value' => 'A new activation email has been sent to your email address.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.check_spam', 'locale' => 'pt-PT', 'value' => 'Se não encontrar a mensagem, verifique a sua pasta de spam.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.check_spam', 'locale' => 'en-UK', 'value' => 'If you do not see the message, please check your spam folder.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.already_verified', 'locale' => 'pt-PT', 'value' => 'O email já foi confirmado.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.already_verified', 'locale' => 'en-UK', 'value' => 'Email already verified.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.verify_sent_message', 'locale' => 'pt-PT', 'value' => 'Obrigado pelo registo! Verifique o seu email para confirmar a sua conta.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.verify_sent_message', 'locale' => 'en-UK', 'value' => 'Thanks for signing up! Please check your email for a verification link to confirm your account.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.verification_verified', 'locale' => 'pt-PT', 'value' => 'O seu email foi confirmado com sucesso.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.verification_verified', 'locale' => 'en-UK', 'value' => 'Your email address has been verified.', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'auth.recaptcha_required', 'locale' => 'pt-PT', 'value' => 'Por favor, verifique que não é um robô.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.recaptcha_required', 'locale' => 'en-UK', 'value' => 'Please verify that you are not a robot.', 'created_at' => $now, 'updated_at' => $now],
 

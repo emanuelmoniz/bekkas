@@ -2,6 +2,19 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
+        @if(session('unverified_email'))
+            <div class="mb-4 text-sm text-red-600">
+                {{ t('auth.email_unverified_notice') ?: 'An account was previously registered with this email but not confirmed.' }}
+                <div class="mt-1 text-xs text-gray-600">{{ t('auth.check_spam') ?: 'If you do not see the message, please check your spam folder.' }}</div>
+            </div>
+
+            <div class="mb-4">
+                <x-primary-button form="resend-activation-form">
+                    {{ t('auth.resend_activation') ?: 'Resend activation email' }}
+                </x-primary-button>
+            </div>
+        @endif
+
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
@@ -105,5 +118,11 @@
         </div>
     </form>
 
+    @if(session('unverified_email'))
+        <form id="resend-activation-form" method="POST" action="{{ route('verification.resend.guest') }}">
+            @csrf
+            <input type="hidden" name="email" value="{{ session('unverified_email') }}">
+        </form>
+    @endif
 
 </x-guest-layout>

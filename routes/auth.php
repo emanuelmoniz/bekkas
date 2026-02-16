@@ -33,6 +33,15 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.store');
+
+    // After registration (guest) — show "check your email" page
+    Route::get('verify-email/sent', [RegisteredUserController::class, 'verifyEmailSent'])
+        ->name('verification.sent');
+
+    // Allow unauthenticated users to request a new verification email for an existing (unverified) account
+    Route::post('verification/resend', [\App\Http\Controllers\Auth\GuestEmailVerificationController::class, 'resend'])
+        ->middleware('throttle:6,1')
+        ->name('verification.resend.guest');
 });
 
 Route::middleware('auth')->group(function () {
@@ -57,3 +66,8 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 });
+
+// Signed verification endpoint accessible without authentication so users can confirm via email link
+Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('verification.verify');
