@@ -39,6 +39,7 @@ class Order extends Model
         'shipping_tax',
         'shipping_gross',
         'shipping_tier_name',
+        'tax_enabled',
 
         'total_net',
         'total_tax',
@@ -58,6 +59,7 @@ class Order extends Model
         'total_net' => 'decimal:2',
         'total_tax' => 'decimal:2',
         'total_gross' => 'decimal:2',
+        'tax_enabled' => 'boolean',
         'expected_delivery_date' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

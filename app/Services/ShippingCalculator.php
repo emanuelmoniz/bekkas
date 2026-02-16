@@ -50,15 +50,18 @@ class ShippingCalculator
     {
         $gross = $tier->cost_gross;
 
-        // Safe tax retrieval (compatible with older PHP versions)
-        $taxPct = optional($tier->tax)->percentage ?? 0;
+        // Respect global tax feature toggle
+        $taxEnabled = (bool) config('app.tax_enabled', env('APP_TAX_ENABLED', true));
 
-        // Avoid division by zero
+        // Safe tax retrieval (compatible with older PHP versions)
+        $taxPct = $taxEnabled ? (optional($tier->tax)->percentage ?? 0) : 0;
+
+        // Avoid division by zero; when taxes are disabled net == gross and tax == 0
         $net = $taxPct > 0
             ? $gross / (1 + $taxPct / 100)
             : $gross;
 
-        $tax = $gross - $net;
+        $tax = $taxPct > 0 ? $gross - $net : 0;
 
         return [
             'gross' => round($gross, 2),

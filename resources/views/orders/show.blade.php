@@ -136,9 +136,16 @@
         {{-- TOTALS --}}
         <div class="bg-white shadow rounded p-4 text-right space-y-1">
             <p>{{ t('orders.products_net') ?: 'Products (net)' }}: {{ number_format($order->products_total_net, 2) }} €</p>
-            <p>{{ t('orders.products_tax') ?: 'Products tax' }}: {{ number_format($order->products_total_tax, 2) }} €</p>
-            <p>{{ t('orders.shipping') ?: 'Shipping' }}: {{ number_format($order->shipping_gross, 2) }} €</p>
-            <p>{{ t('orders.shipping_tax') ?: 'Shipping tax' }}: {{ number_format($order->shipping_tax, 2) }} €</p>
+
+            @if($order->tax_enabled)
+                <p>{{ t('orders.products_tax') ?: 'Products tax' }}: {{ number_format($order->products_total_tax, 2) }} €</p>
+                <p>{{ t('orders.shipping') ?: 'Shipping' }}: {{ number_format($order->shipping_gross, 2) }} €</p>
+                <p>{{ t('orders.shipping_tax') ?: 'Shipping tax' }}: {{ number_format($order->shipping_tax, 2) }} €</p>
+            @else
+                <p>{{ t('tax.included_in_price') ?: 'All taxes are included in the price' }}</p>
+                <p>{{ t('orders.shipping') ?: 'Shipping' }}: {{ number_format($order->shipping_gross, 2) }} €</p>
+            @endif
+
             <hr>
             <p class="font-semibold">
                 {{ t('orders.total') ?: 'Total' }}: {{ number_format($order->total_gross, 2) }} €

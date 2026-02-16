@@ -117,9 +117,16 @@
         ======================= --}}
         <div class="bg-white shadow rounded p-4 text-right space-y-1">
             <p>Products (net): {{ number_format($order->products_total_net, 2) }} €</p>
-            <p>Products tax: {{ number_format($order->products_total_tax, 2) }} €</p>
-            <p>Shipping (gross): {{ number_format($order->shipping_gross, 2) }} €</p>
-            <p>Shipping tax: {{ number_format($order->shipping_tax, 2) }} €</p>
+
+            @if($order->tax_enabled)
+                <p>Products tax: {{ number_format($order->products_total_tax, 2) }} €</p>
+                <p>Shipping (gross): {{ number_format($order->shipping_gross, 2) }} €</p>
+                <p>Shipping tax: {{ number_format($order->shipping_tax, 2) }} €</p>
+            @else
+                <p>{{ t('tax.included_in_price') ?: 'All taxes are included in the price' }}</p>
+                <p>Shipping (gross): {{ number_format($order->shipping_gross, 2) }} €</p>
+            @endif
+
             <hr>
             <p class="font-semibold">
                 Total: {{ number_format($order->total_gross, 2) }} €

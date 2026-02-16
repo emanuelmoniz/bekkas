@@ -165,6 +165,8 @@ class OrderController extends Controller
             ]);
         }
 
+        $taxEnabled = (bool) config('app.tax_enabled', env('APP_TAX_ENABLED', true));
+
         $tiersData = collect();
 
         // Add free shipping tier if qualified
@@ -198,10 +200,10 @@ class OrderController extends Controller
             ]);
 
             foreach ($otherTiers as $tier) {
-                $taxPct = optional($tier->tax)->percentage ?? 0;
+                $taxPct = $taxEnabled ? (optional($tier->tax)->percentage ?? 0) : 0;
                 $gross = floatval($tier->cost_gross);
                 $net = $taxPct > 0 ? $gross / (1 + $taxPct / 100) : $gross;
-                $tax = $gross - $net;
+                $tax = $taxPct > 0 ? $gross - $net : 0;
 
                 $tiersData->push([
                     'id' => $tier->id,
@@ -224,11 +226,11 @@ class OrderController extends Controller
             ]);
         } else {
             // No free shipping - show all tiers
-            $tiersData = $tiers->map(function ($tier) {
-                $taxPct = optional($tier->tax)->percentage ?? 0;
+            $tiersData = $tiers->map(function ($tier) use ($taxEnabled) {
+                $taxPct = $taxEnabled ? (optional($tier->tax)->percentage ?? 0) : 0;
                 $gross = floatval($tier->cost_gross);
                 $net = $taxPct > 0 ? $gross / (1 + $taxPct / 100) : $gross;
-                $tax = $gross - $net;
+                $tax = $taxPct > 0 ? $gross - $net : 0;
 
                 return [
                     'id' => $tier->id,
@@ -299,16 +301,19 @@ class OrderController extends Controller
         $productsGross = 0;
         $productsTax = 0;
 
+        $taxEnabled = (bool) config('app.tax_enabled', env('APP_TAX_ENABLED', true));
+
         foreach ($products as $product) {
             $qty = $cart[$product->id];
             $unitGross = $product->is_promo ? ($product->promo_price ?? $product->price) : $product->price;
 
             // Safe tax retrieval (Laravel optional helper)
-            $taxPct = optional($product->tax)->percentage ?? 0;
+            $taxPct = $taxEnabled ? (optional($product->tax)->percentage ?? 0) : 0;
 
             $gross = $unitGross * $qty;
-            $net = $gross / (1 + $taxPct / 100);
-            $tax = $gross - $net;
+            // When taxes are disabled net == gross and tax == 0
+            $net = $taxPct > 0 ? $gross / (1 + $taxPct / 100) : $gross;
+            $tax = $taxPct > 0 ? $gross - $net : 0;
 
             $items[] = [
                 'product' => $product,
@@ -389,18 +394,18 @@ class OrderController extends Controller
         $shipping = ['gross' => 0, 'net' => 0, 'tax' => 0];
         if ($selectedShippingTier) {
             $shipping['gross'] = $qualifiesForFreeShipping ? 0 : $selectedShippingTier->cost_gross;
-            $taxPct = optional($selectedShippingTier->tax)->percentage ?? 0;
+            $taxPct = $taxEnabled ? (optional($selectedShippingTier->tax)->percentage ?? 0) : 0;
             $shipping['net'] = $taxPct > 0 ? $shipping['gross'] / (1 + $taxPct / 100) : $shipping['gross'];
-            $shipping['tax'] = $shipping['gross'] - $shipping['net'];
+            $shipping['tax'] = $taxPct > 0 ? $shipping['gross'] - $shipping['net'] : 0;
         }
 
         // Map available tiers for Alpine.js with shipping breakdown
-        $availableTiersFormatted = $availableShippingTiers->map(function ($t) use ($qualifiesForFreeShipping, $freeShippingTier) {
-            $taxPct = optional($t->tax)->percentage ?? 0;
+        $availableTiersFormatted = $availableShippingTiers->map(function ($t) use ($qualifiesForFreeShipping, $freeShippingTier, $taxEnabled) {
+            $taxPct = $taxEnabled ? (optional($t->tax)->percentage ?? 0) : 0;
             $isFree = $qualifiesForFreeShipping && $freeShippingTier && $t->id === $freeShippingTier->id;
             $gross = $isFree ? 0 : $t->cost_gross;
             $net = $isFree ? 0 : ($taxPct > 0 ? $gross / (1 + $taxPct / 100) : $gross);
-            $tax = $gross - $net;
+            $tax = $taxPct > 0 ? $gross - $net : 0;
 
             return [
                 'id' => $t->id,
@@ -469,7 +474,9 @@ class OrderController extends Controller
         try {
             $createdOrder = null;
 
-            DB::transaction(function () use ($user, $cart, $address, $request, &$createdOrder) {
+            $taxEnabled = (bool) config('app.tax_enabled', env('APP_TAX_ENABLED', true));
+
+            DB::transaction(function () use ($user, $cart, $address, $request, &$createdOrder, $taxEnabled) {
 
                 // Lock products for update to prevent race conditions
                 $products = Product::whereIn('id', array_keys($cart))
@@ -516,12 +523,13 @@ class OrderController extends Controller
 
                     $unitGross = $product->is_promo ? ($product->promo_price ?? $product->price) : $product->price;
 
-                    // Safe tax retrieval (Laravel optional helper)
-                    $taxPct = optional($product->tax)->percentage ?? 0;
+                    // Safe tax retrieval (Laravel optional helper). Respect global feature toggle.
+                    $taxPct = $taxEnabled ? (optional($product->tax)->percentage ?? 0) : 0;
 
                     $gross = $unitGross * $qty;
-                    $net = $gross / (1 + $taxPct / 100);
-                    $tax = $gross - $net;
+                    // When taxes are disabled net == gross and tax == 0
+                    $net = $taxPct > 0 ? $gross / (1 + $taxPct / 100) : $gross;
+                    $tax = $taxPct > 0 ? $gross - $net : 0;
 
                     // Track if this was a backorder (stock was 0 when ordered)
                     $wasBackordered = ($product->stock == 0);
@@ -593,10 +601,10 @@ class OrderController extends Controller
                 } else {
                     // Calculate cost from selected tier or use default calculation
                     if ($shippingTier) {
-                        $taxPct = optional($shippingTier->tax)->percentage ?? 0;
+                        $taxPct = $taxEnabled ? (optional($shippingTier->tax)->percentage ?? 0) : 0;
                         $gross = $shippingTier->cost_gross;
                         $net = $taxPct > 0 ? $gross / (1 + $taxPct / 100) : $gross;
-                        $tax = $gross - $net;
+                        $tax = $taxPct > 0 ? $gross - $net : 0;
                         $shipping = [
                             'gross' => round($gross, 2),
                             'net' => round($net, 2),
@@ -649,6 +657,7 @@ class OrderController extends Controller
                     'products_total_net' => round($productsNet, 2),
                     'products_total_tax' => round($productsTax, 2),
                     'products_total_gross' => round($productsGross, 2),
+                    'tax_enabled' => $taxEnabled,
 
                     'shipping_net' => $shipping['net'],
                     'shipping_tax' => $shipping['tax'],

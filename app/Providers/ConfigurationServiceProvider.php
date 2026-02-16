@@ -66,6 +66,9 @@ class ConfigurationServiceProvider extends ServiceProvider
 
             // Store feature toggle (DB should take precedence over APP_STORE_ENABLED)
             'store_enabled' => ['app.store_enabled'],
+
+            // Tax feature toggle (DB override for APP_TAX_ENABLED)
+            'tax_enabled' => ['app.tax_enabled'],
         ];
 
         foreach ($map as $field => $keys) {

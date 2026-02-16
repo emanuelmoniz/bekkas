@@ -21,16 +21,19 @@ class CartController extends Controller
         $productsGross = 0;
         $productsTax = 0;
 
+        $taxEnabled = (bool) config('app.tax_enabled', env('APP_TAX_ENABLED', true));
+
         foreach ($products as $product) {
             $qty = $cart[$product->id];
             $unitGross = $product->is_promo ? ($product->promo_price ?? $product->price) : $product->price;
 
             // Safe tax retrieval (Laravel optional helper)
-            $taxPct = optional($product->tax)->percentage ?? 0;
+            $taxPct = $taxEnabled ? (optional($product->tax)->percentage ?? 0) : 0;
 
             $lineGross = $unitGross * $qty;
-            $lineNet = $lineGross / (1 + $taxPct / 100);
-            $lineTax = $lineGross - $lineNet;
+            // When taxes are disabled we do not split gross/net — net == gross and tax == 0
+            $lineNet = $taxPct > 0 ? $lineGross / (1 + $taxPct / 100) : $lineGross;
+            $lineTax = $taxPct > 0 ? $lineGross - $lineNet : 0;
 
             $items[] = [
                 'product' => $product,

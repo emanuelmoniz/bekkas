@@ -155,25 +155,36 @@
 
                 <hr>
 
-                <div class="text-sm text-gray-500 flex justify-between">
-                    <span>{{ t('checkout.products_tax') ?: 'Products tax' }}</span>
-                    <span>€{{ number_format($productsTax, 2) }}</span>
-                </div>
+                @if(config('app.tax_enabled', env('APP_TAX_ENABLED', true)))
+                    <div class="text-sm text-gray-500 flex justify-between">
+                        <span>{{ t('checkout.products_tax') ?: 'Products tax' }}</span>
+                        <span>€{{ number_format($productsTax, 2) }}</span>
+                    </div>
 
-                <div class="flex justify-between">
-                    <span>{{ t('checkout.shipping') ?: 'Shipping' }}</span>
-                    <span x-text="'€' + Number(shipping?.gross ?? 0).toFixed(2)" x-cloak>€{{ number_format($shipping['gross'], 2) }}</span>
-                </div>
+                    <div class="flex justify-between">
+                        <span>{{ t('checkout.shipping') ?: 'Shipping' }}</span>
+                        <span x-text="'€' + Number(shipping?.gross ?? 0).toFixed(2)" x-cloak>€{{ number_format($shipping['gross'], 2) }}</span>
+                    </div>
 
-                <div class="text-sm text-gray-500 flex justify-between">
-                    <span>{{ t('checkout.shipping_tax') ?: 'Shipping tax' }}</span>
-                    <span x-text="'€' + Number(shipping?.tax ?? 0).toFixed(2)" x-cloak>€{{ number_format($shipping['tax'], 2) }}</span>
-                </div>
+                    <div class="text-sm text-gray-500 flex justify-between">
+                        <span>{{ t('checkout.shipping_tax') ?: 'Shipping tax' }}</span>
+                        <span x-text="'€' + Number(shipping?.tax ?? 0).toFixed(2)" x-cloak>€{{ number_format($shipping['tax'], 2) }}</span>
+                    </div>
 
-                <div class="text-sm text-gray-500 flex justify-between">
-                    <span>{{ t('checkout.total_tax') ?: 'Total tax' }}</span>
-                    <span x-text="'€' + totalTax" x-cloak>€{{ number_format($totalTax, 2) }}</span>
-                </div>
+                    <div class="text-sm text-gray-500 flex justify-between">
+                        <span>{{ t('checkout.total_tax') ?: 'Total tax' }}</span>
+                        <span x-text="'€' + totalTax" x-cloak>€{{ number_format($totalTax, 2) }}</span>
+                    </div>
+                @else
+                    <div class="text-sm text-gray-500">
+                        {{ t('tax.included_in_price') ?: 'All taxes are included in the price' }}
+                    </div>
+
+                    <div class="flex justify-between">
+                        <span>{{ t('checkout.shipping') ?: 'Shipping' }}</span>
+                        <span x-text="'€' + Number(shipping?.gross ?? 0).toFixed(2)" x-cloak>€{{ number_format($shipping['gross'], 2) }}</span>
+                    </div>
+                @endif
 
                 <div class="font-semibold flex justify-between pt-2">
                     <span>{{ t('checkout.total') ?: 'Total' }}</span>
