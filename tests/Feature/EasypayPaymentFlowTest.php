@@ -13,9 +13,6 @@ class EasypayPaymentFlowTest extends TestCase
 {
     public function test_on_success_creates_payment_and_marks_order_paid()
     {
-        // Temporarily skipped: intermittent in CI — removed per request. TODO: investigate and re-enable.
-        $this->markTestSkipped('Flaky — temporarily skipped (Easypay onSuccess mark order paid)');
-
         // Fake Easypay single payment response
         $paymentId = 'pay_test_1';
         Http::fake([
@@ -33,11 +30,12 @@ class EasypayPaymentFlowTest extends TestCase
         $order = Order::factory()->create(['user_id' => $user->id, 'status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
         $payload = EasypayPayload::create(['order_id' => $order->id, 'payload' => ['dummy' => true]]);
-        $session = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'checkout_id' => 'chk_1', 'session_id' => 'sess', 'is_active' => true]);
+        $checkoutId = 'chk_'.uniqid();
+        $session = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'checkout_id' => $checkoutId, 'session_id' => 'sess', 'is_active' => true]);
 
         $url = "/orders/{$order->uuid}/pay/verify";
 
-        $resp = $this->postJson($url, ['checkout' => ['id' => 'chk_1', 'payment' => ['id' => $paymentId]]]);
+        $resp = $this->postJson($url, ['checkout' => ['id' => $checkoutId, 'payment' => ['id' => $paymentId]]]);
 
         $resp->assertStatus(201);
         $resp->assertJsonPath('payment.payment_id', $paymentId);
@@ -70,9 +68,10 @@ class EasypayPaymentFlowTest extends TestCase
         $order = Order::factory()->create(['user_id' => $user->id, 'status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
         $payload = EasypayPayload::create(['order_id' => $order->id, 'payload' => ['dummy' => true]]);
-        $session = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'checkout_id' => 'chk_1', 'session_id' => 'sess', 'is_active' => true]);
+        $checkoutId = 'chk_'.uniqid();
+        $session = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'checkout_id' => $checkoutId, 'session_id' => 'sess', 'is_active' => true]);
 
-        $resp = $this->postJson("/orders/{$order->uuid}/pay/verify", ['checkout' => ['id' => 'chk_1', 'payment' => ['id' => $paymentId, 'status' => 'pending']]]);
+        $resp = $this->postJson("/orders/{$order->uuid}/pay/verify", ['checkout' => ['id' => $checkoutId, 'payment' => ['id' => $paymentId, 'status' => 'pending']]]);
 
         // Controller must persist the SDK-provided payment even if remote fails
         $resp->assertStatus(201);
@@ -99,9 +98,10 @@ class EasypayPaymentFlowTest extends TestCase
         $order = Order::factory()->create(['user_id' => $user->id, 'status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
         $payload = EasypayPayload::create(['order_id' => $order->id, 'payload' => ['dummy' => true]]);
-        $session = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'checkout_id' => 'chk_1', 'session_id' => 'sess', 'is_active' => true]);
+        $checkoutId = 'chk_'.uniqid();
+        $session = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'checkout_id' => $checkoutId, 'session_id' => 'sess', 'is_active' => true]);
 
-        $resp = $this->postJson("/orders/{$order->uuid}/pay/verify", ['checkout' => ['id' => 'chk_1', 'payment' => ['id' => 'pay_auth_1']]]);
+        $resp = $this->postJson("/orders/{$order->uuid}/pay/verify", ['checkout' => ['id' => $checkoutId, 'payment' => ['id' => 'pay_auth_1']]]);
 
         $resp->assertStatus(201);
         $resp->assertJsonPath('payment.payment_id', 'pay_auth_1');

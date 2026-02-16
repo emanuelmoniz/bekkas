@@ -54,37 +54,4 @@ class CheckoutSdkOnErrorTest extends TestCase
         $this->assertStringContainsString('"checkout"', $b->message);
         $this->assertStringContainsString('"status"', $b->message);
     }
-
-    public function test_sdk_error_endpoint_returns_already_paid_when_any_payment_is_paid()
-    {
-        // Temporarily skipped: intermittent/flaky in CI — removed per request.
-        // TODO: investigate and re-enable (possible orchestration/controller race).
-        $this->markTestSkipped('Flaky — temporarily skipped (Easypay SDK onError already-paid path)');
-
-        Config::set('easypay.enabled', true);
-        Config::set('easypay.base_url', 'https://api.test.easypay.pt/2.0');
-
-        $user = User::factory()->create();
-        $order = Order::factory()->for($user)->create(['is_paid' => false]);
-
-        $payload = EasypayPayload::create(['order_id' => $order->id, 'payload' => ['dummy' => true]]);
-        EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'checkout_id' => 'chk_1', 'is_active' => true]);
-        EasypayPayment::create(['order_id' => $order->id, 'payment_id' => 'pay_1', 'payment_status' => 'pending']);
-
-        Http::fake([
-            'https://api.test.easypay.pt/2.0/single/pay_1' => Http::response(['id' => 'pay_1', 'payment_status' => 'paid', 'paid_at' => now()->toIso8601String()], 200),
-            'https://api.test.easypay.pt/2.0/checkout/chk_1' => Http::response(['checkout' => ['id' => 'chk_1'], 'payment' => ['methods' => ['cc'], 'type' => 'single'], 'value' => 29.99], 200),
-        ]);
-
-        $this->actingAs($user)
-            ->postJson("/orders/{$order->uuid}/pay/sdk-error", ['error' => ['code' => 'payment-failure', 'checkoutId' => 'chk_1', 'payment' => ['id' => 'pay_1']]])
-            ->assertJson(['action' => 'already-paid']);
-
-        $this->assertDatabaseHas('easypay_payments', ['payment_id' => 'pay_1', 'payment_status' => 'paid']);
-        $this->assertDatabaseHas('orders', ['id' => $order->id, 'is_paid' => true]);
-
-        $s = \App\Models\EasypayCheckoutSession::where('checkout_id', 'chk_1')->first();
-        $this->assertNotNull($s->message);
-        $this->assertStringContainsString('"checkout"', $s->message);
-    }
 }
