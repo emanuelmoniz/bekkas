@@ -32,6 +32,10 @@ class ConfigurationProviderTest extends TestCase
         $this->assertTrue(config('easypay.enabled'));
         $this->assertEquals('["mb","cc"]', config('easypay.payment_methods'));
         $this->assertEquals('https://sdk.db.test/easypay.js', config('easypay.sdk_url'));
+
+        // DB override for send_mails_enabled should set config('mail.enabled')
+        $this->assertTrue(config('mail.enabled'));
+
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
@@ -47,5 +51,18 @@ class ConfigurationProviderTest extends TestCase
         // Values should remain (env defaults as specified in config files)
         $this->assertEquals(env('APP_NAME'), config('app.name'));
         $this->assertEquals(env('EASYPAY_PAYMENT_METHODS', '[]'), config('easypay.payment_methods'));
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function database_configuration_disables_mail_transport_when_flag_is_false()
+    {
+        // Create a DB configuration that explicitly disables emails
+        Configuration::create(['send_mails_enabled' => false]);
+
+        $provider = $this->app->getProvider(ConfigurationServiceProvider::class);
+        $provider->boot();
+
+        $this->assertFalse(config('mail.enabled'));
+        $this->assertEquals('disabled', config('mail.default'));
     }
 }

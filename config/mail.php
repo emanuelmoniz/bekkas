@@ -78,6 +78,14 @@ return [
             'transport' => 'array',
         ],
 
+        // Disabled/null mailer used when outbound emails are turned off via
+        // `configurations.send_mails_enabled` (mapped to `mail.enabled`).
+        // Uses the `array` transport to silently discard deliveries in production
+        // while still allowing code paths that queue/send Mailables to run.
+        'disabled' => [
+            'transport' => 'array',
+        ],
+
         'failover' => [
             'transport' => 'failover',
             'mailers' => [
@@ -125,5 +133,18 @@ return [
     'admin_address' => env('MAIL_ADMIN', env('MAIL_FROM_ADDRESS', 'info@bekkas.pt')),
 
     'contact_address' => env('MAIL_CONTACT', env('MAIL_ADMIN', env('MAIL_FROM_ADDRESS', 'info@bekkas.pt'))),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Emails enabled switch
+    |--------------------------------------------------------------------------
+    |
+    | Global feature switch to enable/disable outbound emails. Can be
+    | overridden at runtime by the DB-backed `configurations` table when
+    | present (see `send_mails_enabled`). Falls back to the
+    | `APP_EMAILS_ENABLED` environment variable.
+    |
+    */
+    'enabled' => env('APP_EMAILS_ENABLED', true),
 
 ];

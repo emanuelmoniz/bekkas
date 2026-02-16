@@ -220,6 +220,53 @@ class OrdersTest extends TestCase
         });
     }
 
+    public function test_no_emails_sent_when_send_mails_disabled()
+    {
+        \Illuminate\Support\Facades\Mail::fake();
+
+        // Disable emails via DB configuration and re-run provider so runtime config is updated
+        \App\Models\Configuration::create(['send_mails_enabled' => false]);
+        $this->app->getProvider(\App\Providers\ConfigurationServiceProvider::class)->boot();
+
+        $user = User::factory()->create(['language' => 'en-UK']);
+
+        $tax = Tax::create(['name' => 'VAT', 'percentage' => 23, 'is_active' => true]);
+
+        $product = Product::create([
+            'tax_id' => $tax->id,
+            'price' => 15.00,
+            'stock' => 5,
+            'weight' => 1.0,
+            'active' => true,
+        ]);
+
+        $country = Country::firstOrCreate(['iso_alpha2' => 'PT'], ['name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true]);
+
+        $address = $user->addresses()->create([
+            'title' => 'Home',
+            'address_line_1' => 'Rua B',
+            'postal_code' => '1000-001',
+            'city' => 'Lisbon',
+            'country_id' => $country->id,
+            'is_default' => true,
+        ]);
+
+        // Place the order
+        $response = $this->withSession(['cart' => [$product->id => 1]])
+            ->actingAs($user)
+            ->post(route('checkout.place'), ['address_id' => $address->id]);
+
+        $order = \App\Models\Order::where('user_id', $user->id)->latest()->first();
+
+        $response->assertRedirect(route('orders.pay', $order));
+
+        // Calls remain queued (we removed per-call guards) but the global mailer is switched
+        $this->assertFalse(config('mail.enabled'));
+        $this->assertEquals('disabled', config('mail.default'));
+
+        \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, 2);
+    }
+
     public function test_client_receives_email_on_status_change()
     {
         \Illuminate\Support\Facades\Mail::fake();

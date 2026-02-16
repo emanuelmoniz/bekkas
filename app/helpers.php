@@ -55,3 +55,27 @@ if (! function_exists('apply_t_replacements')) {
         return strtr($value, $lookup);
     }
 }
+
+if (! function_exists('send_mails_enabled')) {
+    /**
+     * Return whether outbound emails are allowed.
+     *
+     * Priority: DB `configurations.send_mails_enabled` (when table exists) ->
+     * config('mail.enabled') -> env('APP_EMAILS_ENABLED', true)
+     */
+    function send_mails_enabled(): bool
+    {
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('configurations')) {
+                $cfg = \App\Models\Configuration::latest()->first();
+                if ($cfg && $cfg->send_mails_enabled !== null) {
+                    return (bool) $cfg->send_mails_enabled;
+                }
+            }
+        } catch (\Throwable $e) {
+            // ignore and fallback to config/env
+        }
+
+        return (bool) (config('mail.enabled', env('APP_EMAILS_ENABLED', true)));
+    }
+}

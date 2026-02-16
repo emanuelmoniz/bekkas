@@ -58,6 +58,9 @@ class ConfigurationServiceProvider extends ServiceProvider
             'easypay_payment_methods' => ['easypay.payment_methods'],
             'easypay_session_ttl' => ['easypay.session_ttl'],
             'easypay_mb_ttl' => ['easypay.mb_ttl'],
+
+            // Mail switch (DB override for APP_EMAILS_ENABLED)
+            'send_mails_enabled' => ['mail.enabled'],
         ];
 
         foreach ($map as $field => $keys) {
@@ -79,6 +82,17 @@ class ConfigurationServiceProvider extends ServiceProvider
 
                 config()->set($key, $value);
             }
+        }
+
+        // Mailer-level fallback: when DB disables outbound mail, route the
+        // app's default mailer to the `disabled` mailer (which uses `array`
+        // transport and discards deliveries). This centralises the behaviour
+        // so individual call-sites don't need guards.
+        if (! config('mail.enabled', env('APP_EMAILS_ENABLED', true))) {
+            config()->set('mail.default', 'disabled');
+        } else {
+            // ensure default remains the configured env/default value
+            config()->set('mail.default', env('MAIL_MAILER', config('mail.default')));
         }
     }
 

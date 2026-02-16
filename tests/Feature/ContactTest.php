@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Configuration;
 use Tests\TestCase;
 
 class ContactTest extends TestCase
@@ -37,6 +38,31 @@ class ContactTest extends TestCase
         $response->assertSessionHas('success');
 
         // Two messages should be sent: one to the admin and one to the sender
+        Mail::assertQueued(\App\Mail\ContactMessage::class, 1);
+        Mail::assertQueued(\App\Mail\ContactConfirmation::class, 1);
+    }
+
+    public function test_contact_form_respects_send_mails_switch()
+    {
+        Mail::fake();
+
+        // Disable emails via DB configuration and re-run provider so runtime config is updated
+        Configuration::create(['send_mails_enabled' => false]);
+        $this->app->getProvider(\App\Providers\ConfigurationServiceProvider::class)->boot();
+
+        $response = $this->post(route('contact.store'), [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'message' => 'Hello',
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+
+        // Calls remain queued (we removed per-call guards) but the global mailer is switched
+        $this->assertFalse(config('mail.enabled'));
+        $this->assertEquals('disabled', config('mail.default'));
+
         Mail::assertQueued(\App\Mail\ContactMessage::class, 1);
         Mail::assertQueued(\App\Mail\ContactConfirmation::class, 1);
     }
