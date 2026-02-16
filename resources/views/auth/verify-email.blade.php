@@ -1,11 +1,11 @@
 <x-guest-layout>
     <div class="mb-4 text-sm text-gray-600">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+        {{ t('auth.verify_prompt') ?: 'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.' }}
     </div>
 
     @if (session('status') == 'verification-link-sent')
         <div class="mb-4 font-medium text-sm text-green-600">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+            {{ t('auth.verify_sent_message') ?: 'A new verification link has been sent to your email address.' }}
         </div>
     @endif
 
@@ -15,7 +15,7 @@
 
             <div>
                 <x-primary-button>
-                    {{ __('Resend Verification Email') }}
+                    {{ t('auth.resend_verification_button') ?: 'Resend Verification Email' }}
                 </x-primary-button>
             </div>
         </form>

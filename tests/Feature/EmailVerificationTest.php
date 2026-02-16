@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Auth\Notifications\VerifyEmail;
+use App\Notifications\VerifyEmailNotification as VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
@@ -34,6 +34,15 @@ class EmailVerificationTest extends TestCase
         $this->assertEquals(app()->getLocale(), $user->language);
 
         Notification::assertSentTo($user, VerifyEmail::class);
+
+        // verify notification content is localized (default site locale)
+        Notification::assertSentTo($user, VerifyEmail::class, function ($notification, $channels) use ($user) {
+            $mail = $notification->toMail($user);
+            $this->assertEquals(t('auth.verify_email_subject'), $mail->subject);
+            $this->assertContains(t('auth.verify_email_intro'), $mail->introLines);
+            $this->assertEquals(t('auth.verify_email_action'), $mail->actionText ?? t('auth.verify_email_action'));
+            return true;
+        });
 
         // Attempt to login before verification -> blocked with validation error
         $this->post(route('login'), [
@@ -79,6 +88,15 @@ class EmailVerificationTest extends TestCase
         $this->assertEquals('pt-PT', $user->language);
 
         Notification::assertSentTo($user, VerifyEmail::class);
+
+        // verify notification content is localized according to the active site locale (pt-PT)
+        Notification::assertSentTo($user, VerifyEmail::class, function ($notification, $channels) use ($user) {
+            $mail = $notification->toMail($user);
+            $this->assertEquals(t('auth.verify_email_subject'), $mail->subject);
+            $this->assertContains(t('auth.verify_email_intro'), $mail->introLines);
+            $this->assertEquals(t('auth.verify_email_action'), $mail->actionText ?? t('auth.verify_email_action'));
+            return true;
+        });
     }
 
     public function test_verification_link_marks_account_verified_and_allows_login()

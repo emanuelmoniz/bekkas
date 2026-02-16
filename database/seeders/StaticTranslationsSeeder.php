@@ -643,6 +643,12 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'auth.email', 'locale' => 'pt-PT', 'value' => 'Email', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.email', 'locale' => 'en-UK', 'value' => 'Email', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'auth.name', 'locale' => 'pt-PT', 'value' => 'Nome', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.name', 'locale' => 'en-UK', 'value' => 'Name', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.confirm_email', 'locale' => 'pt-PT', 'value' => 'Confirmar Email', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.confirm_email', 'locale' => 'en-UK', 'value' => 'Confirm Email', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'auth.password', 'locale' => 'pt-PT', 'value' => 'Palavra-passe', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.password', 'locale' => 'en-UK', 'value' => 'Password', 'created_at' => $now, 'updated_at' => $now],
 
@@ -674,6 +680,25 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'auth.verify_sent_message', 'locale' => 'pt-PT', 'value' => 'Obrigado pelo registo! Verifique o seu email para confirmar a sua conta.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.verify_sent_message', 'locale' => 'en-UK', 'value' => 'Thanks for signing up! Please check your email for a verification link to confirm your account.', 'created_at' => $now, 'updated_at' => $now],
 
+            // Verification email (localized DB-driven strings)
+            ['key' => 'auth.verify_email_subject', 'locale' => 'pt-PT', 'value' => 'Verificar Endereço de Email', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.verify_email_subject', 'locale' => 'en-UK', 'value' => 'Verify Email Address', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.verify_email_intro', 'locale' => 'pt-PT', 'value' => 'Clique no botão abaixo para verificar o seu endereço de email.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.verify_email_intro', 'locale' => 'en-UK', 'value' => 'Please click the button below to verify your email address.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.verify_email_action', 'locale' => 'pt-PT', 'value' => 'Verificar Endereço de Email', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.verify_email_action', 'locale' => 'en-UK', 'value' => 'Verify Email Address', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.verify_email_outro', 'locale' => 'pt-PT', 'value' => 'Se não criou uma conta, nenhuma ação adicional é necessária.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.verify_email_outro', 'locale' => 'en-UK', 'value' => 'If you did not create an account, no further action is required.', 'created_at' => $now, 'updated_at' => $now],
+
+            // UI for verify-email page
+            ['key' => 'auth.verify_prompt', 'locale' => 'pt-PT', 'value' => 'Obrigado pelo registo! Antes de começar, pode verificar o seu endereço de email clicando no link que enviámos? Se não recebeu o email, reenviaremos outro.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.verify_prompt', 'locale' => 'en-UK', 'value' => 'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.resend_verification_button', 'locale' => 'pt-PT', 'value' => 'Reenviar Email de Verificação', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.resend_verification_button', 'locale' => 'en-UK', 'value' => 'Resend Verification Email', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.verification_verified', 'locale' => 'pt-PT', 'value' => 'O seu email foi confirmado com sucesso.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.verification_verified', 'locale' => 'en-UK', 'value' => 'Your email address has been verified.', 'created_at' => $now, 'updated_at' => $now],
 

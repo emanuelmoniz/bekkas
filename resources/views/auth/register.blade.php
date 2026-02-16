@@ -17,28 +17,28 @@
 
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
+            <x-input-label for="name" :value="t('auth.name') ?: 'Name'" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
         <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="t('auth.email') ?: 'Email'" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Confirm Email Address -->
         <div class="mt-4">
-            <x-input-label for="email_confirmation" :value="__('Confirm Email')" />
+            <x-input-label for="email_confirmation" :value="t('auth.confirm_email') ?: 'Confirm Email'" />
             <x-text-input id="email_confirmation" class="block mt-1 w-full" type="email" name="email_confirmation" :value="old('email_confirmation')" required autocomplete="email" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" :value="t('auth.password') ?: 'Password'" />
 
             <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
@@ -50,7 +50,7 @@
 
         <!-- Confirm Password -->
         <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <x-input-label for="password_confirmation" :value="t('auth.confirm_password') ?: 'Confirm Password'" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
                             type="password"

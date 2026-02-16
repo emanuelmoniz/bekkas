@@ -12,6 +12,14 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasFactory, Notifiable;
 
     /**
+     * Override to send a DB-localized verification notification.
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify((new \App\Notifications\VerifyEmailNotification())->locale($this->preferredLocale() ?: app()->getLocale()));
+    }
+
+    /**
      * The attributes that are mass assignable.
      */
     protected $fillable = [
