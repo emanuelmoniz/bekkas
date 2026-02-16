@@ -9,12 +9,18 @@
 
 **{{ t('orders.email.total_label') ?: 'Total' }}:** {{ number_format($order->total_gross, 2) }}
 
-@if($order->items && $order->items->count())
+@if(($order->items && $order->items->count()) || (! empty($order->shipping_gross) && round($order->shipping_gross, 2) > 0))
 **{{ t('orders.email.items_label') ?: 'Items' }}:**
 
+@if($order->items && $order->items->count())
 @foreach($order->items as $item)
 - {{ optional($item->product->translation())->name ?? ('Product #' . $item->product_id) }} — **x{{ $item->quantity }}** — {{ number_format($item->total_gross, 2) }}
 @endforeach
+@endif
+
+@if(! empty($order->shipping_gross) && round($order->shipping_gross, 2) > 0)
+- {{ $order->shipping_tier_name ?? (t('orders.email.shipping_label') ?: 'Shipping') }} — **x1** — {{ number_format($order->shipping_gross, 2) }}
+@endif
 @endif
 
 @component('mail::button', ['url' => $actionUrl ?? route('orders.show', $order)])

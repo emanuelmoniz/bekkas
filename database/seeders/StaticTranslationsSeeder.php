@@ -106,10 +106,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'cart.shipping_at_checkout', 'locale' => 'pt-PT', 'value' => 'O custo de envio será calculado no checkout.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'cart.shipping_at_checkout', 'locale' => 'en-UK', 'value' => 'The shipping cost will be calculated at checkout.', 'created_at' => $now, 'updated_at' => $now],
 
-            // Tax disabled disclaimer (client-facing)
-            ['key' => 'tax.included_in_price', 'locale' => 'pt-PT', 'value' => 'Todos os impostos estão incluídos no preço', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'tax.included_in_price', 'locale' => 'en-UK', 'value' => 'All taxes are included in the price', 'created_at' => $now, 'updated_at' => $now],
-
             // Shipping Config (Admin)
             ['key' => 'shipping_config.title', 'locale' => 'pt-PT', 'value' => 'Configuração de Envio', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'shipping_config.title', 'locale' => 'en-UK', 'value' => 'Shipping Configuration', 'created_at' => $now, 'updated_at' => $now],
@@ -877,8 +873,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.new_message', 'locale' => 'en-UK', 'value' => 'New message', 'created_at' => $now, 'updated_at' => $now],
 
             // Ticket email notifications
-            ['key' => 'tickets.email.subject', 'locale' => 'pt-PT', 'value' => 'Ticket #:ticket_number – :event', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'tickets.email.subject', 'locale' => 'en-UK', 'value' => 'Ticket #:ticket_number – :event', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.subject', 'locale' => 'pt-PT', 'value' => 'Ticket #:uuid – :event', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.subject', 'locale' => 'en-UK', 'value' => 'Ticket #:uuid – :event', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.email.event.new_message', 'locale' => 'en-UK', 'value' => 'New message', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.event.new_message', 'locale' => 'pt-PT', 'value' => 'Nova mensagem', 'created_at' => $now, 'updated_at' => $now],
