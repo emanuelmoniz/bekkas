@@ -873,8 +873,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.new_message', 'locale' => 'en-UK', 'value' => 'New message', 'created_at' => $now, 'updated_at' => $now],
 
             // Ticket email notifications
-            ['key' => 'tickets.email.subject', 'locale' => 'pt-PT', 'value' => 'Ticket #:uuid – :event', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'tickets.email.subject', 'locale' => 'en-UK', 'value' => 'Ticket #:uuid – :event', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.subject', 'locale' => 'pt-PT', 'value' => 'Ticket #:ticket_number – :event', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.subject', 'locale' => 'en-UK', 'value' => 'Ticket #:ticket_number – :event', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.email.event.new_message', 'locale' => 'en-UK', 'value' => 'New message', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.event.new_message', 'locale' => 'pt-PT', 'value' => 'Nova mensagem', 'created_at' => $now, 'updated_at' => $now],

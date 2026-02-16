@@ -91,6 +91,7 @@
             <table class="min-w-full border">
                 <thead class="bg-gray-100">
                     <tr>
+                        <th class="px-4 py-2 text-left">Ticket ID</th>
                         <th class="px-4 py-2 text-left">Title</th>
                         <th class="px-4 py-2 text-left">User</th>
                         <th class="px-4 py-2 text-left">Category</th>
@@ -101,6 +102,8 @@
                 <tbody>
                     @forelse ($tickets as $ticket)
                         <tr class="border-t">
+                            <td class="px-4 py-2 font-mono text-sm">{{ $ticket->ticket_number ?? $ticket->uuid }}</td>
+
                             <td class="px-4 py-2 font-semibold">
                                 <a href="{{ route('admin.tickets.show', $ticket) }}"
                                    class="{{ $ticket->isUnreadFor(auth()->id())
@@ -125,7 +128,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5"
+                            <td colspan="6"
                                 class="px-4 py-6 text-center text-gray-500">
                                 No tickets found.
                             </td>

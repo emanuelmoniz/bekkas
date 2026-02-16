@@ -29,7 +29,7 @@
         <div class="bg-white p-6 rounded shadow space-y-2">
             <div>
                 <strong>{{ t('tickets.ticket_id') ?: 'Ticket ID' }}:</strong>
-                <span class="font-mono text-sm">{{ $ticket->uuid }}</span>
+                <span class="font-mono text-sm">{{ $ticket->ticket_number ?? $ticket->uuid }}</span>
             </div>
 
             <div>

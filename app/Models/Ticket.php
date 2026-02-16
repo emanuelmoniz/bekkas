@@ -13,6 +13,7 @@ class Ticket extends Model
         'user_id',
         'created_by',
         'ticket_category_id',
+        'ticket_number',
         'title',
         'status',
         'opened_at',
@@ -28,6 +29,7 @@ class Ticket extends Model
         'last_message_at' => 'datetime',
         'due_date' => 'date',
         'uuid' => 'string',
+        'ticket_number' => 'string',
     ];
 
     /**
@@ -43,6 +45,15 @@ class Ticket extends Model
         static::creating(function ($ticket) {
             $ticket->uuid = (string) Str::uuid();
             $ticket->opened_at = now();
+
+            // Generate friendly ticket number like: TCK-A3F9-2B7E
+            if (empty($ticket->ticket_number)) {
+                do {
+                    $ticketNumber = 'TCK-'.strtoupper(Str::random(4)).'-'.strtoupper(Str::random(4));
+                } while (self::where('ticket_number', $ticketNumber)->exists());
+
+                $ticket->ticket_number = $ticketNumber;
+            }
         });
     }
 

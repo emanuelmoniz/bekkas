@@ -43,14 +43,20 @@ class TicketEmailLocaleTest extends TestCase
         // different from participants so both owner and admin will be notified in the test.
         $ticket->notifyParticipants($message, 'tickets.email.event.new_message', 0);
 
-        // Owner should receive mail in Portuguese
-        Mail::assertQueued(\App\Mail\TicketNotification::class, function ($mail) use ($owner) {
-            return $mail->hasTo($owner->email) && ($mail->locale === 'pt-PT' || $mail->locale === 'pt');
+        // Owner should receive mail in Portuguese and the email must include the friendly ticket GUID
+        Mail::assertQueued(\App\Mail\TicketNotification::class, function ($mail) use ($owner, $ticket) {
+            $html = method_exists($mail, 'render') ? $mail->render() : '';
+            return $mail->hasTo($owner->email)
+                && ($mail->locale === 'pt-PT' || $mail->locale === 'pt')
+                && str_contains($html, $ticket->ticket_number);
         });
 
-        // Admin should receive mail in English
-        Mail::assertQueued(\App\Mail\TicketNotification::class, function ($mail) use ($admin) {
-            return $mail->hasTo($admin->email) && ($mail->locale === 'en-UK' || $mail->locale === 'en');
+        // Admin should receive mail in English and include ticket GUID
+        Mail::assertQueued(\App\Mail\TicketNotification::class, function ($mail) use ($admin, $ticket) {
+            $html = method_exists($mail, 'render') ? $mail->render() : '';
+            return $mail->hasTo($admin->email)
+                && ($mail->locale === 'en-UK' || $mail->locale === 'en')
+                && str_contains($html, $ticket->ticket_number);
         });
     }
 }

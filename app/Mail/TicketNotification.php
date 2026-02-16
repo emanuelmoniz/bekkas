@@ -43,7 +43,7 @@ class TicketNotification extends Mailable implements ShouldQueue
 
         return $this
             ->from(config('mail.from.address'), config('mail.from.name', config('app.name', 'BEKKAS')))
-            ->subject(t('tickets.email.subject', ['uuid' => $this->ticket->uuid, 'event' => $this->eventLabel]) ?: "Ticket #{$this->ticket->uuid} – {$this->eventLabel}")
+            ->subject(t('tickets.email.subject', ['ticket_number' => $this->ticket->ticket_number ?? $this->ticket->id, 'event' => $this->eventLabel]) ?: "Ticket #{$this->ticket->ticket_number} – {$this->eventLabel}")
             ->markdown('emails.ticket-notification');
     }
 }

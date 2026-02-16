@@ -3,7 +3,7 @@
 
 {{ t('tickets.email.update_intro') ?: 'There is an update on a ticket you are involved in.' }}
 
-**{{ t('tickets.email.ticket_label') ?: 'Ticket' }}:** {{ $ticket->title }}
+**{{ t('tickets.email.ticket_label') ?: 'Ticket' }}:** {{ $ticket->ticket_number ?? ('#' . $ticket->id) }} — {{ $ticket->title }}
 
 **{{ t('tickets.email.status_label') ?: 'Status' }}:** {{ ucfirst($ticket->status) }}
 

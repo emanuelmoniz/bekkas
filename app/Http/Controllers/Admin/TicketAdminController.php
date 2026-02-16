@@ -71,7 +71,11 @@ class TicketAdminController extends Controller
         $query = Ticket::with('category.translations', 'owner');
 
         if ($request->filled('ticket_id')) {
-            $query->where('id', 'like', '%'.trim($request->ticket_id).'%');
+            $val = trim($request->ticket_id);
+            $query->where(function ($q) use ($val) {
+                $q->where('id', 'like', "%{$val}%")
+                  ->orWhere('ticket_number', 'like', "%{$val}%");
+            });
         }
 
         if ($request->filled('title')) {
