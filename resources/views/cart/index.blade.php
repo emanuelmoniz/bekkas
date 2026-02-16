@@ -12,12 +12,14 @@
                 <div class="bg-white p-6 rounded shadow text-center text-gray-600">
                     {{ t('cart.empty') ?: 'Your cart is empty.' }}
                     
-                    <div class="mt-4">
-                        <a href="{{ route('products.index') }}"
-                           class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded text-center font-medium">
-                            {{ t('cart.start_shopping') ?: 'Start Shopping' }}
-                        </a>
-                    </div>
+                    @if(config('app.store_enabled'))
+                        <div class="mt-4">
+                            <a href="{{ route('products.index') }}"
+                               class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded text-center font-medium">
+                                {{ t('cart.start_shopping') ?: 'Start Shopping' }}
+                            </a>
+                        </div>
+                    @endif
                 </div>
             @else
                 <div class="bg-white rounded shadow divide-y">
@@ -86,12 +88,14 @@
                         </a>
                     </div>
 
-                    <div class="pt-2">
-                        <a href="{{ route('products.index') }}"
-                           class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded text-center font-medium block">
-                            {{ t('cart.continue_shopping') ?: 'Continue Shopping' }}
-                        </a>
-                    </div>
+                    @if(config('app.store_enabled'))
+                        <div class="pt-2">
+                            <a href="{{ route('products.index') }}"
+                               class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded text-center font-medium block">
+                                {{ t('cart.continue_shopping') ?: 'Continue Shopping' }}
+                            </a>
+                        </div>
+                    @endif
                 </div>
             @endif
 

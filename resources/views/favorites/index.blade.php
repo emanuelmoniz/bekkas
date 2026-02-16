@@ -53,12 +53,14 @@
                 <div class="bg-white p-6 rounded shadow text-center text-gray-600">
                     {{ t('favorites.empty') ?: 'You have no favorite products yet.' }}
                     
-                    <div class="mt-4">
-                        <a href="{{ route('products.index') }}"
-                           class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded text-center font-medium">
-                            {{ t('favorites.browse_products') ?: 'Browse Products' }}
-                        </a>
-                    </div>
+                    @if(config('app.store_enabled'))
+                        <div class="mt-4">
+                            <a href="{{ route('products.index') }}"
+                               class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded text-center font-medium">
+                                {{ t('favorites.browse_products') ?: 'Browse Products' }}
+                            </a>
+                        </div>
+                    @endif
                 </div>
             @endif
 

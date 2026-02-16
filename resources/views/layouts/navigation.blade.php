@@ -129,11 +129,13 @@
                         {{-- PUBLIC MENU --}}
                         
                         {{-- Products --}}
-                        <div class="relative h-full flex items-center">
-                            <x-nav-button :active="request()->routeIs('products.*')" @click="window.location.href='{{ route('products.index') }}'">
-                                {{ t('nav.products') ?: 'Products' }}
-                            </x-nav-button>
-                        </div>
+                        @if(config('app.store_enabled'))
+                            <div class="relative h-full flex items-center">
+                                <x-nav-button :active="request()->routeIs('products.*')" @click="window.location.href='{{ route('products.index') }}'">
+                                    {{ t('nav.products') ?: 'Products' }}
+                                </x-nav-button>
+                            </div>
+                        @endif
 
                         {{-- Architecture --}}
                         <div class="relative h-full flex items-center">
@@ -187,7 +189,7 @@
                 </div>
 
                 <!-- Cart Icon -->
-                @if($cartCount > 0)
+                @if($cartCount > 0 && config('app.store_enabled'))
                     <div class="relative">
                         <a href="{{ route('cart.index') }}" class="flex items-center text-gray-600 hover:text-gray-900" aria-label="Cart">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -380,9 +382,11 @@
                 
             @else
                 {{-- PUBLIC MENU MOBILE --}}
-                <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
-                    {{ t('nav.products') ?: 'Products' }}
-                </x-responsive-nav-link>
+                @if(config('app.store_enabled'))
+                    <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
+                        {{ t('nav.products') ?: 'Products' }}
+                    </x-responsive-nav-link>
+                @endif
                 
                 <x-responsive-nav-link :href="route('architecture.index')" :active="request()->routeIs('architecture.*')">
                     {{ t('nav.architecture') ?: 'Architecture' }}
@@ -401,7 +405,7 @@
                 </div>
                 
                 @php $cartCount = array_sum(session('cart', [])); @endphp
-                @if($cartCount > 0)
+                @if($cartCount > 0 && config('app.store_enabled'))
                     <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
                         {{ t('nav.cart') ?: 'Cart' }} ({{ $cartCount }})
                     </x-responsive-nav-link>

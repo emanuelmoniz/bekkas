@@ -53,9 +53,11 @@ Route::get('/language/{locale}', [LanguageController::class, 'switch'])
     ->name('language.switch');
 
 Route::get('/products', [ClientProductController::class, 'index'])
+    ->middleware(\App\Http\Middleware\EnsureStoreEnabled::class)
     ->name('products.index');
 
 Route::get('/products/{product}', [ClientProductController::class, 'show'])
+    ->middleware(\App\Http\Middleware\EnsureStoreEnabled::class)
     ->name('products.show');
 
 Route::get('/about', function () {
@@ -75,18 +77,19 @@ Route::post('/webhooks/easypay', [\App\Http\Controllers\Webhooks\EasypayControll
     ->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class);
 
 Route::get('/cart', [CartController::class, 'index'])
+    ->middleware(\App\Http\Middleware\EnsureStoreEnabled::class)
     ->name('cart.index');
 
 Route::post('/cart/add/{product}', [CartController::class, 'add'])
-    ->middleware('throttle:30,1') // 30 per minute
+    ->middleware(['throttle:30,1', \App\Http\Middleware\EnsureStoreEnabled::class]) // 30 per minute
     ->name('cart.add');
 
 Route::post('/cart/update/{product}', [CartController::class, 'update'])
-    ->middleware('throttle:30,1')
+    ->middleware(['throttle:30,1', \App\Http\Middleware\EnsureStoreEnabled::class])
     ->name('cart.update');
 
 Route::post('/cart/remove/{product}', [CartController::class, 'remove'])
-    ->middleware('throttle:30,1')
+    ->middleware(['throttle:30,1', \App\Http\Middleware\EnsureStoreEnabled::class])
     ->name('cart.remove');
 
 // Favorites
@@ -170,13 +173,15 @@ Route::middleware('auth')->group(function () {
     */
 
     Route::get('/checkout', [OrderController::class, 'checkout'])
+        ->middleware(\App\Http\Middleware\EnsureStoreEnabled::class)
         ->name('checkout.index');
 
     Route::post('/checkout/shipping-tiers', [OrderController::class, 'getShippingTiers'])
+        ->middleware(\App\Http\Middleware\EnsureStoreEnabled::class)
         ->name('checkout.shipping-tiers');
 
     Route::post('/checkout', [OrderController::class, 'place'])
-        ->middleware('throttle:5,1') // 5 per minute (sensitive)
+        ->middleware(['throttle:5,1', \App\Http\Middleware\EnsureStoreEnabled::class]) // 5 per minute (sensitive)
         ->name('checkout.place');
 
     /*

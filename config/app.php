@@ -98,6 +98,9 @@ return [
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
+    /* Store feature toggle - controlled by APP_STORE_ENABLED in .env */
+    'store_enabled' => env('APP_STORE_ENABLED', true),
+
     /*
     |--------------------------------------------------------------------------
     | Encryption Key

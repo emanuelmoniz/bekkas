@@ -100,9 +100,11 @@
                     {{ t('about.cta.description') ?: 'Join hundreds of satisfied customers who have brought their ideas to life with BEKKAS.' }}
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ route('products.index') }}" class="inline-block bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 rounded font-semibold transition-colors">
-                        {{ t('about.cta.shop') ?: 'Browse Products' }}
-                    </a>
+                    @if(config('app.store_enabled'))
+                        <a href="{{ route('products.index') }}" class="inline-block bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 rounded font-semibold transition-colors">
+                            {{ t('about.cta.shop') ?: 'Browse Products' }}
+                        </a>
+                    @endif
                     <a href="{{ route('tickets.create') }}" class="inline-block bg-indigo-800 hover:bg-indigo-900 text-white px-8 py-3 rounded font-semibold transition-colors">
                         {{ t('about.cta.contact') ?: 'Start a Project' }}
                     </a>

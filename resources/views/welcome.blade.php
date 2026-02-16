@@ -45,18 +45,20 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                     
                     <!-- Products Card -->
-                    <a href="{{ route('products.index') }}" class="group">
-                        <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
-                            <div class="w-full h-64 md:h-80 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1569163139394-de4798aa62b1?w=500&h=400&fit=crop')"></div>
-                            <div class="p-6 flex flex-col flex-grow">
-                                <h3 class="text-2xl font-bold mb-3 text-gray-900 dark:text-white">{{ t('home.services.products.title') ?: 'PRODUCTS' }}</h3>
-                                <p class="text-gray-600 dark:text-gray-400 mb-6 flex-grow">{{ t('home.services.products.description') ?: 'Day to day life objects, gifts, souvenires' }}</p>
-                                <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded font-medium transition-colors">
-                                    {{ t('home.services.products.button') ?: 'Store' }}
-                                </button>
+                    @if(config('app.store_enabled'))
+                        <a href="{{ route('products.index') }}" class="group">
+                            <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
+                                <div class="w-full h-64 md:h-80 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1569163139394-de4798aa62b1?w=500&h=400&fit=crop')"></div>
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h3 class="text-2xl font-bold mb-3 text-gray-900 dark:text-white">{{ t('home.services.products.title') ?: 'PRODUCTS' }}</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 mb-6 flex-grow">{{ t('home.services.products.description') ?: 'Day to day life objects, gifts, souvenires' }}</p>
+                                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded font-medium transition-colors">
+                                        {{ t('home.services.products.button') ?: 'Store' }}
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    @endif
 
                     <!-- Architecture Card -->
                     <a href="{{ route('tickets.index') }}" class="group">

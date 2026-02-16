@@ -22,7 +22,9 @@ class ConfigurationServiceProvider extends ServiceProvider
             return;
         }
 
-        $cfg = Configuration::latest()->first();
+        // Use the highest `id` row to avoid `created_at` ties when multiple
+        // configuration rows are created within the same second in tests/seeders.
+        $cfg = Configuration::orderBy('id', 'desc')->first();
         if (! $cfg) {
             return;
         }
@@ -61,6 +63,9 @@ class ConfigurationServiceProvider extends ServiceProvider
 
             // Mail switch (DB override for APP_EMAILS_ENABLED)
             'send_mails_enabled' => ['mail.enabled'],
+
+            // Store feature toggle (DB should take precedence over APP_STORE_ENABLED)
+            'store_enabled' => ['app.store_enabled'],
         ];
 
         foreach ($map as $field => $keys) {

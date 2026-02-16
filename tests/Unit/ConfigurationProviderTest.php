@@ -36,6 +36,12 @@ class ConfigurationProviderTest extends TestCase
         // DB override for send_mails_enabled should set config('mail.enabled')
         $this->assertTrue(config('mail.enabled'));
 
+        // DB override for store_enabled should map to config('app.store_enabled')
+        Configuration::create(['store_enabled' => false]);
+        $provider->boot();
+        $this->assertFalse(config('app.store_enabled'));
+
+
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
