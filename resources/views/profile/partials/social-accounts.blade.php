@@ -27,6 +27,30 @@
             </div>
         </div>
 
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="/images/microsoft-logo.svg" alt="Microsoft" class="h-6 w-6 me-3">
+                <div>
+                    <div class="font-medium">Microsoft</div>
+                    <div class="text-xs text-gray-500">{{ t('profile.social_microsoft_desc') ?: 'Use your Microsoft account to sign in.' }}</div>
+                </div>
+            </div>
+
+            <div>
+                @if(auth()->user()->socialAccounts()->where('provider','microsoft')->exists())
+                    <form method="POST" action="{{ route('profile.social.unlink', 'microsoft') }}" onsubmit="return confirm('{{ t('profile.confirm_unlink') ?: 'Are you sure you want to unlink this social account?' }}')">
+                        @csrf
+                        @method('DELETE')
+                        <x-danger-button>{{ t('profile.unlink_account') ?: 'Unlink' }}</x-danger-button>
+                    </form>
+                @else
+                    <a href="{{ route('profile.social.link', 'microsoft') }}" class="inline-flex items-center">
+                        <x-primary-button>{{ t('profile.link_account') ?: 'Link account' }}</x-primary-button>
+                    </a>
+                @endif
+            </div>
+        </div>
+
     </div>
 
     @if(session('status') === 'social-linked')

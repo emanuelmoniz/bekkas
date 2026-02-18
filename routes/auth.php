@@ -24,7 +24,7 @@ Route::middleware('guest')->group(function () {
 
     // Social login / OAuth
     Route::get('login/{provider}', [\App\Http\Controllers\Auth\SocialAuthController::class, 'redirectToProvider'])
-        ->where('provider', 'google')
+        ->where('provider', 'google|microsoft')
         ->name('login.provider');
 
     // Note: callback intentionally registered outside the `guest` middleware so it
@@ -79,7 +79,7 @@ Route::middleware('auth')->group(function () {
 
 // Callback for social providers (accessible to both guests and authenticated users)
 Route::get('login/{provider}/callback', [\App\Http\Controllers\Auth\SocialAuthController::class, 'handleProviderCallback'])
-    ->where('provider', 'google')
+    ->where('provider', 'google|microsoft')
     ->name('login.provider.callback');
 
 // Signed verification endpoint accessible without authentication so users can confirm via email link

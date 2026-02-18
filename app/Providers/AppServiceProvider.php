@@ -19,6 +19,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Register Microsoft provider via SocialiteProviders if available
+        if (class_exists(\SocialiteProviders\Manager\SocialiteWasCalled::class)) {
+            $this->app['events']->listen(
+                \SocialiteProviders\Manager\SocialiteWasCalled::class,
+                'SocialiteProviders\\Microsoft\\MicrosoftExtendSocialite@handle'
+            );
+        }
     }
 }

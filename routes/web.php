@@ -128,11 +128,11 @@ Route::middleware('auth')->group(function () {
 
     // Social account linking/unlinking (authenticated)
     Route::get('/profile/social/{provider}/link', [SocialAuthController::class, 'redirectToProvider'])
-        ->where('provider', 'google')
+        ->where('provider', 'google|microsoft')
         ->name('profile.social.link');
 
     Route::delete('/profile/social/{provider}', [SocialAuthController::class, 'unlinkProvider'])
-        ->where('provider', 'google')
+        ->where('provider', 'google|microsoft')
         ->name('profile.social.unlink');
 
     Route::put('/password', [\App\Http\Controllers\Auth\PasswordController::class, 'update'])

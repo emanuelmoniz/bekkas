@@ -32,6 +32,26 @@ class SocialAuthServiceTest extends TestCase
         $this->assertDatabaseHas('social_accounts', ['provider' => 'google', 'provider_id' => 'p-1']);
     }
 
+    public function test_creates_user_when_no_existing_user_for_microsoft()
+    {
+        $providerUser = new class {
+            public $id = 'ms-p-1';
+            public $name = 'New MS Social';
+            public $email = 'new.ms.social@example.com';
+            public function getId() { return $this->id; }
+            public function getName() { return $this->name; }
+            public function getEmail() { return $this->email; }
+            public function getAvatar() { return null; }
+        };
+
+        $svc = new SocialAuthService();
+        $user = $svc->findOrCreateUserFromProvider('microsoft', $providerUser);
+
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertDatabaseHas('users', ['email' => 'new.ms.social@example.com']);
+        $this->assertDatabaseHas('social_accounts', ['provider' => 'microsoft', 'provider_id' => 'ms-p-1']);
+    }
+
     public function test_throws_when_existing_user_unverified()
     {
         $existing = User::factory()->unverified()->create(['email' => 'blocked@example.com']);

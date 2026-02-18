@@ -81,11 +81,37 @@ class SocialAuthService
 
     protected function createSocialAccount(int $userId, string $provider, string $providerId, ?string $avatar = null): SocialAccount
     {
+        // Normalize avatar: if provider returns a data URI, decode and store it on the public disk
+        $avatarPath = null;
+
+        if (! empty($avatar) && is_string($avatar)) {
+            // data URI (base64) — save to storage and keep a small path in DB
+            if (\Illuminate\Support\Str::startsWith($avatar, 'data:')) {
+                if (preg_match('/^data:(image\/[^;]+);base64,(.*)$/', $avatar, $m)) {
+                    $mime = $m[1];
+                    $data = base64_decode($m[2]);
+                    $ext = explode('/', $mime)[1] ?? 'jpg';
+                    if ($ext === 'jpeg') {
+                        $ext = 'jpg';
+                    }
+
+                    $filename = 'avatars/social/'.strtolower($provider)."_".$providerId.'_'.\Illuminate\Support\Str::random(8).'.'.$ext;
+                    \Illuminate\Support\Facades\Storage::disk('public')->put($filename, $data);
+                    $avatarPath = '/storage/'.$filename;
+                }
+
+                // if data URI parsing failed we leave avatarPath null
+            } else {
+                // non-data URI (likely a URL) — keep as-is but avoid storing extremely long strings
+                $avatarPath = strlen($avatar) > 255 ? substr($avatar, 0, 255) : $avatar;
+            }
+        }
+
         return SocialAccount::create([
             'user_id' => $userId,
             'provider' => $provider,
             'provider_id' => $providerId,
-            'avatar' => $avatar,
+            'avatar' => $avatarPath,
         ]);
     }
 

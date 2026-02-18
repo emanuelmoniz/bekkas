@@ -3,12 +3,24 @@
         @csrf
 
         <!-- Social login -->
-        <div class="mb-4 text-center">
+        <div class="mb-4 text-center space-y-2">
             <a href="{{ route('login.provider', 'google') }}" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-white hover:bg-gray-50">
                 <img src="/images/google-logo.svg" alt="Google" class="me-2 h-5 w-5">
                 {{ t('auth.continue_with_google') ?: 'Continue with Google' }}
             </a>
+
+            <a href="{{ route('login.provider', 'microsoft') }}" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-white hover:bg-gray-50">
+                <img src="/images/microsoft-logo.svg" alt="Microsoft" class="me-2 h-5 w-5">
+                {{ t('auth.continue_with_microsoft') ?: 'Continue with Microsoft' }}
+            </a>
         </div>
+
+        {{-- Show social login errors (e.g. provider callback errors) --}}
+        @if($errors->has('social'))
+            <div class="mb-4 text-sm text-red-600">
+                {{ $errors->first('social') }}
+            </div>
+        @endif
 
         @if(session('unverified_email'))
             <div class="mb-4 text-sm text-red-600">

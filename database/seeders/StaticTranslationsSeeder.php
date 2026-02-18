@@ -579,6 +579,9 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.social_google_desc', 'locale' => 'pt-PT', 'value' => 'Use a sua conta Google para iniciar sessão.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.social_google_desc', 'locale' => 'en-UK', 'value' => 'Use your Google account to sign in.', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'profile.social_microsoft_desc', 'locale' => 'pt-PT', 'value' => 'Use a sua conta Microsoft para iniciar sessão.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.social_microsoft_desc', 'locale' => 'en-UK', 'value' => 'Use your Microsoft account to sign in.', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'profile.link_account', 'locale' => 'pt-PT', 'value' => 'Ligar Conta', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.link_account', 'locale' => 'en-UK', 'value' => 'Link account', 'created_at' => $now, 'updated_at' => $now],
 
@@ -591,8 +594,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.social_unlinked', 'locale' => 'pt-PT', 'value' => 'Conta social desligada.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.social_unlinked', 'locale' => 'en-UK', 'value' => 'Social account unlinked.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'profile.confirm_unlink', 'locale' => 'pt-PT', 'value' => 'Tem a certeza de que pretende desligar a conta Google?', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.confirm_unlink', 'locale' => 'en-UK', 'value' => 'Are you sure you want to unlink Google?', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.confirm_unlink', 'locale' => 'pt-PT', 'value' => 'Tem a certeza de que pretende desligar esta conta social?', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.confirm_unlink', 'locale' => 'en-UK', 'value' => 'Are you sure you want to unlink this social account?', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'profile.cannot_unlink_last_auth', 'locale' => 'pt-PT', 'value' => 'Não é possível desligar o último método de acesso. Adicione uma palavra-passe ou outra conta ligada primeiro.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.cannot_unlink_last_auth', 'locale' => 'en-UK', 'value' => 'Cannot unlink the last sign-in method. Add a password or another linked account first.', 'created_at' => $now, 'updated_at' => $now],
@@ -660,6 +663,9 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'auth.continue_with_google', 'locale' => 'pt-PT', 'value' => 'Continuar com Google', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.continue_with_google', 'locale' => 'en-UK', 'value' => 'Continue with Google', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.continue_with_microsoft', 'locale' => 'pt-PT', 'value' => 'Continuar com Microsoft', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.continue_with_microsoft', 'locale' => 'en-UK', 'value' => 'Continue with Microsoft', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'auth.social_failed', 'locale' => 'pt-PT', 'value' => 'Falha no login social.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.social_failed', 'locale' => 'en-UK', 'value' => 'Social login failed.', 'created_at' => $now, 'updated_at' => $now],
