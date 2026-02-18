@@ -15,6 +15,11 @@ class SocialAuthController extends Controller
 {
     public function redirectToProvider(string $provider)
     {
+        // Guard: provider must be enabled in config/services.php
+        if (! config("services.{$provider}.enabled")) {
+            abort(404);
+        }
+
         // Some providers need explicit scopes (Microsoft requires openid/profile/email to return email)
         if ($provider === 'microsoft') {
             return Socialite::driver('microsoft')->scopes(['openid', 'profile', 'email'])->redirect();
@@ -25,6 +30,11 @@ class SocialAuthController extends Controller
 
     public function handleProviderCallback(string $provider)
     {
+        // Guard: provider must be enabled in config/services.php
+        if (! config("services.{$provider}.enabled")) {
+            abort(404);
+        }
+
         // Log incoming callback query (mask sensitive values like 'code') for deterministic debugging
         $reqQuery = request()->query();
         $masked = $reqQuery;

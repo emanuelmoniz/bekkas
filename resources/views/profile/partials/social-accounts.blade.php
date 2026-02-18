@@ -20,9 +20,13 @@
                         <x-danger-button>{{ t('profile.unlink_account') ?: 'Unlink' }}</x-danger-button>
                     </form>
                 @else
-                    <a href="{{ route('profile.social.link', 'google') }}" class="inline-flex items-center">
-                        <x-primary-button>{{ t('profile.link_account') ?: 'Link account' }}</x-primary-button>
-                    </a>
+                    @if(config('services.google.enabled'))
+                        <a href="{{ route('profile.social.link', 'google') }}" class="inline-flex items-center">
+                            <x-primary-button>{{ t('profile.link_account') ?: 'Link account' }}</x-primary-button>
+                        </a>
+                    @else
+                        <div class="text-xs text-gray-500">{{ t('profile.provider_disabled') ?: 'Google sign-in is currently disabled.' }}</div>
+                    @endif
                 @endif
             </div>
         </div>
@@ -44,9 +48,13 @@
                         <x-danger-button>{{ t('profile.unlink_account') ?: 'Unlink' }}</x-danger-button>
                     </form>
                 @else
-                    <a href="{{ route('profile.social.link', 'microsoft') }}" class="inline-flex items-center">
-                        <x-primary-button>{{ t('profile.link_account') ?: 'Link account' }}</x-primary-button>
-                    </a>
+                    @if(config('services.microsoft.enabled'))
+                        <a href="{{ route('profile.social.link', 'microsoft') }}" class="inline-flex items-center">
+                            <x-primary-button>{{ t('profile.link_account') ?: 'Link account' }}</x-primary-button>
+                        </a>
+                    @else
+                        <div class="text-xs text-gray-500">{{ t('profile.provider_disabled') ?: 'Microsoft sign-in is currently disabled.' }}</div>
+                    @endif
                 @endif
             </div>
         </div>

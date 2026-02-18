@@ -44,6 +44,7 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT'),
+        'enabled' => env('GOOGLE_SOCIALITE_ENABLED', false),
     ],
 
     'microsoft' => [
@@ -51,6 +52,7 @@ return [
         'client_secret' => env('MICROSOFT_CLIENT_SECRET'),
         'redirect' => env('MICROSOFT_REDIRECT'),
         'tenant' => env('MICROSOFT_TENANT', 'common'),
+        'enabled' => env('MICROSOFT_SOCIALITE_ENABLED', false),
     ],
 
 ];

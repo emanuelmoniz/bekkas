@@ -131,10 +131,17 @@ Route::middleware('auth')->group(function () {
         ->name('profile.destroy');
 
     // Social account linking/unlinking (authenticated)
-    Route::get('/profile/social/{provider}/link', [SocialAuthController::class, 'redirectToProvider'])
-        ->where('provider', 'google|microsoft')
-        ->name('profile.social.link');
+    $__profile_link_allowed = [];
+    if (config('services.google.enabled')) { $__profile_link_allowed[] = 'google'; }
+    if (config('services.microsoft.enabled')) { $__profile_link_allowed[] = 'microsoft'; }
 
+    if (! empty($__profile_link_allowed)) {
+        Route::get('/profile/social/{provider}/link', [SocialAuthController::class, 'redirectToProvider'])
+            ->where('provider', implode('|', $__profile_link_allowed))
+            ->name('profile.social.link');
+    }
+
+    // Always allow unlinking existing linked providers (even if provider is disabled)
     Route::delete('/profile/social/{provider}', [SocialAuthController::class, 'unlinkProvider'])
         ->where('provider', 'google|microsoft')
         ->name('profile.social.unlink');

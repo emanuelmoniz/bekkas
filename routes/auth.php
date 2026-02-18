@@ -22,7 +22,8 @@ Route::middleware('guest')->group(function () {
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
-    // Social login / OAuth
+    // Social login / OAuth — redirect route is always registered; controller will
+    // return 404 if a provider is disabled via config.
     Route::get('login/{provider}', [\App\Http\Controllers\Auth\SocialAuthController::class, 'redirectToProvider'])
         ->where('provider', 'google|microsoft')
         ->name('login.provider');
@@ -30,6 +31,7 @@ Route::middleware('guest')->group(function () {
     // Note: callback intentionally registered outside the `guest` middleware so it
     // can be used both for unauthenticated sign-in and for linking while
     // authenticated (profile -> link flow).
+
 
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
