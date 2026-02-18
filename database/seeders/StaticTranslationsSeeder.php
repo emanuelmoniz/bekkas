@@ -1441,6 +1441,25 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'checkout.validation.country_required', 'locale' => 'pt-PT', 'value' => 'O país é obrigatório.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.validation.country_required', 'locale' => 'en-UK', 'value' => 'Country is required.', 'created_at' => $now, 'updated_at' => $now],
+
+            // Error page translations
+            ['key' => 'error.back_home', 'locale' => 'pt-PT', 'value' => 'Voltar para a página inicial', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'error.back_home', 'locale' => 'en-UK', 'value' => 'Back to home', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'error.contact_support', 'locale' => 'pt-PT', 'value' => 'Se o problema persistir, contacte-nos em :email', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'error.contact_support', 'locale' => 'en-UK', 'value' => 'If the problem persists, please contact us at :email', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'error.404.title', 'locale' => 'pt-PT', 'value' => 'Página não encontrada', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'error.404.title', 'locale' => 'en-UK', 'value' => 'Page not found', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'error.404.message', 'locale' => 'pt-PT', 'value' => 'Não encontramos a página que procura.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'error.404.message', 'locale' => 'en-UK', 'value' => 'We can’t find the page you’re looking for.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'error.500.title', 'locale' => 'pt-PT', 'value' => 'Ocorreu um erro', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'error.500.title', 'locale' => 'en-UK', 'value' => 'Something went wrong', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'error.500.message', 'locale' => 'pt-PT', 'value' => 'Lamentamos — ocorreu um erro no nosso lado.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'error.500.message', 'locale' => 'en-UK', 'value' => 'Sorry — something went wrong on our end.', 'created_at' => $now, 'updated_at' => $now],
         ];
 
         DB::table('static_translations')->upsert($rows, ['key', 'locale']);
