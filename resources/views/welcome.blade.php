@@ -14,14 +14,19 @@
 
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-            @vite(['resources/css/app.css', 'resources/js/app.js'])
+            @vite(['resources/css/app.css', 'resources/css/home-splash.css', 'resources/js/app.js'])
         @endif
 
         <!-- Google reCAPTCHA (loaded only on pages that request it) -->
         @stack('recaptcha')
     </head>
-    <body class="bg-white dark:bg-[#161615] text-gray-900 dark:text-gray-100">
+    <body class="bg-white dark:bg-[#161615] text-gray-900 dark:text-gray-100 overflow-hidden" data-splash-active="true">
         @include('layouts.navigation')
+
+        <!-- HOME SPLASH INTRO -->
+        <div id="home-splash" class="home-splash-overlay" role="dialog" aria-label="{{ config('app.name', 'BEKKAS') }} splash">
+            <img src="{{ asset('images/hero-logo.png') }}" alt="{{ config('app.name', 'BEKKAS') }}" class="home-splash-logo" />
+        </div>
 
         <!-- BANNER SECTION -->
         <section class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-gray-900">
@@ -211,6 +216,48 @@
         </section>
 
         @include('layouts.footer')
+
+        <!-- Home splash dismiss logic (scroll/click/keypress to reveal) -->
+        <script>
+        (function(){
+            var splash = document.getElementById('home-splash');
+            if (!splash) return;
+            var dismissed = false;
+
+            function hideSplash() {
+                if (dismissed) return;
+                dismissed = true;
+                splash.classList.add('home-splash-hidden');
+                document.body.classList.remove('overflow-hidden');
+
+                // cleanup listeners
+                try {
+                    window.removeEventListener('wheel', onFirstIntent, {passive:true});
+                    window.removeEventListener('touchstart', onFirstIntent, {passive:true});
+                } catch(e) {}
+                window.removeEventListener('keydown', onKeyDown);
+                splash.removeEventListener('click', onFirstIntent);
+
+                // remove from DOM after transition
+                setTimeout(function(){ if (splash && splash.parentNode) splash.parentNode.removeChild(splash); }, 650);
+            }
+
+            function onFirstIntent() { hideSplash(); }
+            function onKeyDown(e) {
+                var keys = ['ArrowDown','PageDown',' ','Enter'];
+                if (keys.indexOf(e.key) !== -1) hideSplash();
+            }
+
+            // Dismiss when user intends to scroll / touch / press keys or clicks the splash
+            window.addEventListener('wheel', onFirstIntent, {passive:true, once:true});
+            window.addEventListener('touchstart', onFirstIntent, {passive:true, once:true});
+            window.addEventListener('keydown', onKeyDown, {once:true});
+            splash.addEventListener('click', onFirstIntent, {once:true});
+
+            // Safety auto-dismiss after 6s so the site becomes reachable for keyboard-only users
+            setTimeout(hideSplash, 6000);
+        })();
+        </script>
 
 @push('recaptcha')
 <script>
