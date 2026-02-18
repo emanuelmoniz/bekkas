@@ -679,6 +679,13 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'auth.register', 'locale' => 'pt-PT', 'value' => 'Registar', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.register', 'locale' => 'en-UK', 'value' => 'Register', 'created_at' => $now, 'updated_at' => $now],
 
+            // Register: terms / privacy acceptance labels (shown on registration form)
+            ['key' => 'auth.accept_terms_label', 'locale' => 'pt-PT', 'value' => 'Aceito os <a href=":terms_url" target="_blank" rel="noopener">Termos de Serviço</a>.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.accept_terms_label', 'locale' => 'en-UK', 'value' => 'I accept the <a href=":terms_url" target="_blank" rel="noopener">Terms of Service</a>.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.accept_privacy_label', 'locale' => 'pt-PT', 'value' => 'Aceito a <a href=":privacy_url" target="_blank" rel="noopener">Política de Privacidade</a>.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.accept_privacy_label', 'locale' => 'en-UK', 'value' => 'I accept the <a href=":privacy_url" target="_blank" rel="noopener">Privacy Policy</a>.', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'auth.email_mismatch', 'locale' => 'pt-PT', 'value' => 'Os emails não coincidem. Verifique os dois campos.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.email_mismatch', 'locale' => 'en-UK', 'value' => 'Email addresses do not match. Please check both fields.', 'created_at' => $now, 'updated_at' => $now],
 
@@ -802,6 +809,12 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'footer.rights', 'locale' => 'pt-PT', 'value' => 'Todos os direitos reservados.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'footer.rights', 'locale' => 'en-UK', 'value' => 'All rights reserved.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'footer.terms', 'locale' => 'pt-PT', 'value' => 'Termos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'footer.terms', 'locale' => 'en-UK', 'value' => 'Terms', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'footer.privacy', 'locale' => 'pt-PT', 'value' => 'Privacidade', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'footer.privacy', 'locale' => 'en-UK', 'value' => 'Privacy', 'created_at' => $now, 'updated_at' => $now],
 
             // Architecture page
             ['key' => 'architecture.banner.title', 'locale' => 'pt-PT', 'value' => 'Serviços de Arquitetura', 'created_at' => $now, 'updated_at' => $now],
@@ -1137,6 +1150,49 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'about.cta.contact', 'locale' => 'pt-PT', 'value' => 'Iniciar Projeto', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'about.cta.contact', 'locale' => 'en-UK', 'value' => 'Start a Project', 'created_at' => $now, 'updated_at' => $now],
 
+            // Legal pages (Terms & Privacy)
+            ['key' => 'legal.terms.title', 'locale' => 'pt-PT', 'value' => 'Termos de Serviço', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.terms.title', 'locale' => 'en-UK', 'value' => 'Terms of Service', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'legal.terms.content', 'locale' => 'pt-PT', 'value' => 'Estes Termos de Serviço regulam a utilização do site e dos serviços. Ao criar uma conta, concorda com estes termos.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.terms.content', 'locale' => 'en-UK', 'value' => 'These Terms of Service govern your use of the site and services. By creating an account you agree to these terms.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'legal.terms.section_usage_title', 'locale' => 'pt-PT', 'value' => 'Utilização do Serviço', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.terms.section_usage_title', 'locale' => 'en-UK', 'value' => 'Use of the Service', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'legal.terms.section_usage', 'locale' => 'pt-PT', 'value' => 'Concorda em usar o serviço de acordo com a lei aplicável e a não abusar da plataforma.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.terms.section_usage', 'locale' => 'en-UK', 'value' => 'You agree to use the service in compliance with applicable laws and not to misuse the platform.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'legal.terms.section_limitation_title', 'locale' => 'pt-PT', 'value' => 'Limitação de Responsabilidade', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.terms.section_limitation_title', 'locale' => 'en-UK', 'value' => 'Limitation of Liability', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'legal.terms.section_limitation', 'locale' => 'pt-PT', 'value' => 'A nossa responsabilidade está limitada conforme permitido por lei. Os serviços são fornecidos "tal como estão".', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.terms.section_limitation', 'locale' => 'en-UK', 'value' => 'Our liability is limited as permitted by law. Services are provided "as-is".', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'legal.terms.last_updated', 'locale' => 'pt-PT', 'value' => 'Última atualização: Fevereiro de 2026', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.terms.last_updated', 'locale' => 'en-UK', 'value' => 'Last updated: February 2026', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'legal.privacy.title', 'locale' => 'pt-PT', 'value' => 'Política de Privacidade', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.privacy.title', 'locale' => 'en-UK', 'value' => 'Privacy Policy', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'legal.privacy.content', 'locale' => 'pt-PT', 'value' => 'Recolhemos e usamos informação pessoal para prestar os nossos serviços. Respeitamos a sua privacidade e processamos os dados de acordo com a lei aplicável.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.privacy.content', 'locale' => 'en-UK', 'value' => 'We collect and use personal information to provide our services. We respect your privacy and process data according to applicable law.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'legal.privacy.section_data_title', 'locale' => 'pt-PT', 'value' => 'Dados Que Recolhemos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.privacy.section_data_title', 'locale' => 'en-UK', 'value' => 'Data We Collect', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'legal.privacy.section_data', 'locale' => 'pt-PT', 'value' => 'Recolhemos dados fornecidos por si (detalhes da conta, encomendas) e dados técnicos (cookies, analytics).', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.privacy.section_data', 'locale' => 'en-UK', 'value' => 'We collect data you provide (account details, order information) and technical data (cookies, analytics).', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'legal.privacy.section_usage_title', 'locale' => 'pt-PT', 'value' => 'Como Usamos os Dados', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.privacy.section_usage_title', 'locale' => 'en-UK', 'value' => 'How We Use Data', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'legal.privacy.section_usage', 'locale' => 'pt-PT', 'value' => 'Usamos dados pessoais para processar encomendas, comunicar consigo e melhorar o serviço. Não vendemos dados pessoais a terceiros.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.privacy.section_usage', 'locale' => 'en-UK', 'value' => 'Personal data is used to process orders, communicate with you, and improve the service. We do not sell personal data to third parties.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'legal.privacy.last_updated', 'locale' => 'pt-PT', 'value' => 'Última atualização: Fevereiro de 2026', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.privacy.last_updated', 'locale' => 'en-UK', 'value' => 'Last updated: February 2026', 'created_at' => $now, 'updated_at' => $now],
+
             // Contact form fields
             ['key' => 'contact.name', 'locale' => 'pt-PT', 'value' => 'Nome', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'contact.name', 'locale' => 'en-UK', 'value' => 'Name', 'created_at' => $now, 'updated_at' => $now],
@@ -1265,6 +1321,13 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'validation.recaptcha_required', 'locale' => 'pt-PT', 'value' => 'Por favor, verifique que não é um robô.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'validation.recaptcha_required', 'locale' => 'en-UK', 'value' => 'Please verify that you are not a robot.', 'created_at' => $now, 'updated_at' => $now],
+
+            // Register acceptance validation messages
+            ['key' => 'validation.terms_required', 'locale' => 'pt-PT', 'value' => 'Tem de aceitar os Termos de Serviço.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'validation.terms_required', 'locale' => 'en-UK', 'value' => 'You must accept the Terms of Service.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'validation.privacy_required', 'locale' => 'pt-PT', 'value' => 'Tem de aceitar a Política de Privacidade.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'validation.privacy_required', 'locale' => 'en-UK', 'value' => 'You must accept the Privacy Policy.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'validation.title_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira um título para a morada.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'validation.title_required', 'locale' => 'en-UK', 'value' => 'Please enter an address title.', 'created_at' => $now, 'updated_at' => $now],

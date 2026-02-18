@@ -128,6 +128,28 @@
             }
         })();
         </script>
+
+        <!-- Terms & Privacy acceptance -->
+        <div class="mt-4">
+            <label class="flex items-start space-x-3">
+                <input type="checkbox" name="accept_terms" value="1" {{ old('accept_terms') ? 'checked' : '' }} class="mt-1">
+                <span class="text-sm text-gray-600">
+                    {!! t('auth.accept_terms_label', ['terms_url' => route('terms')]) ?: 'I accept the <a href="'.route('terms').'" target="_blank" rel="noopener">Terms of Service</a>.' !!}
+                </span>
+            </label>
+            <x-input-error :messages="$errors->get('accept_terms')" class="mt-2" />
+        </div>
+
+        <div class="mt-3">
+            <label class="flex items-start space-x-3">
+                <input type="checkbox" name="accept_privacy" value="1" {{ old('accept_privacy') ? 'checked' : '' }} class="mt-1">
+                <span class="text-sm text-gray-600">
+                    {!! t('auth.accept_privacy_label', ['privacy_url' => route('privacy')]) ?: 'I accept the <a href="'.route('privacy').'" target="_blank" rel="noopener">Privacy Policy</a>.' !!}
+                </span>
+            </label>
+            <x-input-error :messages="$errors->get('accept_privacy')" class="mt-2" />
+        </div>
+
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
                 {{ t('auth.already_registered') ?: 'Already registered?' }}
             </a>

@@ -49,6 +49,8 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email', 'confirmed'],
             'password' => ['required', 'confirmed', PasswordValidation::rules()],
+            'accept_terms' => ['accepted'],
+            'accept_privacy' => ['accepted'],
         ];
 
         $messages = [
@@ -61,6 +63,8 @@ class RegisteredUserController extends Controller
             'password.required' => t('validation.password_required') ?: 'Please enter a password.',
             'password.min' => t('validation.password_min') ?: 'Password must be at least :min characters.',
             'password.confirmed' => t('validation.password_mismatch') ?: 'Passwords do not match.',
+            'accept_terms.accepted' => t('validation.terms_required') ?: 'You must accept the Terms of Service.',
+            'accept_privacy.accepted' => t('validation.privacy_required') ?: 'You must accept the Privacy Policy.',
         ];
 
         if (! empty(config('services.recaptcha.secret_key'))) {

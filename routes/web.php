@@ -65,6 +65,10 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
+// Legal pages
+Route::view('/terms', 'terms')->name('terms');
+Route::view('/privacy', 'privacy')->name('privacy');
+
 Route::get('/architecture', function () {
     return view('architecture');
 })->name('architecture.index');
