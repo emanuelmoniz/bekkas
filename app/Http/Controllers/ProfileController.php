@@ -7,8 +7,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -45,11 +47,19 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // Validate password (errors put in `userDeletion` bag for the modal)
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);
 
         $user = $request->user();
+
+        // Audit: record delete attempt
+        Log::info('User delete requested', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'ip' => $request->ip(),
+        ]);
 
         // Defensive: reassign tickets where this user is the `created_by` to the ticket owner
         // so deleting the user won't fail due to FK constraints. This is safe and preserves
@@ -58,13 +68,101 @@ class ProfileController extends Controller
             ->where('created_by', $user->id)
             ->update(['created_by' => DB::raw('user_id')]);
 
-        Auth::logout();
+        // Perform deletion inside a try/catch so failures are logged and surfaced
+        try {
+            Auth::logout();
 
-        $user->delete();
+            $user->delete();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+            Log::info('User deleted', ['user_id' => $user->id, 'email' => $user->email]);
+
+            return Redirect::to('/');
+        } catch (\Throwable $e) {
+            Log::error('User deletion failed', ['user_id' => $user->id, 'error' => $e->getMessage()]);
+
+            return Redirect::route('profile.edit')->withErrors(['userDeletion' => ['password' => t('profile.delete_failed') ?: 'Account deletion failed — please contact support.']]);
+        }
+    }
+
+    /**
+     * Send a signed, time-limited deletion confirmation link to the user's email.
+     */
+    public function sendDeletionLink(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        // Only meaningful for social-only or password-less users, but harmless otherwise.
+        Log::info('Account deletion link requested (user)', ['user_id' => $user->id, 'email' => $user->email]);
+
+        $user->notify(new \App\Notifications\DeleteAccountNotification());
+
+        return back()->with('status', 'deletion-link-sent');
+    }
+
+    /**
+     * Show a confirmation page for signed deletion links. The signed link is required
+     * but the destructive action is performed only via POST to avoid link scanners
+     * accidentally triggering account deletion.
+     */
+    public function confirmDeletion(Request $request, $id)
+    {
+        if (! $request->hasValidSignature()) {
+            abort(403);
+        }
+
+        $user = User::findOrFail($id);
+
+        if (! $request->has('hash') || sha1($user->getEmailForVerification()) !== $request->query('hash')) {
+            abort(403);
+        }
+
+        // Render a confirmation view with a POST form (prevents automatic link scanners from deleting)
+        return view('profile.confirm-delete', ['user' => $user]);
+    }
+
+    /**
+     * Perform the actual deletion after the user confirms on the confirmation page.
+     * This route is POST and still requires the signed URL parameters.
+     */
+    public function performDeletion(Request $request, $id): RedirectResponse
+    {
+        if (! $request->hasValidSignature()) {
+            abort(403);
+        }
+
+        $user = User::findOrFail($id);
+
+        if (! $request->has('hash') || sha1($user->getEmailForVerification()) !== $request->query('hash')) {
+            abort(403);
+        }
+
+        Log::info('Account deletion confirmed via signed link', ['user_id' => $user->id, 'email' => $user->email, 'ip' => $request->ip()]);
+
+        DB::table('tickets')
+            ->where('created_by', $user->id)
+            ->update(['created_by' => DB::raw('user_id')]);
+
+        try {
+            if (auth()->check() && auth()->id() === $user->id) {
+                Auth::logout();
+
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+            }
+
+            $user->delete();
+
+            Log::info('User deleted via signed deletion link', ['user_id' => $user->id, 'email' => $user->email]);
+
+            return Redirect::to('/');
+        } catch (\Throwable $e) {
+            Log::error('Signed deletion failed', ['user_id' => $user->id, 'error' => $e->getMessage()]);
+
+            return Redirect::to('/')->withErrors(['delete' => t('profile.delete_failed')]);
+        }
     }
 }
+

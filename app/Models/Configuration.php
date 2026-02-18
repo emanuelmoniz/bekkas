@@ -25,6 +25,20 @@ class Configuration extends Model
         'smtp_mail_from',
         'google_recaptcha_site_key',
         'google_recaptcha_secret_key',
+
+        // Google social login (DB-backed)
+        'google_socialite_enabled',
+        'google_client_id',
+        'google_client_secret',
+        'google_redirect',
+
+        // Microsoft social login (DB-backed)
+        'microsoft_socialite_enabled',
+        'microsoft_client_id',
+        'microsoft_client_secret',
+        'microsoft_redirect',
+        'microsoft_tenant',
+
         'easypay_api_key',
         'easypay_id',
         'easypay_webhook_secret',
@@ -44,6 +58,8 @@ class Configuration extends Model
         'send_mails_enabled' => 'boolean',
         'easypay_enabled' => 'boolean',
         'tax_enabled' => 'boolean',
+        'google_socialite_enabled' => 'boolean',
+        'microsoft_socialite_enabled' => 'boolean',
         'easypay_session_ttl' => 'integer',
         'easypay_mb_ttl' => 'integer',
     ];

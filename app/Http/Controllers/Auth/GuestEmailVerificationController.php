@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 
 class GuestEmailVerificationController extends Controller
 {
@@ -27,6 +28,9 @@ class GuestEmailVerificationController extends Controller
         }
 
         $user->sendEmailVerificationNotification();
+
+        // Log the resend attempt so we can trace outbound verification emails
+        Log::info('Verification email requested (guest resend)', ['email' => $user->email, 'user_id' => $user->id]);
 
         return back()->with('status', 'verification-link-sent');
     }

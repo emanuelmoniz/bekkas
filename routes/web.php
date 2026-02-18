@@ -130,6 +130,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 
+    Route::post('/profile/delete/request', [ProfileController::class, 'sendDeletionLink'])
+        ->name('profile.delete.request');
+
     // Social account linking/unlinking (authenticated)
     $__profile_link_allowed = [];
     if (config('services.google.enabled')) { $__profile_link_allowed[] = 'google'; }
@@ -236,6 +239,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/tickets/attachments/{attachment}', [TicketAttachmentController::class, 'download'])
         ->name('tickets.attachments.download');
 });
+
+Route::get('/profile/delete/confirm/{id}', [ProfileController::class, 'confirmDeletion'])
+    ->name('profile.delete.confirm')
+    ->middleware('signed');
+
+Route::post('/profile/delete/confirm/{id}', [ProfileController::class, 'performDeletion'])
+    ->name('profile.delete.perform')
+    ->middleware('signed');
 
 // Test-only helpers for Cypress (only available in local/testing). These
 // routes are intentionally non-authenticated and guarded by environment.

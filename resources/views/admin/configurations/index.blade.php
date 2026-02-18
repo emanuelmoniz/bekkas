@@ -94,6 +94,57 @@
 
             <hr>
 
+            <h3 class="font-semibold mt-6">Social logins</h3>
+            <p class="text-sm text-gray-600 mb-3">Control Google / Microsoft OAuth credentials here. DB values take precedence; the app will fallback to .env when DB values are empty.</p>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="col-span-2 font-semibold">Google</div>
+
+                <label class="inline-flex items-center col-span-2">
+                    <input type="checkbox" name="google_socialite_enabled" value="1" @checked(old('google_socialite_enabled', $c->google_socialite_enabled ?? config('services.google.enabled'))) class="mr-2">
+                    <span>Enable Google login</span>
+                </label>
+
+                <div>
+                    <label class="block font-semibold mb-2">Client ID</label>
+                    <input name="google_client_id" value="{{ old('google_client_id', $c->google_client_id ?? config('services.google.client_id')) }}" class="w-full border rounded px-3 py-2">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-2">Client secret</label>
+                    <input name="google_client_secret" value="{{ old('google_client_secret', $c->google_client_secret ?? config('services.google.client_secret')) }}" class="w-full border rounded px-3 py-2">
+                </div>
+                <div class="col-span-2">
+                    <label class="block font-semibold mb-2">Redirect URL</label>
+                    <input name="google_redirect" value="{{ old('google_redirect', $c->google_redirect ?? config('services.google.redirect')) }}" class="w-full border rounded px-3 py-2">
+                </div>
+
+                <div class="col-span-2 mt-4 font-semibold">Microsoft</div>
+
+                <label class="inline-flex items-center col-span-2">
+                    <input type="checkbox" name="microsoft_socialite_enabled" value="1" @checked(old('microsoft_socialite_enabled', $c->microsoft_socialite_enabled ?? config('services.microsoft.enabled'))) class="mr-2">
+                    <span>Enable Microsoft login</span>
+                </label>
+
+                <div>
+                    <label class="block font-semibold mb-2">Client ID</label>
+                    <input name="microsoft_client_id" value="{{ old('microsoft_client_id', $c->microsoft_client_id ?? config('services.microsoft.client_id')) }}" class="w-full border rounded px-3 py-2">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-2">Client secret</label>
+                    <input name="microsoft_client_secret" value="{{ old('microsoft_client_secret', $c->microsoft_client_secret ?? config('services.microsoft.client_secret')) }}" class="w-full border rounded px-3 py-2">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-2">Redirect URL</label>
+                    <input name="microsoft_redirect" value="{{ old('microsoft_redirect', $c->microsoft_redirect ?? config('services.microsoft.redirect')) }}" class="w-full border rounded px-3 py-2">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-2">Tenant</label>
+                    <input name="microsoft_tenant" value="{{ old('microsoft_tenant', $c->microsoft_tenant ?? config('services.microsoft.tenant')) }}" class="w-full border rounded px-3 py-2">
+                </div>
+            </div>
+
+            <hr>
+
             <h3 class="font-semibold">Easypay</h3>
             <div class="grid grid-cols-2 gap-4">
                 <div>

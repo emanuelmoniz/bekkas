@@ -7,6 +7,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class VerifyEmailNotification extends BaseVerifyEmail
@@ -41,6 +42,9 @@ class VerifyEmailNotification extends BaseVerifyEmail
             ->line(t('auth.verify_email_intro') ?: 'Please click the button below to verify your email address.')
             ->action(t('auth.verify_email_action') ?: 'Verify Email Address', $verificationUrl)
             ->line(t('auth.verify_email_outro') ?: 'If you did not create an account, no further action is required.');
+
+        // Log that a verification mail was built for auditing (won't reveal the signed URL)
+        Log::info('Built verification email', ['email' => $notifiable->getEmailForVerification(), 'locale' => $locale, 'subject' => t('auth.verify_email_subject')]);
 
         // restore previous locale to avoid side-effects
         app()->setLocale($previous);

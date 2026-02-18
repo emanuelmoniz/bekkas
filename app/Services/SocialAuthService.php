@@ -68,6 +68,13 @@ class SocialAuthService
             'email_verified_at' => $email ? Carbon::now() : null,
         ]);
 
+        // Debug: ensure created user's email_verified_at was persisted (helps unit tests assert behavior)
+        if (empty($user->email_verified_at)) {
+            \Illuminate\Support\Facades\Log::warning('SocialAuthService: created user has null email_verified_at', ['email' => $email]);
+        } else {
+            \Illuminate\Support\Facades\Log::debug('SocialAuthService: created user email_verified_at', ['email' => $email, 'email_verified_at' => $user->email_verified_at]);
+        }
+
         // attach default "client" role if present
         $clientRole = \App\Models\Role::where('name', 'client')->first();
         if ($clientRole) {

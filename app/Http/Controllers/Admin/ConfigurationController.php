@@ -24,6 +24,20 @@ class ConfigurationController extends Controller
             'send_mails_enabled' => 'nullable|boolean',
             'easypay_enabled' => 'nullable|boolean',
             'tax_enabled' => 'nullable|boolean',
+
+            // Google socialite
+            'google_socialite_enabled' => 'nullable|boolean',
+            'google_client_id' => 'nullable|string',
+            'google_client_secret' => 'nullable|string',
+            'google_redirect' => 'nullable|string',
+
+            // Microsoft socialite
+            'microsoft_socialite_enabled' => 'nullable|boolean',
+            'microsoft_client_id' => 'nullable|string',
+            'microsoft_client_secret' => 'nullable|string',
+            'microsoft_redirect' => 'nullable|string',
+            'microsoft_tenant' => 'nullable|string',
+
             'mail_admin' => 'nullable|string',
             'mail_contact' => 'nullable|string',
             'smtp_server_host' => 'nullable|string',
@@ -52,6 +66,8 @@ class ConfigurationController extends Controller
         $data['send_mails_enabled'] = $request->has('send_mails_enabled') ? (bool) $request->input('send_mails_enabled') : false;
         $data['easypay_enabled'] = $request->has('easypay_enabled') ? (bool) $request->input('easypay_enabled') : false;
         $data['tax_enabled'] = $request->has('tax_enabled') ? (bool) $request->input('tax_enabled') : false;
+        $data['google_socialite_enabled'] = $request->has('google_socialite_enabled') ? (bool) $request->input('google_socialite_enabled') : false;
+        $data['microsoft_socialite_enabled'] = $request->has('microsoft_socialite_enabled') ? (bool) $request->input('microsoft_socialite_enabled') : false;
 
         $last = Configuration::latest()->first();
 

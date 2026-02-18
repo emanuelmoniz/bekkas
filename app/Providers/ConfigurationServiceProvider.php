@@ -47,6 +47,19 @@ class ConfigurationServiceProvider extends ServiceProvider
             'google_recaptcha_site_key' => ['services.recaptcha.site_key'],
             'google_recaptcha_secret_key' => ['services.recaptcha.secret_key'],
 
+            // Google social login
+            'google_socialite_enabled' => ['services.google.enabled'],
+            'google_client_id' => ['services.google.client_id'],
+            'google_client_secret' => ['services.google.client_secret'],
+            'google_redirect' => ['services.google.redirect'],
+
+            // Microsoft social login
+            'microsoft_socialite_enabled' => ['services.microsoft.enabled'],
+            'microsoft_client_id' => ['services.microsoft.client_id'],
+            'microsoft_client_secret' => ['services.microsoft.client_secret'],
+            'microsoft_redirect' => ['services.microsoft.redirect'],
+            'microsoft_tenant' => ['services.microsoft.tenant'],
+
             // Easypay
             'easypay_enabled' => ['easypay.enabled'],
             'easypay_api_key' => ['easypay.api_key'],

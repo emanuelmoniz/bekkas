@@ -45,6 +45,7 @@ class SocialLoginTest extends TestCase
 
         $this->assertAuthenticated();
         $this->assertEquals('social@example.com', auth()->user()->email);
+        $this->assertNotNull(auth()->user()->email_verified_at, 'Social-created user must be email-verified');
     }
 
     public function test_google_callback_blocks_existing_unverified_account()
@@ -157,6 +158,7 @@ class SocialLoginTest extends TestCase
 
         $this->assertAuthenticated();
         $this->assertEquals('msocial@example.com', auth()->user()->email);
+        $this->assertNotNull(auth()->user()->email_verified_at, 'Social-created MS user must be email-verified');
     }
 
     public function test_microsoft_data_uri_avatar_is_saved_to_public_disk_and_db()

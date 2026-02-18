@@ -29,6 +29,7 @@ class SocialAuthServiceTest extends TestCase
 
         $this->assertInstanceOf(User::class, $user);
         $this->assertDatabaseHas('users', ['email' => 'new.social@example.com']);
+        $this->assertNotNull($user->email_verified_at, 'Social-created user must be email-verified');
         $this->assertDatabaseHas('social_accounts', ['provider' => 'google', 'provider_id' => 'p-1']);
     }
 
@@ -49,6 +50,7 @@ class SocialAuthServiceTest extends TestCase
 
         $this->assertInstanceOf(User::class, $user);
         $this->assertDatabaseHas('users', ['email' => 'new.ms.social@example.com']);
+        $this->assertNotNull($user->email_verified_at, 'Social-created MS user must be email-verified');
         $this->assertDatabaseHas('social_accounts', ['provider' => 'microsoft', 'provider_id' => 'ms-p-1']);
     }
 

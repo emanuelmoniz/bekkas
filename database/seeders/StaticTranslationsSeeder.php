@@ -627,6 +627,10 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.verification_sent', 'locale' => 'pt-PT', 'value' => 'Um novo link de verificação foi enviado para o seu endereço de email.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.verification_sent', 'locale' => 'en-UK', 'value' => 'A new verification link has been sent to your email address.', 'created_at' => $now, 'updated_at' => $now],
 
+            // Backwards-compatible key used by session status in controllers
+            ['key' => 'verification-link-sent', 'locale' => 'pt-PT', 'value' => 'Um novo link de verificação foi enviado para o seu endereço de email.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'verification-link-sent', 'locale' => 'en-UK', 'value' => 'A new verification link has been sent to your email address.', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'profile.update_password', 'locale' => 'pt-PT', 'value' => 'Atualizar Palavra-passe', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.update_password', 'locale' => 'en-UK', 'value' => 'Update Password', 'created_at' => $now, 'updated_at' => $now],
 
@@ -650,6 +654,32 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'profile.confirm_delete_desc', 'locale' => 'pt-PT', 'value' => 'Uma vez que a sua conta é eliminada, todos os seus recursos e dados serão permanentemente eliminados. Por favor, insira a sua palavra-passe para confirmar que deseja eliminar permanentemente a sua conta.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.confirm_delete_desc', 'locale' => 'en-UK', 'value' => 'Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.', 'created_at' => $now, 'updated_at' => $now],
+
+            // Deletion-by-email (social-only users)
+            ['key' => 'profile.delete_by_email_desc', 'locale' => 'pt-PT', 'value' => 'Enviaremos um link seguro para o seu email para confirmar a eliminação da conta.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.delete_by_email_desc', 'locale' => 'en-UK', 'value' => "We'll email you a secure link to confirm account deletion.", 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.delete_by_email_button', 'locale' => 'pt-PT', 'value' => 'Enviar link de eliminação', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.delete_by_email_button', 'locale' => 'en-UK', 'value' => 'Send deletion link', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.delete_by_email_sent', 'locale' => 'pt-PT', 'value' => 'Um link de eliminação foi enviado para o seu endereço de email.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.delete_by_email_sent', 'locale' => 'en-UK', 'value' => 'A deletion link has been sent to your email address.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.delete_by_email_subject', 'locale' => 'pt-PT', 'value' => 'Confirmar eliminação da conta', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.delete_by_email_subject', 'locale' => 'en-UK', 'value' => 'Confirm account deletion', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.delete_by_email_intro', 'locale' => 'pt-PT', 'value' => 'Clique no botão abaixo para confirmar a eliminação da sua conta.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.delete_by_email_intro', 'locale' => 'en-UK', 'value' => 'Click the button below to confirm deletion of your account.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.delete_by_email_action', 'locale' => 'pt-PT', 'value' => 'Eliminar a minha conta', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.delete_by_email_action', 'locale' => 'en-UK', 'value' => 'Delete my account', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.delete_by_email_outro', 'locale' => 'pt-PT', 'value' => 'Se não pediu isto, ignore este email.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.delete_by_email_outro', 'locale' => 'en-UK', 'value' => 'If you did not request this, ignore this email.', 'created_at' => $now, 'updated_at' => $now],
+
+            // Friendly error shown when deletion fails unexpectedly
+            ['key' => 'profile.delete_failed', 'locale' => 'pt-PT', 'value' => 'Falha ao eliminar a conta — por favor contacte o suporte.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.delete_failed', 'locale' => 'en-UK', 'value' => 'Account deletion failed — please contact support.', 'created_at' => $now, 'updated_at' => $now],
 
             // Auth forms
             ['key' => 'auth.remember_me', 'locale' => 'pt-PT', 'value' => 'Lembrar-me', 'created_at' => $now, 'updated_at' => $now],
