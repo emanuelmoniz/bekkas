@@ -570,6 +570,33 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.profile_information', 'locale' => 'pt-PT', 'value' => 'Informação do Perfil', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.profile_information', 'locale' => 'en-UK', 'value' => 'Profile Information', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'profile.social_accounts', 'locale' => 'pt-PT', 'value' => 'Contas Sociais', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.social_accounts', 'locale' => 'en-UK', 'value' => 'Social accounts', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.social_accounts_desc', 'locale' => 'pt-PT', 'value' => 'Ligue contas externas (por exemplo Google) para iniciar sessão rapidamente.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.social_accounts_desc', 'locale' => 'en-UK', 'value' => 'Link external accounts (Google) to sign in quickly.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.social_google_desc', 'locale' => 'pt-PT', 'value' => 'Use a sua conta Google para iniciar sessão.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.social_google_desc', 'locale' => 'en-UK', 'value' => 'Use your Google account to sign in.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.link_account', 'locale' => 'pt-PT', 'value' => 'Ligar Conta', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.link_account', 'locale' => 'en-UK', 'value' => 'Link account', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.unlink_account', 'locale' => 'pt-PT', 'value' => 'Desligar Conta', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.unlink_account', 'locale' => 'en-UK', 'value' => 'Unlink', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.social_linked', 'locale' => 'pt-PT', 'value' => 'Conta social ligada.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.social_linked', 'locale' => 'en-UK', 'value' => 'Social account linked.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.social_unlinked', 'locale' => 'pt-PT', 'value' => 'Conta social desligada.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.social_unlinked', 'locale' => 'en-UK', 'value' => 'Social account unlinked.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.confirm_unlink', 'locale' => 'pt-PT', 'value' => 'Tem a certeza de que pretende desligar a conta Google?', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.confirm_unlink', 'locale' => 'en-UK', 'value' => 'Are you sure you want to unlink Google?', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.cannot_unlink_last_auth', 'locale' => 'pt-PT', 'value' => 'Não é possível desligar o último método de acesso. Adicione uma palavra-passe ou outra conta ligada primeiro.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.cannot_unlink_last_auth', 'locale' => 'en-UK', 'value' => 'Cannot unlink the last sign-in method. Add a password or another linked account first.', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'profile.save', 'locale' => 'pt-PT', 'value' => 'Guardar', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.save', 'locale' => 'en-UK', 'value' => 'Save', 'created_at' => $now, 'updated_at' => $now],
 
@@ -630,6 +657,15 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'auth.login', 'locale' => 'pt-PT', 'value' => 'Entrar', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.login', 'locale' => 'en-UK', 'value' => 'Log in', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.continue_with_google', 'locale' => 'pt-PT', 'value' => 'Continuar com Google', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.continue_with_google', 'locale' => 'en-UK', 'value' => 'Continue with Google', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.social_failed', 'locale' => 'pt-PT', 'value' => 'Falha no login social.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.social_failed', 'locale' => 'en-UK', 'value' => 'Social login failed.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.provider_already_linked', 'locale' => 'pt-PT', 'value' => 'Esta conta social já está ligada a outro utilizador.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.provider_already_linked', 'locale' => 'en-UK', 'value' => 'This social account is already linked to another user.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'auth.already_registered', 'locale' => 'pt-PT', 'value' => 'Já está registado?', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.already_registered', 'locale' => 'en-UK', 'value' => 'Already registered?', 'created_at' => $now, 'updated_at' => $now],
@@ -692,6 +728,9 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'auth.verify_email_outro', 'locale' => 'pt-PT', 'value' => 'Se não criou uma conta, nenhuma ação adicional é necessária.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.verify_email_outro', 'locale' => 'en-UK', 'value' => 'If you did not create an account, no further action is required.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.verify_email_subcopy', 'locale' => 'pt-PT', 'value' => 'Se tiver dificuldades em clicar no botão ":actionText", copie e cole o URL abaixo no seu navegador:', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.verify_email_subcopy', 'locale' => 'en-UK', 'value' => "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below into your web browser:", 'created_at' => $now, 'updated_at' => $now],
 
             // UI for verify-email page
             ['key' => 'auth.verify_prompt', 'locale' => 'pt-PT', 'value' => 'Obrigado pelo registo! Antes de começar, pode verificar o seu endereço de email clicando no link que enviámos? Se não recebeu o email, reenviaremos outro.', 'created_at' => $now, 'updated_at' => $now],

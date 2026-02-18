@@ -2,6 +2,14 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <!-- Social login -->
+    <div class="mb-4 text-center">
+        <a href="{{ route('login.provider', 'google') }}" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-white hover:bg-gray-50">
+            <img src="/images/google-logo.svg" alt="Google" class="me-2 h-5 w-5">
+            {{ t('auth.continue_with_google') ?: 'Continue with Google' }}
+        </a>
+    </div>
+
     @if(session('unverified_email'))
         <div class="mb-4 text-sm text-red-600">
             {{ t('auth.email_unverified_notice') ?: 'Your account has not been confirmed. Check your email for the verification link.' }}

@@ -71,6 +71,11 @@ class EmailVerificationTest extends TestCase
         config(['services.recaptcha.secret_key' => null]);
         Notification::fake();
 
+        // Ensure DB-driven translation exists in the test DB (tests don't run full seeders)
+        \App\Models\StaticTranslation::create(['key' => 'auth.verify_email_subcopy', 'locale' => 'pt-PT', 'value' => 'Se tiver dificuldades em clicar no botão ":actionText", copie e cole o URL abaixo no seu navegador:']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.verify_email_subcopy', 'locale' => 'en-UK', 'value' => "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below into your web browser:"]);
+        \Illuminate\Support\Facades\Cache::forget('static_translations_all');
+
         app()->setLocale('pt-PT');
 
         $password = 'LocalePass1!';
@@ -95,6 +100,11 @@ class EmailVerificationTest extends TestCase
             $this->assertEquals(t('auth.verify_email_subject'), $mail->subject);
             $this->assertContains(t('auth.verify_email_intro'), $mail->introLines);
             $this->assertEquals(t('auth.verify_email_action'), $mail->actionText ?? t('auth.verify_email_action'));
+
+            // Ensure the DB-driven subcopy key exists and resolves for pt-PT
+            $expectedSubcopy = t('auth.verify_email_subcopy', ['actionText' => t('auth.verify_email_action')]);
+            $this->assertEquals('Se tiver dificuldades em clicar no botão "'.t('auth.verify_email_action').'", copie e cole o URL abaixo no seu navegador:', $expectedSubcopy);
+
             return true;
         });
     }

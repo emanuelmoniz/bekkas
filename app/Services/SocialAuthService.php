@@ -1,0 +1,141 @@
+<?php
+
+namespace App\Services;
+
+use App\Exceptions\SocialAuthException;
+use App\Models\SocialAccount;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+
+class SocialAuthService
+{
+    /**
+     * Handle a provider user (returned by Socialite) and return a local User.
+     *
+     * Behaviour (generic provider):
+     * - If a SocialAccount exists for provider+provider_id -> return linked user
+     * - Else if a user exists by email:
+     *     - if email unverified -> throw SocialAuthException(UNVERIFIED_EMAIL)
+     *     - else create SocialAccount, link and return user
+     * - Else -> create user (verified), attach client role, create SocialAccount, return user
+     *
+     * @param string $provider
+     * @param \Laravel\Socialite\Two\User|object $providerUser  object must expose getId(), getEmail(), getName(), getAvatar()
+     */
+    public function findOrCreateUserFromProvider(string $provider, $providerUser): User
+    {
+        $providerId = (string) data_get($providerUser, 'id') ?? (string) ($providerUser->getId() ?? null);
+        $email = data_get($providerUser, 'email') ?? ($providerUser->getEmail() ?? null);
+        $name = data_get($providerUser, 'name') ?? ($providerUser->getName() ?? null);
+        $avatar = data_get($providerUser, 'avatar') ?? ($providerUser->getAvatar() ?? null);
+
+        if (empty($providerId)) {
+            throw new SocialAuthException('No provider id returned from provider', SocialAuthException::NO_EMAIL);
+        }
+
+        // 1) existing social account -> return user
+        $social = SocialAccount::where('provider', $provider)->where('provider_id', $providerId)->first();
+
+        if ($social && $social->user) {
+            return $social->user;
+        }
+
+        // 2) if provider returned an email, try to match by email
+        if (! empty($email)) {
+            $existing = User::where('email', $email)->first();
+
+            if ($existing) {
+                // block unverified account (project preference)
+                if (empty($existing->email_verified_at)) {
+                    throw new SocialAuthException($email, SocialAuthException::UNVERIFIED_EMAIL, $email);
+                }
+
+                // create link and return
+                $this->createSocialAccount($existing->id, $provider, $providerId, $avatar);
+
+                return $existing;
+            }
+        }
+
+        // 3) create new user (email may be null) — treat provider email as verified
+        $user = User::create([
+            'name' => $name ?: 'User '.Str::random(6),
+            'email' => $email,
+            'password' => \Hash::make(Str::random(32)),
+            'is_active' => true,
+            'language' => app()->getLocale(),
+            'email_verified_at' => $email ? Carbon::now() : null,
+        ]);
+
+        // attach default "client" role if present
+        $clientRole = \App\Models\Role::where('name', 'client')->first();
+        if ($clientRole) {
+            $user->roles()->attach($clientRole->id);
+        }
+
+        $this->createSocialAccount($user->id, $provider, $providerId, $avatar);
+
+        return $user;
+    }
+
+    protected function createSocialAccount(int $userId, string $provider, string $providerId, ?string $avatar = null): SocialAccount
+    {
+        return SocialAccount::create([
+            'user_id' => $userId,
+            'provider' => $provider,
+            'provider_id' => $providerId,
+            'avatar' => $avatar,
+        ]);
+    }
+
+    /**
+     * Link a provider account to an existing (authenticated) user.
+     * Throws if the provider id is already linked to another user.
+     */
+    public function linkProviderToUser(User $user, string $provider, $providerUser): SocialAccount
+    {
+        $providerId = (string) data_get($providerUser, 'id') ?? (string) ($providerUser->getId() ?? null);
+        $avatar = data_get($providerUser, 'avatar') ?? ($providerUser->getAvatar() ?? null);
+
+        if (empty($providerId)) {
+            throw new SocialAuthException('No provider id returned from provider', SocialAuthException::NO_EMAIL);
+        }
+
+        $existing = SocialAccount::where('provider', $provider)->where('provider_id', $providerId)->first();
+
+        if ($existing) {
+            if ($existing->user_id === $user->id) {
+                return $existing; // already linked to this user
+            }
+
+            throw new SocialAuthException('This social account is linked to another user', SocialAuthException::PROVIDER_ALREADY_LINKED);
+        }
+
+        return $this->createSocialAccount($user->id, $provider, $providerId, $avatar);
+    }
+
+    /**
+     * Unlink a provider from a user.
+     * Prevent unlinking the last sign-in method (defensive).
+     */
+    public function unlinkProviderFromUser(User $user, string $provider): void
+    {
+        $social = SocialAccount::where('user_id', $user->id)->where('provider', $provider)->first();
+
+        if (! $social) {
+            return; // nothing to do
+        }
+
+        $totalSocial = $user->socialAccounts()->count();
+
+        // Defensive: ensure at least one sign-in method remains (password OR another social account)
+        $hasPassword = ! empty($user->password);
+
+        if (! $hasPassword && $totalSocial <= 1) {
+            throw new SocialAuthException('Cannot unlink the last sign-in method', SocialAuthException::CANNOT_UNLINK_LAST_AUTH);
+        }
+
+        $social->delete();
+    }
+}

@@ -1,0 +1,39 @@
+<div class="p-6 bg-white border rounded shadow-sm">
+    <h2 class="text-lg font-medium text-gray-900">{{ t('profile.social_accounts') ?: 'Social accounts' }}</h2>
+    <p class="mt-1 text-sm text-gray-600">{{ t('profile.social_accounts_desc') ?: 'Link external accounts (Google) to sign in quickly.' }}</p>
+
+    <div class="mt-6 space-y-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="/images/google-logo.svg" alt="Google" class="h-6 w-6 me-3">
+                <div>
+                    <div class="font-medium">Google</div>
+                    <div class="text-xs text-gray-500">{{ t('profile.social_google_desc') ?: 'Use your Google account to sign in.' }}</div>
+                </div>
+            </div>
+
+            <div>
+                @if(auth()->user()->socialAccounts()->where('provider','google')->exists())
+                    <form method="POST" action="{{ route('profile.social.unlink', 'google') }}" onsubmit="return confirm('{{ t('profile.confirm_unlink') ?: 'Are you sure you want to unlink Google?' }}')">
+                        @csrf
+                        @method('DELETE')
+                        <x-danger-button>{{ t('profile.unlink_account') ?: 'Unlink' }}</x-danger-button>
+                    </form>
+                @else
+                    <a href="{{ route('profile.social.link', 'google') }}" class="inline-flex items-center">
+                        <x-primary-button>{{ t('profile.link_account') ?: 'Link account' }}</x-primary-button>
+                    </a>
+                @endif
+            </div>
+        </div>
+
+    </div>
+
+    @if(session('status') === 'social-linked')
+        <p class="mt-4 text-sm text-green-600">{{ t('profile.social_linked') ?: 'Social account linked.' }}</p>
+    @endif
+
+    @if(session('status') === 'social-unlinked')
+        <p class="mt-4 text-sm text-green-600">{{ t('profile.social_unlinked') ?: 'Social account unlinked.' }}</p>
+    @endif
+</div>

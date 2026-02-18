@@ -23,6 +23,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController as ClientProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\TicketAttachmentController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketMessageController;
@@ -124,6 +125,15 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+
+    // Social account linking/unlinking (authenticated)
+    Route::get('/profile/social/{provider}/link', [SocialAuthController::class, 'redirectToProvider'])
+        ->where('provider', 'google')
+        ->name('profile.social.link');
+
+    Route::delete('/profile/social/{provider}', [SocialAuthController::class, 'unlinkProvider'])
+        ->where('provider', 'google')
+        ->name('profile.social.unlink');
 
     Route::put('/password', [\App\Http\Controllers\Auth\PasswordController::class, 'update'])
         ->name('password.update');

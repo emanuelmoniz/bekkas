@@ -6,6 +6,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -49,6 +50,13 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+
+        // Defensive: reassign tickets where this user is the `created_by` to the ticket owner
+        // so deleting the user won't fail due to FK constraints. This is safe and preserves
+        // ticket ownership/history (creator becomes the ticket owner when appropriate).
+        DB::table('tickets')
+            ->where('created_by', $user->id)
+            ->update(['created_by' => DB::raw('user_id')]);
 
         Auth::logout();
 

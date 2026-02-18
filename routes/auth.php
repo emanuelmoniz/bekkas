@@ -22,6 +22,16 @@ Route::middleware('guest')->group(function () {
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
+    // Social login / OAuth
+    Route::get('login/{provider}', [\App\Http\Controllers\Auth\SocialAuthController::class, 'redirectToProvider'])
+        ->where('provider', 'google')
+        ->name('login.provider');
+
+    // Note: callback intentionally registered outside the `guest` middleware so it
+    // can be used both for unauthenticated sign-in and for linking while
+    // authenticated (profile -> link flow).
+
+
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
 
@@ -66,6 +76,11 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 });
+
+// Callback for social providers (accessible to both guests and authenticated users)
+Route::get('login/{provider}/callback', [\App\Http\Controllers\Auth\SocialAuthController::class, 'handleProviderCallback'])
+    ->where('provider', 'google')
+    ->name('login.provider.callback');
 
 // Signed verification endpoint accessible without authentication so users can confirm via email link
 Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
