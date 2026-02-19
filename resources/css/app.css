@@ -32,3 +32,16 @@
   --color-dark-rgb: 12 11 11;
   --color-white-rgb: 255 255 255;
 }
+
+@layer base {
+  /* Default all plain text links to accent color only (no underline). Button-like links
+     with explicit utilities remain unchanged. */
+  a {
+    @apply text-accent-primary;
+  }
+
+  /* Keep prose links matching the same visual style */
+  .prose a {
+    @apply text-accent-primary;
+  }
+}

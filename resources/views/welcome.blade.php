@@ -27,7 +27,7 @@
         <!-- Google reCAPTCHA (loaded only on pages that request it) -->
         @stack('recaptcha')
     </head>
-    <body class="bg-light dark:bg-dark text-dark dark:text-grey-light overflow-hidden" data-splash-active="true">
+    <body class="bg-light text-dark overflow-hidden" data-splash-active="true">
         @include('layouts.navigation')
 
         <!-- HOME SPLASH INTRO -->
@@ -52,18 +52,18 @@
         </section>
 
         <!-- SERVICES SECTION -->
-        <section id="services" class="py-16 md:py-24 bg-light dark:bg-dark px-6">
+        <section id="services" class="py-16 md:py-24 bg-light px-6">
             <div class="max-w-7xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                     
                     <!-- Products Card -->
                     @if(config('app.store_enabled'))
                         <a href="{{ route('store.index') }}" class="group">
-                            <div class="bg-grey-light dark:bg-grey-dark rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
+                            <div class="bg-grey-light rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
                                 <div class="w-full h-64 md:h-80 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1569163139394-de4798aa62b1?w=500&h=400&fit=crop')"></div>
                                 <div class="p-6 flex flex-col flex-grow">
-                                    <h3 class="text-2xl font-bold mb-3 text-dark dark:text-light">{{ t('home.services.store.title') ?: 'STORE' }}</h3>
-                                    <p class="text-grey-dark dark:text-grey-medium mb-6 flex-grow">{{ t('home.services.store.description') ?: 'Day to day life objects, gifts, souvenires' }}</p>
+                                    <h3 class="text-2xl font-bold mb-3 text-dark">{{ t('home.services.store.title') ?: 'STORE' }}</h3>
+                                    <p class="text-grey-dark mb-6 flex-grow">{{ t('home.services.store.description') ?: 'Day to day life objects, gifts, souvenires' }}</p>
                                     <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-2 rounded font-medium transition-colors">
                                         {{ t('home.services.store.button') ?: 'Store' }}
                                     </button>
@@ -74,11 +74,11 @@
 
                     <!-- Architecture Card -->
                     <a href="{{ route('tickets.index') }}" class="group">
-                        <div class="bg-grey-light dark:bg-grey-dark rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
+                        <div class="bg-grey-light rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
                             <div class="w-full h-64 md:h-80 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=400&fit=crop')"></div>
                             <div class="p-6 flex flex-col flex-grow">
-                                <h3 class="text-2xl font-bold mb-3 text-dark dark:text-light">{{ t('home.services.custom.title') ?: 'CUSTOM' }}</h3>
-                                <p class="text-grey-dark dark:text-grey-medium mb-6 flex-grow">{{ t('home.services.custom.description') ?: 'Printing service for architects and architecture students including modeling and file preparation.' }}</p>
+                                <h3 class="text-2xl font-bold mb-3 text-dark">{{ t('home.services.custom.title') ?: 'CUSTOM' }}</h3>
+                                <p class="text-grey-dark mb-6 flex-grow">{{ t('home.services.custom.description') ?: 'Printing service for architects and architecture students including modeling and file preparation.' }}</p>
                                 <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-2 rounded font-medium transition-colors">
                                     {{ t('home.services.custom.button') ?: 'More info' }}
                                 </button>
@@ -91,40 +91,40 @@
         </section>
 
         <!-- CONTACT SECTION -->
-        <section id="contact" class="py-16 md:py-24 bg-light dark:bg-dark px-6">
+        <section id="contact" class="py-16 md:py-24 bg-light px-6">
             <div class="max-w-7xl mx-auto">
-                <h2 class="text-4xl font-bold mb-12 text-center text-dark dark:text-light">{{ t('home.contact.title') ?: 'Get in Touch' }}</h2>
+                <h2 class="text-4xl font-bold mb-12 text-center text-dark">{{ t('home.contact.title') ?: 'Get in Touch' }}</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                     
                     <!-- Contact Info -->
                     <div class="space-y-8">
                         <div>
-                            <h3 class="text-lg font-semibold text-dark dark:text-light mb-2">{{ t('home.contact.location') ?: 'Location' }}</h3>
-                            <p class="text-grey-dark dark:text-grey-medium">Lisbon, Portugal</p>
+                            <h3 class="text-lg font-semibold text-dark mb-2">{{ t('home.contact.location') ?: 'Location' }}</h3>
+                            <p class="text-grey-dark">Lisbon, Portugal</p>
                         </div>
 
                         <div>
-                            <h3 class="text-lg font-semibold text-dark dark:text-light mb-2">{{ t('home.contact.phone') ?: 'Phone' }}</h3>
-                            <a href="https://wa.me/351965707800" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary dark:text-accent-primary dark:hover:text-accent-primary font-medium">
+                            <h3 class="text-lg font-semibold text-dark mb-2">{{ t('home.contact.phone') ?: 'Phone' }}</h3>
+                            <a href="https://wa.me/351965707800" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium">
                                 +351 965 707 800 (WhatsApp)
                             </a>
                         </div>
 
                         <div>
-                            <h3 class="text-lg font-semibold text-dark dark:text-light mb-2">{{ t('home.contact.email') ?: 'Email' }}</h3>
-                            <a href="mailto:{{ config('mail.contact_address', config('mail.admin_address', 'info@bekkas.pt')) }}" class="text-accent-primary hover:text-accent-primary dark:text-accent-primary dark:hover:text-accent-primary font-medium">
+                            <h3 class="text-lg font-semibold text-dark mb-2">{{ t('home.contact.email') ?: 'Email' }}</h3>
+                            <a href="mailto:{{ config('mail.contact_address', config('mail.admin_address', 'info@bekkas.pt')) }}" class="text-accent-primary hover:text-accent-primary font-medium">
                                 {{ config('mail.contact_address', config('mail.admin_address', 'info@bekkas.pt')) }}
                             </a>
                         </div>
 
                         <div>
-                            <h3 class="text-lg font-semibold text-dark dark:text-light mb-4">{{ t('home.contact.social') ?: 'Follow Us' }}</h3>
+                            <h3 class="text-lg font-semibold text-dark mb-4">{{ t('home.contact.social') ?: 'Follow Us' }}</h3>
                             <div class="flex gap-4">
-                                <a href="https://instagram.com/bekkas_pt" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary dark:text-accent-primary dark:hover:text-accent-primary font-medium">
+                                <a href="https://instagram.com/bekkas_pt" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium">
                                     Instagram
                                 </a>
-                                <a href="https://www.makerworld.com/en/makers/bekkas" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary dark:text-accent-primary dark:hover:text-accent-primary font-medium">
+                                <a href="https://www.makerworld.com/en/makers/bekkas" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium">
                                     Makerworld
                                 </a>
                             </div>
@@ -132,42 +132,42 @@
                     </div>
 
                     <!-- Contact Form -->
-                    <div class="bg-light dark:bg-grey-dark rounded-lg shadow-lg p-8">
+                    <div class="bg-light rounded-lg shadow-lg p-8">
                         @include('partials.flash')
 
                         <form id="contact-form" method="POST" action="{{ route('contact.store') }}" class="space-y-6">
                             @csrf
 
                             <div>
-                                <label for="name" class="block text-sm font-medium text-grey-dark dark:text-grey-medium mb-2">
+                                <label for="name" class="block text-sm font-medium text-grey-dark mb-2">
                                     {{ t('contact.name') ?: 'Name' }}
                                 </label>
                                 <input type="text" id="name" name="name" required
                                        value="{{ old('name') }}"
-                                       class="w-full px-4 py-2 rounded-lg border border-grey-medium dark:border-grey-dark dark:bg-light dark:text-dark focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary">
+                                       class="w-full px-4 py-2 rounded-lg border border-grey-medium focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary">
                                 @error('name')
                                     <p class="text-primary text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div>
-                                <label for="email" class="block text-sm font-medium text-grey-dark dark:text-grey-medium mb-2">
+                                <label for="email" class="block text-sm font-medium text-grey-dark mb-2">
                                     {{ t('contact.email') ?: 'Email' }}
                                 </label>
                                 <input type="email" id="email" name="email" required
                                        value="{{ old('email') }}"
-                                       class="w-full px-4 py-2 rounded-lg border border-grey-medium dark:border-grey-dark dark:bg-light dark:text-dark focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary">
+                                       class="w-full px-4 py-2 rounded-lg border border-grey-medium focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary">
                                 @error('email')
                                     <p class="text-primary text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div>
-                                <label for="message" class="block text-sm font-medium text-grey-dark dark:text-grey-medium mb-2">
+                                <label for="message" class="block text-sm font-medium text-grey-dark mb-2">
                                     {{ t('contact.message') ?: 'Message' }}
                                 </label>
                                 <textarea id="message" name="message" rows="5" required
-                                          class="w-full px-4 py-2 rounded-lg border border-grey-medium dark:border-grey-dark dark:bg-light dark:text-dark focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary">{{ old('message') }}</textarea>
+                                          class="w-full px-4 py-2 rounded-lg border border-grey-medium focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary">{{ old('message') }}</textarea>
                                 @error('message')
                                     <p class="text-primary text-sm mt-1">{{ $message }}</p>
                                 @enderror

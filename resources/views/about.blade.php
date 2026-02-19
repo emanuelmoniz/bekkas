@@ -17,7 +17,7 @@
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
     </head>
-    <body class="bg-light dark:bg-dark text-dark dark:text-grey-light">
+    <body class="bg-light text-dark">
         @include('layouts.navigation')
 
         <!-- BANNER SECTION -->
@@ -35,50 +35,50 @@
         </section>
 
         <!-- MISSION SECTION -->
-        <section class="py-16 md:py-24 bg-light dark:bg-dark px-6">
+        <section class="py-16 md:py-24 bg-light px-6">
             <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-4xl font-bold mb-8 text-dark dark:text-light">{{ t('about.mission.title') ?: 'Our Mission' }}</h2>
-                <p class="text-lg md:text-xl text-grey-dark dark:text-grey-medium mb-6 leading-relaxed">
+                <h2 class="text-4xl font-bold mb-8 text-dark">{{ t('about.mission.title') ?: 'Our Mission' }}</h2>
+                <p class="text-lg md:text-xl text-grey-dark mb-6 leading-relaxed">
                     {{ t('about.mission.intro') ?: 'At BEKKAS, we believe that everyone deserves access to the transformative power of 3D printing technology.' }}
                 </p>
-                <p class="text-lg md:text-xl text-grey-dark dark:text-grey-medium leading-relaxed">
+                <p class="text-lg md:text-xl text-grey-dark leading-relaxed">
                     {{ t('about.mission.purpose') ?: 'Our business is focused on making 3D printing accessible and affordable, giving everybody a chance to have something unique and personalizable that reflects their vision and creativity.' }}
                 </p>
             </div>
         </section>
 
         <!-- VALUES SECTION -->
-        <section class="py-16 md:py-24 bg-light dark:bg-dark px-6">
+        <section class="py-16 md:py-24 bg-light px-6">
             <div class="max-w-7xl mx-auto">
-                <h2 class="text-4xl font-bold mb-12 text-center text-dark dark:text-light">{{ t('about.values.title') ?: 'What We Stand For' }}</h2>
+                <h2 class="text-4xl font-bold mb-12 text-center text-dark">{{ t('about.values.title') ?: 'What We Stand For' }}</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <!-- Value 1 -->
-                    <div class="bg-light dark:bg-grey-dark p-8 rounded-lg">
-                        <h3 class="text-xl font-bold mb-4 text-dark dark:text-light">{{ t('about.values.accessibility') ?: 'Accessibility' }}</h3>
-                        <p class="text-grey-dark dark:text-grey-medium">{{ t('about.values.accessibility_desc') ?: 'We make 3D printing technology available to everyone, from students to professionals, with affordable solutions and expert guidance.' }}</p>
+                    <div class="bg-light p-8 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4 text-dark">{{ t('about.values.accessibility') ?: 'Accessibility' }}</h3>
+                        <p class="text-grey-dark">{{ t('about.values.accessibility_desc') ?: 'We make 3D printing technology available to everyone, from students to professionals, with affordable solutions and expert guidance.' }}</p>
                     </div>
 
                     <!-- Value 2 -->
-                    <div class="bg-light dark:bg-grey-dark p-8 rounded-lg">
-                        <h3 class="text-xl font-bold mb-4 text-dark dark:text-light">{{ t('about.values.uniqueness') ?: 'Uniqueness' }}</h3>
-                        <p class="text-grey-dark dark:text-grey-medium">{{ t('about.values.uniqueness_desc') ?: 'Every project is different. We help you create something truly unique and personalizable that stands out from mass-produced items.' }}</p>
+                    <div class="bg-light p-8 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4 text-dark">{{ t('about.values.uniqueness') ?: 'Uniqueness' }}</h3>
+                        <p class="text-grey-dark">{{ t('about.values.uniqueness_desc') ?: 'Every project is different. We help you create something truly unique and personalizable that stands out from mass-produced items.' }}</p>
                     </div>
 
                     <!-- Value 3 -->
-                    <div class="bg-light dark:bg-grey-dark p-8 rounded-lg">
-                        <h3 class="text-xl font-bold mb-4 text-dark dark:text-light">{{ t('about.values.quality') ?: 'Quality' }}</h3>
-                        <p class="text-grey-dark dark:text-grey-medium">{{ t('about.values.quality_desc') ?: 'We never compromise on quality. From material selection to final delivery, every step is executed with precision and care.' }}</p>
+                    <div class="bg-light p-8 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4 text-dark">{{ t('about.values.quality') ?: 'Quality' }}</h3>
+                        <p class="text-grey-dark">{{ t('about.values.quality_desc') ?: 'We never compromise on quality. From material selection to final delivery, every step is executed with precision and care.' }}</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- STORY SECTION -->
-        <section class="py-16 md:py-24 bg-light dark:bg-dark px-6">
+        <section class="py-16 md:py-24 bg-light px-6">
             <div class="max-w-4xl mx-auto">
-                <h2 class="text-4xl font-bold mb-8 text-center text-dark dark:text-light">{{ t('about.story.title') ?: 'Our Story' }}</h2>
-                <div class="space-y-6 text-lg text-grey-dark dark:text-grey-medium">
+                <h2 class="text-4xl font-bold mb-8 text-center text-dark">{{ t('about.story.title') ?: 'Our Story' }}</h2>
+                <div class="space-y-6 text-lg text-grey-dark">
                     <p>
                         {{ t('about.story.paragraph1') ?: 'BEKKAS was founded with a simple vision: to democratize access to 3D printing technology and empower individuals to bring their ideas to life.' }}
                     </p>
@@ -93,7 +93,7 @@
         </section>
 
         <!-- CTA SECTION -->
-        <section class="py-16 md:py-24 bg-accent-primary dark:bg-accent-primary/90 px-6">
+        <section class="py-16 md:py-24 bg-accent-primary px-6">
             <div class="max-w-4xl mx-auto text-center text-light">
                 <h2 class="text-4xl font-bold mb-6">{{ t('about.cta.title') ?: 'Ready to Start Your Project?' }}</h2>
                 <p class="text-xl mb-8">

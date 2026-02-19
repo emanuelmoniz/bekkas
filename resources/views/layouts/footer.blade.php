@@ -1,4 +1,4 @@
-<footer class="bg-dark dark:bg-dark text-grey-medium py-12 border-t border-grey-dark">
+<footer class="bg-dark text-grey-medium py-12 border-t border-grey-dark">
     <div class="container mx-auto px-4">
         <div class="text-center pb-8">
             <a href="{{ route('terms') }}" class="underline text-sm me-4">{{ t('footer.terms') ?: 'Terms' }}</a>

@@ -17,11 +17,11 @@
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
     </head>
-    <body class="bg-light dark:bg-dark text-dark dark:text-grey-light">
+    <body class="bg-light text-dark">
         @include('layouts.navigation')
 
         <section class="py-16 md:py-24 px-6">
-            <div class="max-w-4xl mx-auto prose dark:prose-invert">
+            <div class="max-w-4xl mx-auto prose">
                 <h1 class="text-4xl font-bold mb-6">{{ t('legal.privacy.title') ?: 'Privacy Policy' }}</h1>
 
                 <p>{{ t('legal.privacy.content') ?: 'We collect and use personal information to provide our services. We respect your privacy and process data according to applicable law.' }}</p>
