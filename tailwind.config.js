@@ -14,10 +14,10 @@ export default {
         extend: {
             colors: {
                 // project tokens (existing)
-                primary: 'var(--color-primary)',
-                secondary: 'var(--color-secondary)',
-                'accent-primary': 'var(--color-accent-primary)',
-                'accent-secondary': 'var(--color-accent-secondary)',
+                primary: 'rgb(var(--color-primary-rgb) / <alpha-value>)',
+                secondary: 'rgb(var(--color-secondary-rgb) / <alpha-value>)',
+                'accent-primary': 'rgb(var(--color-accent-primary-rgb) / <alpha-value>)',
+                'accent-secondary': 'rgb(var(--color-accent-secondary-rgb) / <alpha-value>)',
 
                 // normalize Tailwind defaults to project tokens (requested mappings)
                 // use rgb(var(--...-rgb) / <alpha-value>) so Tailwind opacity utilities map to CSS vars
@@ -50,15 +50,15 @@ export default {
                 white: 'rgb(var(--color-light-rgb) / <alpha-value>)',
 
                 // existing semantic tokens (kept as vars for backward compatibility)
-                'grey-dark': 'var(--color-grey-dark)',
-                'grey-medium': 'var(--color-grey-medium)',
-                'grey-light': 'var(--color-grey-light)',
-                'status-success': 'var(--color-success)',
-                'status-error': 'var(--color-error)',
-                'status-warning': 'var(--color-warning)',
-                'status-info': 'var(--color-info)',
-                'light': 'var(--color-light)',
-                'dark': 'var(--color-dark)'
+                'grey-dark': 'rgb(var(--color-grey-dark-rgb) / <alpha-value>)',
+                'grey-medium': 'rgb(var(--color-grey-medium-rgb) / <alpha-value>)',
+                'grey-light': 'rgb(var(--color-grey-light-rgb) / <alpha-value>)',
+                'status-success': 'rgb(var(--color-success-rgb) / <alpha-value>)',
+                'status-error': 'rgb(var(--color-error-rgb) / <alpha-value>)',
+                'status-warning': 'rgb(var(--color-warning-rgb) / <alpha-value>)',
+                'status-info': 'rgb(var(--color-info-rgb) / <alpha-value>)',
+                'light': 'rgb(var(--color-light-rgb) / <alpha-value>)',
+                'dark': 'rgb(var(--color-dark-rgb) / <alpha-value>)'
             },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],

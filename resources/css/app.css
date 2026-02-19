@@ -4,31 +4,18 @@
 
 /* Theme color variables (kebab-case) — use in CSS as var(--color-primary) */
 :root{
-  --color-primary: #C13027;
   --color-primary-rgb: 193 48 39;
-  --color-secondary: #DE4344;
   --color-secondary-rgb: 222 67 68;
-  --color-accent-primary: #476C85;
   --color-accent-primary-rgb: 71 108 133;
-  --color-accent-secondary: #FF9505;
   --color-accent-secondary-rgb: 255 149 5;
-  --color-grey-dark: #353131;
   --color-grey-dark-rgb: 53 49 49;
-  --color-grey-medium: #6d6a69;
   --color-grey-medium-rgb: 109 106 105;
-  --color-grey-light: #b0aeae;
   --color-grey-light-rgb: 176 174 174;
-  --color-success: #60D394;
   --color-success-rgb: 96 211 148;
-  --color-error: #E94155;
   --color-error-rgb: 233 65 85;
-  --color-warning: #f89a46;
   --color-warning-rgb: 248 154 70;
-  --color-info: #4D7298;
   --color-info-rgb: 77 114 152;
-  --color-light: #f4eee4;
   --color-light-rgb: 244 238 228;
-  --color-dark: #0c0b0b;
   --color-dark-rgb: 12 11 11;
   --color-white-rgb: 255 255 255;
 }
