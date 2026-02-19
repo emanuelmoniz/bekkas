@@ -37,6 +37,8 @@ class OrdersPayButtonTest extends TestCase
 
     public function test_order_page_shows_payment_info_and_hides_top_pay_button_for_pending_payment()
     {
+        Config::set('easypay.enabled', true);
+
         $user = User::factory()->create();
         $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
@@ -67,6 +69,8 @@ class OrdersPayButtonTest extends TestCase
 
     public function test_order_page_hides_top_pay_button_for_authorised_payment()
     {
+        Config::set('easypay.enabled', true);
+
         $user = User::factory()->create();
         $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 

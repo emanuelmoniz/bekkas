@@ -26,6 +26,8 @@ class EmailVerificationTest extends TestCase
             'email_confirmation' => 'jane@example.com',
             'password' => $password,
             'password_confirmation' => $password,
+            'accept_terms' => '1',
+            'accept_privacy' => '1',
         ])->assertRedirect(route('verification.sent'));
 
         $user = User::where('email', 'jane@example.com')->first();
@@ -86,6 +88,8 @@ class EmailVerificationTest extends TestCase
             'email_confirmation' => 'locale@example.com',
             'password' => $password,
             'password_confirmation' => $password,
+            'accept_terms' => '1',
+            'accept_privacy' => '1',
         ])->assertRedirect(route('verification.sent'));
 
         $user = User::where('email', 'locale@example.com')->first();
@@ -123,6 +127,8 @@ class EmailVerificationTest extends TestCase
             'email_confirmation' => 'mark@example.com',
             'password' => $password,
             'password_confirmation' => $password,
+            'accept_terms' => '1',
+            'accept_privacy' => '1',
         ])->assertRedirect(route('verification.sent'));
 
         $user = User::where('email', 'mark@example.com')->first();

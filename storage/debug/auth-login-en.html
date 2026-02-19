@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-UK">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="test">
+
+        <title>BEKKAS - 3D Printing Studio</title>
+
+        <!-- Favicons -->
+        <link rel="apple-touch-icon" sizes="180x180" href="https://localhost/images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="https://localhost/images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="https://localhost/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="https://localhost/site.webmanifest">
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+        <!-- Scripts -->
+        <link rel="preload" as="style" href="https://localhost/build/assets/app-VoUm4AJu.css" /><link rel="modulepreload" as="script" href="https://localhost/build/assets/app-DMkt0QbU.js" /><link rel="stylesheet" href="https://localhost/build/assets/app-VoUm4AJu.css" /><script type="module" src="https://localhost/build/assets/app-DMkt0QbU.js"></script>
+        <!-- Google reCAPTCHA (loaded only on pages that request it) -->
+            </head>
+        <body class="font-sans text-gray-900 antialiased" >
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+            <div>
+                <a href="/">
+                    <img src="https://localhost/images/hero_logo.svg" alt="BEKKAS" class="h-28 w-auto">
+                </a>
+            </div>
+
+            <div class="w-full sm:max-w-md mt-10 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+                <!-- Flash Messages (canonical; supports success|error|warning|info) -->
+                <!-- Canonical flash partial: server-rendered fallback + Alpine-driven runtime -->
+<div data-flash-root x-data="{ localShow: false }" x-show="Alpine.store('flash').show || localShow" x-cloak class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4"  style="display:none"  x-bind:aria-hidden="!(Alpine.store('flash').show || localShow)">
+    <div class="px-4 py-3 rounded relative pr-12"
+         x-show="Alpine.store('flash').show || localShow"
+         x-init="localShow && setTimeout(() => localShow = false, 6000)"
+         x-transition
+         x-bind:class="{
+             'bg-green-100 border border-green-400 text-green-700': Alpine.store('flash').type === 'success' || false,
+             'bg-red-100 border border-red-400 text-red-700': Alpine.store('flash').type === 'error' || false,
+             'bg-amber-50 border border-amber-200 text-amber-700': Alpine.store('flash').type === 'warning' || false,
+             'bg-blue-100 border border-blue-400 text-blue-700': Alpine.store('flash').type === 'info' || false,
+         }"
+         role="alert"
+         x-bind:aria-live="(Alpine.store('flash').type === 'error' || false) ? 'assertive' : 'polite'"
+         x-bind:aria-hidden="!(Alpine.store('flash').show || localShow)">
+
+        <span class="block sm:inline" x-text="Alpine.store('flash').message || &quot;&quot;"></span>
+
+        <button @click="Alpine.store('flash').hide(); localShow = false"
+                x-bind:tabindex="(Alpine.store('flash').show || localShow) ? 0 : -1"
+                x-bind:aria-hidden="!(Alpine.store('flash').show || localShow)"
+                class="absolute inset-y-0 right-0 flex items-center px-4"
+                aria-label="Close flash message">
+            <svg class="fill-current h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true">
+                <title>Close</title>
+                <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+                <!-- Session Status -->
+    
+    <!-- Social login -->
+    <div class="mb-4 text-center space-y-2">
+                    <a href="https://localhost/login/google" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-white hover:bg-gray-50">
+                <img src="/images/google-logo.svg" alt="Google" class="me-2 h-5 w-5">
+                auth.continue_with_google
+            </a>
+        
+                    <a href="https://localhost/login/microsoft" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-white hover:bg-gray-50">
+                <img src="/images/microsoft-logo.svg" alt="Microsoft" class="me-2 h-5 w-5">
+                auth.continue_with_microsoft
+            </a>
+            </div>
+
+    
+    
+    
+    <form method="POST" action="https://localhost/login">
+        <input type="hidden" name="_token" value="test" autocomplete="off">
+        <!-- Email Address -->
+        <div>
+            <label class="block font-medium text-sm text-gray-700" for="email">
+    auth.email
+</label>
+            <input  class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full" id="email" type="email" name="email" required="required" autofocus="autofocus" autocomplete="username">
+                    </div>
+
+        <!-- Password -->
+        <div class="mt-4">
+            <label class="block font-medium text-sm text-gray-700" for="password">
+    auth.password
+</label>
+
+            <input  class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full" id="password" type="password" name="password" required="required" autocomplete="current-password">
+
+                    </div>
+
+        <!-- Remember Me -->
+        <div class="block mt-4">
+            <label for="remember_me" class="inline-flex items-center">
+                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                <span class="ms-2 text-sm text-gray-600">auth.remember_me</span>
+            </label>
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+                            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="https://localhost/forgot-password">
+                    Forgot your password? No problem.
+                </a>
+            
+            <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 ms-3">
+    Log in
+</button>
+        </div>
+
+        <div class="mt-4 text-center">
+            <span class="text-sm text-gray-600">auth.not_a_user</span>
+            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="https://localhost/register">
+                auth.please_register
+            </a>
+        </div>
+    </form>
+            </div>
+        </div>
+
+        <footer class="bg-gray-900 dark:bg-gray-950 text-gray-300 py-12 border-t border-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="text-center pb-8">
+            <a href="https://localhost/terms" class="underline text-sm me-4">footer.terms</a>
+            <a href="https://localhost/privacy" class="underline text-sm">footer.privacy</a>
+        </div>
+
+        <!-- Copyright -->
+        <div class="border-t border-gray-800 pt-8 text-center text-sm">
+            <p>&copy; 2026 BEKKAS - 3D Printing Studio. footer.rights</p>
+            <p class="mt-2 text-sm">
+                footer.designed_by
+            </p>
+        </div>
+    </div>
+</footer>
+    </body>
+</html>

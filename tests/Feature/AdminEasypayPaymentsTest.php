@@ -8,6 +8,7 @@ use App\Models\EasypayPayment;
 use App\Models\Order;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
 class AdminEasypayPaymentsTest extends TestCase
@@ -161,6 +162,9 @@ class AdminEasypayPaymentsTest extends TestCase
         $session = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'status' => 'created', 'checkout_id' => 'chk_1']);
         $payment = EasypayPayment::create(['payment_id' => 'pay_1', 'checkout_id' => $session->checkout_id, 'order_id' => $order->id, 'payment_status' => 'paid', 'payment_method' => 'card', 'paid_at' => now(), 'raw_response' => ['x' => 1]]);
 
+        // Ensure Easypay client is enabled so refundSinglePayment doesn't short-circuit
+        Config::set('easypay.enabled', true);
+
         \Illuminate\Support\Facades\Http::fake([
             'https://api.test.easypay.pt/2.0/refund/pay_1' => \Illuminate\Support\Facades\Http::response(['status' => 'ok', 'message' => 'created', 'id' => 'r_1'], 201),
         ]);
@@ -225,6 +229,9 @@ class AdminEasypayPaymentsTest extends TestCase
         $payload = EasypayPayload::create(['order_id' => $order->id, 'payload' => ['customer' => ['name' => 'ACME']]]);
         $session = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => $payload->id, 'status' => 'created', 'checkout_id' => 'chk_1']);
         $payment = EasypayPayment::create(['payment_id' => 'pay_1', 'capture_id' => 'cap_1', 'checkout_id' => $session->checkout_id, 'order_id' => $order->id, 'payment_status' => 'paid', 'payment_method' => 'card', 'paid_at' => now(), 'raw_response' => ['captures' => [['id' => 'cap_1']]]]);
+
+        // Ensure Easypay client is enabled so refundSinglePayment doesn't short-circuit
+        Config::set('easypay.enabled', true);
 
         // Expect refund called against capture id
         \Illuminate\Support\Facades\Http::fake([

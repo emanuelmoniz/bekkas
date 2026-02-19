@@ -32,6 +32,10 @@ class EasypayWebhookRefundTest extends TestCase
             'raw_response' => ['x' => 1],
         ]);
 
+        // Ensure Easypay client is enabled and base_url is set
+        \Illuminate\Support\Facades\Config::set('easypay.enabled', true);
+        \Illuminate\Support\Facades\Config::set('easypay.base_url', 'https://api.test.easypay.pt/2.0');
+
         // Fake Easypay API: refund -> success, single -> refunded
         Http::fake([
             'https://api.test.easypay.pt/2.0/refund/r_1' => Http::response([
@@ -97,6 +101,9 @@ class EasypayWebhookRefundTest extends TestCase
             'raw_response' => [],
         ]);
 
+        \Illuminate\Support\Facades\Config::set('easypay.enabled', true);
+        \Illuminate\Support\Facades\Config::set('easypay.base_url', 'https://api.test.easypay.pt/2.0');
+
         Http::fake([
             'https://api.test.easypay.pt/2.0/refund/r_2' => Http::response(['id' => 'r_2', 'status' => 'success', 'capture' => ['payment_id' => 'pay_r_2']], 200),
             'https://api.test.easypay.pt/2.0/single/pay_r_2' => Http::response(['id' => 'pay_r_2', 'payment_status' => 'refunded'], 200),
@@ -143,6 +150,9 @@ class EasypayWebhookRefundTest extends TestCase
             'refund_id' => 'r_4',
             'raw_response' => [],
         ]);
+
+        \Illuminate\Support\Facades\Config::set('easypay.enabled', true);
+        \Illuminate\Support\Facades\Config::set('easypay.base_url', 'https://api.test.easypay.pt/2.0');
 
         Http::fake([
             'https://api.test.easypay.pt/2.0/refund/r_4' => Http::response(['id' => 'r_4', 'status' => 'success', 'capture' => ['payment_id' => 'pay_r_4']], 200),

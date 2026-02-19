@@ -111,7 +111,7 @@ class StoreSwitchTest extends TestCase
         $this->actingAs($user)
             ->get(route('orders.index'))
             ->assertOk()
-            ->assertSee((string) $order->id);
+            ->assertSee($order->order_number);
 
         $this->actingAs($user)
             ->get(route('orders.show', $order))

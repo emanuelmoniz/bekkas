@@ -47,7 +47,8 @@ class ConfigurationProviderTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function if_configuration_is_missing_env_values_remain_as_fallback()
     {
-        // ensure no DB configuration exists
+        // ensure no DB configuration exists (clear any migration-seeded row)
+        Configuration::truncate();
         $this->assertDatabaseCount('configurations', 0);
 
         // Provider boot should do nothing harmful

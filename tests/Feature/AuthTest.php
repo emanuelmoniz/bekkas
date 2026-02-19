@@ -98,14 +98,39 @@ class AuthTest extends TestCase
         // Create a user that has a stored language but do not authenticate them.
         $user = \App\Models\User::factory()->create(['language' => 'pt-PT', 'email' => 'locale-user@example.com']);
 
-        // Active site locale is English
-        app()->setLocale('en-UK');
+        // Ensure DB-driven translations exist for auth-related UI used in this test
+        \App\Models\StaticTranslation::create(['key' => 'auth.login', 'locale' => 'en-UK', 'value' => 'Log in']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.login', 'locale' => 'pt-PT', 'value' => 'Entrar']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.register', 'locale' => 'en-UK', 'value' => 'Register']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.register', 'locale' => 'pt-PT', 'value' => 'Registar']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.forgot_password', 'locale' => 'en-UK', 'value' => 'Forgot your password? No problem.']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.forgot_password', 'locale' => 'pt-PT', 'value' => 'Esqueceu-se da sua palavra-passe? Sem problema.']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.forgot_password_desc', 'locale' => 'en-UK', 'value' => 'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.forgot_password_desc', 'locale' => 'pt-PT', 'value' => 'Esqueceu-se da sua palavra-passe? Sem problema. Indique-nos o seu endereço de email e enviaremos um link de redefinição que lhe permitirá escolher uma nova.']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.reset_password_button', 'locale' => 'en-UK', 'value' => 'Reset Password']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.reset_password_button', 'locale' => 'pt-PT', 'value' => 'Redefinir Palavra-passe']);
+
+        // sanity: ensure DB rows persisted
+        $this->assertDatabaseHas('static_translations', ['key' => 'auth.login', 'locale' => 'en-UK']);
+        $this->assertDatabaseHas('static_translations', ['key' => 'auth.login', 'locale' => 'pt-PT']);
+        $this->assertDatabaseHas('static_translations', ['key' => 'auth.forgot_password', 'locale' => 'en-UK']);
+        $this->assertDatabaseHas('static_translations', ['key' => 'auth.forgot_password', 'locale' => 'pt-PT']);
+        $this->assertDatabaseHas('static_translations', ['key' => 'auth.forgot_password_desc', 'locale' => 'en-UK']);
+        $this->assertDatabaseHas('static_translations', ['key' => 'auth.forgot_password_desc', 'locale' => 'pt-PT']);
+
+        // Active site locale is English — set config so controller honours it and clear DB-driven translations cache
+        config(['app.locale' => 'en-UK']);
+        \Illuminate\Support\Facades\Cache::forget('static_translations_all');
 
         // Login page should use active site locale (English) — not the stored user language (Portuguese)
-        $this->get(route('login'))->assertSee('Log in')->assertDontSee('Entrar');
+        $resp = $this->get(route('login'));
+        $resp->assertSee('Log in')->assertDontSee('Entrar');
 
         // Register page should use active site locale
         $this->get(route('register'))->assertSee('Register')->assertDontSee('Registar');
+
+        // ensure t() resolves DB translation as expected
+        $this->assertEquals('Forgot your password? No problem.', t('auth.forgot_password'));
 
         // Forgot-password page should use active site locale (description)
         $this->get(route('password.request'))->assertSee('Forgot your password? No problem.')->assertDontSee('Esqueceu-se da sua palavra-passe? Sem problema.');
@@ -117,10 +142,24 @@ class AuthTest extends TestCase
     public function test_guest_forms_render_in_pt_when_site_locale_is_pt()
     {
         // Active site locale is Portuguese via session (guest)
-        $this->withSession(['locale' => 'pt-PT'])
-            ->get(route('login'))
-            ->assertSee('Entrar')
-            ->assertDontSee('Log in');
+        // Ensure DB-driven translations exist for the keys used by the auth views
+        \App\Models\StaticTranslation::create(['key' => 'auth.login', 'locale' => 'en-UK', 'value' => 'Log in']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.login', 'locale' => 'pt-PT', 'value' => 'Entrar']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.register', 'locale' => 'en-UK', 'value' => 'Register']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.register', 'locale' => 'pt-PT', 'value' => 'Registar']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.forgot_password', 'locale' => 'en-UK', 'value' => 'Forgot your password? No problem.']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.forgot_password', 'locale' => 'pt-PT', 'value' => 'Esqueceu-se da sua palavra-passe? Sem problema.']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.forgot_password_desc', 'locale' => 'en-UK', 'value' => 'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.forgot_password_desc', 'locale' => 'pt-PT', 'value' => 'Esqueceu-se da sua palavra-passe? Sem problema. Indique-nos o seu endereço de email e enviaremos um link de redefinição que lhe permitirá escolher uma nova.']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.reset_password_button', 'locale' => 'en-UK', 'value' => 'Reset Password']);
+        \App\Models\StaticTranslation::create(['key' => 'auth.reset_password_button', 'locale' => 'pt-PT', 'value' => 'Redefinir Palavra-passe']);
+
+        \Illuminate\Support\Facades\Cache::forget('static_translations_all');
+
+        $resp = $this->withSession(['locale' => 'pt-PT'])
+            ->get(route('login'));
+        file_put_contents(storage_path('debug/auth-login-pt.html'), $resp->getContent() ?: '');
+        $resp->assertSee('Entrar')->assertDontSee('Log in');
 
         $this->withSession(['locale' => 'pt-PT'])
             ->get(route('register'))

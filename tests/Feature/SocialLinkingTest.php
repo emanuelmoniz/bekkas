@@ -31,7 +31,7 @@ class SocialLinkingTest extends TestCase
 
         Socialite::shouldReceive('user')->andReturn($providerUser);
 
-        $this->actingAs($user)->get(route('login.provider.callback', 'google'))
+        $this->actingAs($user)->get(route('login.provider.callback', 'google') . '?code=dummy')
             ->assertRedirect(route('profile.edit'));
 
         $this->assertDatabaseHas('social_accounts', ['user_id' => $user->id, 'provider' => 'google', 'provider_id' => 'g-link-1']);
@@ -59,7 +59,7 @@ class SocialLinkingTest extends TestCase
 
         Socialite::shouldReceive('user')->andReturn($providerUser);
 
-        $resp = $this->actingAs($user1)->get(route('login.provider.callback', 'google'));
+        $resp = $this->actingAs($user1)->get(route('login.provider.callback', 'google') . '?code=dummy');
         $resp->assertRedirect(route('profile.edit'));
         $this->assertTrue(session()->has('errors'));
         $errors = session('errors')->get('social');
@@ -101,7 +101,7 @@ class SocialLinkingTest extends TestCase
 
         Socialite::shouldReceive('user')->andReturn($providerUser);
 
-        $this->actingAs($user)->get(route('login.provider.callback', 'microsoft'))
+        $this->actingAs($user)->get(route('login.provider.callback', 'microsoft') . '?code=dummy')
             ->assertRedirect(route('profile.edit'));
 
         $this->assertDatabaseHas('social_accounts', ['user_id' => $user->id, 'provider' => 'microsoft', 'provider_id' => 'ms-link-1']);
@@ -129,7 +129,7 @@ class SocialLinkingTest extends TestCase
 
         Socialite::shouldReceive('user')->andReturn($providerUser);
 
-        $resp = $this->actingAs($user1)->get(route('login.provider.callback', 'microsoft'));
+        $resp = $this->actingAs($user1)->get(route('login.provider.callback', 'microsoft') . '?code=dummy');
         $resp->assertRedirect(route('profile.edit'));
         $this->assertTrue(session()->has('errors'));
         $errors = session('errors')->get('social');

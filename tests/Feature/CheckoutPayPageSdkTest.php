@@ -43,6 +43,10 @@ class CheckoutPayPageSdkTest extends TestCase
         ]);
 
         // Act: visit the pay page as the order owner
+
+        // Ensure Easypay client is enabled for the pay page
+        Config::set('easypay.enabled', true);
+
         $resp = $this->actingAs($user)->get(route('orders.pay', $order->uuid));
 
         // Assert: page contains the inline widget root, the easypay-manifest and the SDK URL from env
@@ -86,6 +90,9 @@ class CheckoutPayPageSdkTest extends TestCase
         \Illuminate\Support\Facades\Http::fake([
             'https://api.test.easypay.pt/2.0/checkout/test-checkout-123' => \Illuminate\Support\Facades\Http::response($manifest, 200),
         ]);
+
+        // Ensure Easypay client is enabled for the pay page
+        Config::set('easypay.enabled', true);
 
         $resp = $this->actingAs($user)->get(route('orders.pay', $order->uuid));
         $resp->assertStatus(200);

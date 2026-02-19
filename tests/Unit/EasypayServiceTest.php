@@ -33,6 +33,9 @@ class EasypayServiceTest extends TestCase
             '*' => Http::response(['id' => 'checkout_1', 'session' => 'sess_tok'], 200),
         ]);
 
+        // Ensure Easypay client is considered enabled for this test
+        Config::set('easypay.enabled', true);
+
         $res = EasypayService::fetchCheckout('checkout_1');
 
         $this->assertTrue($res['ok']);

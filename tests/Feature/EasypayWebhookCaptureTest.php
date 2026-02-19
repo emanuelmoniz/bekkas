@@ -18,6 +18,10 @@ class EasypayWebhookCaptureTest extends TestCase
         $session = EasypayCheckoutSession::create(['order_id' => $order->id, 'payload_id' => null, 'checkout_id' => 'chk_web_1', 'is_active' => true, 'status' => 'pending']);
         $payment = EasypayPayment::create(['order_id' => $order->id, 'checkout_id' => $session->checkout_id, 'payment_id' => 'pay_web_1', 'payment_status' => 'pending']);
 
+        // Ensure Easypay client is enabled and base_url is correct
+        \Illuminate\Support\Facades\Config::set('easypay.enabled', true);
+        \Illuminate\Support\Facades\Config::set('easypay.base_url', 'https://api.test.easypay.pt/2.0');
+
         // Fake Easypay API: single -> paid, checkout -> paid body
         Http::fake([
             'https://api.test.easypay.pt/2.0/single/pay_web_1' => Http::response([
@@ -47,6 +51,15 @@ class EasypayWebhookCaptureTest extends TestCase
 
         // Ensure the order's user has an explicit language so we can assert it is respected
         $order->user->update(['language' => 'en-UK']);
+
+        // Sanity-check: EasypayService fakes must return expected values before webhook handler runs
+        $svcSingle = (new \App\Services\EasypayService)->getSinglePayment('pay_web_1');
+        $this->assertIsArray($svcSingle);
+        $this->assertEquals('paid', $svcSingle['payment_status']);
+
+        $svcCheckout = \App\Services\EasypayService::fetchCheckout('chk_web_1');
+        $this->assertTrue($svcCheckout['ok']);
+        $this->assertIsArray($svcCheckout['body']);
 
         // Act
         $resp = $this->withHeaders([

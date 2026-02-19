@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
 class AdminEasypayPayloadsTest extends TestCase
@@ -155,6 +156,9 @@ class AdminEasypayPayloadsTest extends TestCase
 
         $order = Order::factory()->create(['user_id' => $user->id, 'address_id' => $addr->id]);
         $order->update(['order_number' => 'ORD-CREATE-1']);
+
+        // Ensure Easypay client is enabled for admin payload creation
+        Config::set('easypay.enabled', true);
 
         $this->assertDatabaseMissing('easypay_payloads', ['order_id' => $order->id]);
 

@@ -34,18 +34,28 @@ class CheckoutPayPagePaymentStatusTest extends TestCase
         $this->assertEquals(1, $order->easypayPayments()->count());
         $this->assertEquals('paid', $p->payment_status);
 
+        // Ensure DB-driven payment-status translations are available for the view
+        \App\Models\StaticTranslation::create(['key' => 'checkout.pay.status.paid', 'locale' => 'en-UK', 'value' => 'Payment completed — your order is being processed.']);
+        \App\Models\StaticTranslation::create(['key' => 'checkout.pay.status.paid', 'locale' => 'pt-PT', 'value' => 'Pagamento concluído — a sua encomenda está a ser processada.']);
+        \App\Models\StaticTranslation::create(['key' => 'checkout.pay.status.authorised', 'locale' => 'en-UK', 'value' => 'Payment authorised — processing is underway, please check your order details in a moment.']);
+        \App\Models\StaticTranslation::create(['key' => 'checkout.pay.status.authorised', 'locale' => 'pt-PT', 'value' => 'Pagamento autorizado — o processamento está em curso, verifique os detalhes da encomenda dentro de momentos.']);
+        \Illuminate\Support\Facades\Cache::forget('static_translations_all');
+
         // Without remote confirmation we must NOT mark the order as paid
         $this->actingAs($user);
         $ctrl = app(\App\Http\Controllers\OrderController::class);
         $view = $ctrl->pay($order);
         $html = $view->render();
         $this->assertFalse($order->fresh()->is_paid);
-
         // When the authoritative Easypay endpoint confirms 'paid' the controller should mark the order
         $single = ['id' => 'pay_paid_1', 'payment_status' => 'paid', 'paid_at' => now()->toIso8601String()];
         $mock = Mockery::mock(EasypayService::class);
         $mock->shouldReceive('getSinglePayment')->with('pay_paid_1')->andReturn($single);
         $this->app->instance(EasypayService::class, $mock);
+
+        // re-resolve controller so the mocked EasypayService is injected into the
+        // EasypayPaymentRefreshService used by the controller
+        $ctrl = app(\App\Http\Controllers\OrderController::class);
 
         $view = $ctrl->pay($order);
         $html = $view->render();
@@ -83,6 +93,13 @@ class CheckoutPayPagePaymentStatusTest extends TestCase
         // sanity checks: DB preconditions
         $this->assertEquals(1, $order->easypayPayments()->count());
         $this->assertEquals('authorised', $p->payment_status);
+
+        // Ensure DB-driven payment-status translations are available for the view
+        \App\Models\StaticTranslation::create(['key' => 'checkout.pay.status.paid', 'locale' => 'en-UK', 'value' => 'Payment completed — your order is being processed.']);
+        \App\Models\StaticTranslation::create(['key' => 'checkout.pay.status.paid', 'locale' => 'pt-PT', 'value' => 'Pagamento concluído — a sua encomenda está a ser processada.']);
+        \App\Models\StaticTranslation::create(['key' => 'checkout.pay.status.authorised', 'locale' => 'en-UK', 'value' => 'Payment authorised — processing is underway, please check your order details in a moment.']);
+        \App\Models\StaticTranslation::create(['key' => 'checkout.pay.status.authorised', 'locale' => 'pt-PT', 'value' => 'Pagamento autorizado — o processamento está em curso, verifique os detalhes da encomenda dentro de momentos.']);
+        \Illuminate\Support\Facades\Cache::forget('static_translations_all');
 
         $this->actingAs($user);
         $ctrl = app(\App\Http\Controllers\OrderController::class);

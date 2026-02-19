@@ -839,6 +839,8 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'footer.rights', 'locale' => 'pt-PT', 'value' => 'Todos os direitos reservados.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'footer.rights', 'locale' => 'en-UK', 'value' => 'All rights reserved.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'footer.designed_by', 'locale' => 'pt-PT', 'value' => 'Criado por :az e :sofia', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'footer.designed_by', 'locale' => 'en-UK', 'value' => 'Created by :az and :sofia', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'footer.terms', 'locale' => 'pt-PT', 'value' => 'Termos', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'footer.terms', 'locale' => 'en-UK', 'value' => 'Terms', 'created_at' => $now, 'updated_at' => $now],
