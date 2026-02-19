@@ -1463,5 +1463,8 @@ class StaticTranslationsSeeder extends Seeder
         ];
 
         DB::table('static_translations')->upsert($rows, ['key', 'locale']);
+
+        // Ensure any cached static translations are refreshed immediately
+        \Illuminate\Support\Facades\Cache::forget('static_translations_all');
     }
 }
