@@ -388,7 +388,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'orders.no_tracking', 'locale' => 'pt-PT', 'value' => 'A sua encomenda ainda não tem informações de rastreamento', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.no_tracking', 'locale' => 'en-UK', 'value' => 'Your order does not have tracking information yet', 'created_at' => $now, 'updated_at' => $now],
 
-            // Products page
             ['key' => 'store.title', 'locale' => 'pt-PT', 'value' => 'Loja', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.title', 'locale' => 'en-UK', 'value' => 'Store', 'created_at' => $now, 'updated_at' => $now],
 
@@ -848,7 +847,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'footer.privacy', 'locale' => 'pt-PT', 'value' => 'Privacidade', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'footer.privacy', 'locale' => 'en-UK', 'value' => 'Privacy', 'created_at' => $now, 'updated_at' => $now],
 
-            // Architecture page
             ['key' => 'custom.banner.title', 'locale' => 'pt-PT', 'value' => 'Serviços de Produção', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.banner.title', 'locale' => 'en-UK', 'value' => 'Custom Services', 'created_at' => $now, 'updated_at' => $now],
 
