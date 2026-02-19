@@ -231,6 +231,17 @@
             if (!splash) return;
             var dismissed = false;
 
+            // If the page was opened with the contact anchor, immediately dismiss the splash
+            if (window.location && window.location.hash === '#contact') {
+                // ensure splash removed and allow in-page navigation to work immediately
+                try { hideSplash(); } catch (e) { /* hideSplash defined below — call after small delay if needed */ }
+                // scroll to contact section in case browser didn't
+                setTimeout(function(){
+                    var el = document.getElementById('contact');
+                    if (el) el.scrollIntoView();
+                }, 0);
+            }
+
             function hideSplash() {
                 if (dismissed) return;
                 dismissed = true;

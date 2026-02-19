@@ -8,7 +8,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="/" class="inline-flex items-center pt-1">
-                        <img src="{{ asset('images/logo.png') }}" alt="BEKKAS" class="h-6 w-auto">
+                        <img src="{{ asset('images/nav_symbol.svg') }}" alt="BEKKAS" class="h-6 w-auto">
                     </a>
                 </div>
 
@@ -153,7 +153,7 @@
 
                         {{-- Contact --}}
                         <div class="relative h-full flex items-center">
-                            <x-nav-button :active="false" @click="window.location.href='https://bekkas.pt#contact'">
+                            <x-nav-button :active="false" @click="if (window.location.pathname === '/') { window.location.hash = '#contact'; } else { window.location.href='{{ url('/#contact') }}'; }">
                                 {{ t('nav.contact') ?: 'Contact' }}
                             </x-nav-button>
                         </div>
