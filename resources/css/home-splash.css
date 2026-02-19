@@ -22,6 +22,8 @@
   width: 100%;
   max-width: 420px; /* logo max width */
   animation: home-splash-logo-fade 5s cubic-bezier(.2,.9,.2,1) forwards;
+  margin-left: 2em;
+  margin-right: 2em;
 }
 
 @keyframes home-splash-logo-fade {

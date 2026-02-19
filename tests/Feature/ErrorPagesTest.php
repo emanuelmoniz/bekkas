@@ -26,7 +26,7 @@ class ErrorPagesTest extends TestCase
         $response = $this->get('/a-page-that-does-not-exist');
 
         $response->assertStatus(404);
-        $response->assertSee('hero-logo.png');
+        $response->assertSee('hero_logo.svg');
         $response->assertSee(t('error.back_home'));
         $response->assertSee(config('mail.contact_address'));
     }
@@ -48,7 +48,7 @@ class ErrorPagesTest extends TestCase
 
         $response->assertStatus(500);
         $response->assertSee(t('error.500.title'));
-        $response->assertSee('hero-logo.png');
+        $response->assertSee('hero_logo.svg');
         $response->assertSee(config('mail.contact_address'));
     }
 }
