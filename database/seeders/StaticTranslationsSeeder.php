@@ -794,16 +794,16 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'home.banner.button', 'locale' => 'en-UK', 'value' => 'OUR SERVICES', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.services.store.title', 'locale' => 'pt-PT', 'value' => 'Loja', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.services.store.title', 'locale' => 'en-UK', 'value' => 'STORE', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.store.title', 'locale' => 'en-UK', 'value' => 'Store', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.services.store.description', 'locale' => 'pt-PT', 'value' => 'Objetos do quotidiano, presentes e lembranças impressas em 3D com precisão e qualidade.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.services.store.description', 'locale' => 'en-UK', 'value' => 'Day to day life objects, gifts, souvenires printed with precision and quality.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.services.store.button', 'locale' => 'pt-PT', 'value' => 'Loja', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.services.store.button', 'locale' => 'en-UK', 'value' => 'Store', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.store.button', 'locale' => 'pt-PT', 'value' => 'Ver Produtos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.store.button', 'locale' => 'en-UK', 'value' => 'View Products', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.services.custom.title', 'locale' => 'pt-PT', 'value' => 'Produção', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.services.custom.title', 'locale' => 'en-UK', 'value' => 'CUSTOM', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.custom.title', 'locale' => 'en-UK', 'value' => 'Custom', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.services.custom.description', 'locale' => 'pt-PT', 'value' => 'Serviço de impressão para arquitetos, engenheiros e criadores. Transforme seus projetos em modelos 3D.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.services.custom.description', 'locale' => 'en-UK', 'value' => 'Printing service for architects, engineers and creators. Transform your projects into 3D models.', 'created_at' => $now, 'updated_at' => $now],
