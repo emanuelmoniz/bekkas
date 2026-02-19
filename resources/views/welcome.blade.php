@@ -6,6 +6,13 @@
 
         <title>BEKKAS - 3D Printing Services</title>
 
+        <!-- Favicons -->
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon/favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+        <meta name="theme-color" content="#ffffff">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
@@ -25,7 +32,7 @@
 
         <!-- HOME SPLASH INTRO -->
         <div id="home-splash" class="home-splash-overlay" role="dialog" aria-label="{{ config('app.name', 'BEKKAS') }} splash">
-            <img src="{{ asset('images/hero-logo.png') }}" alt="{{ config('app.name', 'BEKKAS') }}" class="home-splash-logo" />
+            <img src="{{ asset('images/hero_logo.svg') }}" alt="{{ config('app.name', 'BEKKAS') }}" class="home-splash-logo" />
         </div>
 
         <!-- BANNER SECTION -->
