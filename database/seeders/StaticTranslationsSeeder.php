@@ -787,7 +787,7 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'auth.recaptcha_required', 'locale' => 'en-UK', 'value' => 'Please verify that you are not a robot.', 'created_at' => $now, 'updated_at' => $now],
 
             // Home page
-            ['key' => 'home.banner.tagline', 'locale' => 'pt-PT', 'value' => 'Imprimindo Vida camada por camada', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.tagline', 'locale' => 'pt-PT', 'value' => 'Criar o futuro, da ideia ao objeto', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.tagline', 'locale' => 'en-UK', 'value' => 'Printing Life layer by layer', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.banner.button', 'locale' => 'pt-PT', 'value' => 'NOSSOS SERVIÇOS', 'created_at' => $now, 'updated_at' => $now],
