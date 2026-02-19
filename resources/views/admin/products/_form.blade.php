@@ -2,7 +2,7 @@
       action="{{ $mode === 'edit'
             ? route('admin.products.update', $product)
             : route('admin.products.store') }}"
-      class="bg-white p-6 rounded shadow space-y-6">
+      class="bg-light p-6 rounded shadow space-y-6">
 
     @csrf
     @if ($mode === 'edit')
@@ -173,7 +173,7 @@
     {{-- SUBMIT --}}
     <div class="pt-4">
         <button type="submit"
-                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded">
+                class="bg-accent-primary hover:bg-accent-primary/90 text-light font-semibold px-6 py-3 rounded">
             {{ $mode === 'edit' ? 'Update Product' : 'Create Product' }}
         </button>
     </div>

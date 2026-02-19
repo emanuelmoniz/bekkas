@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">
+        <h2 class="font-semibold text-xl text-grey-dark">
             New Region
         </h2>
     </x-slot>
@@ -8,7 +8,7 @@
     <div class="py-6 max-w-xl mx-auto sm:px-6 lg:px-8">
         <form method="POST"
               action="{{ route('admin.regions.store') }}"
-              class="bg-white shadow rounded p-6 space-y-4">
+              class="bg-light shadow rounded p-6 space-y-4">
             @csrf
 
             <div>
@@ -22,7 +22,7 @@
                     @endforeach
                 </select>
                 @error('country_id')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -32,9 +32,9 @@
                        name="name"
                        value="{{ old('name') }}"
                        required
-                       class="w-full border rounded px-3 py-2 @error('name') border-red-500 @enderror">
+                       class="w-full border rounded px-3 py-2 @error('name') border-status-error @enderror">
                 @error('name')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -45,9 +45,9 @@
                        value="{{ old('postal_code_from') }}"
                        placeholder="1000-001"
                        required
-                       class="w-full border rounded px-3 py-2 @error('postal_code_from') border-red-500 @enderror">
+                       class="w-full border rounded px-3 py-2 @error('postal_code_from') border-status-error @enderror">
                 @error('postal_code_from')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -58,9 +58,9 @@
                        value="{{ old('postal_code_to') }}"
                        placeholder="1999-999"
                        required
-                       class="w-full border rounded px-3 py-2 @error('postal_code_to') border-red-500 @enderror">
+                       class="w-full border rounded px-3 py-2 @error('postal_code_to') border-status-error @enderror">
                 @error('postal_code_to')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -71,11 +71,11 @@
 
             <div class="flex justify-between">
                 <a href="{{ route('admin.regions.index') }}"
-                   class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                   class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
                     Cancel
                 </a>
                 <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                        class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                     Save
                 </button>
             </div>

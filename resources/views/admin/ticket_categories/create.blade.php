@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-grey-dark leading-tight">
             Create Ticket Category
         </h2>
     </x-slot>
@@ -10,7 +10,7 @@
         <form method="POST" action="{{ route('admin.ticket-categories.store') }}">
             @csrf
 
-            <div class="bg-white p-6 rounded shadow mb-6">
+            <div class="bg-light p-6 rounded shadow mb-6">
                 <h3 class="font-semibold mb-4">Translations</h3>
 
                 @foreach (['pt-PT' => 'Português', 'en-UK' => 'English'] as $locale => $label)
@@ -26,10 +26,10 @@
 
             <div class="flex justify-end gap-3">
                 <a href="{{ route('admin.ticket-categories.index') }}"
-                   class="bg-gray-300 px-6 py-2 rounded">
+                   class="bg-grey-medium px-6 py-2 rounded">
                     Cancel
                 </a>
-                <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">
+                <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-2 rounded">
                     Create
                 </button>
             </div>

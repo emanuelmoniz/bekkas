@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-grey-dark leading-tight">
             Categories
         </h2>
     </x-slot>
@@ -11,15 +11,15 @@
             {{-- ACTION BAR --}}
             <div class="mb-4 flex justify-end">
                 <a href="{{ route('admin.categories.create') }}"
-                   class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded">
+                   class="inline-flex items-center bg-accent-primary hover:bg-accent-primary/90 text-light font-semibold px-4 py-2 rounded">
                     New Category
                 </a>
             </div>
 
             {{-- TABLE --}}
-            <div class="bg-white shadow rounded">
+            <div class="bg-light shadow rounded">
                 <table class="min-w-full border">
-                    <thead class="bg-gray-100">
+                    <thead class="bg-grey-light">
                         <tr>
                             <th class="px-4 py-2 text-left">Name</th>
                             <th class="px-4 py-2 text-left">Parent</th>
@@ -33,13 +33,13 @@
                                     {{ optional($category->translation())->name }}
                                 </td>
 
-                                <td class="px-4 py-2 text-sm text-gray-600">
+                                <td class="px-4 py-2 text-sm text-grey-dark">
                                     {{ optional(optional($category->parent)->translation())->name ?? '—' }}
                                 </td>
 
                                 <td class="px-4 py-2 text-right space-x-2">
                                     <a href="{{ route('admin.categories.edit', $category) }}"
-                                       class="inline-flex bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
+                                       class="inline-flex bg-accent-primary hover:bg-accent-primary/90 text-light px-3 py-1 rounded text-sm">
                                         Edit
                                     </a>
 
@@ -51,7 +51,7 @@
 
                                         <button type="submit"
                                                 onclick="return confirm('Delete this category?')"
-                                                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">
+                                                class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-3 py-1 rounded text-sm">
                                             Delete
                                         </button>
                                     </form>
@@ -59,7 +59,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="px-4 py-6 text-center text-gray-500">
+                                <td colspan="3" class="px-4 py-6 text-center text-grey-medium">
                                     No categories found.
                                 </td>
                             </tr>

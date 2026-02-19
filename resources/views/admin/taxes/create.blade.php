@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">
+        <h2 class="font-semibold text-xl text-grey-dark">
             New Tax
         </h2>
     </x-slot>
@@ -8,11 +8,11 @@
     <div class="py-6 max-w-xl mx-auto sm:px-6 lg:px-8">
         <form method="POST"
               action="{{ route('admin.taxes.store') }}"
-              class="bg-white shadow rounded p-6 space-y-4">
+              class="bg-light shadow rounded p-6 space-y-4">
             @csrf
 
             <div>
-                <label class="block text-sm font-medium text-gray-700">
+                <label class="block text-sm font-medium text-grey-dark">
                     Name
                 </label>
                 <input type="text"
@@ -22,7 +22,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-700">
+                <label class="block text-sm font-medium text-grey-dark">
                     Tax Percentage
                 </label>
                 <input type="number"
@@ -39,7 +39,7 @@
 
             <div class="flex justify-end">
                 <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                        class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                     Save
                 </button>
             </div>

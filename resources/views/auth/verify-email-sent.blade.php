@@ -1,9 +1,9 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
+    <div class="mb-4 text-sm text-grey-dark">
         {{ t('auth.verify_sent_message') ?: 'Thanks for signing up! Please check your email for a verification link to confirm your account.' }}
     </div>
 
-    <div class="mb-4 text-sm text-gray-600">
+    <div class="mb-4 text-sm text-grey-dark">
         {{ t('auth.check_spam') ?: 'If you do not see the message, please check your spam folder.' }}
     </div>
 
@@ -19,6 +19,6 @@
     </form>
 
     <div class="mt-4">
-        <a href="{{ route('login') }}" class="underline text-sm text-gray-600 hover:text-gray-900">{{ t('auth.login') ?: 'Log in' }}</a>
+        <a href="{{ route('login') }}" class="underline text-sm text-grey-dark hover:text-dark">{{ t('auth.login') ?: 'Log in' }}</a>
     </div>
 </x-guest-layout>

@@ -6,12 +6,12 @@
     <div class="py-6 max-w-7xl mx-auto">
         <div class="mb-4 flex justify-end">
             <a href="{{ route('admin.tickets.create') }}"
-               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+               class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                 New Ticket
             </a>
         </div>
 
-        <div class="bg-white p-6 rounded shadow mb-4">
+        <div class="bg-light p-6 rounded shadow mb-4">
             <form method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-3">
                 <input name="ticket_id" placeholder="Ticket ID" class="border rounded px-3 py-2" value="{{ request('ticket_id') }}">
                 <input name="title" placeholder="Title" class="border rounded px-3 py-2" value="{{ request('title') }}">
@@ -28,7 +28,7 @@
                     <button
                         type="button"
                         @click="open = !open"
-                        class="w-full border rounded px-3 py-2 text-left bg-white"
+                        class="w-full border rounded px-3 py-2 text-left bg-light"
                     >
                         @if(request('category_id'))
                             {{
@@ -45,7 +45,7 @@
                     <div
                         x-show="open"
                         @click.outside="open = false"
-                        class="absolute z-10 mt-1 w-full bg-white border rounded shadow"
+                        class="absolute z-10 mt-1 w-full bg-light border rounded shadow"
                     >
                         <input
                             type="text"
@@ -57,7 +57,7 @@
                         <ul class="max-h-48 overflow-y-auto">
                             <li
                                 @click="selected=''; open=false"
-                                class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                                class="px-3 py-2 hover:bg-grey-light cursor-pointer"
                             >
                                 All categories
                             </li>
@@ -68,7 +68,7 @@
                                 <li
                                     x-show="'{{ strtolower($name) }}'.includes(search.toLowerCase())"
                                     @click="selected='{{ $category->id }}'; open=false"
-                                    class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                                    class="px-3 py-2 hover:bg-grey-light cursor-pointer"
                                 >
                                     {{ $name }}
                                 </li>
@@ -79,17 +79,17 @@
 
                 <div class="md:col-span-5 text-right flex justify-end gap-2">
                     <a href="{{ route('admin.tickets.index') }}" 
-                       class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                       class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
                         Reset
                     </a>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Filter</button>
+                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">Filter</button>
                 </div>
             </form>
         </div>
 
-        <div class="bg-white shadow rounded">
+        <div class="bg-light shadow rounded">
             <table class="min-w-full border">
-                <thead class="bg-gray-100">
+                <thead class="bg-grey-light">
                     <tr>
                         <th class="px-4 py-2 text-left">Ticket ID</th>
                         <th class="px-4 py-2 text-left">Title</th>
@@ -107,8 +107,8 @@
                             <td class="px-4 py-2 font-semibold">
                                 <a href="{{ route('admin.tickets.show', $ticket) }}"
                                    class="{{ $ticket->isUnreadFor(auth()->id())
-                                        ? 'text-red-600'
-                                        : 'text-gray-800'
+                                        ? 'text-status-error'
+                                        : 'text-grey-dark'
                                    }} hover:underline">
                                     {{ $ticket->title }}
                                 </a>
@@ -122,14 +122,14 @@
                             <td class="px-4 py-2">
                                 {{ ucfirst($ticket->status) }}
                             </td>
-                            <td class="px-4 py-2 text-sm text-gray-600">
+                            <td class="px-4 py-2 text-sm text-grey-dark">
                                 {{ $ticket->last_message_at?->format('Y-m-d H:i') ?? '—' }}
                             </td>
                         </tr>
                     @empty
                         <tr>
                             <td colspan="6"
-                                class="px-4 py-6 text-center text-gray-500">
+                                class="px-4 py-6 text-center text-grey-medium">
                                 No tickets found.
                             </td>
                         </tr>

@@ -1,6 +1,6 @@
-<div class="p-6 bg-white border rounded shadow-sm">
-    <h2 class="text-lg font-medium text-gray-900">{{ t('profile.social_accounts') ?: 'Social accounts' }}</h2>
-    <p class="mt-1 text-sm text-gray-600">{{ t('profile.social_accounts_desc') ?: 'Link external accounts (Google) to sign in quickly.' }}</p>
+<div class="p-6 bg-light border rounded shadow-sm">
+    <h2 class="text-lg font-medium text-dark">{{ t('profile.social_accounts') ?: 'Social accounts' }}</h2>
+    <p class="mt-1 text-sm text-grey-dark">{{ t('profile.social_accounts_desc') ?: 'Link external accounts (Google) to sign in quickly.' }}</p>
 
     <div class="mt-6 space-y-4">
         <div class="flex items-center justify-between">
@@ -8,7 +8,7 @@
                 <img src="/images/google-logo.svg" alt="Google" class="h-6 w-6 me-3">
                 <div>
                     <div class="font-medium">Google</div>
-                    <div class="text-xs text-gray-500">{{ t('profile.social_google_desc') ?: 'Use your Google account to sign in.' }}</div>
+                    <div class="text-xs text-grey-medium">{{ t('profile.social_google_desc') ?: 'Use your Google account to sign in.' }}</div>
                 </div>
             </div>
 
@@ -25,7 +25,7 @@
                             <x-primary-button>{{ t('profile.link_account') ?: 'Link account' }}</x-primary-button>
                         </a>
                     @else
-                        <div class="text-xs text-gray-500">{{ t('profile.provider_disabled') ?: 'Google sign-in is currently disabled.' }}</div>
+                        <div class="text-xs text-grey-medium">{{ t('profile.provider_disabled') ?: 'Google sign-in is currently disabled.' }}</div>
                     @endif
                 @endif
             </div>
@@ -36,7 +36,7 @@
                 <img src="/images/microsoft-logo.svg" alt="Microsoft" class="h-6 w-6 me-3">
                 <div>
                     <div class="font-medium">Microsoft</div>
-                    <div class="text-xs text-gray-500">{{ t('profile.social_microsoft_desc') ?: 'Use your Microsoft account to sign in.' }}</div>
+                    <div class="text-xs text-grey-medium">{{ t('profile.social_microsoft_desc') ?: 'Use your Microsoft account to sign in.' }}</div>
                 </div>
             </div>
 
@@ -53,7 +53,7 @@
                             <x-primary-button>{{ t('profile.link_account') ?: 'Link account' }}</x-primary-button>
                         </a>
                     @else
-                        <div class="text-xs text-gray-500">{{ t('profile.provider_disabled') ?: 'Microsoft sign-in is currently disabled.' }}</div>
+                        <div class="text-xs text-grey-medium">{{ t('profile.provider_disabled') ?: 'Microsoft sign-in is currently disabled.' }}</div>
                     @endif
                 @endif
             </div>

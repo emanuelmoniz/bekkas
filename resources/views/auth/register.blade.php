@@ -5,14 +5,14 @@
         <!-- Social login -->
         <div class="mb-4 text-center space-y-2">
             @if(config('services.google.enabled') && \Illuminate\Support\Facades\Route::has('login.provider'))
-                <a href="{{ route('login.provider', 'google') }}" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-white hover:bg-gray-50">
+                <a href="{{ route('login.provider', 'google') }}" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-light hover:bg-light">
                     <img src="/images/google-logo.svg" alt="Google" class="me-2 h-5 w-5">
                     {{ t('auth.continue_with_google') ?: 'Continue with Google' }}
                 </a>
             @endif
 
             @if(config('services.microsoft.enabled') && \Illuminate\Support\Facades\Route::has('login.provider'))
-                <a href="{{ route('login.provider', 'microsoft') }}" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-white hover:bg-gray-50">
+                <a href="{{ route('login.provider', 'microsoft') }}" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-light hover:bg-light">
                     <img src="/images/microsoft-logo.svg" alt="Microsoft" class="me-2 h-5 w-5">
                     {{ t('auth.continue_with_microsoft') ?: 'Continue with Microsoft' }}
                 </a>
@@ -21,15 +21,15 @@
 
         {{-- Show social login errors (e.g. provider callback errors) --}}
         @if($errors->has('social'))
-            <div class="mb-4 text-sm text-red-600">
+            <div class="mb-4 text-sm text-status-error">
                 {{ $errors->first('social') }}
             </div>
         @endif
 
         @if(session('unverified_email'))
-            <div class="mb-4 text-sm text-red-600">
+            <div class="mb-4 text-sm text-status-error">
                 {{ t('auth.email_unverified_notice') ?: 'An account was previously registered with this email but not confirmed.' }}
-                <div class="mt-1 text-xs text-gray-600">{{ t('auth.check_spam') ?: 'If you do not see the message, please check your spam folder.' }}</div>
+                <div class="mt-1 text-xs text-grey-dark">{{ t('auth.check_spam') ?: 'If you do not see the message, please check your spam folder.' }}</div>
             </div>
 
             <div class="mb-4">
@@ -137,7 +137,7 @@
         <div class="mt-4">
             <label class="flex items-start space-x-3">
                 <input type="checkbox" name="accept_terms" value="1" {{ old('accept_terms') ? 'checked' : '' }} class="mt-1">
-                <span class="text-sm text-gray-600">
+                <span class="text-sm text-grey-dark">
                     {!! t('auth.accept_terms_label', ['terms_url' => route('terms')]) ?: 'I accept the <a href="'.route('terms').'" target="_blank" rel="noopener">Terms of Service</a>.' !!}
                 </span>
             </label>
@@ -147,14 +147,14 @@
         <div class="mt-3">
             <label class="flex items-start space-x-3">
                 <input type="checkbox" name="accept_privacy" value="1" {{ old('accept_privacy') ? 'checked' : '' }} class="mt-1">
-                <span class="text-sm text-gray-600">
+                <span class="text-sm text-grey-dark">
                     {!! t('auth.accept_privacy_label', ['privacy_url' => route('privacy')]) ?: 'I accept the <a href="'.route('privacy').'" target="_blank" rel="noopener">Privacy Policy</a>.' !!}
                 </span>
             </label>
             <x-input-error :messages="$errors->get('accept_privacy')" class="mt-2" />
         </div>
 
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+            <a class="underline text-sm text-grey-dark hover:text-dark rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-primary" href="{{ route('login') }}">
                 {{ t('auth.already_registered') ?: 'Already registered?' }}
             </a>
 

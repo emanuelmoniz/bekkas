@@ -1,10 +1,10 @@
 <section class="space-y-6">
     <header>
-        <h2 class="text-lg font-medium text-gray-900">
+        <h2 class="text-lg font-medium text-dark">
             {{ t('profile.delete_account') ?: 'Delete Account' }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600">
+        <p class="mt-1 text-sm text-grey-dark">
             {{ t('profile.delete_account_desc') ?: 'Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.' }}
         </p>
     </header>
@@ -22,11 +22,11 @@
             <form method="post" action="{{ route('profile.delete.request') }}" class="p-6">
                 @csrf
 
-                <h2 class="text-lg font-medium text-gray-900">
+                <h2 class="text-lg font-medium text-dark">
                     {{ t('profile.confirm_delete') ?: 'Are you sure you want to delete your account?' }}
                 </h2>
 
-                <p class="mt-1 text-sm text-gray-600">
+                <p class="mt-1 text-sm text-grey-dark">
                     {{ t('profile.delete_by_email_desc') ?: "Don't have a password? We'll email you a secure link to confirm account deletion." }}
                 </p>
 
@@ -45,11 +45,11 @@
                 @csrf
                 @method('delete')
 
-                <h2 class="text-lg font-medium text-gray-900">
+                <h2 class="text-lg font-medium text-dark">
                     {{ t('profile.confirm_delete') ?: 'Are you sure you want to delete your account?' }}
                 </h2>
 
-                <p class="mt-1 text-sm text-gray-600">
+                <p class="mt-1 text-sm text-grey-dark">
                     {{ t('profile.confirm_delete_desc') ?: 'Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.' }}
                 </p>
 

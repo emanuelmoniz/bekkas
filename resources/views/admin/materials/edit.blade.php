@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-grey-dark leading-tight">
             Edit Material
         </h2>
     </x-slot>
@@ -13,7 +13,7 @@
                 @method('PUT')
 
                 {{-- TRANSLATIONS --}}
-                <div class="bg-white p-6 rounded shadow mb-6">
+                <div class="bg-light p-6 rounded shadow mb-6">
                     <h3 class="font-semibold mb-4">Translations</h3>
 
                     @foreach (['pt-PT' => 'Português', 'en-UK' => 'English'] as $locale => $label)
@@ -34,14 +34,14 @@
                 </div>
 
                 {{-- ACTIONS --}}
-                <div class="bg-white p-6 rounded shadow flex justify-between">
+                <div class="bg-light p-6 rounded shadow flex justify-between">
                     <a href="{{ route('admin.materials.index') }}"
-                       class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-3 rounded">
+                       class="bg-grey-medium hover:bg-grey-medium text-grey-dark px-6 py-3 rounded">
                         Cancel
                     </a>
 
                     <button type="submit"
-                            class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded">
+                            class="bg-accent-primary hover:bg-accent-primary/90 text-light font-semibold px-6 py-3 rounded">
                         Update Material
                     </button>
                 </div>

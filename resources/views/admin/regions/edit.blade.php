@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">
+        <h2 class="font-semibold text-xl text-grey-dark">
             Edit Region
         </h2>
     </x-slot>
@@ -8,7 +8,7 @@
     <div class="py-6 max-w-xl mx-auto sm:px-6 lg:px-8">
         <form method="POST"
               action="{{ route('admin.regions.update', $region) }}"
-              class="bg-white shadow rounded p-6 space-y-4">
+              class="bg-light shadow rounded p-6 space-y-4">
             @csrf
             @method('PATCH')
 
@@ -22,7 +22,7 @@
                     @endforeach
                 </select>
                 @error('country_id')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -32,9 +32,9 @@
                        name="name"
                        value="{{ old('name', $region->name) }}"
                        required
-                       class="w-full border rounded px-3 py-2 @error('name') border-red-500 @enderror">
+                       class="w-full border rounded px-3 py-2 @error('name') border-status-error @enderror">
                 @error('name')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -44,9 +44,9 @@
                        name="postal_code_from"
                        value="{{ old('postal_code_from', $region->postal_code_from) }}"
                        required
-                       class="w-full border rounded px-3 py-2 @error('postal_code_from') border-red-500 @enderror">
+                       class="w-full border rounded px-3 py-2 @error('postal_code_from') border-status-error @enderror">
                 @error('postal_code_from')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -56,9 +56,9 @@
                        name="postal_code_to"
                        value="{{ old('postal_code_to', $region->postal_code_to) }}"
                        required
-                       class="w-full border rounded px-3 py-2 @error('postal_code_to') border-red-500 @enderror">
+                       class="w-full border rounded px-3 py-2 @error('postal_code_to') border-status-error @enderror">
                 @error('postal_code_to')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -74,9 +74,9 @@
                     @endforeach
                 </select>
                 @error('default_shipping_tier_id')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
-                <p class="text-sm text-gray-600 mt-1">
+                <p class="text-sm text-grey-dark mt-1">
                     Used for delivery date calculations and free shipping for this region
                 </p>
             </div>
@@ -88,11 +88,11 @@
 
             <div class="flex justify-between">
                 <a href="{{ route('admin.regions.index') }}"
-                   class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                   class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
                     Cancel
                 </a>
                 <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                        class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                     Update
                 </button>
             </div>

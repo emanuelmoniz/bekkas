@@ -1,7 +1,7 @@
 <div class="py-6 max-w-xl mx-auto">
     <form method="POST"
           action="{{ $action }}"
-          class="bg-white p-6 rounded shadow space-y-4">
+          class="bg-light p-6 rounded shadow space-y-4">
         @csrf
         @if ($method !== 'POST')
             @method($method)
@@ -37,11 +37,11 @@
 
         <div class="flex justify-between">
             <a href="{{ route('admin.ticket-categories.index') }}"
-               class="bg-gray-300 px-4 py-2 rounded">
+               class="bg-grey-medium px-4 py-2 rounded">
                 Cancel
             </a>
 
-            <button class="bg-blue-600 text-white px-6 py-2 rounded">
+            <button class="bg-accent-primary text-light px-6 py-2 rounded">
                 Save
             </button>
         </div>

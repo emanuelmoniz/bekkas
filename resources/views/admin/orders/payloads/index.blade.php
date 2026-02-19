@@ -1,20 +1,20 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">Payloads</h2>
+        <h2 class="font-semibold text-xl text-grey-dark">Payloads</h2>
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
 
         <div class="mb-4">
             <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">
-                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Orders</a>
-                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payloads</a>
-                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Checkouts</a>
-                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payments</a>
+                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-grey-light' : 'hover:bg-light' }}">Orders</a>
+                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payloads</a>
+                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-grey-light' : 'hover:bg-light' }}">Checkouts</a>
+                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payments</a>
             </nav>
         </div>
 
-        <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
+        <form method="GET" class="mb-6 bg-light p-4 rounded shadow">
             <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
                 <input name="order_number" placeholder="Order Number"
                        value="{{ request('order_number') }}"
@@ -41,18 +41,18 @@
 
             <div class="mt-4 text-right flex justify-end gap-2">
                 <a href="{{ route('admin.orders.payloads.index') }}" 
-                   class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                   class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
                     Reset
                 </a>
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                     Filter
                 </button>
             </div>
         </form>
 
-        <div class="bg-white shadow rounded">
+        <div class="bg-light shadow rounded">
             <table class="min-w-full border">
-                <thead class="bg-gray-100">
+                <thead class="bg-grey-light">
                     <tr>
                         <th class="px-3 py-2">Order Number</th>
                         <th class="px-3 py-2">Order Date</th>
@@ -69,10 +69,10 @@
                             <td class="px-3 py-2 text-right">
                                 @if($p->order)
                                     <div class="flex gap-2 justify-end items-center">
-                                        <a href="{{ route('admin.orders.payloads.show', $p) }}" class="text-sm bg-blue-50 border-blue-200 text-blue-700 border px-3 py-1 rounded">View</a>
+                                        <a href="{{ route('admin.orders.payloads.show', $p) }}" class="text-sm bg-accent-primary/10 border-accent-primary/20 text-accent-primary border px-3 py-1 rounded">View</a>
                                     </div>
                                 @else
-                                    <span class="text-sm text-gray-500">No order</span>
+                                    <span class="text-sm text-grey-medium">No order</span>
                                 @endif
                             </td>
                         </tr>

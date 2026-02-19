@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="font-semibold text-xl text-grey-dark leading-tight">
                 {{ $ticket->title }}
             </h2>
 
             <div class="flex gap-2">
                 <a href="{{ route('tickets.index') }}"
-                   class="bg-gray-300 px-4 py-2 rounded text-sm">
+                   class="bg-grey-medium px-4 py-2 rounded text-sm">
                     {{ t('tickets.back_to_tickets') ?: 'Back to tickets' }}
                 </a>
 
@@ -15,7 +15,7 @@
                       action="{{ route('tickets.mark-unread', $ticket) }}">
                     @csrf
                     <button type="submit"
-                            class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded text-sm">
+                            class="bg-accent-secondary hover:bg-accent-secondary/90 text-light px-4 py-2 rounded text-sm">
                         {{ t('tickets.mark_as_unread') ?: 'Mark as unread' }}
                     </button>
                 </form>
@@ -26,7 +26,7 @@
     <div class="py-6 max-w-5xl mx-auto space-y-6">
 
         {{-- TICKET META --}}
-        <div class="bg-white p-6 rounded shadow space-y-2">
+        <div class="bg-light p-6 rounded shadow space-y-2">
             <div>
                 <strong>{{ t('tickets.ticket_id') ?: 'Ticket ID' }}:</strong>
                 <span class="font-mono text-sm">{{ $ticket->ticket_number ?? $ticket->uuid }}</span>
@@ -68,7 +68,7 @@
         </div>
 
         {{-- CLOSE / REOPEN --}}
-        <div class="bg-white p-6 rounded shadow">
+        <div class="bg-light p-6 rounded shadow">
             @if ($ticket->status === 'open')
                 <form method="POST" action="{{ route('tickets.close', $ticket) }}">
                     @csrf
@@ -76,7 +76,7 @@
                     <textarea name="reason"
                               class="w-full border rounded px-3 py-2 mb-3"
                               required></textarea>
-                    <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+                    <button class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-4 py-2 rounded">
                         {{ t('tickets.close_ticket') ?: 'Close Ticket' }}
                     </button>
                 </form>
@@ -87,7 +87,7 @@
                     <textarea name="reason"
                               class="w-full border rounded px-3 py-2 mb-3"
                               required></textarea>
-                    <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                         {{ t('tickets.reopen_ticket') ?: 'Reopen Ticket' }}
                     </button>
                 </form>
@@ -97,8 +97,8 @@
         {{-- MESSAGES --}}
         <div class="space-y-4">
             @foreach ($ticket->messages as $msg)
-                <div class="bg-white p-4 rounded shadow">
-                    <div class="text-sm text-gray-600 mb-1">
+                <div class="bg-light p-4 rounded shadow">
+                    <div class="text-sm text-grey-dark mb-1">
                         {{ $msg->is_system ? t('tickets.system', 'System') : ($msg->user?->name ?? '—') }}
                         · {{ $msg->created_at }}
                     </div>
@@ -112,7 +112,7 @@
                             @foreach ($msg->attachments as $file)
                                 <li>
                                     <a href="{{ route('tickets.attachments.download', $file) }}"
-                                       class="text-blue-600 hover:underline">
+                                       class="text-accent-secondary hover:underline">
                                         {{ $file->original_name }}
                                     </a>
                                 </li>
@@ -128,7 +128,7 @@
             <form method="POST"
                   action="{{ route('tickets.messages.store', $ticket) }}"
                   enctype="multipart/form-data"
-                  class="bg-white p-6 rounded shadow space-y-4">
+                  class="bg-light p-6 rounded shadow space-y-4">
                 @csrf
 
                 <div>
@@ -145,7 +145,7 @@
                 <div>
                     <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
                     @error('g-recaptcha-response')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -194,7 +194,7 @@
                 </script>
 
                 <div class="flex justify-end">
-                    <button class="bg-blue-600 text-white px-6 py-2 rounded">
+                    <button class="bg-accent-primary text-light px-6 py-2 rounded">
                         {{ t('tickets.send') ?: 'Send' }}
                     </button>
                 </div>

@@ -1,19 +1,19 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">Easypay checkout session</h2>
+        <h2 class="font-semibold text-xl text-grey-dark">Easypay checkout session</h2>
     </x-slot>
 
     <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4">
             <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">
-                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Orders</a>
-                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payloads</a>
-                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Checkouts</a>
-                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payments</a>
+                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-grey-light' : 'hover:bg-light' }}">Orders</a>
+                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payloads</a>
+                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-grey-light' : 'hover:bg-light' }}">Checkouts</a>
+                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payments</a>
             </nav>
         </div>
 
-        <div class="bg-white shadow rounded p-4 space-y-4">
+        <div class="bg-light shadow rounded p-4 space-y-4">
 
 
             <div class="flex justify-between items-start gap-4">
@@ -21,17 +21,17 @@
                     <p><strong>Session ID:</strong> {{ $session->id }}</p>
                     <p><strong>Order:</strong>
                         @if($session->order)
-                            <a class="text-blue-600 hover:underline" href="{{ route('admin.orders.show', $session->order) }}">{{ $session->order->order_number }}</a>
+                            <a class="text-accent-secondary hover:underline" href="{{ route('admin.orders.show', $session->order) }}">{{ $session->order->order_number }}</a>
                         @else
-                            <span class="text-sm text-gray-500">No order</span>
+                            <span class="text-sm text-grey-medium">No order</span>
                         @endif
                     </p>
 
                     <p><strong>Payload:</strong>
                         @if($session->payload)
-                            <a class="text-indigo-600 hover:underline" href="{{ route('admin.orders.payloads.show', $session->payload) }}">Payload #{{ $session->payload->id }}</a>
+                            <a class="text-accent-primary hover:underline" href="{{ route('admin.orders.payloads.show', $session->payload) }}">Payload #{{ $session->payload->id }}</a>
                         @else
-                            <span class="text-sm text-gray-500">—</span>
+                            <span class="text-sm text-grey-medium">—</span>
                         @endif
                     </p>
 
@@ -58,26 +58,26 @@
                 <div class="flex flex-col items-end gap-2">
                     <div class="w-full flex flex-wrap justify-end items-center gap-2 text-right">
                         @if($session->order)
-                            <a href="{{ route('admin.orders.show', $session->order) }}" class="inline-flex items-center bg-gray-100 border px-4 py-2 rounded text-sm">View order</a>
+                            <a href="{{ route('admin.orders.show', $session->order) }}" class="inline-flex items-center bg-grey-light border px-4 py-2 rounded text-sm">View order</a>
                         @endif
 
                         @if($session->payload)
-                            <a href="{{ route('admin.orders.payloads.show', $session->payload) }}" class="inline-flex items-center bg-indigo-50 border-indigo-200 text-indigo-700 border px-4 py-2 rounded text-sm ms-2">View payload</a>
+                            <a href="{{ route('admin.orders.payloads.show', $session->payload) }}" class="inline-flex items-center bg-accent-primary/10 border-accent-primary/30 text-accent-primary border px-4 py-2 rounded text-sm ms-2">View payload</a>
                         @endif
 
-                        <a href="{{ route('admin.orders.payments.index', ['order_number' => optional($session->order)->order_number]) }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">View payments</a>
+                        <a href="{{ route('admin.orders.payments.index', ['order_number' => optional($session->order)->order_number]) }}" class="inline-flex items-center bg-light border px-4 py-2 rounded text-sm ms-2">View payments</a>
 
                         <form method="POST" action="{{ route('admin.orders.checkouts.refresh', $session) }}" class="inline-block ms-2">
                             @csrf
-                            <button class="bg-yellow-50 border-yellow-200 text-yellow-700 border px-4 py-2 rounded text-sm" title="Refresh / fetch checkout details">Update</button>
+                            <button class="bg-accent-secondary/10 border-accent-secondary/20 text-accent-secondary border px-4 py-2 rounded text-sm" title="Refresh / fetch checkout details">Update</button>
                         </form>
 
                         <form method="POST" action="{{ route('admin.orders.checkouts.cancel', $session) }}" class="inline-block ms-2" onsubmit="return confirm('Cancel this checkout at Easypay?');">
                             @csrf
-                            <button class="bg-red-50 border-red-200 text-red-700 border px-4 py-2 rounded text-sm" title="Cancel checkout">Cancel</button>
+                            <button class="bg-status-error/10 border-status-error text-status-error border px-4 py-2 rounded text-sm" title="Cancel checkout">Cancel</button>
                         </form>
 
-                        <a href="{{ route('admin.orders.checkouts.index') }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">Back</a>
+                        <a href="{{ route('admin.orders.checkouts.index') }}" class="inline-flex items-center bg-light border px-4 py-2 rounded text-sm ms-2">Back</a>
                     </div>
                 </div>
 
@@ -85,7 +85,7 @@
 
             <div>
                 <h3 class="font-semibold mb-2">Gateway response / message</h3>
-                <pre class="whitespace-pre-wrap bg-gray-50 border rounded p-4 text-sm overflow-auto" style="max-height:48vh;overflow-wrap:anywhere;word-break:break-word;">{{ json_encode(json_decode($session->message ?: '{}'), JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) }}</pre>
+                <pre class="whitespace-pre-wrap bg-light border rounded p-4 text-sm overflow-auto" style="max-height:48vh;overflow-wrap:anywhere;word-break:break-word;">{{ json_encode(json_decode($session->message ?: '{}'), JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) }}</pre>
             </div>
         </div>
     </div>

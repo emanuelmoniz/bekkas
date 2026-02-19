@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">Application Configuration</h2>
+        <h2 class="font-semibold text-xl text-grey-dark">Application Configuration</h2>
     </x-slot>
 
     <div class="py-6 max-w-5xl mx-auto sm:px-6 lg:px-8">
-        <form method="POST" action="{{ route('admin.configurations.update') }}" class="bg-white p-6 rounded shadow space-y-6">
+        <form method="POST" action="{{ route('admin.configurations.update') }}" class="bg-light p-6 rounded shadow space-y-6">
             @csrf
             @method('PUT')
 
@@ -95,7 +95,7 @@
             <hr>
 
             <h3 class="font-semibold mt-6">Social logins</h3>
-            <p class="text-sm text-gray-600 mb-3">Control Google / Microsoft OAuth credentials here. DB values take precedence; the app will fallback to .env when DB values are empty.</p>
+            <p class="text-sm text-grey-dark mb-3">Control Google / Microsoft OAuth credentials here. DB values take precedence; the app will fallback to .env when DB values are empty.</p>
 
             <div class="grid grid-cols-2 gap-4">
                 <div class="col-span-2 font-semibold">Google</div>
@@ -194,16 +194,16 @@
             </div>
 
             @if($c)
-                <p class="text-sm text-gray-600">
+                <p class="text-sm text-grey-dark">
                     Configurations in place from <strong>{{ $c->created_at->format('Y-m-d H:i:s') }}</strong> — edited by <strong>{{ optional($c->user)->name ?? 'System' }}</strong>.
                 </p>
             @else
-                <p class="text-sm text-gray-600">No configuration saved yet.</p>
+                <p class="text-sm text-grey-dark">No configuration saved yet.</p>
             @endif
 
             <div class="flex justify-end gap-3">
-                <a href="{{ route('admin.dashboard') }}" class="bg-gray-300 hover:bg-gray-400 px-6 py-2 rounded">Cancel</a>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">Save Changes</button>
+                <a href="{{ route('admin.dashboard') }}" class="bg-grey-medium hover:bg-grey-medium px-6 py-2 rounded">Cancel</a>
+                <button type="submit" class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-2 rounded">Save Changes</button>
             </div>
         </form>
     </div>

@@ -1,35 +1,35 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">Easypay payment</h2>
+        <h2 class="font-semibold text-xl text-grey-dark">Easypay payment</h2>
     </x-slot>
 
     <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4">
             <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">
-                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Orders</a>
-                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payloads</a>
-                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Checkouts</a>
-                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payments</a>
+                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-grey-light' : 'hover:bg-light' }}">Orders</a>
+                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payloads</a>
+                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-grey-light' : 'hover:bg-light' }}">Checkouts</a>
+                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payments</a>
             </nav>
         </div>
 
-        <div class="bg-white shadow rounded p-4 space-y-4">
+        <div class="bg-light shadow rounded p-4 space-y-4">
             <div class="grid md:grid-cols-2 gap-4 items-start">
                 <div>
                     <p><strong>Payment ID:</strong> {{ $payment->payment_id ?? $payment->id }}</p>
                     <p><strong>Order:</strong>
                         @if($payment->order)
-                            <a class="text-blue-600 hover:underline" href="{{ route('admin.orders.show', $payment->order) }}">{{ $payment->order->order_number }}</a>
+                            <a class="text-accent-secondary hover:underline" href="{{ route('admin.orders.show', $payment->order) }}">{{ $payment->order->order_number }}</a>
                         @else
-                            <span class="text-sm text-gray-500">No order</span>
+                            <span class="text-sm text-grey-medium">No order</span>
                         @endif
                     </p>
 
                     <p><strong>Checkout session:</strong>
                         @if($payment->checkoutSession)
-                            <a class="text-indigo-600 hover:underline" href="{{ route('admin.orders.checkouts.show', $payment->checkoutSession) }}">Session #{{ $payment->checkoutSession->id }}</a>
+                            <a class="text-accent-primary hover:underline" href="{{ route('admin.orders.checkouts.show', $payment->checkoutSession) }}">Session #{{ $payment->checkoutSession->id }}</a>
                         @else
-                            <span class="text-sm text-gray-500">—</span>
+                            <span class="text-sm text-grey-medium">—</span>
                         @endif
                     </p>
 
@@ -48,49 +48,49 @@
                 <div class="flex flex-col items-end gap-2">
                     <div class="w-full flex flex-wrap justify-end items-center gap-2 text-right">
                         @if($payment->order)
-                            <a href="{{ route('admin.orders.show', $payment->order) }}" class="inline-flex items-center bg-gray-100 border px-4 py-2 rounded text-sm">Order</a>
+                            <a href="{{ route('admin.orders.show', $payment->order) }}" class="inline-flex items-center bg-grey-light border px-4 py-2 rounded text-sm">Order</a>
 
                             {{-- Payload: prefer checkoutSession->payload, fall back to order->easypayPayload --}}
                             @php
                                 $payload = $payment->checkoutSession?->payload ?? $payment->order?->easypayPayload ?? null;
                             @endphp
                             @if($payload)
-                                <a href="{{ route('admin.orders.payloads.show', $payload) }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">Payload</a>
+                                <a href="{{ route('admin.orders.payloads.show', $payload) }}" class="inline-flex items-center bg-light border px-4 py-2 rounded text-sm ms-2">Payload</a>
                             @endif
                         @endif
 
                         @if($payment->checkoutSession)
-                            <a href="{{ route('admin.orders.checkouts.show', $payment->checkoutSession) }}" class="inline-flex items-center bg-indigo-50 border-indigo-200 text-indigo-700 border px-4 py-2 rounded text-sm ms-2">Checkout</a>
+                            <a href="{{ route('admin.orders.checkouts.show', $payment->checkoutSession) }}" class="inline-flex items-center bg-accent-primary/10 border-accent-primary/30 text-accent-primary border px-4 py-2 rounded text-sm ms-2">Checkout</a>
 
                             {{-- Update: refresh payment details from Easypay (single payment endpoint) --}}
                             <form method="POST" action="{{ route('admin.orders.payments.refresh', $payment) }}" class="inline-block ms-2">
                                 @csrf
-                                <button class="bg-yellow-50 border-yellow-200 text-yellow-700 border px-4 py-2 rounded text-sm">Update</button>
+                                <button class="bg-accent-secondary/10 border-accent-secondary/20 text-accent-secondary border px-4 py-2 rounded text-sm">Update</button>
                             </form>
                         @endif
 
                         @if(strtolower((string) $payment->payment_status) === 'paid' && optional($payment->order)->is_paid)
                             <form method="POST" action="{{ route('admin.orders.payments.refund', $payment) }}" onsubmit="return confirm('Confirm refund request?');" class="inline-block ms-2">
                                 @csrf
-                                <button type="submit" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm text-red-600 hover:bg-red-50">Refund</button>
+                                <button type="submit" class="inline-flex items-center bg-light border px-4 py-2 rounded text-sm text-grey-dark hover:bg-light">Refund</button>
                             </form>
 
                             @if(! empty($payment->refund_id))
                                 <form method="POST" action="{{ route('admin.orders.payments.refund.refresh', $payment) }}" class="inline-block ms-2">
                                     @csrf
-                                    <button type="submit" class="inline-flex items-center bg-amber-50 border-amber-200 text-amber-700 border px-4 py-2 rounded text-sm">Update refund</button>
+                                    <button type="submit" class="inline-flex items-center bg-status-warning border-amber-200 text-status-warning border px-4 py-2 rounded text-sm">Update refund</button>
                                 </form>
                             @endif
                         @endif
 
-                        <a href="{{ route('admin.orders.payments.index') }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">Back</a>
+                        <a href="{{ route('admin.orders.payments.index') }}" class="inline-flex items-center bg-light border px-4 py-2 rounded text-sm ms-2">Back</a>
                     </div>
                 </div>
             </div>
 
             <div>
                 <h3 class="font-semibold mb-2">Gateway raw response</h3>
-                <pre class="whitespace-pre-wrap bg-gray-50 border rounded p-4 text-sm overflow-auto" style="max-height:48vh;overflow-wrap:anywhere;word-break:break-word;">{{ json_encode($payment->raw_response ?: [], JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) }}</pre>
+                <pre class="whitespace-pre-wrap bg-light border rounded p-4 text-sm overflow-auto" style="max-height:48vh;overflow-wrap:anywhere;word-break:break-word;">{{ json_encode($payment->raw_response ?: [], JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) }}</pre>
             </div>
         </div>
     </div>

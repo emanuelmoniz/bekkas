@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">
+        <h2 class="font-semibold text-xl text-grey-dark">
             Shipping Configuration
         </h2>
     </x-slot>
 
     <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8">
 
-        <form method="POST" action="{{ route('admin.shipping-config.update') }}" class="bg-white p-6 rounded shadow space-y-6">
+        <form method="POST" action="{{ route('admin.shipping-config.update') }}" class="bg-light p-6 rounded shadow space-y-6">
             @csrf
             @method('PUT')
 
@@ -24,9 +24,9 @@
                        class="w-full border rounded px-3 py-2"
                        required>
                 @error('free_shipping_over')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
-                <p class="text-sm text-gray-600 mt-1">
+                <p class="text-sm text-grey-dark mt-1">
                     Set to 0 to disable free shipping threshold
                 </p>
             </div>
@@ -48,9 +48,9 @@
                     @endforeach
                 </select>
                 @error('default_shipping_tier_id')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
-                <p class="text-sm text-gray-600 mt-1">
+                <p class="text-sm text-grey-dark mt-1">
                     Used as global fallback when no region-specific default is configured. Edit region-specific defaults in each region's settings.
                 </p>
             </div>
@@ -73,18 +73,18 @@
                             </option>
                         @endforeach
                     </select>
-                <p class="text-sm text-gray-600 mt-1">
+                <p class="text-sm text-grey-dark mt-1">
                     Select which order statuses will display the tracking URL to the client.
                 </p>
             </div>
 
             <div class="flex justify-end gap-3">
                 <a href="{{ route('admin.orders.index') }}" 
-                   class="bg-gray-300 hover:bg-gray-400 px-6 py-2 rounded">
+                   class="bg-grey-medium hover:bg-grey-medium px-6 py-2 rounded">
                     Cancel
                 </a>
                 <button type="submit" 
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">
+                        class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-2 rounded">
                     Save Changes
                 </button>
             </div>

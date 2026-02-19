@@ -17,7 +17,7 @@
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
     </head>
-    <body class="bg-white dark:bg-[#161615] text-gray-900 dark:text-gray-100">
+    <body class="bg-light dark:bg-dark text-dark dark:text-grey-light">
         @include('layouts.navigation')
 
         <section class="py-16 md:py-24 px-6">
@@ -32,7 +32,7 @@
                 <h2 class="mt-8 text-2xl font-semibold">{{ t('legal.privacy.section_usage_title') ?: 'How We Use Data' }}</h2>
                 <p>{{ t('legal.privacy.section_usage') ?: 'Personal data is used to process orders, communicate with you, and improve the service. We do not sell personal data to third parties.' }}</p>
 
-                <p class="mt-8 text-sm text-gray-600">{{ t('legal.privacy.last_updated') ?: 'Last updated: February 2026' }}</p>
+                <p class="mt-8 text-sm text-grey-dark">{{ t('legal.privacy.last_updated') ?: 'Last updated: February 2026' }}</p>
             </div>
         </section>
 

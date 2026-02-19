@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">
+        <h2 class="font-semibold text-xl text-grey-dark">
             {{ t('checkout.title') ?: 'Checkout' }}
         </h2>
     </x-slot>
@@ -11,12 +11,12 @@
             {{-- LEFT --}}
             <form method="POST"
                   action="{{ route('checkout.place') }}"
-                  class="md:col-span-2 bg-white p-6 rounded shadow space-y-4">
+                  class="md:col-span-2 bg-light p-6 rounded shadow space-y-4">
                 @csrf
 
                 {{-- Validation Errors --}}
                 @if ($errors->any())
-                    <div class="px-4 py-3 rounded relative border border-gray-200 border-l-4 bg-primary/10 text-primary" role="alert">
+                    <div class="px-4 py-3 rounded relative border border-grey-light border-l-4 bg-primary/10 text-primary" role="alert">
                         <strong class="font-bold">{{ t('validation.error_heading') ?: 'Please fix the following errors:' }}</strong>
                         <ul class="mt-2 list-disc list-inside text-sm">
                             @foreach ($errors->all() as $error)
@@ -95,7 +95,7 @@
                 </div>
 
                 {{-- SHIPPING TIER SELECTION --}}
-                <div x-show="addressMode === 'new' && availableTiers.length === 0 && !qualifiesForFreeShipping" x-cloak class="px-4 py-3 rounded border border-gray-200 border-l-4 bg-accent-secondary/10 text-accent-secondary mt-6">
+                <div x-show="addressMode === 'new' && availableTiers.length === 0 && !qualifiesForFreeShipping" x-cloak class="px-4 py-3 rounded border border-grey-light border-l-4 bg-accent-secondary/10 text-accent-secondary mt-6">
                     <p class="text-sm text-accent-secondary">
                         {{ t('checkout.address_required_for_shipping') ?: 'Please fill the address form so we can show the available shipping options.' }}
                     </p>
@@ -104,7 +104,7 @@
                 <div x-show="availableTiers.length > 0" x-cloak class="mt-6">
                     <h3 class="font-semibold mb-3">{{ t('checkout.select_shipping_method') ?: 'Select Shipping Method' }}</h3>
                     
-                    <div x-show="qualifiesForFreeShipping" class="px-3 py-2 rounded border border-gray-200 border-l-4 bg-accent-primary/10 text-accent-primary mb-3">
+                    <div x-show="qualifiesForFreeShipping" class="px-3 py-2 rounded border border-grey-light border-l-4 bg-accent-primary/10 text-accent-primary mb-3">
                         <p class="text-sm text-accent-primary">
                             {{ t('checkout.free_shipping_message') ?: 'Your order total exceeds' }} €<span x-text="freeShippingOver.toFixed(2)"></span>. 
                             {{ t('checkout.free_shipping_qualified') ?: 'You qualify for free shipping! You can also choose a faster shipping method below (additional cost applies).' }}
@@ -112,7 +112,7 @@
                     </div>
                     
                     <template x-for="tier in availableTiers" :key="tier.id">
-                        <label class="block border p-3 rounded cursor-pointer mb-2 hover:bg-gray-50" :class="{ 'border-accent-primary bg-accent-primary/10 text-accent-primary': tier.is_free }">
+                        <label class="block border p-3 rounded cursor-pointer mb-2 hover:bg-light" :class="{ 'border-accent-primary bg-accent-primary/10 text-accent-primary': tier.is_free }">
                             <input type="radio"
                                    name="shipping_tier_id"
                                    :value="tier.id"
@@ -131,19 +131,19 @@
                     </template>
                 </div>
 
-                <div x-show="!qualifiesForFreeShipping && addressMode === 'existing' && availableTiers.length === 0" x-cloak class="px-4 py-3 rounded border border-gray-200 border-l-4 bg-accent-secondary/10 text-accent-secondary mt-6">
+                <div x-show="!qualifiesForFreeShipping && addressMode === 'existing' && availableTiers.length === 0" x-cloak class="px-4 py-3 rounded border border-grey-light border-l-4 bg-accent-secondary/10 text-accent-secondary mt-6">
                     <p class="text-sm text-accent-secondary">
                         {{ t('checkout.no_shipping_available') ?: 'No shipping options available for your address. Please contact us.' }}
                     </p>
                 </div>
 
-                <button class="bg-indigo-600 text-white px-6 py-3 rounded mt-6">
+                <button class="bg-accent-primary text-light px-6 py-3 rounded mt-6">
                     {{ t('checkout.place_order') ?: 'Place Order' }}
                 </button>
             </form>
 
             {{-- RIGHT --}}
-            <div class="bg-white p-6 rounded shadow space-y-2">
+            <div class="bg-light p-6 rounded shadow space-y-2">
                 <h3 class="font-semibold">{{ t('checkout.summary') ?: 'Summary' }}</h3>
 
                 @foreach ($items as $item)
@@ -156,7 +156,7 @@
                 <hr>
 
                 @if(config('app.tax_enabled', env('APP_TAX_ENABLED', true)))
-                    <div class="text-sm text-gray-500 flex justify-between">
+                    <div class="text-sm text-grey-medium flex justify-between">
                         <span>{{ t('checkout.products_tax') ?: 'Products tax' }}</span>
                         <span>€{{ number_format($productsTax, 2) }}</span>
                     </div>
@@ -166,17 +166,17 @@
                         <span x-text="'€' + Number(shipping?.gross ?? 0).toFixed(2)" x-cloak>€{{ number_format($shipping['gross'], 2) }}</span>
                     </div>
 
-                    <div class="text-sm text-gray-500 flex justify-between">
+                    <div class="text-sm text-grey-medium flex justify-between">
                         <span>{{ t('checkout.shipping_tax') ?: 'Shipping tax' }}</span>
                         <span x-text="'€' + Number(shipping?.tax ?? 0).toFixed(2)" x-cloak>€{{ number_format($shipping['tax'], 2) }}</span>
                     </div>
 
-                    <div class="text-sm text-gray-500 flex justify-between">
+                    <div class="text-sm text-grey-medium flex justify-between">
                         <span>{{ t('checkout.total_tax') ?: 'Total tax' }}</span>
                         <span x-text="'€' + totalTax" x-cloak>€{{ number_format($totalTax, 2) }}</span>
                     </div>
                 @else
-                    <div class="text-sm text-gray-500">
+                    <div class="text-sm text-grey-medium">
                         {{ t('tax.included_in_price') ?: 'All taxes are included in the price' }}
                     </div>
 

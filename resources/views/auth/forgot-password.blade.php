@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
+    <div class="mb-4 text-sm text-grey-dark">
         {{ t('auth.forgot_password_desc') }}
     </div>
 

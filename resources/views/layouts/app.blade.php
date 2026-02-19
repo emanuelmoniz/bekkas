@@ -12,7 +12,7 @@
         <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon/favicon-32x32.png') }}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon/favicon-16x16.png') }}">
         <link rel="manifest" href="{{ asset('site.webmanifest') }}">
-        <meta name="theme-color" content="#ffffff">
+        <meta name="theme-color" content="#f4eee4">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -28,12 +28,12 @@
     </head>
     @php $serverFlash = session('success') ?? session('error') ?? session('warning') ?? session('info'); @endphp
     <body class="font-sans antialiased" @if($serverFlash) data-server-flash="{{ e($serverFlash) }}" @endif>
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-grey-light">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
             @isset($header)
-                <header class="bg-white shadow">
+                <header class="bg-light shadow">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>

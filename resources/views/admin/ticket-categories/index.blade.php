@@ -6,14 +6,14 @@
     <div class="py-6 max-w-5xl mx-auto">
         <div class="mb-4 text-right">
             <a href="{{ route('admin.ticket-categories.create') }}"
-               class="bg-blue-600 text-white px-4 py-2 rounded">
+               class="bg-accent-primary text-light px-4 py-2 rounded">
                 New Category
             </a>
         </div>
 
-        <div class="bg-white shadow rounded">
+        <div class="bg-light shadow rounded">
             <table class="min-w-full border">
-                <thead class="bg-gray-100">
+                <thead class="bg-grey-light">
                     <tr>
                         <th class="px-4 py-2 text-left">Name (PT)</th>
                         <th class="px-4 py-2 text-left">Name (EN)</th>
@@ -35,7 +35,7 @@
                             </td>
                             <td class="px-4 py-2 text-right">
                                 <a href="{{ route('admin.ticket-categories.edit', $cat) }}"
-                                   class="text-blue-600 hover:underline">
+                                   class="text-accent-secondary hover:underline">
                                     Edit
                                 </a>
 
@@ -44,7 +44,7 @@
                                       class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="text-red-600 ml-2"
+                                    <button class="text-grey-dark ml-2"
                                             onclick="return confirm('Delete category?')">
                                         Delete
                                     </button>

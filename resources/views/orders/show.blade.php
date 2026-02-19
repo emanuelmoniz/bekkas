@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">
+        <h2 class="font-semibold text-xl text-grey-dark">
             Order {{ $order->order_number }}
         </h2>
     </x-slot>
@@ -8,10 +8,10 @@
     <div class="py-6 max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
         {{-- STATUS --}}
-        <div class="bg-white shadow rounded p-4">
+        <div class="bg-light shadow rounded p-4">
 
             @if(! empty($paymentStatusMessage))
-                <div class="my-3 p-3 rounded border border-gray-200 border-l-4 bg-accent-primary/10 text-accent-primary text-sm">
+                <div class="my-3 p-3 rounded border border-grey-light border-l-4 bg-accent-primary/10 text-accent-primary text-sm">
                     {{ $paymentStatusMessage }}
                 </div>
             @endif
@@ -35,12 +35,12 @@
                 @endif
                 @if($order->tracking_url)
                     <p>
-                        <a href="{{ $order->tracking_url }}" target="_blank" class="text-blue-600 hover:underline">
+                        <a href="{{ $order->tracking_url }}" target="_blank" class="text-accent-secondary hover:underline">
                             {{ t('orders.track_shipment') ?: 'Track Your Shipment' }}
                         </a>
                     </p>
                 @else
-                    <p class="text-gray-600 italic">{{ t('orders.no_tracking') ?: 'Your order does not have tracking information yet' }}</p>
+                    <p class="text-grey-dark italic">{{ t('orders.no_tracking') ?: 'Your order does not have tracking information yet' }}</p>
                 @endif
             @endif
 
@@ -54,9 +54,9 @@
 
                     {{-- If a persisted payment is pending, show payment information and a link to the pay page (change/payment) --}}
                     @if(isset($paymentInfo) && $paymentInfo?->payment_status === 'pending')
-                        <div class="mb-4 bg-white border rounded p-4 text-sm">
+                        <div class="mb-4 bg-light border rounded p-4 text-sm">
                             <h3 class="font-semibold mb-2">{{ t('checkout.pay.payment_info_title') ?: 'Payment information' }}</h3>
-                            <div class="space-y-2 text-gray-700">
+                            <div class="space-y-2 text-grey-dark">
                                 @if($paymentInfo->mb_entity)
                                     <div><strong>{{ t('checkout.pay.mb_entity') ?: 'MB entity' }}:</strong> {{ $paymentInfo->mb_entity }}</div>
                                 @endif
@@ -72,7 +72,7 @@
                             </div>
 
                             <div class="mt-4 text-right">
-                                <a href="{{ route('orders.pay', $order->uuid) }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold">{{ t('orders.change_payment') ?: 'Change payment' }}</a>
+                                <a href="{{ route('orders.pay', $order->uuid) }}" class="inline-block bg-accent-secondary hover:bg-accent-secondary/90 text-light px-4 py-2 rounded-lg font-semibold">{{ t('orders.change_payment') ?: 'Change payment' }}</a>
                             </div>
                         </div>
 
@@ -80,9 +80,9 @@
                     @else
                         @unless(in_array($ps, ['pending','authorised'], true))
                             @if(config('easypay.enabled'))
-                                <a href="{{ route('orders.pay', $order->uuid) }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold">{{ t('orders.pay_now') ?: 'Pay now' }}</a>
+                                <a href="{{ route('orders.pay', $order->uuid) }}" class="inline-block bg-accent-secondary hover:bg-accent-secondary/90 text-light px-4 py-2 rounded-lg font-semibold">{{ t('orders.pay_now') ?: 'Pay now' }}</a>
                             @else
-                                <div class="p-3 rounded bg-yellow-50 border border-yellow-100 text-sm text-yellow-800">
+                                <div class="p-3 rounded bg-accent-secondary/10 border border-yellow-100 text-sm text-yellow-800">
                                     {{ t('checkout.gateways.disabled') ?: (t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.') }}
                                 </div>
                             @endif
@@ -94,7 +94,7 @@
         </div>
 
         {{-- ADDRESS --}}
-        <div class="bg-white shadow rounded p-4">
+        <div class="bg-light shadow rounded p-4">
             <h3 class="font-semibold mb-2">{{ t('orders.shipping_address') ?: 'Shipping Address' }}</h3>
             <p>{{ $order->address_title }}</p>
             <p>{{ $order->address_line_1 }}</p>
@@ -107,10 +107,10 @@
         </div>
 
         {{-- PRODUCTS --}}
-        <div class="bg-white shadow rounded p-4">
+        <div class="bg-light shadow rounded p-4">
             <h3 class="font-semibold mb-2">{{ t('orders.products') ?: 'Products' }}</h3>
             <table class="min-w-full border">
-                <thead class="bg-gray-100">
+                <thead class="bg-grey-light">
                     <tr>
                         <th class="px-3 py-2 text-left">{{ t('orders.product') ?: 'Product' }}</th>
                         <th class="px-3 py-2">{{ t('orders.qty') ?: 'Qty' }}</th>
@@ -134,7 +134,7 @@
         </div>
 
         {{-- TOTALS --}}
-        <div class="bg-white shadow rounded p-4 text-right space-y-1">
+        <div class="bg-light shadow rounded p-4 text-right space-y-1">
             <p>{{ t('orders.products_net') ?: 'Products (net)' }}: {{ number_format($order->products_total_net, 2) }} €</p>
 
             @if($order->tax_enabled)

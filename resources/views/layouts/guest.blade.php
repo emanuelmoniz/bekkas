@@ -12,7 +12,7 @@
         <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon/favicon-32x32.png') }}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon/favicon-16x16.png') }}">
         <link rel="manifest" href="{{ asset('site.webmanifest') }}">
-        <meta name="theme-color" content="#ffffff">
+        <meta name="theme-color" content="#f4eee4">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -25,15 +25,15 @@
         @stack('recaptcha')
     </head>
     @php $serverFlash = session('success') ?? session('error') ?? session('warning') ?? session('info'); @endphp
-    <body class="font-sans text-gray-900 antialiased" @if($serverFlash) data-server-flash="{{ e($serverFlash) }}" @endif>
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+    <body class="font-sans text-dark antialiased" @if($serverFlash) data-server-flash="{{ e($serverFlash) }}" @endif>
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-grey-light">
             <div>
                 <a href="/">
                     <img src="{{ asset('images/hero_logo.svg') }}" alt="BEKKAS" class="h-28 w-auto">
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-10 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full sm:max-w-md mt-10 px-6 py-4 bg-light shadow-md overflow-hidden sm:rounded-lg">
                 <!-- Flash Messages (canonical; supports success|error|warning|info) -->
                 @include('partials.flash')
 

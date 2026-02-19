@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">Order {{ $order->order_number }} — Payment</h2>
+        <h2 class="font-semibold text-xl text-grey-dark">Order {{ $order->order_number }} — Payment</h2>
     </x-slot>
 
     <div class="py-6 max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -8,7 +8,7 @@
         {{-- Show orchestration errors/messages only when no active manifest is present (avoid showing stale errors) --}}
         @if(empty($activeManifest))
             @if(! empty($payUnavailableMessage))
-                <div class="mb-4 p-3 rounded border border-gray-200 border-l-4 bg-primary/10 text-primary text-sm">
+                <div class="mb-4 p-3 rounded border border-grey-light border-l-4 bg-primary/10 text-primary text-sm">
                     {{ $payUnavailableMessage }}
 
                     {{-- hidden canonical generic message for tests/automation to assert against --}}
@@ -16,7 +16,7 @@
                 </div>
             @elseif(isset($sessions) && ($err = $sessions->firstWhere('in_error', true)))
                 {{-- Service recorded an errored session — show a friendly message and debug details when appropriate --}}
-                <div class="mb-4 p-3 rounded border border-gray-200 border-l-4 bg-primary/10 text-primary text-sm">
+                <div class="mb-4 p-3 rounded border border-grey-light border-l-4 bg-primary/10 text-primary text-sm">
                     {{ t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.' }}
                     @if(config('app.debug') && $err->message)
                         <div class="mt-2 text-xs text-primary">{{ t('checkout.pay.unavailable_debug', ['error' => $err->message]) ?: $err->message }}</div>
@@ -26,7 +26,7 @@
                 {{-- Final fallback: directly check DB for errored session (defensive for tests/runtime) --}}
                 @php $errDb = \App\Models\EasypayCheckoutSession::where('order_id', $order->id)->where('in_error', true)->latest('updated_at')->first(); @endphp
                 @if($errDb)
-                    <div class="mb-4 p-3 rounded border border-gray-200 border-l-4 bg-primary/10 text-primary text-sm">
+                    <div class="mb-4 p-3 rounded border border-grey-light border-l-4 bg-primary/10 text-primary text-sm">
                         {{ t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.' }}
                         @if(config('app.debug') && $errDb->message)
                             <div class="mt-2 text-xs text-primary">{{ t('checkout.pay.unavailable_debug', ['error' => $errDb->message]) ?: $errDb->message }}</div>
@@ -39,7 +39,7 @@
         {{-- Payment-status driven UI (server refreshed) --}}
         {{-- Controller MUST provide: paymentStatusMessage, paymentInfo, suppressSdk — view no longer queries EasypayPayment directly. --}}
         @if(! empty($paymentStatusMessage))
-            <div class="mb-4 p-3 rounded border border-gray-200 border-l-4 bg-accent-primary/10 text-accent-primary text-sm">
+            <div class="mb-4 p-3 rounded border border-grey-light border-l-4 bg-accent-primary/10 text-accent-primary text-sm">
                 {{ $paymentStatusMessage }}
             </div>
         @endif
@@ -47,8 +47,8 @@
         {{-- Payment information removed from the frontend per spec --}}
 
         @if(config('easypay.enabled') && config('easypay.sdk_url', env('EASYPAY_SDK_URL')) && $order->status === 'WAITING_PAYMENT' && ! $order->is_paid)
-          <div id="easypay-inline-root" class="bg-white shadow rounded p-4" aria-live="polite">
-            <div id="easypay-checkout" class="min-h-[120px] flex items-center justify-center text-sm text-gray-600">
+          <div id="easypay-inline-root" class="bg-light shadow rounded p-4" aria-live="polite">
+            <div id="easypay-checkout" class="min-h-[120px] flex items-center justify-center text-sm text-grey-dark">
               <span id="easypay-checkout-loading">{{ t('checkout.pay.loading_widget') ?: 'Loading payment widget…' }}</span>
             </div>
 
@@ -311,7 +311,7 @@
 @endif
 
         <div class="text-right">
-            <a href="{{ route('orders.show', $order->uuid) }}" class="text-sm text-gray-600 hover:underline">Back to order</a>
+            <a href="{{ route('orders.show', $order->uuid) }}" class="text-sm text-grey-dark hover:underline">Back to order</a>
         </div>
     </div>
 </x-app-layout>

@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">Create Order Status</h2>
+        <h2 class="font-semibold text-xl text-grey-dark">Create Order Status</h2>
     </x-slot>
 
     <div class="py-6 max-w-3xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white shadow rounded p-6">
+        <div class="bg-light shadow rounded p-6">
             <form method="POST" action="{{ route('admin.order-statuses.store') }}" class="space-y-6">
                 @csrf
 
@@ -13,7 +13,7 @@
                     <input name="code" value="{{ old('code') }}" required
                            class="border rounded px-3 py-2 w-full">
                     @error('code')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -22,7 +22,7 @@
                     <input type="number" name="sort_order" value="{{ old('sort_order', 0) }}" required
                            class="border rounded px-3 py-2 w-full">
                     @error('sort_order')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -37,18 +37,18 @@
                                    required
                                    class="border rounded px-3 py-2 w-full">
                             @error('translations.'.$loop->index.'.name')
-                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
                     @endforeach
                 </div>
 
                 <div class="flex gap-2">
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">
+                    <button type="submit" class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-2 rounded">
                         Create
                     </button>
                     <a href="{{ route('admin.order-statuses.index') }}"
-                       class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
+                       class="bg-grey-medium hover:bg-grey-dark text-light px-6 py-2 rounded">
                         Cancel
                     </a>
                 </div>

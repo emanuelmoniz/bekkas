@@ -17,68 +17,68 @@
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
     </head>
-    <body class="bg-white dark:bg-[#161615] text-gray-900 dark:text-gray-100">
+    <body class="bg-light dark:bg-dark text-dark dark:text-grey-light">
         @include('layouts.navigation')
 
         <!-- BANNER SECTION -->
-        <section class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-gray-900">
+        <section class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-dark">
             <!-- Background Image -->
             <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1581092160607-ee67e9e95167?w=1200&h=800&fit=crop')">
-                <div class="absolute inset-0 bg-black/40"></div>
+                <div class="absolute inset-0 bg-dark/40"></div>
             </div>
             
             <!-- Content -->
-            <div class="relative z-10 text-center text-white px-6">
+            <div class="relative z-10 text-center text-light px-6">
                 <h1 class="text-5xl md:text-7xl font-bold mb-6">{{ t('about.banner.title') ?: 'About BEKKAS' }}</h1>
                 <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">{{ t('about.banner.subtitle') ?: 'Making 3D printing accessible to everyone' }}</p>
             </div>
         </section>
 
         <!-- MISSION SECTION -->
-        <section class="py-16 md:py-24 bg-white dark:bg-[#161615] px-6">
+        <section class="py-16 md:py-24 bg-light dark:bg-dark px-6">
             <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-4xl font-bold mb-8 text-gray-900 dark:text-white">{{ t('about.mission.title') ?: 'Our Mission' }}</h2>
-                <p class="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                <h2 class="text-4xl font-bold mb-8 text-dark dark:text-light">{{ t('about.mission.title') ?: 'Our Mission' }}</h2>
+                <p class="text-lg md:text-xl text-grey-dark dark:text-grey-medium mb-6 leading-relaxed">
                     {{ t('about.mission.intro') ?: 'At BEKKAS, we believe that everyone deserves access to the transformative power of 3D printing technology.' }}
                 </p>
-                <p class="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p class="text-lg md:text-xl text-grey-dark dark:text-grey-medium leading-relaxed">
                     {{ t('about.mission.purpose') ?: 'Our business is focused on making 3D printing accessible and affordable, giving everybody a chance to have something unique and personalizable that reflects their vision and creativity.' }}
                 </p>
             </div>
         </section>
 
         <!-- VALUES SECTION -->
-        <section class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 px-6">
+        <section class="py-16 md:py-24 bg-light dark:bg-dark px-6">
             <div class="max-w-7xl mx-auto">
-                <h2 class="text-4xl font-bold mb-12 text-center text-gray-900 dark:text-white">{{ t('about.values.title') ?: 'What We Stand For' }}</h2>
+                <h2 class="text-4xl font-bold mb-12 text-center text-dark dark:text-light">{{ t('about.values.title') ?: 'What We Stand For' }}</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <!-- Value 1 -->
-                    <div class="bg-white dark:bg-gray-800 p-8 rounded-lg">
-                        <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">{{ t('about.values.accessibility') ?: 'Accessibility' }}</h3>
-                        <p class="text-gray-600 dark:text-gray-400">{{ t('about.values.accessibility_desc') ?: 'We make 3D printing technology available to everyone, from students to professionals, with affordable solutions and expert guidance.' }}</p>
+                    <div class="bg-light dark:bg-grey-dark p-8 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4 text-dark dark:text-light">{{ t('about.values.accessibility') ?: 'Accessibility' }}</h3>
+                        <p class="text-grey-dark dark:text-grey-medium">{{ t('about.values.accessibility_desc') ?: 'We make 3D printing technology available to everyone, from students to professionals, with affordable solutions and expert guidance.' }}</p>
                     </div>
 
                     <!-- Value 2 -->
-                    <div class="bg-white dark:bg-gray-800 p-8 rounded-lg">
-                        <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">{{ t('about.values.uniqueness') ?: 'Uniqueness' }}</h3>
-                        <p class="text-gray-600 dark:text-gray-400">{{ t('about.values.uniqueness_desc') ?: 'Every project is different. We help you create something truly unique and personalizable that stands out from mass-produced items.' }}</p>
+                    <div class="bg-light dark:bg-grey-dark p-8 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4 text-dark dark:text-light">{{ t('about.values.uniqueness') ?: 'Uniqueness' }}</h3>
+                        <p class="text-grey-dark dark:text-grey-medium">{{ t('about.values.uniqueness_desc') ?: 'Every project is different. We help you create something truly unique and personalizable that stands out from mass-produced items.' }}</p>
                     </div>
 
                     <!-- Value 3 -->
-                    <div class="bg-white dark:bg-gray-800 p-8 rounded-lg">
-                        <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">{{ t('about.values.quality') ?: 'Quality' }}</h3>
-                        <p class="text-gray-600 dark:text-gray-400">{{ t('about.values.quality_desc') ?: 'We never compromise on quality. From material selection to final delivery, every step is executed with precision and care.' }}</p>
+                    <div class="bg-light dark:bg-grey-dark p-8 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4 text-dark dark:text-light">{{ t('about.values.quality') ?: 'Quality' }}</h3>
+                        <p class="text-grey-dark dark:text-grey-medium">{{ t('about.values.quality_desc') ?: 'We never compromise on quality. From material selection to final delivery, every step is executed with precision and care.' }}</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- STORY SECTION -->
-        <section class="py-16 md:py-24 bg-white dark:bg-[#161615] px-6">
+        <section class="py-16 md:py-24 bg-light dark:bg-dark px-6">
             <div class="max-w-4xl mx-auto">
-                <h2 class="text-4xl font-bold mb-8 text-center text-gray-900 dark:text-white">{{ t('about.story.title') ?: 'Our Story' }}</h2>
-                <div class="space-y-6 text-lg text-gray-700 dark:text-gray-300">
+                <h2 class="text-4xl font-bold mb-8 text-center text-dark dark:text-light">{{ t('about.story.title') ?: 'Our Story' }}</h2>
+                <div class="space-y-6 text-lg text-grey-dark dark:text-grey-medium">
                     <p>
                         {{ t('about.story.paragraph1') ?: 'BEKKAS was founded with a simple vision: to democratize access to 3D printing technology and empower individuals to bring their ideas to life.' }}
                     </p>
@@ -93,19 +93,19 @@
         </section>
 
         <!-- CTA SECTION -->
-        <section class="py-16 md:py-24 bg-indigo-600 dark:bg-indigo-700 px-6">
-            <div class="max-w-4xl mx-auto text-center text-white">
+        <section class="py-16 md:py-24 bg-accent-primary dark:bg-accent-primary/90 px-6">
+            <div class="max-w-4xl mx-auto text-center text-light">
                 <h2 class="text-4xl font-bold mb-6">{{ t('about.cta.title') ?: 'Ready to Start Your Project?' }}</h2>
                 <p class="text-xl mb-8">
                     {{ t('about.cta.description') ?: 'Join hundreds of satisfied customers who have brought their ideas to life with BEKKAS.' }}
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     @if(config('app.store_enabled'))
-                        <a href="{{ route('store.index') }}" class="inline-block bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 rounded font-semibold transition-colors">
+                        <a href="{{ route('store.index') }}" class="inline-block bg-light text-accent-primary hover:bg-grey-light px-8 py-3 rounded font-semibold transition-colors">
                             {{ t('about.cta.shop') ?: 'Browse Products' }}
                         </a>
                     @endif
-                    <a href="{{ route('tickets.create') }}" class="inline-block bg-indigo-800 hover:bg-indigo-900 text-white px-8 py-3 rounded font-semibold transition-colors">
+                    <a href="{{ route('tickets.create') }}" class="inline-block bg-accent-primary/90 hover:bg-accent-primary/95 text-light px-8 py-3 rounded font-semibold transition-colors">
                         {{ t('about.cta.contact') ?: 'Start a Project' }}
                     </a>
                 </div>

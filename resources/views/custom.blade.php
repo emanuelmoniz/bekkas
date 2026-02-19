@@ -17,63 +17,63 @@
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
     </head>
-    <body class="bg-white dark:bg-[#161615] text-gray-900 dark:text-gray-100">
+    <body class="bg-light dark:bg-dark text-dark dark:text-grey-light">
         @include('layouts.navigation')
 
         <!-- BANNER SECTION -->
-        <section class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-gray-900">
+        <section class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-dark">
             <!-- Background Image -->
             <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=800&fit=crop')">
-                <div class="absolute inset-0 bg-black/40"></div>
+                <div class="absolute inset-0 bg-dark/40"></div>
             </div>
             
             <!-- Content -->
-            <div class="relative z-10 text-center text-white px-6">
+            <div class="relative z-10 text-center text-light px-6">
                 <h1 class="text-5xl md:text-7xl font-bold mb-6">{{ t('custom.banner.title') ?: 'Custom Services' }}</h1>
                 <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">{{ t('custom.banner.subtitle') ?: 'Professional 3D printing solutions for architects and designers' }}</p>
-                <a href="#request" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded font-semibold transition-colors">
+                <a href="#request" class="inline-block bg-accent-primary hover:bg-accent-primary/90 text-light px-8 py-3 rounded font-semibold transition-colors">
                     {{ t('custom.banner.button') ?: 'Request Service' }}
                 </a>
             </div>
         </section>
 
         <!-- FEATURES SECTION -->
-        <section class="py-16 md:py-24 bg-white dark:bg-[#161615] px-6">
+        <section class="py-16 md:py-24 bg-light dark:bg-dark px-6">
             <div class="max-w-7xl mx-auto">
-                <h2 class="text-4xl font-bold mb-12 text-center text-gray-900 dark:text-white">{{ t('custom.features.title') ?: 'Our Services' }}</h2>
+                <h2 class="text-4xl font-bold mb-12 text-center text-dark dark:text-light">{{ t('custom.features.title') ?: 'Our Services' }}</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <!-- Feature 1 -->
-                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg">
-                        <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">{{ t('custom.features.modeling') ?: '3D Modeling' }}</h3>
-                        <p class="text-gray-600 dark:text-gray-400">{{ t('custom.features.modeling_desc') ?: 'Professional 3D model preparation and optimization for printing.' }}</p>
+                    <div class="bg-light dark:bg-grey-dark p-8 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4 text-dark dark:text-light">{{ t('custom.features.modeling') ?: '3D Modeling' }}</h3>
+                        <p class="text-grey-dark dark:text-grey-medium">{{ t('custom.features.modeling_desc') ?: 'Professional 3D model preparation and optimization for printing.' }}</p>
                     </div>
 
                     <!-- Feature 2 -->
-                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg">
-                        <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">{{ t('custom.features.materials') ?: 'Multiple Materials' }}</h3>
-                        <p class="text-gray-600 dark:text-gray-400">{{ t('custom.features.materials_desc') ?: 'Choose from various materials and finishes to suit your project needs.' }}</p>
+                    <div class="bg-light dark:bg-grey-dark p-8 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4 text-dark dark:text-light">{{ t('custom.features.materials') ?: 'Multiple Materials' }}</h3>
+                        <p class="text-grey-dark dark:text-grey-medium">{{ t('custom.features.materials_desc') ?: 'Choose from various materials and finishes to suit your project needs.' }}</p>
                     </div>
 
                     <!-- Feature 3 -->
-                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg">
-                        <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">{{ t('custom.features.support') ?: 'Expert Support' }}</h3>
-                        <p class="text-gray-600 dark:text-gray-400">{{ t('custom.features.support_desc') ?: 'Dedicated support from design consultation to final delivery.' }}</p>
+                    <div class="bg-light dark:bg-grey-dark p-8 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4 text-dark dark:text-light">{{ t('custom.features.support') ?: 'Expert Support' }}</h3>
+                        <p class="text-grey-dark dark:text-grey-medium">{{ t('custom.features.support_desc') ?: 'Dedicated support from design consultation to final delivery.' }}</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- REQUEST SECTION -->
-        <section id="request" class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 px-6">
+        <section id="request" class="py-16 md:py-24 bg-light dark:bg-dark px-6">
             <div class="max-w-3xl mx-auto">
-                <h2 class="text-4xl font-bold mb-6 text-center text-gray-900 dark:text-white">{{ t('custom.request.title') ?: 'Request a Quote' }}</h2>
-                <p class="text-center text-lg text-gray-700 dark:text-gray-300 mb-10">
+                <h2 class="text-4xl font-bold mb-6 text-center text-dark dark:text-light">{{ t('custom.request.title') ?: 'Request a Quote' }}</h2>
+                <p class="text-center text-lg text-grey-dark dark:text-grey-medium mb-10">
                     {{ t('custom.request.cta') ?: 'Want more info or a quote for a specific project? Please send us a ticket and we will follow up.' }}
                 </p>
 
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
-                    <a href="{{ route('tickets.create') }}" class="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                <div class="bg-light dark:bg-grey-dark rounded-lg shadow-lg p-8 text-center">
+                    <a href="{{ route('tickets.create') }}" class="inline-flex items-center justify-center gap-2 bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-3 rounded-lg font-semibold transition-colors">
                         {{ t('custom.request.ticket_button') ?: 'Create new ticket' }}
                     </a>
                 </div>

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-grey-dark leading-tight">
             Create Material
         </h2>
     </x-slot>
@@ -12,7 +12,7 @@
                 @csrf
 
                 {{-- TRANSLATIONS --}}
-                <div class="bg-white p-6 rounded shadow mb-6">
+                <div class="bg-light p-6 rounded shadow mb-6">
                     <h3 class="font-semibold mb-4">Translations</h3>
 
                     @foreach (['pt-PT' => 'Português', 'en-UK' => 'English'] as $locale => $label)
@@ -29,7 +29,7 @@
                 </div>
 
                     <button type="submit"
-                            class="bg-green-600 text-white font-semibold px-6 py-2 rounded">
+                            class="bg-accent-primary text-light font-semibold px-6 py-2 rounded">
                         Create Material
                     </button>
 

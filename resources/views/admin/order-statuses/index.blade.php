@@ -1,19 +1,19 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">Order Statuses</h2>
+        <h2 class="font-semibold text-xl text-grey-dark">Order Statuses</h2>
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4 flex justify-end">
             <a href="{{ route('admin.order-statuses.create') }}"
-               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+               class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                 Create Order Status
             </a>
         </div>
 
-        <div class="bg-white shadow rounded">
+        <div class="bg-light shadow rounded">
             <table class="min-w-full border">
-                <thead class="bg-gray-100">
+                <thead class="bg-grey-light">
                     <tr>
                         <th class="px-4 py-2 text-left">Code</th>
                         <th class="px-4 py-2 text-left">Name (pt-PT)</th>
@@ -35,7 +35,7 @@
                             <td class="px-4 py-2">{{ $status->sort_order }}</td>
                             <td class="px-4 py-2 text-right space-x-2">
                                 <a href="{{ route('admin.order-statuses.edit', $status) }}"
-                                   class="text-blue-600 hover:underline">
+                                   class="text-accent-secondary hover:underline">
                                     Edit
                                 </a>
                                 <form action="{{ route('admin.order-statuses.destroy', $status) }}"
@@ -44,7 +44,7 @@
                                       onsubmit="return confirm('Are you sure?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:underline">
+                                    <button type="submit" class="text-grey-dark hover:underline">
                                         Delete
                                     </button>
                                 </form>

@@ -8,7 +8,7 @@
     <div class="py-6 max-w-xl mx-auto">
         <form method="POST"
               action="{{ route('admin.tickets.update', $ticket) }}"
-              class="bg-white p-6 rounded shadow space-y-4">
+              class="bg-light p-6 rounded shadow space-y-4">
             @csrf
             @method('PATCH')
 
@@ -30,7 +30,7 @@
                 <div>
                     <label class="block font-semibold mb-1">User</label>
                     <input type="text"
-                           class="w-full border rounded px-3 py-2 bg-gray-100"
+                           class="w-full border rounded px-3 py-2 bg-grey-light"
                            value="{{ $ticket->owner?->name }}"
                            disabled>
                 </div>
@@ -61,11 +61,11 @@
 
             <div class="flex justify-between">
                 <a href="{{ route('admin.tickets.index') }}"
-                   class="bg-gray-300 px-4 py-2 rounded">
+                   class="bg-grey-medium px-4 py-2 rounded">
                     Cancel
                 </a>
 
-                <button class="bg-blue-600 text-white px-6 py-2 rounded">
+                <button class="bg-accent-primary text-light px-6 py-2 rounded">
                     Save Changes
                 </button>
             </div>

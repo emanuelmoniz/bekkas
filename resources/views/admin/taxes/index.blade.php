@@ -1,17 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">Taxes</h2>
+        <h2 class="font-semibold text-xl text-grey-dark">Taxes</h2>
     </x-slot>
 
     <div class="py-6 max-w-5xl mx-auto sm:px-6 lg:px-8">
         <a href="{{ route('admin.taxes.create') }}"
-           class="bg-blue-600 text-white px-4 py-2 rounded mb-4 inline-block">
+           class="bg-accent-primary text-light px-4 py-2 rounded mb-4 inline-block">
             New Tax
         </a>
 
-        <div class="bg-white shadow rounded">
+        <div class="bg-light shadow rounded">
             <table class="min-w-full border">
-                <thead class="bg-gray-100">
+                <thead class="bg-grey-light">
                     <tr>
                         <th class="px-4 py-2">Name</th>
                         <th class="px-4 py-2">%</th>
@@ -27,7 +27,7 @@
                             <td class="px-4 py-2">{{ $tax->is_active ? 'Yes' : 'No' }}</td>
                             <td class="px-4 py-2 text-right">
                                 <a href="{{ route('admin.taxes.edit', $tax) }}"
-                                   class="text-blue-600 hover:underline">
+                                   class="text-accent-secondary hover:underline">
                                     Edit
                                 </a>
                             </td>

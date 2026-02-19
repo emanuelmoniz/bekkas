@@ -1,6 +1,6 @@
 <section>
     <header class="mb-4">
-        <h2 class="text-lg font-medium text-gray-900">{{ t('profile.addresses') ?: 'Addresses' }}</h2>
+        <h2 class="text-lg font-medium text-dark">{{ t('profile.addresses') ?: 'Addresses' }}</h2>
     </header>
 
     <div class="space-y-4 mb-6">
@@ -39,7 +39,7 @@
                         {{ t('profile.default_address') ?: 'Default address' }}
                     </label>
 
-                    <button class="bg-indigo-600 text-white px-3 py-1 rounded">
+                    <button class="bg-accent-primary text-light px-3 py-1 rounded">
                         {{ t('profile.save') ?: 'Save' }}
                     </button>
                 </form>
@@ -51,13 +51,13 @@
                     @csrf
                     @method('DELETE')
 
-                    <button class="text-red-600 text-sm">
+                    <button class="text-grey-dark text-sm">
                         {{ t('profile.delete') ?: 'Delete' }}
                     </button>
                 </form>
             </div>
         @empty
-            <p class="text-sm text-gray-600">{{ t('profile.no_addresses') ?: 'No addresses yet.' }}</p>
+            <p class="text-sm text-grey-dark">{{ t('profile.no_addresses') ?: 'No addresses yet.' }}</p>
         @endforelse
     </div>
 
@@ -89,7 +89,7 @@
             {{ t('profile.default_address') ?: 'Default address' }}
         </label>
 
-        <button class="bg-green-600 text-white px-4 py-2 rounded mt-2">
+        <button class="bg-accent-primary text-light px-4 py-2 rounded mt-2">
             {{ t('profile.add_address') ?: 'Add Address' }}
         </button>
     </form>

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-grey-dark leading-tight">
             Products
         </h2>
     </x-slot>
@@ -11,13 +11,13 @@
             {{-- ACTION BAR --}}
             <div class="mb-4 flex justify-end">
                 <a href="{{ route('admin.products.create') }}"
-                   class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded">
+                   class="inline-flex items-center bg-accent-primary hover:bg-accent-primary/90 text-light font-semibold px-4 py-2 rounded">
                     New Product
                 </a>
             </div>
 
             {{-- FILTERS --}}
-            <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
+            <form method="GET" class="mb-6 bg-light p-4 rounded shadow">
                 <div class="grid grid-cols-1 md:grid-cols-7 gap-4">
 
                     {{-- NAME --}}
@@ -43,13 +43,13 @@
                             {{ optional($categories->firstWhere('id', request('category_id'))?->translation())->name ?? 'Category' }}
                         </button>
                         <div x-show="open" @click.outside="open=false"
-                             class="absolute z-10 w-full bg-white border rounded shadow mt-1">
+                             class="absolute z-10 w-full bg-light border rounded shadow mt-1">
                             <input x-model="search" class="w-full px-3 py-2 border-b" placeholder="Search...">
                             @foreach($categories as $category)
                                 @php $name = optional($category->translation())->name; @endphp
                                 <div x-show="'{{ strtolower($name) }}'.includes(search.toLowerCase())"
                                      @click="selected='{{ $category->id }}'; open=false"
-                                     class="px-3 py-2 hover:bg-gray-100 cursor-pointer">
+                                     class="px-3 py-2 hover:bg-grey-light cursor-pointer">
                                     {{ $name }}
                                 </div>
                             @endforeach
@@ -64,13 +64,13 @@
                             {{ optional($materials->firstWhere('id', request('material_id'))?->translation())->name ?? 'Material' }}
                         </button>
                         <div x-show="open" @click.outside="open=false"
-                             class="absolute z-10 w-full bg-white border rounded shadow mt-1">
+                             class="absolute z-10 w-full bg-light border rounded shadow mt-1">
                             <input x-model="search" class="w-full px-3 py-2 border-b" placeholder="Search...">
                             @foreach($materials as $material)
                                 @php $name = optional($material->translation())->name; @endphp
                                 <div x-show="'{{ strtolower($name) }}'.includes(search.toLowerCase())"
                                      @click="selected='{{ $material->id }}'; open=false"
-                                     class="px-3 py-2 hover:bg-gray-100 cursor-pointer">
+                                     class="px-3 py-2 hover:bg-grey-light cursor-pointer">
                                     {{ $name }}
                                 </div>
                             @endforeach
@@ -89,10 +89,10 @@
                     {{-- ACTIONS --}}
                     <div class="flex gap-2">
                         <a href="{{ route('admin.products.index') }}"
-                           class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                           class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
                             Reset
                         </a>
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                        <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                             Filter
                         </button>
                     </div>
@@ -100,9 +100,9 @@
             </form>
 
             {{-- TABLE (UNCHANGED) --}}
-            <div class="bg-white shadow rounded">
+            <div class="bg-light shadow rounded">
                 <table class="min-w-full border">
-                    <thead class="bg-gray-100">
+                    <thead class="bg-grey-light">
                         <tr>
                             <th class="px-4 py-2 text-left">Name</th>
                             <th class="px-4 py-2 text-left">Price</th>
@@ -124,7 +124,7 @@
                                 </td>
                                 <td class="px-4 py-2 text-right space-x-2">
                                     <a href="{{ route('admin.products.edit', $product) }}"
-                                       class="inline-flex bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                                       class="inline-flex bg-accent-primary text-light px-3 py-1 rounded text-sm">
                                         Edit
                                     </a>
                                     <form method="POST"
@@ -133,7 +133,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button onclick="return confirm('Delete this product?')"
-                                                class="bg-red-600 text-white px-3 py-1 rounded text-sm">
+                                                class="bg-grey-light text-grey-dark px-3 py-1 rounded text-sm">
                                             Delete
                                         </button>
                                     </form>
@@ -141,7 +141,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-4 py-6 text-center text-gray-500">
+                                <td colspan="4" class="px-4 py-6 text-center text-grey-medium">
                                     No products found.
                                 </td>
                             </tr>

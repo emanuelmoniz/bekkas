@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">
+        <h2 class="font-semibold text-xl text-grey-dark">
             Order {{ $order->order_number }}
         </h2>
     </x-slot>
@@ -9,17 +9,17 @@
 
         <div class="mb-4">
             <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">
-                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Orders</a>
-                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payloads</a>
-                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Checkouts</a>
-                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-gray-100' : 'hover:bg-gray-50' }}">Payments</a>
+                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-grey-light' : 'hover:bg-light' }}">Orders</a>
+                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payloads</a>
+                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-grey-light' : 'hover:bg-light' }}">Checkouts</a>
+                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payments</a>
             </nav>
         </div>
 
         {{-- =======================
              ORDER STATUS (READ)
         ======================= --}}
-        <div class="bg-white shadow rounded p-4 grid md:grid-cols-2 gap-4">
+        <div class="bg-light shadow rounded p-4 grid md:grid-cols-2 gap-4">
             <div>
                 <p><strong>Date:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
                 <p><strong>{{ t('orders.status') ?: 'Status' }}:</strong> 
@@ -47,17 +47,17 @@
                 @endif
                 @if($order->easypayPayload)
                     <div class="mt-3">
-                        <a href="{{ route('admin.orders.payloads.show', $order->easypayPayload) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm">Payload</a>
+                        <a href="{{ route('admin.orders.payloads.show', $order->easypayPayload) }}" class="inline-block bg-light border px-4 py-2 rounded text-sm">Payload</a>
 
-                        <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Checkouts</a>
+                        <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-light border px-4 py-2 rounded text-sm ms-2">Checkouts</a>
 
-                        <a href="{{ route('admin.orders.payments.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Payments</a>
+                        <a href="{{ route('admin.orders.payments.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-light border px-4 py-2 rounded text-sm ms-2">Payments</a>
                     </div>
                 @else
                     <div class="mt-3">
                         <form method="POST" action="{{ route('admin.orders.payloads.store', $order) }}" onsubmit="return confirm('Create Easypay payload for this order?');" class="inline-block">
                             @csrf
-                            <button class="bg-green-50 border-green-200 text-green-700 border px-4 py-2 rounded text-sm">Create payload</button>
+                            <button class="bg-status-success border-green-200 text-status-success border px-4 py-2 rounded text-sm">Create payload</button>
                         </form>
                     </div>
                 @endif            
@@ -67,7 +67,7 @@
         {{-- =======================
              SHIPPING ADDRESS
         ======================= --}}
-        <div class="bg-white shadow rounded p-4">
+        <div class="bg-light shadow rounded p-4">
             <h3 class="font-semibold mb-2">Shipping Address</h3>
 
             <p>{{ $order->address_title }}</p>
@@ -83,11 +83,11 @@
         {{-- =======================
              PRODUCTS
         ======================= --}}
-        <div class="bg-white shadow rounded p-4">
+        <div class="bg-light shadow rounded p-4">
             <h3 class="font-semibold mb-2">Products</h3>
 
             <table class="min-w-full border">
-                <thead class="bg-gray-100">
+                <thead class="bg-grey-light">
                     <tr>
                         <th class="px-3 py-2 text-left">Product</th>
                         <th class="px-3 py-2 text-center">Qty</th>
@@ -115,7 +115,7 @@
         {{-- =======================
              TOTALS
         ======================= --}}
-        <div class="bg-white shadow rounded p-4 text-right space-y-1">
+        <div class="bg-light shadow rounded p-4 text-right space-y-1">
             <p>Products (net): {{ number_format($order->products_total_net, 2) }} €</p>
 
             @if($order->tax_enabled)
@@ -138,7 +138,7 @@
         ======================= --}}
         <form method="POST"
               action="{{ route('admin.orders.update', $order) }}"
-              class="bg-white shadow rounded p-4 space-y-4">
+              class="bg-light shadow rounded p-4 space-y-4">
             @csrf
             @method('PATCH')
 
@@ -170,7 +170,7 @@
                        type="url"
                        placeholder="https://track.carrier.com/..."
                        class="border rounded px-3 py-2 w-full">
-                <p class="text-sm text-gray-500 mt-1">Full URL to tracking page (optional)</p>
+                <p class="text-sm text-grey-medium mt-1">Full URL to tracking page (optional)</p>
             </div>
 
             <div class="flex gap-6">
@@ -186,7 +186,7 @@
             </div>
 
             <div class="pt-2">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded">
+                <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-3 rounded">
                     Save changes
                 </button>
             </div>

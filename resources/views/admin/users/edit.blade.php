@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-grey-dark leading-tight">
             Edit User
         </h2>
     </x-slot>
@@ -13,7 +13,7 @@
                 @csrf
                 @method('PATCH')
 
-                <div class="bg-white p-6 rounded shadow space-y-4">
+                <div class="bg-light p-6 rounded shadow space-y-4">
                     <h3 class="text-lg font-semibold border-b pb-2">User Information</h3>
 
                     {{-- NAME --}}
@@ -23,9 +23,9 @@
                                name="name"
                                value="{{ old('name', $user->name) }}"
                                required
-                               class="border rounded px-3 py-2 w-full @error('name') border-red-500 @enderror">
+                               class="border rounded px-3 py-2 w-full @error('name') border-status-error @enderror">
                         @error('name')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -36,9 +36,9 @@
                                name="email"
                                value="{{ old('email', $user->email) }}"
                                required
-                               class="border rounded px-3 py-2 w-full @error('email') border-red-500 @enderror">
+                               class="border rounded px-3 py-2 w-full @error('email') border-status-error @enderror">
                         @error('email')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -48,9 +48,9 @@
                         <input type="text"
                                name="phone"
                                value="{{ old('phone', $user->phone) }}"
-                               class="border rounded px-3 py-2 w-full @error('phone') border-red-500 @enderror">
+                               class="border rounded px-3 py-2 w-full @error('phone') border-status-error @enderror">
                         @error('phone')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -59,9 +59,9 @@
                         <label class="block font-semibold mb-1">New Password (leave blank to keep current)</label>
                         <input type="password"
                                name="password"
-                               class="border rounded px-3 py-2 w-full @error('password') border-red-500 @enderror">
+                               class="border rounded px-3 py-2 w-full @error('password') border-status-error @enderror">
                         @error('password')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -81,14 +81,14 @@
                                    name="is_active"
                                    value="1"
                                    @checked(old('is_active', $user->is_active))
-                                   class="rounded border-gray-300">
+                                   class="rounded border-grey-medium">
                             <span class="ml-2 font-semibold">Active</span>
                         </label>
                     </div>
 
                     <div class="flex justify-end">
                         <button type="submit"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded">
+                                class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-3 rounded">
                             Update User
                         </button>
                     </div>
@@ -96,7 +96,7 @@
             </form>
 
             {{-- ADDRESSES --}}
-            <div class="bg-white p-6 rounded shadow mb-6">
+            <div class="bg-light p-6 rounded shadow mb-6">
                 <h3 class="text-lg font-semibold border-b pb-2 mb-4">Addresses</h3>
 
                 @foreach ($user->addresses as $address)
@@ -191,7 +191,7 @@
                                            name="is_default"
                                            value="1"
                                            @checked(old('is_default', $address->is_default))
-                                           class="rounded border-gray-300">
+                                           class="rounded border-grey-medium">
                                     <span class="ml-2 font-semibold">Default Address</span>
                                 </label>
                             </div>
@@ -199,7 +199,7 @@
 
                         <div class="flex justify-end">
                             <button type="submit"
-                                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">
+                                    class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded text-sm">
                                 Update Address
                             </button>
                         </div>
@@ -207,7 +207,7 @@
                 @endforeach
 
                 {{-- ADD NEW ADDRESS --}}
-                <form method="POST" action="{{ route('admin.users.addresses.store', $user) }}" class="border-2 border-dashed border-gray-300 rounded p-4 bg-gray-50">
+                <form method="POST" action="{{ route('admin.users.addresses.store', $user) }}" class="border-2 border-dashed border-grey-medium rounded p-4 bg-light">
                     @csrf
 
                     <h4 class="font-semibold mb-3">Add New Address</h4>
@@ -291,7 +291,7 @@
                                 <input type="checkbox"
                                        name="is_default"
                                        value="1"
-                                       class="rounded border-gray-300">
+                                       class="rounded border-grey-medium">
                                 <span class="ml-2 font-semibold">Default Address</span>
                             </label>
                         </div>
@@ -299,7 +299,7 @@
 
                     <div class="flex justify-end">
                         <button type="submit"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">
+                                class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded text-sm">
                             Add Address
                         </button>
                     </div>
@@ -309,7 +309,7 @@
             {{-- BACK BUTTON --}}
             <div class="flex justify-start">
                 <a href="{{ route('admin.users.index') }}"
-                   class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded">
+                   class="bg-grey-medium hover:bg-grey-dark text-light px-6 py-3 rounded">
                     Back to Users
                 </a>
             </div>

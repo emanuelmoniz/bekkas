@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-grey-dark leading-tight">
             Ticket Categories
         </h2>
     </x-slot>
@@ -12,14 +12,14 @@
 
             <div class="mb-4 flex justify-end">
                 <a href="{{ route('admin.ticket-categories.create') }}"
-                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                   class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                     New Category
                 </a>
             </div>
 
-            <div class="bg-white shadow rounded">
+            <div class="bg-light shadow rounded">
                 <table class="min-w-full border">
-                    <thead class="bg-gray-100">
+                    <thead class="bg-grey-light">
                         <tr>
                             <th class="px-4 py-2 text-left">Name</th>
                             <th class="px-4 py-2 text-center">Status</th>
@@ -34,14 +34,14 @@
                                 </td>
                                 <td class="px-4 py-2 text-center">
                                     @if ($category->active)
-                                        <span class="text-green-600 font-semibold">Active</span>
+                                        <span class="text-status-success font-semibold">Active</span>
                                     @else
-                                        <span class="text-red-600 font-semibold">Inactive</span>
+                                        <span class="text-status-error font-semibold">Inactive</span>
                                     @endif
                                 </td>
                                 <td class="px-4 py-2 text-right space-x-2">
                                     <a href="{{ route('admin.ticket-categories.edit', $category) }}"
-                                       class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
+                                       class="bg-accent-primary hover:bg-accent-primary/90 text-light px-3 py-1 rounded text-sm">
                                         Edit
                                     </a>
 
@@ -52,7 +52,7 @@
                                         @method('DELETE')
                                         <button type="submit"
                                                 onclick="return confirm('Delete this category?')"
-                                                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">
+                                                class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-3 py-1 rounded text-sm">
                                             Delete
                                         </button>
                                     </form>
@@ -60,7 +60,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="px-4 py-6 text-center text-gray-500">
+                                <td colspan="3" class="px-4 py-6 text-center text-grey-medium">
                                     No categories found.
                                 </td>
                             </tr>

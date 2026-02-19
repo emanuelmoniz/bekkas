@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-grey-dark leading-tight">
             Open Ticket
         </h2>
     </x-slot>
@@ -12,7 +12,7 @@
               enctype="multipart/form-data">
             @csrf
 
-            <div class="bg-white p-6 rounded shadow mb-6 space-y-4">
+            <div class="bg-light p-6 rounded shadow mb-6 space-y-4">
 
                 <div>
                     <label class="block font-semibold mb-1">User *</label>
@@ -69,10 +69,10 @@
 
             <div class="flex justify-end gap-3">
                 <a href="{{ route('admin.tickets.index') }}"
-                   class="bg-gray-300 px-6 py-2 rounded">
+                   class="bg-grey-medium px-6 py-2 rounded">
                     Cancel
                 </a>
-                <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">
+                <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-2 rounded">
                     Open Ticket
                 </button>
             </div>

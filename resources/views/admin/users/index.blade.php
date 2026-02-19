@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-grey-dark leading-tight">
             Users
         </h2>
     </x-slot>
@@ -11,13 +11,13 @@
             {{-- ACTION BAR --}}
             <div class="mb-4 flex justify-end">
                 <a href="{{ route('admin.users.create') }}"
-                   class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded">
+                   class="inline-flex items-center bg-accent-primary hover:bg-accent-primary/90 text-light font-semibold px-4 py-2 rounded">
                     New User
                 </a>
             </div>
 
             {{-- FILTERS --}}
-            <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
+            <form method="GET" class="mb-6 bg-light p-4 rounded shadow">
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 
                     {{-- NAME --}}
@@ -51,10 +51,10 @@
                     {{-- ACTIONS --}}
                     <div class="flex gap-2">
                         <a href="{{ route('admin.users.index') }}"
-                           class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                           class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
                             Reset
                         </a>
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                        <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                             Filter
                         </button>
                     </div>
@@ -62,9 +62,9 @@
             </form>
 
             {{-- TABLE --}}
-            <div class="bg-white shadow rounded">
+            <div class="bg-light shadow rounded">
                 <table class="min-w-full border">
-                    <thead class="bg-gray-100">
+                    <thead class="bg-grey-light">
                         <tr>
                             <th class="px-4 py-2 text-left">Name</th>
                             <th class="px-4 py-2 text-left">Email</th>
@@ -86,24 +86,24 @@
                                     {{ $user->phone ?? '-' }}
                                 </td>
                                 <td class="px-4 py-2">
-                                    <span class="px-2 py-1 rounded text-xs {{ $user->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                    <span class="px-2 py-1 rounded text-xs {{ $user->is_active ? 'bg-status-success text-status-success' : 'bg-status-error/10 text-status-error' }}">
                                         {{ $user->is_active ? 'Yes' : 'No' }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-2 text-right space-x-2">
                                     <a href="{{ route('admin.users.show', $user) }}"
-                                       class="inline-flex bg-gray-600 text-white px-3 py-1 rounded text-sm">
+                                       class="inline-flex bg-grey-dark text-light px-3 py-1 rounded text-sm">
                                         View
                                     </a>
                                     <a href="{{ route('admin.users.edit', $user) }}"
-                                       class="inline-flex bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                                       class="inline-flex bg-accent-primary text-light px-3 py-1 rounded text-sm">
                                         Edit
                                     </a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-4 py-6 text-center text-gray-500">
+                                <td colspan="5" class="px-4 py-6 text-center text-grey-medium">
                                     No users found.
                                 </td>
                             </tr>

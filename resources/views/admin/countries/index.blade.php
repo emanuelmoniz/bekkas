@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">
+        <h2 class="font-semibold text-xl text-grey-dark">
             Countries
         </h2>
     </x-slot>
@@ -8,14 +8,14 @@
     <div class="py-6 max-w-6xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4 flex justify-end">
             <a href="{{ route('admin.countries.create') }}"
-               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+               class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                 New Country
             </a>
         </div>
 
-        <div class="bg-white shadow rounded">
+        <div class="bg-light shadow rounded">
             <table class="min-w-full border">
-                <thead class="bg-gray-100">
+                <thead class="bg-grey-light">
                     <tr>
                         <th class="px-4 py-2 text-left">Name PT</th>
                         <th class="px-4 py-2 text-left">Name EN</th>
@@ -37,7 +37,7 @@
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
                                 <a href="{{ route('admin.countries.edit', $country) }}"
-                                   class="text-blue-600 hover:underline">
+                                   class="text-accent-secondary hover:underline">
                                     Edit
                                 </a>
 
@@ -47,7 +47,7 @@
                                       onsubmit="return confirm('Delete this country?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="text-red-600 hover:underline">
+                                    <button class="text-grey-dark hover:underline">
                                         Delete
                                     </button>
                                 </form>
@@ -56,7 +56,7 @@
                     @empty
                         <tr>
                             <td colspan="6"
-                                class="px-4 py-6 text-center text-gray-500">
+                                class="px-4 py-6 text-center text-grey-medium">
                                 No countries found.
                             </td>
                         </tr>

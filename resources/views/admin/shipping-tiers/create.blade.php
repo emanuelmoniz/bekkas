@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">
+        <h2 class="font-semibold text-xl text-grey-dark">
             New Shipping Tier
         </h2>
     </x-slot>
@@ -8,7 +8,7 @@
     <div class="py-6 max-w-3xl mx-auto sm:px-6 lg:px-8">
         <form method="POST"
               action="{{ route('admin.shipping-tiers.store') }}"
-              class="bg-white shadow rounded p-6 space-y-4"
+              class="bg-light shadow rounded p-6 space-y-4"
               x-data="{
                   selectedCountries: [],
                   availableRegions: [],
@@ -45,9 +45,9 @@
                            name="name_pt"
                            value="{{ old('name_pt') }}"
                            required
-                           class="w-full border rounded px-3 py-2 @error('name_pt') border-red-500 @enderror">
+                           class="w-full border rounded px-3 py-2 @error('name_pt') border-status-error @enderror">
                     @error('name_pt')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -57,9 +57,9 @@
                            name="name_en"
                            value="{{ old('name_en') }}"
                            required
-                           class="w-full border rounded px-3 py-2 @error('name_en') border-red-500 @enderror">
+                           class="w-full border rounded px-3 py-2 @error('name_en') border-status-error @enderror">
                     @error('name_en')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
             </div>
@@ -71,9 +71,9 @@
                            name="weight_from"
                            value="{{ old('weight_from') }}"
                            required
-                           class="w-full border rounded px-3 py-2 @error('weight_from') border-red-500 @enderror">
+                           class="w-full border rounded px-3 py-2 @error('weight_from') border-status-error @enderror">
                     @error('weight_from')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -83,9 +83,9 @@
                            name="weight_to"
                            value="{{ old('weight_to') }}"
                            required
-                           class="w-full border rounded px-3 py-2 @error('weight_to') border-red-500 @enderror">
+                           class="w-full border rounded px-3 py-2 @error('weight_to') border-status-error @enderror">
                     @error('weight_to')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
             </div>
@@ -98,9 +98,9 @@
                            name="cost_gross"
                            value="{{ old('cost_gross') }}"
                            required
-                           class="w-full border rounded px-3 py-2 @error('cost_gross') border-red-500 @enderror">
+                           class="w-full border rounded px-3 py-2 @error('cost_gross') border-status-error @enderror">
                     @error('cost_gross')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -111,9 +111,9 @@
                            value="{{ old('shipping_days', 1) }}"
                            min="1"
                            required
-                           class="w-full border rounded px-3 py-2 @error('shipping_days') border-red-500 @enderror">
+                           class="w-full border rounded px-3 py-2 @error('shipping_days') border-status-error @enderror">
                     @error('shipping_days')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
             </div>
@@ -123,7 +123,7 @@
                     <label class="block text-sm font-medium">Tax *</label>
                     <select name="tax_id"
                             required
-                            class="w-full border rounded px-3 py-2 @error('tax_id') border-red-500 @enderror">
+                            class="w-full border rounded px-3 py-2 @error('tax_id') border-status-error @enderror">
                         <option value="">— Select tax —</option>
                         @foreach ($taxes as $tax)
                             <option value="{{ $tax->id }}"
@@ -133,14 +133,14 @@
                         @endforeach
                     </select>
                     @error('tax_id')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
             </div>
 
             <div>
                 <label class="block text-sm font-medium mb-2">Countries * (select at least one)</label>
-                <div class="border rounded p-3 max-h-48 overflow-y-auto @error('countries') border-red-500 @enderror">
+                <div class="border rounded p-3 max-h-48 overflow-y-auto @error('countries') border-status-error @enderror">
                     @foreach ($countries as $country)
                         <label class="flex items-center gap-2 py-1">
                             <input type="checkbox"
@@ -155,13 +155,13 @@
                     @endforeach
                 </div>
                 @error('countries')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <div>
                 <label class="block text-sm font-medium mb-2">Regions * (select countries first)</label>
-                <div class="border rounded p-3 max-h-48 overflow-y-auto @error('regions') border-red-500 @enderror"
+                <div class="border rounded p-3 max-h-48 overflow-y-auto @error('regions') border-status-error @enderror"
                      x-show="availableRegions.length > 0">
                     <template x-for="region in availableRegions" :key="region.id">
                         <label class="flex items-center gap-2 py-1">
@@ -174,14 +174,14 @@
                         </label>
                     </template>
                 </div>
-                <p class="text-sm text-gray-500 mt-1" x-show="selectedCountries.length === 0">
+                <p class="text-sm text-grey-medium mt-1" x-show="selectedCountries.length === 0">
                     Please select at least one country first
                 </p>
-                <p class="text-sm text-gray-500 mt-1" x-show="selectedCountries.length > 0 && availableRegions.length === 0">
+                <p class="text-sm text-grey-medium mt-1" x-show="selectedCountries.length > 0 && availableRegions.length === 0">
                     No regions available for selected countries
                 </p>
                 @error('regions')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -193,16 +193,16 @@
             <label class="flex items-center gap-2">
                 <input type="checkbox" name="use_for_default" value="1" @checked(old('use_for_default', false))>
                 Use for Default
-                <span class="text-sm text-gray-600">(Show in default tier selection for shipping config and regions)</span>
+                <span class="text-sm text-grey-dark">(Show in default tier selection for shipping config and regions)</span>
             </label>
 
             <div class="flex justify-between">
                 <a href="{{ route('admin.shipping-tiers.index') }}"
-                   class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                   class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
                     Cancel
                 </a>
                 <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                        class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                     Save
                 </button>
             </div>

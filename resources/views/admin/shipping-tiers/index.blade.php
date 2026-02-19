@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">
+        <h2 class="font-semibold text-xl text-grey-dark">
             Shipping Tiers
         </h2>
     </x-slot>
@@ -8,13 +8,13 @@
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4 flex justify-end">
             <a href="{{ route('admin.shipping-tiers.create') }}"
-               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+               class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                 New Shipping Tier
             </a>
         </div>
 
         {{-- FILTERS --}}
-        <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
+        <form method="GET" class="mb-6 bg-light p-4 rounded shadow">
             <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 
                 {{-- NAME --}}
@@ -51,10 +51,10 @@
                 {{-- ACTIONS --}}
                 <div class="flex gap-2">
                     <a href="{{ route('admin.shipping-tiers.index') }}"
-                       class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                       class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
                         Reset
                     </a>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                         Filter
                     </button>
                 </div>
@@ -62,9 +62,9 @@
         </form>
 
         {{-- TABLE --}}
-        <div class="bg-white shadow rounded">
+        <div class="bg-light shadow rounded">
             <table class="min-w-full border">
-                <thead class="bg-gray-100">
+                <thead class="bg-grey-light">
                     <tr>
                         <th class="px-4 py-2 text-left">Name</th>
                         <th class="px-4 py-2 text-left">Weight From (g)</th>
@@ -96,13 +96,13 @@
                                 <span class="text-xs">{{ $tier->regions->count() }}</span>
                             </td>
                             <td class="px-4 py-2">
-                                <span class="px-2 py-1 rounded text-xs {{ $tier->active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                <span class="px-2 py-1 rounded text-xs {{ $tier->active ? 'bg-status-success text-status-success' : 'bg-status-error/10 text-status-error' }}">
                                     {{ $tier->active ? 'Yes' : 'No' }}
                                 </span>
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
                                 <a href="{{ route('admin.shipping-tiers.edit', $tier) }}"
-                                   class="text-blue-600 hover:underline">
+                                   class="text-accent-secondary hover:underline">
                                     Edit
                                 </a>
 
@@ -110,7 +110,7 @@
                                       action="{{ route('admin.shipping-tiers.duplicate', $tier) }}"
                                       class="inline">
                                     @csrf
-                                    <button class="text-green-600 hover:underline">
+                                    <button class="text-status-success hover:underline">
                                         Duplicate
                                     </button>
                                 </form>
@@ -121,7 +121,7 @@
                                       onsubmit="return confirm('Delete this tier?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="text-red-600 hover:underline">
+                                    <button class="text-grey-dark hover:underline">
                                         Delete
                                     </button>
                                 </form>
@@ -130,7 +130,7 @@
                     @empty
                         <tr>
                             <td colspan="9"
-                                class="px-4 py-6 text-center text-gray-500">
+                                class="px-4 py-6 text-center text-grey-medium">
                                 No shipping tiers found.
                             </td>
                         </tr>

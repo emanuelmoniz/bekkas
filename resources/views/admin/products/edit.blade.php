@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-grey-dark leading-tight">
             Edit Product
         </h2>
     </x-slot>
@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             {{-- PHOTOS --}}
-            <div class="bg-white p-6 rounded shadow mb-6">
+            <div class="bg-light p-6 rounded shadow mb-6">
                 <h3 class="font-semibold mb-4">Photos</h3>
 
                 <form method="POST"
@@ -25,7 +25,7 @@
                            class="border rounded px-3 py-2">
 
                     <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded">
+                            class="bg-accent-primary hover:bg-accent-primary/90 text-light font-semibold px-4 py-2 rounded">
                         Upload Photos
                     </button>
                 </form>
@@ -37,14 +37,14 @@
                                  class="h-32 w-full object-cover rounded mb-2">
 
                             @if ($photo->is_primary)
-                                <div class="text-green-600 font-semibold text-sm mb-1">
+                                <div class="text-status-success font-semibold text-sm mb-1">
                                     Primary
                                 </div>
                             @else
                                 <form method="POST"
                                       action="{{ route('admin.photos.primary', $photo) }}">
                                     @csrf
-                                    <button class="text-blue-600 text-sm">
+                                    <button class="text-accent-primary text-sm">
                                         Make Primary
                                     </button>
                                 </form>
@@ -56,7 +56,7 @@
                                 @method('DELETE')
                                 <button type="submit"
                                         onclick="return confirm('Delete photo?')"
-                                        class="text-red-600 text-sm mt-1">
+                                        class="text-status-error text-sm mt-1">
                                     Delete
                                 </button>
                             </form>
@@ -71,7 +71,7 @@
             {{-- CANCEL --}}
             <div class="mt-4">
                 <a href="{{ route('admin.products.index') }}"
-                   class="inline-flex bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-3 rounded">
+                   class="inline-flex bg-grey-medium hover:bg-grey-medium text-grey-dark px-6 py-3 rounded">
                     Cancel
                 </a>
             </div>
