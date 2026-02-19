@@ -1,0 +1,78 @@
+{
+  "name": "BEKKAS",
+  "short_name": "BEKKAS",
+  "description": "BEKKAS — 3D printing services & online store",
+  "lang": "en-US",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "shortcuts": [
+    {
+      "name": "Products",
+      "short_name": "Products",
+      "description": "Browse the product catalog",
+      "url": "/products",
+      "icons": [
+        { "src": "/images/favicon/favicon-32x32.png", "sizes": "32x32", "type": "image/png" }
+      ]
+    },
+    {
+      "name": "Cart",
+      "short_name": "Cart",
+      "description": "View your cart",
+      "url": "/cart",
+      "icons": [
+        { "src": "/images/favicon/favicon-32x32.png", "sizes": "32x32", "type": "image/png" }
+      ]
+    },
+    {
+      "name": "Checkout",
+      "short_name": "Checkout",
+      "description": "Proceed to checkout",
+      "url": "/checkout",
+      "icons": [
+        { "src": "/images/favicon/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" }
+      ]
+    },
+    {
+      "name": "Contact",
+      "short_name": "Contact",
+      "description": "Contact & support",
+      "url": "/#contact",
+      "icons": [
+        { "src": "/images/favicon/favicon-16x16.png", "sizes": "16x16", "type": "image/png" }
+      ]
+    }
+  ],
+  "icons": [
+    {
+      "src": "/images/favicon/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/favicon/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/favicon/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/favicon/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/favicon/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
