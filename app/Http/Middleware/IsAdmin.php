@@ -17,7 +17,7 @@ class IsAdmin
         // Non-admins (including guests) are sent to the public home instead of seeing a 403.
         $user = Auth::user();
         if (! $user || ! $user->isAdmin()) {
-            return redirect()->route('products.index');
+            return redirect()->route('store.index');
         }
 
         return $next($request);

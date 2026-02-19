@@ -17,7 +17,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
                         @foreach ($products as $product)
                             <div class="bg-white rounded shadow p-4 hover:shadow-lg transition relative isolate">
-                                <a href="{{ route('products.show', $product) }}">
+                                <a href="{{ route('store.show', $product) }}">
                                     <img src="{{ asset('storage/' . optional($product->primaryPhoto)->path) }}"
                                          class="h-40 w-full object-cover rounded mb-3">
                                     <div class="font-semibold">
@@ -28,7 +28,7 @@
                                     </div>
                                     @if(isset($deliveryDates[$product->id]) && $deliveryDates[$product->id])
                                         <div class="text-xs text-gray-500 mt-1">
-                                            {{ t('products.expected_delivery') ?: 'Expected delivery' }}: {{ $deliveryDates[$product->id] }}
+                                            {{ t('store.expected_delivery') ?: 'Expected delivery' }}: {{ $deliveryDates[$product->id] }}
                                         </div>
                                     @endif
                                 </a>
@@ -55,7 +55,7 @@
                     
                     @if(config('app.store_enabled'))
                         <div class="mt-4">
-                            <a href="{{ route('products.index') }}"
+                            <a href="{{ route('store.index') }}"
                                class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded text-center font-medium">
                                 {{ t('favorites.browse_products') ?: 'Browse Products' }}
                             </a>

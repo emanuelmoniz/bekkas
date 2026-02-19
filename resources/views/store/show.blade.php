@@ -43,7 +43,7 @@
                          class="w-full rounded shadow">
                 @empty
                     <div class="bg-gray-200 h-64 flex items-center justify-center rounded">
-                        <span class="text-gray-500">{{ t('products.no_photos') ?: 'No photos available' }}</span>
+                        <span class="text-gray-500">{{ t('store.no_photos') ?: 'No photos available' }}</span>
                     </div>
                 @endforelse
             </div>
@@ -72,20 +72,20 @@
 
                 {{-- WEIGHT --}}
                 <div class="text-sm text-gray-600">
-                    {{ t('products.weight') ?: 'Weight' }}: {{ $product->weight }} g
+                    {{ t('store.weight') ?: 'Weight' }}: {{ $product->weight }} g
                 </div>
 
                 {{-- EXPECTED DELIVERY --}}
                 @if(isset($deliveryDate) && $deliveryDate)
                     <div class="bg-blue-50 border border-blue-200 rounded p-3">
                         <div class="text-sm font-medium text-blue-900">
-                            {{ t('products.expected_delivery') ?: 'Expected delivery' }}
+                            {{ t('store.expected_delivery') ?: 'Expected delivery' }}
                         </div>
                         <div class="text-lg font-semibold text-blue-700">
                             {{ $deliveryDate }}
                         </div>
                         <div class="text-xs text-blue-600 mt-1">
-                            {{ t('products.delivery_working_days') ?: 'Calculated in working days (Mon-Fri)' }}
+                            {{ t('store.delivery_working_days') ?: 'Calculated in working days (Mon-Fri)' }}
                         </div>
                     </div>
                 @endif
@@ -93,24 +93,24 @@
                 {{-- STOCK / BACKORDER --}}
                 @if ($product->stock > 0)
                     <div class="text-sm">
-                        {{ t('products.stock') ?: 'Stock' }}:
-                        <span class="text-green-600 font-medium">{{ t('products.available') ?: 'Available' }}</span>
+                        {{ t('store.stock') ?: 'Stock' }}:
+                        <span class="text-green-600 font-medium">{{ t('store.available') ?: 'Available' }}</span>
                     </div>
                 @elseif ($product->is_backorder)
                     <div class="bg-amber-50 border border-amber-200 rounded p-3">
                         <div class="text-sm font-medium text-amber-900 mb-1">
-                            {{ t('products.backorder_title') ?: 'Made to order' }}
+                            {{ t('store.backorder_title') ?: 'Made to order' }}
                         </div>
                         <div class="text-sm text-amber-800">
-                            {{ t('products.backorder_message') ?: 'This item does not have stock, but can be printed per request. The production time is' }}
-                            <span class="font-medium">{{ $product->production_time }} {{ t('products.working_days') ?: 'working days' }}</span>.
-                            {{ t('products.backorder_delivery_note') ?: 'The shown delivery date estimation already includes this production time.' }}
+                            {{ t('store.backorder_message') ?: 'This item does not have stock, but can be printed per request. The production time is' }}
+                            <span class="font-medium">{{ $product->production_time }} {{ t('store.working_days') ?: 'working days' }}</span>.
+                            {{ t('store.backorder_delivery_note') ?: 'The shown delivery date estimation already includes this production time.' }}
                         </div>
                     </div>
                 @else
                     <div class="text-sm">
-                        {{ t('products.stock') ?: 'Stock' }}:
-                        <span class="text-red-600 font-medium">{{ t('products.out_of_stock') ?: 'Out of stock' }}</span>
+                        {{ t('store.stock') ?: 'Stock' }}:
+                        <span class="text-red-600 font-medium">{{ t('store.out_of_stock') ?: 'Out of stock' }}</span>
                     </div>
                 @endif
 
@@ -118,7 +118,7 @@
                 @if ($product->categories->isNotEmpty())
                     <div>
                         <h4 class="font-medium text-sm text-gray-700 mb-1">
-                            {{ t('products.categories') ?: 'Categories' }}
+                            {{ t('store.categories') ?: 'Categories' }}
                         </h4>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($product->categories as $category)
@@ -134,7 +134,7 @@
                 @if ($product->materials->isNotEmpty())
                     <div>
                         <h4 class="font-medium text-sm text-gray-700 mb-1">
-                            {{ t('products.materials') ?: 'Materials' }}
+                            {{ t('store.materials') ?: 'Materials' }}
                         </h4>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($product->materials as $material)
@@ -158,7 +158,7 @@
                @if(!$product->is_backorder) max="{{ $product->stock }}" @endif
                class="w-20 border rounded px-2 py-1">
         <button class="bg-indigo-600 text-white px-4 py-2 rounded">
-            {{ t('products.add_to_cart') ?: 'Add to cart' }}
+            {{ t('store.add_to_cart') ?: 'Add to cart' }}
         </button>
     </form>
 @endif

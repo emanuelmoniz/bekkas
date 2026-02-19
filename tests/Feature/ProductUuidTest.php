@@ -11,7 +11,7 @@ class ProductUuidTest extends TestCase
     {
         $product = Product::factory()->create(['active' => true]);
 
-        $url = route('products.show', $product);
+        $url = route('store.show', $product);
 
         // URL should contain UUID and the last path segment should be the UUID (avoid false positives)
         $this->assertStringContainsString($product->uuid, $url);
@@ -26,7 +26,7 @@ class ProductUuidTest extends TestCase
     {
         $product = Product::factory()->create(['active' => true]);
 
-        $this->get(route('products.show', $product))
+        $this->get(route('store.show', $product))
             ->assertOk();
     }
 }

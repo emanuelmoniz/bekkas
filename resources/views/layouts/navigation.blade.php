@@ -131,16 +131,16 @@
                         {{-- Products --}}
                         @if(config('app.store_enabled'))
                             <div class="relative h-full flex items-center">
-                                <x-nav-button :active="request()->routeIs('products.*')" @click="window.location.href='{{ route('products.index') }}'">
-                                    {{ t('nav.products') ?: 'Products' }}
+                                <x-nav-button :active="request()->routeIs('store.*')" @click="window.location.href='{{ route('store.index') }}'">
+                                    {{ t('nav.store') ?: 'Store' }}
                                 </x-nav-button>
                             </div>
                         @endif
 
                         {{-- Architecture --}}
                         <div class="relative h-full flex items-center">
-                            <x-nav-button :active="request()->routeIs('architecture.*')" @click="window.location.href='{{ route('architecture.index') }}'">
-                                {{ t('nav.architecture') ?: 'Architecture' }}
+                            <x-nav-button :active="request()->routeIs('custom.*')" @click="window.location.href='{{ route('custom.index') }}'">
+                                {{ t('nav.custom') ?: 'Custom' }}
                             </x-nav-button>
                         </div>
 
@@ -383,13 +383,13 @@
             @else
                 {{-- PUBLIC MENU MOBILE --}}
                 @if(config('app.store_enabled'))
-                    <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
-                        {{ t('nav.products') ?: 'Products' }}
+                    <x-responsive-nav-link :href="route('store.index')" :active="request()->routeIs('store.*')">
+                        {{ t('nav.store') ?: 'Store' }}
                     </x-responsive-nav-link>
                 @endif
                 
-                <x-responsive-nav-link :href="route('architecture.index')" :active="request()->routeIs('architecture.*')">
-                    {{ t('nav.architecture') ?: 'Architecture' }}
+                <x-responsive-nav-link :href="route('custom.index')" :active="request()->routeIs('custom.*')">
+                    {{ t('nav.custom') ?: 'Custom' }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
                     {{ t('nav.about') ?: 'About Us' }}

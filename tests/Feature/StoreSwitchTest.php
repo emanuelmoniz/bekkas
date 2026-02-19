@@ -29,9 +29,9 @@ class StoreSwitchTest extends TestCase
             'active' => true,
         ]);
 
-        // products index/show should be 404
-        $this->get(route('products.index'))->assertStatus(404);
-        $this->get(route('products.show', $product))->assertStatus(404);
+        // store index/show should be 404
+        $this->get(route('store.index'))->assertStatus(404);
+        $this->get(route('store.show', $product))->assertStatus(404);
 
         // cart page should be disabled
         $this->get(route('cart.index'))->assertStatus(404);

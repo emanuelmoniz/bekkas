@@ -125,7 +125,7 @@
                                     —
                                     €<span x-text="Number(tier.cost_gross).toFixed(2)"></span>
                                 </span>
-                                (<span x-text="tier.shipping_days"></span> {{ t('products.working_days') ?: 'working days' }})
+                                (<span x-text="tier.shipping_days"></span> {{ t('store.working_days') ?: 'working days' }})
                             </span>
                         </label>
                     </template>

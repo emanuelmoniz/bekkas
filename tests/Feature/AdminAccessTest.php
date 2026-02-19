@@ -23,7 +23,7 @@ class AdminAccessTest extends TestCase
 
         $this->actingAs($user)
             ->get('/admin')
-            ->assertRedirect(route('products.index'));
+            ->assertRedirect(route('store.index'));
     }
 
     public function test_admin_user_can_access_admin_dashboard()

@@ -20,7 +20,7 @@ class PagesTest extends TestCase
 
     public function test_products_index_is_accessible()
     {
-        $response = $this->get(route('products.index'));
+        $response = $this->get(route('store.index'));
         $response->assertStatus(200);
     }
 

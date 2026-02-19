@@ -101,7 +101,7 @@
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     @if(config('app.store_enabled'))
-                        <a href="{{ route('products.index') }}" class="inline-block bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 rounded font-semibold transition-colors">
+                        <a href="{{ route('store.index') }}" class="inline-block bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 rounded font-semibold transition-colors">
                             {{ t('about.cta.shop') ?: 'Browse Products' }}
                         </a>
                     @endif

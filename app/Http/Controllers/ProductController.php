@@ -95,7 +95,7 @@ class ProductController extends Controller
             $deliveryDates[$product->id] = $deliveryInfo['formatted'];
         }
 
-        return view('products.index', compact('products', 'categories', 'materials', 'favoriteIds', 'deliveryDates'));
+        return view('store.index', compact('products', 'categories', 'materials', 'favoriteIds', 'deliveryDates'));
     }
 
     public function show(Product $product)
@@ -117,6 +117,6 @@ class ProductController extends Controller
         $deliveryInfo = $this->deliveryCalculator->calculateDeliveryDate($product);
         $deliveryDate = $deliveryInfo['formatted'];
 
-        return view('products.show', compact('product', 'isFavorite', 'deliveryDate'));
+        return view('store.show', compact('product', 'isFavorite', 'deliveryDate'));
     }
 }

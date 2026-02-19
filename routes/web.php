@@ -53,13 +53,13 @@ Route::get('/dashboard', function () {
 Route::get('/language/{locale}', [LanguageController::class, 'switch'])
     ->name('language.switch');
 
-Route::get('/products', [ClientProductController::class, 'index'])
+Route::get('/store', [ClientProductController::class, 'index'])
     ->middleware(\App\Http\Middleware\EnsureStoreEnabled::class)
-    ->name('products.index');
+    ->name('store.index');
 
-Route::get('/products/{product}', [ClientProductController::class, 'show'])
+Route::get('/store/{product}', [ClientProductController::class, 'show'])
     ->middleware(\App\Http\Middleware\EnsureStoreEnabled::class)
-    ->name('products.show');
+    ->name('store.show');
 
 Route::get('/about', function () {
     return view('about');
@@ -69,9 +69,9 @@ Route::get('/about', function () {
 Route::view('/terms', 'terms')->name('terms');
 Route::view('/privacy', 'privacy')->name('privacy');
 
-Route::get('/architecture', function () {
-    return view('architecture');
-})->name('architecture.index');
+Route::get('/custom', function () {
+    return view('custom');
+})->name('custom.index');
 
 Route::post('/contact', [ContactController::class, 'store'])
     ->name('contact.store');

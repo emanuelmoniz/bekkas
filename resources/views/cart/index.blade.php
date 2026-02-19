@@ -14,7 +14,7 @@
                     
                     @if(config('app.store_enabled'))
                         <div class="mt-4">
-                            <a href="{{ route('products.index') }}"
+                            <a href="{{ route('store.index') }}"
                                class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded text-center font-medium">
                                 {{ t('cart.start_shopping') ?: 'Start Shopping' }}
                             </a>
@@ -100,7 +100,7 @@
 
                     @if(config('app.store_enabled'))
                         <div class="pt-2">
-                            <a href="{{ route('products.index') }}"
+                            <a href="{{ route('store.index') }}"
                                class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded text-center font-medium block">
                                 {{ t('cart.continue_shopping') ?: 'Continue Shopping' }}
                             </a>

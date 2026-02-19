@@ -45,11 +45,11 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'nav.logout', 'locale' => 'pt-PT', 'value' => 'Sair', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'nav.logout', 'locale' => 'en-UK', 'value' => 'Log Out', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'nav.products', 'locale' => 'pt-PT', 'value' => 'Produtos', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'nav.products', 'locale' => 'en-UK', 'value' => 'Products', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'nav.store', 'locale' => 'pt-PT', 'value' => 'Loja', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'nav.store', 'locale' => 'en-UK', 'value' => 'Store', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'nav.architecture', 'locale' => 'pt-PT', 'value' => 'Arquitetura', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'nav.architecture', 'locale' => 'en-UK', 'value' => 'Architecture', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'nav.custom', 'locale' => 'pt-PT', 'value' => 'Produção', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'nav.custom', 'locale' => 'en-UK', 'value' => 'Custom', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'nav.about', 'locale' => 'pt-PT', 'value' => 'Sobre Nós', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'nav.about', 'locale' => 'en-UK', 'value' => 'About Us', 'created_at' => $now, 'updated_at' => $now],
@@ -389,92 +389,92 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'orders.no_tracking', 'locale' => 'en-UK', 'value' => 'Your order does not have tracking information yet', 'created_at' => $now, 'updated_at' => $now],
 
             // Products page
-            ['key' => 'products.title', 'locale' => 'pt-PT', 'value' => 'Produtos', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.title', 'locale' => 'en-UK', 'value' => 'Products', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.title', 'locale' => 'pt-PT', 'value' => 'Loja', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.title', 'locale' => 'en-UK', 'value' => 'Store', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.filter.name', 'locale' => 'pt-PT', 'value' => 'Nome', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.filter.name', 'locale' => 'en-UK', 'value' => 'Name', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.name', 'locale' => 'pt-PT', 'value' => 'Nome', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.name', 'locale' => 'en-UK', 'value' => 'Name', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.filter.category', 'locale' => 'pt-PT', 'value' => 'Categoria', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.filter.category', 'locale' => 'en-UK', 'value' => 'Category', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.category', 'locale' => 'pt-PT', 'value' => 'Categoria', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.category', 'locale' => 'en-UK', 'value' => 'Category', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.filter.material', 'locale' => 'pt-PT', 'value' => 'Material', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.filter.material', 'locale' => 'en-UK', 'value' => 'Material', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.material', 'locale' => 'pt-PT', 'value' => 'Material', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.material', 'locale' => 'en-UK', 'value' => 'Material', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.filter.search', 'locale' => 'pt-PT', 'value' => 'Pesquisar...', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.filter.search', 'locale' => 'en-UK', 'value' => 'Search...', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.search', 'locale' => 'pt-PT', 'value' => 'Pesquisar...', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.search', 'locale' => 'en-UK', 'value' => 'Search...', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.filter.new', 'locale' => 'pt-PT', 'value' => 'Novo', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.filter.new', 'locale' => 'en-UK', 'value' => 'New', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.new', 'locale' => 'pt-PT', 'value' => 'Novo', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.new', 'locale' => 'en-UK', 'value' => 'New', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.filter.only_new', 'locale' => 'pt-PT', 'value' => 'Apenas novos', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.filter.only_new', 'locale' => 'en-UK', 'value' => 'Only New', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.only_new', 'locale' => 'pt-PT', 'value' => 'Apenas novos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.only_new', 'locale' => 'en-UK', 'value' => 'Only New', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.filter.not_new', 'locale' => 'pt-PT', 'value' => 'Não novos', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.filter.not_new', 'locale' => 'en-UK', 'value' => 'Not New', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.not_new', 'locale' => 'pt-PT', 'value' => 'Não novos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.not_new', 'locale' => 'en-UK', 'value' => 'Not New', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.filter.promo', 'locale' => 'pt-PT', 'value' => 'Promoção', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.filter.promo', 'locale' => 'en-UK', 'value' => 'Promo', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.promo', 'locale' => 'pt-PT', 'value' => 'Promoção', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.promo', 'locale' => 'en-UK', 'value' => 'Promo', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.filter.only_promo', 'locale' => 'pt-PT', 'value' => 'Apenas promoções', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.filter.only_promo', 'locale' => 'en-UK', 'value' => 'Only Promo', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.only_promo', 'locale' => 'pt-PT', 'value' => 'Apenas promoções', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.only_promo', 'locale' => 'en-UK', 'value' => 'Only Promo', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.filter.not_promo', 'locale' => 'pt-PT', 'value' => 'Não em promoção', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.filter.not_promo', 'locale' => 'en-UK', 'value' => 'Not Promo', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.not_promo', 'locale' => 'pt-PT', 'value' => 'Não em promoção', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.not_promo', 'locale' => 'en-UK', 'value' => 'Not Promo', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.filter.in_stock', 'locale' => 'pt-PT', 'value' => 'Em stock', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.filter.in_stock', 'locale' => 'en-UK', 'value' => 'In stock', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.in_stock', 'locale' => 'pt-PT', 'value' => 'Em stock', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.in_stock', 'locale' => 'en-UK', 'value' => 'In stock', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.filter.apply', 'locale' => 'pt-PT', 'value' => 'Filtrar', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.filter.apply', 'locale' => 'en-UK', 'value' => 'Filter', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.apply', 'locale' => 'pt-PT', 'value' => 'Filtrar', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.apply', 'locale' => 'en-UK', 'value' => 'Filter', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.filter.reset', 'locale' => 'pt-PT', 'value' => 'Limpar', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.filter.reset', 'locale' => 'en-UK', 'value' => 'Reset', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.reset', 'locale' => 'pt-PT', 'value' => 'Limpar', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.reset', 'locale' => 'en-UK', 'value' => 'Reset', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.no_products', 'locale' => 'pt-PT', 'value' => 'Nenhum produto encontrado.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.no_products', 'locale' => 'en-UK', 'value' => 'No products found.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.no_products', 'locale' => 'pt-PT', 'value' => 'Nenhum produto encontrado.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.no_products', 'locale' => 'en-UK', 'value' => 'No products found.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.no_photos', 'locale' => 'pt-PT', 'value' => 'Sem fotos disponíveis', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.no_photos', 'locale' => 'en-UK', 'value' => 'No photos available', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.no_photos', 'locale' => 'pt-PT', 'value' => 'Sem fotos disponíveis', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.no_photos', 'locale' => 'en-UK', 'value' => 'No photos available', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.weight', 'locale' => 'pt-PT', 'value' => 'Peso', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.weight', 'locale' => 'en-UK', 'value' => 'Weight', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.weight', 'locale' => 'pt-PT', 'value' => 'Peso', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.weight', 'locale' => 'en-UK', 'value' => 'Weight', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.stock', 'locale' => 'pt-PT', 'value' => 'Stock', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.stock', 'locale' => 'en-UK', 'value' => 'Stock', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.stock', 'locale' => 'pt-PT', 'value' => 'Stock', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.stock', 'locale' => 'en-UK', 'value' => 'Stock', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.available', 'locale' => 'pt-PT', 'value' => 'Disponível', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.available', 'locale' => 'en-UK', 'value' => 'Available', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.available', 'locale' => 'pt-PT', 'value' => 'Disponível', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.available', 'locale' => 'en-UK', 'value' => 'Available', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.out_of_stock', 'locale' => 'pt-PT', 'value' => 'Esgotado', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.out_of_stock', 'locale' => 'en-UK', 'value' => 'Out of stock', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.out_of_stock', 'locale' => 'pt-PT', 'value' => 'Esgotado', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.out_of_stock', 'locale' => 'en-UK', 'value' => 'Out of stock', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.categories', 'locale' => 'pt-PT', 'value' => 'Categorias', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.categories', 'locale' => 'en-UK', 'value' => 'Categories', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.categories', 'locale' => 'pt-PT', 'value' => 'Categorias', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.categories', 'locale' => 'en-UK', 'value' => 'Categories', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.materials', 'locale' => 'pt-PT', 'value' => 'Materiais', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.materials', 'locale' => 'en-UK', 'value' => 'Materials', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.materials', 'locale' => 'pt-PT', 'value' => 'Materiais', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.materials', 'locale' => 'en-UK', 'value' => 'Materials', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.add_to_cart', 'locale' => 'pt-PT', 'value' => 'Adicionar ao carrinho', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.add_to_cart', 'locale' => 'en-UK', 'value' => 'Add to cart', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.add_to_cart', 'locale' => 'pt-PT', 'value' => 'Adicionar ao carrinho', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.add_to_cart', 'locale' => 'en-UK', 'value' => 'Add to cart', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.expected_delivery', 'locale' => 'pt-PT', 'value' => 'Entrega prevista', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.expected_delivery', 'locale' => 'en-UK', 'value' => 'Expected delivery', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.expected_delivery', 'locale' => 'pt-PT', 'value' => 'Entrega prevista', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.expected_delivery', 'locale' => 'en-UK', 'value' => 'Expected delivery', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.delivery_working_days', 'locale' => 'pt-PT', 'value' => 'Calculado em dias úteis (Seg-Sex)', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.delivery_working_days', 'locale' => 'en-UK', 'value' => 'Calculated in working days (Mon-Fri)', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.delivery_working_days', 'locale' => 'pt-PT', 'value' => 'Calculado em dias úteis (Seg-Sex)', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.delivery_working_days', 'locale' => 'en-UK', 'value' => 'Calculated in working days (Mon-Fri)', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.backorder_title', 'locale' => 'pt-PT', 'value' => 'Feito por encomenda', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.backorder_title', 'locale' => 'en-UK', 'value' => 'Made to order', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.backorder_title', 'locale' => 'pt-PT', 'value' => 'Feito por encomenda', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.backorder_title', 'locale' => 'en-UK', 'value' => 'Made to order', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.backorder_message', 'locale' => 'pt-PT', 'value' => 'Este artigo não tem stock, mas pode ser impresso por encomenda. O tempo de produção é', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.backorder_message', 'locale' => 'en-UK', 'value' => 'This item does not have stock, but can be printed per request. The production time is', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.backorder_message', 'locale' => 'pt-PT', 'value' => 'Este artigo não tem stock, mas pode ser impresso por encomenda. O tempo de produção é', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.backorder_message', 'locale' => 'en-UK', 'value' => 'This item does not have stock, but can be printed per request. The production time is', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.backorder_delivery_note', 'locale' => 'pt-PT', 'value' => 'A estimativa de data de entrega apresentada já inclui este tempo de produção.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.backorder_delivery_note', 'locale' => 'en-UK', 'value' => 'The shown delivery date estimation already includes this production time.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.backorder_delivery_note', 'locale' => 'pt-PT', 'value' => 'A estimativa de data de entrega apresentada já inclui este tempo de produção.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.backorder_delivery_note', 'locale' => 'en-UK', 'value' => 'The shown delivery date estimation already includes this production time.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'products.working_days', 'locale' => 'pt-PT', 'value' => 'dias úteis', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'products.working_days', 'locale' => 'en-UK', 'value' => 'working days', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.working_days', 'locale' => 'pt-PT', 'value' => 'dias úteis', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.working_days', 'locale' => 'en-UK', 'value' => 'working days', 'created_at' => $now, 'updated_at' => $now],
 
             // Checkout additional
             ['key' => 'checkout.title', 'locale' => 'pt-PT', 'value' => 'Finalizar Compra', 'created_at' => $now, 'updated_at' => $now],
@@ -794,23 +794,23 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'home.banner.button', 'locale' => 'pt-PT', 'value' => 'NOSSOS SERVIÇOS', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.button', 'locale' => 'en-UK', 'value' => 'OUR SERVICES', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.services.products.title', 'locale' => 'pt-PT', 'value' => 'PRODUTOS', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.services.products.title', 'locale' => 'en-UK', 'value' => 'PRODUCTS', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.store.title', 'locale' => 'pt-PT', 'value' => 'Loja', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.store.title', 'locale' => 'en-UK', 'value' => 'STORE', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.services.products.description', 'locale' => 'pt-PT', 'value' => 'Objetos do quotidiano, presentes e lembranças impressas em 3D com precisão e qualidade.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.services.products.description', 'locale' => 'en-UK', 'value' => 'Day to day life objects, gifts, souvenires printed with precision and quality.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.store.description', 'locale' => 'pt-PT', 'value' => 'Objetos do quotidiano, presentes e lembranças impressas em 3D com precisão e qualidade.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.store.description', 'locale' => 'en-UK', 'value' => 'Day to day life objects, gifts, souvenires printed with precision and quality.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.services.products.button', 'locale' => 'pt-PT', 'value' => 'Loja', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.services.products.button', 'locale' => 'en-UK', 'value' => 'Store', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.store.button', 'locale' => 'pt-PT', 'value' => 'Loja', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.store.button', 'locale' => 'en-UK', 'value' => 'Store', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.services.architecture.title', 'locale' => 'pt-PT', 'value' => 'ARQUITETURA', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.services.architecture.title', 'locale' => 'en-UK', 'value' => 'ARCHITECTURE', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.custom.title', 'locale' => 'pt-PT', 'value' => 'Produção', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.custom.title', 'locale' => 'en-UK', 'value' => 'CUSTOM', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.services.architecture.description', 'locale' => 'pt-PT', 'value' => 'Serviço de impressão para arquitetos, engenheiros e criadores. Transforme seus projetos em modelos 3D.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.services.architecture.description', 'locale' => 'en-UK', 'value' => 'Printing service for architects, engineers and creators. Transform your projects into 3D models.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.custom.description', 'locale' => 'pt-PT', 'value' => 'Serviço de impressão para arquitetos, engenheiros e criadores. Transforme seus projetos em modelos 3D.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.custom.description', 'locale' => 'en-UK', 'value' => 'Printing service for architects, engineers and creators. Transform your projects into 3D models.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.services.architecture.button', 'locale' => 'pt-PT', 'value' => 'Mais Informações', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.services.architecture.button', 'locale' => 'en-UK', 'value' => 'More Info', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.custom.button', 'locale' => 'pt-PT', 'value' => 'Mais Informações', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.custom.button', 'locale' => 'en-UK', 'value' => 'More Info', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.contact.title', 'locale' => 'pt-PT', 'value' => 'Contacte-nos', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.contact.title', 'locale' => 'en-UK', 'value' => 'Contact Us', 'created_at' => $now, 'updated_at' => $now],
@@ -849,50 +849,50 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'footer.privacy', 'locale' => 'en-UK', 'value' => 'Privacy', 'created_at' => $now, 'updated_at' => $now],
 
             // Architecture page
-            ['key' => 'architecture.banner.title', 'locale' => 'pt-PT', 'value' => 'Serviços de Arquitetura', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.banner.title', 'locale' => 'en-UK', 'value' => 'Architecture Services', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.banner.title', 'locale' => 'pt-PT', 'value' => 'Serviços de Produção', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.banner.title', 'locale' => 'en-UK', 'value' => 'Custom Services', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'architecture.banner.subtitle', 'locale' => 'pt-PT', 'value' => 'Soluções profissionais de impressão 3D para arquitetos e designers', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.banner.subtitle', 'locale' => 'en-UK', 'value' => 'Professional 3D printing solutions for architects and designers', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.banner.subtitle', 'locale' => 'pt-PT', 'value' => 'Soluções profissionais de impressão 3D para arquitetos e designers', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.banner.subtitle', 'locale' => 'en-UK', 'value' => 'Professional 3D printing solutions for architects and designers', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'architecture.banner.button', 'locale' => 'pt-PT', 'value' => 'Solicitar Serviço', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.banner.button', 'locale' => 'en-UK', 'value' => 'Request Service', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.banner.button', 'locale' => 'pt-PT', 'value' => 'Solicitar Serviço', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.banner.button', 'locale' => 'en-UK', 'value' => 'Request Service', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'architecture.features.title', 'locale' => 'pt-PT', 'value' => 'Nossos Serviços', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.features.title', 'locale' => 'en-UK', 'value' => 'Our Services', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.title', 'locale' => 'pt-PT', 'value' => 'Nossos Serviços', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.title', 'locale' => 'en-UK', 'value' => 'Our Services', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'architecture.features.modeling', 'locale' => 'pt-PT', 'value' => 'Modelagem 3D', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.features.modeling', 'locale' => 'en-UK', 'value' => '3D Modeling', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.modeling', 'locale' => 'pt-PT', 'value' => 'Modelagem 3D', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.modeling', 'locale' => 'en-UK', 'value' => '3D Modeling', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'architecture.features.modeling_desc', 'locale' => 'pt-PT', 'value' => 'Preparação profissional de modelos 3D e otimização para impressão.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.features.modeling_desc', 'locale' => 'en-UK', 'value' => 'Professional 3D model preparation and optimization for printing.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.modeling_desc', 'locale' => 'pt-PT', 'value' => 'Preparação profissional de modelos 3D e otimização para impressão.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.modeling_desc', 'locale' => 'en-UK', 'value' => 'Professional 3D model preparation and optimization for printing.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'architecture.features.materials', 'locale' => 'pt-PT', 'value' => 'Múltiplos Materiais', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.features.materials', 'locale' => 'en-UK', 'value' => 'Multiple Materials', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.materials', 'locale' => 'pt-PT', 'value' => 'Múltiplos Materiais', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.materials', 'locale' => 'en-UK', 'value' => 'Multiple Materials', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'architecture.features.materials_desc', 'locale' => 'pt-PT', 'value' => 'Escolha entre vários materiais e acabamentos para atender às suas necessidades de projeto.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.features.materials_desc', 'locale' => 'en-UK', 'value' => 'Choose from various materials and finishes to suit your project needs.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.materials_desc', 'locale' => 'pt-PT', 'value' => 'Escolha entre vários materiais e acabamentos para atender às suas necessidades de projeto.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.materials_desc', 'locale' => 'en-UK', 'value' => 'Choose from various materials and finishes to suit your project needs.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'architecture.features.support', 'locale' => 'pt-PT', 'value' => 'Suporte de Especialista', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.features.support', 'locale' => 'en-UK', 'value' => 'Expert Support', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.support', 'locale' => 'pt-PT', 'value' => 'Suporte de Especialista', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.support', 'locale' => 'en-UK', 'value' => 'Expert Support', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'architecture.features.support_desc', 'locale' => 'pt-PT', 'value' => 'Suporte dedicado desde a consulta de design até a entrega final.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.features.support_desc', 'locale' => 'en-UK', 'value' => 'Dedicated support from design consultation to final delivery.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.support_desc', 'locale' => 'pt-PT', 'value' => 'Suporte dedicado desde a consulta de design até a entrega final.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.support_desc', 'locale' => 'en-UK', 'value' => 'Dedicated support from design consultation to final delivery.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'architecture.request.title', 'locale' => 'pt-PT', 'value' => 'Solicitar Orçamento', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.request.title', 'locale' => 'en-UK', 'value' => 'Request a Quote', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.title', 'locale' => 'pt-PT', 'value' => 'Solicitar Orçamento', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.title', 'locale' => 'en-UK', 'value' => 'Request a Quote', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'architecture.request.cta', 'locale' => 'pt-PT', 'value' => 'Quer mais informação ou um orçamento para um projeto específico? Envie-nos um ticket e entraremos em contacto.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.request.cta', 'locale' => 'en-UK', 'value' => 'Want more info or a quote for a specific project? Please send us a ticket and we will follow up.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.cta', 'locale' => 'pt-PT', 'value' => 'Quer mais informação ou um orçamento para um projeto específico? Envie-nos um ticket e entraremos em contacto.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.cta', 'locale' => 'en-UK', 'value' => 'Want more info or a quote for a specific project? Please send us a ticket and we will follow up.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'architecture.request.ticket_button', 'locale' => 'pt-PT', 'value' => 'Criar novo ticket', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.request.ticket_button', 'locale' => 'en-UK', 'value' => 'Create new ticket', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.ticket_button', 'locale' => 'pt-PT', 'value' => 'Criar novo ticket', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.ticket_button', 'locale' => 'en-UK', 'value' => 'Create new ticket', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'architecture.request.project_details', 'locale' => 'pt-PT', 'value' => 'Detalhes do Projeto', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.request.project_details', 'locale' => 'en-UK', 'value' => 'Project Details', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.project_details', 'locale' => 'pt-PT', 'value' => 'Detalhes do Projeto', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.project_details', 'locale' => 'en-UK', 'value' => 'Project Details', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'architecture.request.submit', 'locale' => 'pt-PT', 'value' => 'Enviar Pedido', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'architecture.request.submit', 'locale' => 'en-UK', 'value' => 'Submit Request', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.submit', 'locale' => 'pt-PT', 'value' => 'Enviar Pedido', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.submit', 'locale' => 'en-UK', 'value' => 'Submit Request', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.new', 'locale' => 'pt-PT', 'value' => 'Novo Ticket', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.new', 'locale' => 'en-UK', 'value' => 'New Ticket', 'created_at' => $now, 'updated_at' => $now],
