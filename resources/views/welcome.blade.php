@@ -231,16 +231,9 @@
             if (!splash) return;
             var dismissed = false;
 
-            // If the page was opened with the contact anchor, immediately dismiss the splash
-            if (window.location && window.location.hash === '#contact') {
-                // ensure splash removed and allow in-page navigation to work immediately
-                try { hideSplash(); } catch (e) { /* hideSplash defined below — call after small delay if needed */ }
-                // scroll to contact section in case browser didn't
-                setTimeout(function(){
-                    var el = document.getElementById('contact');
-                    if (el) el.scrollIntoView();
-                }, 0);
-            }
+            // If the page was opened with the contact anchor, mark for auto-dismissal
+            var __autoDismissSplashForContact = (window.location && window.location.hash === '#contact');
+
 
             function hideSplash() {
                 if (dismissed) return;
@@ -271,6 +264,17 @@
             window.addEventListener('touchstart', onFirstIntent, {passive:true, once:true});
             window.addEventListener('keydown', onKeyDown, {once:true});
             splash.addEventListener('click', onFirstIntent, {once:true});
+
+            // Hide splash if the fragment is set while already on the page (e.g. clicking nav Contact)
+            window.addEventListener('hashchange', function(){ if (window.location.hash === '#contact') { hideSplash(); var t = document.getElementById('contact'); if (t) t.scrollIntoView(); } });
+
+            // If requested via URL fragment #contact, dismiss immediately and scroll to section
+            if (typeof __autoDismissSplashForContact !== 'undefined' && __autoDismissSplashForContact) {
+                hideSplash();
+                var target = document.getElementById('contact');
+                if (target) { target.scrollIntoView(); }
+                return;
+            }
 
             // Safety auto-dismiss after 6s so the site becomes reachable for keyboard-only users
             setTimeout(hideSplash, 6000);
