@@ -38,7 +38,7 @@
         <!-- BANNER SECTION -->
         <section class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-gray-900">
             <!-- Background Image -->
-            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1578119289844-26cbf8b9a17f?w=1200&h=800&fit=crop')">
+            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/banner.jpg') }}')">
                 <div class="absolute inset-0 bg-black/40"></div>
             </div>
             
