@@ -135,7 +135,7 @@
                     <div class="bg-light dark:bg-grey-dark rounded-lg shadow-lg p-8">
                         @include('partials.flash')
 
-                        <form method="POST" action="{{ route('contact.store') }}" class="space-y-6">
+                        <form id="contact-form" method="POST" action="{{ route('contact.store') }}" class="space-y-6">
                             @csrf
 
                             <div>
@@ -143,7 +143,11 @@
                                     {{ t('contact.name') ?: 'Name' }}
                                 </label>
                                 <input type="text" id="name" name="name" required
-                                       class="w-full px-4 py-2 rounded-lg border border-grey-medium dark:border-grey-dark dark:bg-grey-dark dark:text-light focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary">
+                                       value="{{ old('name') }}"
+                                       class="w-full px-4 py-2 rounded-lg border border-grey-medium dark:border-grey-dark dark:bg-light dark:text-dark focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary">
+                                @error('name')
+                                    <p class="text-primary text-sm mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <div>
@@ -151,7 +155,11 @@
                                     {{ t('contact.email') ?: 'Email' }}
                                 </label>
                                 <input type="email" id="email" name="email" required
-                                       class="w-full px-4 py-2 rounded-lg border border-grey-medium dark:border-grey-dark dark:bg-grey-dark dark:text-light focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary">
+                                       value="{{ old('email') }}"
+                                       class="w-full px-4 py-2 rounded-lg border border-grey-medium dark:border-grey-dark dark:bg-light dark:text-dark focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary">
+                                @error('email')
+                                    <p class="text-primary text-sm mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <div>
@@ -159,7 +167,10 @@
                                     {{ t('contact.message') ?: 'Message' }}
                                 </label>
                                 <textarea id="message" name="message" rows="5" required
-                                          class="w-full px-4 py-2 rounded-lg border border-grey-medium dark:border-grey-dark dark:bg-grey-dark dark:text-light focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary"></textarea>
+                                          class="w-full px-4 py-2 rounded-lg border border-grey-medium dark:border-grey-dark dark:bg-light dark:text-dark focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary">{{ old('message') }}</textarea>
+                                @error('message')
+                                    <p class="text-primary text-sm mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
@@ -216,6 +227,88 @@
                                 {{ t('contact.send') ?: 'Send Message' }}
                             </button>
                         </form>
+
+                        <script>
+                        (function(){
+                            var form = document.getElementById('contact-form'); if (!form) return;
+
+                            var emailInput = form.querySelector('input[name="email"]');
+                            var nameInput = form.querySelector('input[name="name"]');
+                            var messageInput = form.querySelector('textarea[name="message"]');
+
+                            var messages = {
+                                nameRequired: {!! json_encode(t('validation.name_required') ?: 'Please enter your name.') !!},
+                                emailInvalid: {!! json_encode(t('validation.email_invalid') ?: 'Please enter a valid email address.') !!},
+                                messageRequired: {!! json_encode(t('validation.message_required') ?: 'Please enter your message.') !!},
+                                validationFailed: {!! json_encode(t('contact.validation_failed') ?: 'Please correct the errors below and try again.') !!}
+                            };
+
+                            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // simple client-side TLD check
+
+                            function makeClientError(field, msg) {
+                                field.setAttribute('aria-invalid', 'true');
+                                field.classList.add('border-status-error', 'focus:border-status-error');
+
+                                var existing = field.parentElement.querySelector('.js-client-error');
+                                if (existing) { existing.textContent = msg; return; }
+
+                                var p = document.createElement('p');
+                                p.className = 'text-primary text-sm mt-1 js-client-error';
+                                p.setAttribute('role','alert');
+                                p.textContent = msg;
+                                field.parentElement.appendChild(p);
+                            }
+
+                            function clearClientError(field) {
+                                field.removeAttribute('aria-invalid');
+                                field.classList.remove('border-status-error', 'focus:border-status-error');
+                                var e = field.parentElement.querySelector('.js-client-error');
+                                if (e) e.remove();
+                            }
+
+                            function validateClient() {
+                                var ok = true;
+
+                                if (!nameInput.value.trim()) { makeClientError(nameInput, messages.nameRequired); ok = false; } else clearClientError(nameInput);
+
+                                var emailVal = (emailInput.value || '').trim();
+                                if (!emailVal || !emailPattern.test(emailVal)) { makeClientError(emailInput, messages.emailInvalid); ok = false; } else clearClientError(emailInput);
+
+                                if (!messageInput.value.trim()) { makeClientError(messageInput, messages.messageRequired); ok = false; } else clearClientError(messageInput);
+
+                                return ok;
+                            }
+
+                            // on submit, validate client-side first
+                            form.addEventListener('submit', function(ev){
+                                if (!validateClient()) {
+                                    ev.preventDefault();
+                                    if (window.Alpine && Alpine.store && Alpine.store('flash')) {
+                                        Alpine.store('flash').showMessage(messages.validationFailed, 'error');
+                                    } else {
+                                        alert(messages.validationFailed);
+                                    }
+
+                                    // focus first invalid element
+                                    var firstInvalid = form.querySelector('[aria-invalid="true"]');
+                                    if (firstInvalid) firstInvalid.focus();
+                                }
+                            });
+
+                            // clear client error as user types
+                            [nameInput, emailInput, messageInput].forEach(function(f){
+                                f.addEventListener('input', function(){
+                                    // for email use pattern
+                                    if (f === emailInput) {
+                                        if (emailPattern.test(f.value.trim())) clearClientError(f);
+                                    } else {
+                                        if (f.value.trim()) clearClientError(f);
+                                    }
+                                });
+                            });
+
+                        })();
+                        </script>
                     </div>
 
                 </div>

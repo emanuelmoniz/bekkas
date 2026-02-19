@@ -16,7 +16,7 @@ class ContactController extends Controller
         // Build validation rules, but make reCAPTCHA required ONLY when configured.
         $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|email:rfc,dns|max:255',
             'message' => 'required|string|max:5000',
         ];
 
@@ -38,7 +38,8 @@ class ContactController extends Controller
         if ($validator->fails()) {
             return redirect()->to(url()->previous().'#contact')
                 ->withErrors($validator)
-                ->withInput();
+                ->withInput()
+                ->with('error', t('contact.validation_failed') ?: 'Please correct the errors below and try again.');
         }
 
         $validated = $validator->validated();

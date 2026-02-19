@@ -66,4 +66,22 @@ class ContactTest extends TestCase
         Mail::assertQueued(\App\Mail\ContactMessage::class, 1);
         Mail::assertQueued(\App\Mail\ContactConfirmation::class, 1);
     }
+
+    public function test_contact_form_rejects_invalid_email()
+    {
+        Mail::fake();
+
+        $response = $this->post(route('contact.store'), [
+            'name' => 'Test User',
+            'email' => 'invalid-email-without-tld@gmail',
+            'message' => 'Hello',
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHasErrors(['email']);
+        $response->assertSessionHas('error');
+
+        // Ensure no emails were queued on validation failure
+        Mail::assertNothingQueued();
+    }
 }

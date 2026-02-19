@@ -1239,6 +1239,10 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'contact.success_message', 'locale' => 'pt-PT', 'value' => 'Obrigado pela sua mensagem! Entraremos em contacto em breve.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'contact.success_message', 'locale' => 'en-UK', 'value' => 'Thank you for your message! We will get back to you soon.', 'created_at' => $now, 'updated_at' => $now],
 
+            // Flash shown when validation fails server-side (e.g. invalid email)
+            ['key' => 'contact.validation_failed', 'locale' => 'pt-PT', 'value' => 'Por favor corrija os erros abaixo e tente novamente.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'contact.validation_failed', 'locale' => 'en-UK', 'value' => 'Please correct the errors below and try again.', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'contact.recaptcha_required', 'locale' => 'pt-PT', 'value' => 'Por favor, verifique que não é um robô.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'contact.recaptcha_required', 'locale' => 'en-UK', 'value' => 'Please verify that you are not a robot.', 'created_at' => $now, 'updated_at' => $now],
 

@@ -31,6 +31,32 @@
 @if($hasServerMessage)
     {{-- ensure the raw HTML always contains the server message (defensive: helps tests and non-JS clients) --}}
     <div data-server-flash style="display:none">{{ $serverMessage }}</div>
+
+    {{-- Ensure the client-side Alpine flash store reflects the server message type so
+         the visual tone (success/error) matches the server-provided semantic. --}}
+    <script>
+    (function(){
+        var serverType = {!! json_encode($serverType) !!};
+        var serverMessage = {!! json_encode($serverMessage) !!};
+
+        function applyServerFlash() {
+            if (window.Alpine && Alpine.store && Alpine.store('flash')) {
+                try {
+                    // Prefer the server-provided type for styling; do not overwrite an
+                    // already-user-set message if present.
+                    Alpine.store('flash').type = serverType || Alpine.store('flash').type;
+                    if (!Alpine.store('flash').message) Alpine.store('flash').message = serverMessage;
+                } catch (e) {
+                    // ignore
+                }
+            } else {
+                document.addEventListener('DOMContentLoaded', applyServerFlash, {once:true});
+            }
+        }
+
+        applyServerFlash();
+    })();
+    </script>
 @endif
 
 <!-- Canonical flash partial: server-rendered fallback + Alpine-driven runtime -->
