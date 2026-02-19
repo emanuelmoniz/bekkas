@@ -8,7 +8,7 @@
         {{-- Show orchestration errors/messages only when no active manifest is present (avoid showing stale errors) --}}
         @if(empty($activeManifest))
             @if(! empty($payUnavailableMessage))
-                <div class="mb-4 p-3 rounded bg-red-50 border border-red-100 text-sm text-red-800">
+                <div class="mb-4 p-3 rounded border border-gray-200 border-l-4 bg-primary/10 text-primary text-sm">
                     {{ $payUnavailableMessage }}
 
                     {{-- hidden canonical generic message for tests/automation to assert against --}}
@@ -16,20 +16,20 @@
                 </div>
             @elseif(isset($sessions) && ($err = $sessions->firstWhere('in_error', true)))
                 {{-- Service recorded an errored session — show a friendly message and debug details when appropriate --}}
-                <div class="mb-4 p-3 rounded bg-red-50 border border-red-100 text-sm text-red-800">
+                <div class="mb-4 p-3 rounded border border-gray-200 border-l-4 bg-primary/10 text-primary text-sm">
                     {{ t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.' }}
                     @if(config('app.debug') && $err->message)
-                        <div class="mt-2 text-xs text-red-700">{{ t('checkout.pay.unavailable_debug', ['error' => $err->message]) ?: $err->message }}</div>
+                        <div class="mt-2 text-xs text-primary">{{ t('checkout.pay.unavailable_debug', ['error' => $err->message]) ?: $err->message }}</div>
                     @endif
                 </div>
             @else
                 {{-- Final fallback: directly check DB for errored session (defensive for tests/runtime) --}}
                 @php $errDb = \App\Models\EasypayCheckoutSession::where('order_id', $order->id)->where('in_error', true)->latest('updated_at')->first(); @endphp
                 @if($errDb)
-                    <div class="mb-4 p-3 rounded bg-red-50 border border-red-100 text-sm text-red-800">
+                    <div class="mb-4 p-3 rounded border border-gray-200 border-l-4 bg-primary/10 text-primary text-sm">
                         {{ t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.' }}
                         @if(config('app.debug') && $errDb->message)
-                            <div class="mt-2 text-xs text-red-700">{{ t('checkout.pay.unavailable_debug', ['error' => $errDb->message]) ?: $errDb->message }}</div>
+                            <div class="mt-2 text-xs text-primary">{{ t('checkout.pay.unavailable_debug', ['error' => $errDb->message]) ?: $errDb->message }}</div>
                         @endif
                     </div>
                 @endif
@@ -39,7 +39,7 @@
         {{-- Payment-status driven UI (server refreshed) --}}
         {{-- Controller MUST provide: paymentStatusMessage, paymentInfo, suppressSdk — view no longer queries EasypayPayment directly. --}}
         @if(! empty($paymentStatusMessage))
-            <div class="mb-4 p-3 rounded bg-green-50 border border-green-100 text-sm text-green-800">
+            <div class="mb-4 p-3 rounded border border-gray-200 border-l-4 bg-accent-primary/10 text-accent-primary text-sm">
                 {{ $paymentStatusMessage }}
             </div>
         @endif

@@ -164,7 +164,7 @@
 
                             <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
                             @error('g-recaptcha-response')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class="text-primary text-sm mt-1">{{ $message }}</p>
                             @enderror
 
                             <script>

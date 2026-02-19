@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Theme color variables (kebab-case) — use in CSS as var(--color-primary) */
+:root{
+  --color-primary: #C13027;
+  --color-secondary: #DE4344;
+  --color-accent-primary: #476C85;
+  --color-accent-secondary: #FF9505;
+  --color-grey-dark: #353131;
+  --color-grey-medium: #6d6a69;
+  --color-grey-light: #b0aeae;
+  --color-success: #60D394;
+  --color-error: #E94155;
+  --color-warning: #f89a46;
+  --color-info: #4D7298;
+  --color-background: #f4eee4;
+}

@@ -1,5 +1,30 @@
 @php
-    $serverMessage = session('success') ?? session('error') ?? session('warning') ?? session('info');
+    // Determine server-supplied message + semantic type. Accept both modern
+    // flashes (success/error/warning/info) and legacy session('status') tokens.
+    $serverMessage = session('success') ?? session('error') ?? session('warning') ?? session('info') ?? null;
+    $serverType = session('success') ? 'success' : (session('error') ? 'error' : (session('warning') ? 'warning' : (session('info') ? 'info' : null)));
+
+    // Support legacy `session('status')` tokens (convert to a user-facing message).
+    if (!$serverMessage && ($status = session('status'))) {
+        $statusMap = [
+            'verification-link-sent' => ['msg' => t('profile.verification_sent') ?: t('auth.activation_sent') ?: 'A new verification link has been sent to your email address.', 'type' => 'success'],
+            'profile-updated'        => ['msg' => t('profile.updated_success') ?: 'Profile updated successfully!', 'type' => 'success'],
+            'password-updated'       => ['msg' => t('profile.password_updated_success') ?: 'Password updated successfully!', 'type' => 'success'],
+            'deletion-link-sent'     => ['msg' => t('profile.deletion_link_sent') ?: 'A deletion link has been sent to your email address.', 'type' => 'success'],
+            'social-linked'          => ['msg' => t('profile.social_linked') ?: 'Social account linked.', 'type' => 'success'],
+            'social-unlinked'        => ['msg' => t('profile.social_unlinked') ?: 'Social account unlinked.', 'type' => 'success'],
+        ];
+
+        if (is_string($status) && isset($statusMap[$status])) {
+            $serverMessage = $statusMap[$status]['msg'];
+            $serverType = $statusMap[$status]['type'];
+        } elseif (is_string($status) && strlen(trim($status)) > 0) {
+            // If controllers set a free-text status, treat it as a success message.
+            $serverMessage = $status;
+            $serverType = 'success';
+        }
+    }
+
     $hasServerMessage = (bool) $serverMessage;
 @endphp
 
@@ -10,18 +35,18 @@
 
 <!-- Canonical flash partial: server-rendered fallback + Alpine-driven runtime -->
 <div data-flash-root x-data="{ localShow: {{ $hasServerMessage ? 'true' : 'false' }} }" x-show="Alpine.store('flash').show || localShow" x-cloak class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4" @unless($hasServerMessage) style="display:none" @endunless x-bind:aria-hidden="!(Alpine.store('flash').show || localShow)">
-    <div class="px-4 py-3 rounded relative pr-12"
+    <div class="px-4 py-3 rounded relative pr-12 border border-gray-200 border-l-4"
          x-show="Alpine.store('flash').show || localShow"
          x-init="localShow && setTimeout(() => localShow = false, 6000)"
          x-transition
          x-bind:class="{
-             'bg-green-100 border border-green-400 text-green-700': Alpine.store('flash').type === 'success' || {{ session('success') ? 'true' : 'false' }},
-             'bg-red-100 border border-red-400 text-red-700': Alpine.store('flash').type === 'error' || {{ session('error') ? 'true' : 'false' }},
-             'bg-amber-50 border border-amber-200 text-amber-700': Alpine.store('flash').type === 'warning' || {{ session('warning') ? 'true' : 'false' }},
-             'bg-blue-100 border border-blue-400 text-blue-700': Alpine.store('flash').type === 'info' || {{ session('info') ? 'true' : 'false' }},
+             'bg-status-success/10 border-status-success text-status-success': Alpine.store('flash').type === 'success' || {{ $serverType === 'success' ? 'true' : 'false' }},
+             'bg-status-error/10 border-status-error text-status-error': Alpine.store('flash').type === 'error' || {{ $serverType === 'error' ? 'true' : 'false' }},
+             'bg-status-warning/10 border-status-warning text-status-warning': Alpine.store('flash').type === 'warning' || {{ $serverType === 'warning' ? 'true' : 'false' }},
+             'bg-status-info/10 border-status-info text-status-info': Alpine.store('flash').type === 'info' || {{ $serverType === 'info' ? 'true' : 'false' }},
          }"
          role="alert"
-         x-bind:aria-live="(Alpine.store('flash').type === 'error' || {{ session('error') ? 'true' : 'false' }}) ? 'assertive' : 'polite'"
+         x-bind:aria-live="(Alpine.store('flash').type === 'error' || {{ $serverType === 'error' ? 'true' : 'false' }}) ? 'assertive' : 'polite'"
          x-bind:aria-hidden="!(Alpine.store('flash').show || localShow)">
 
         <span class="block sm:inline" x-text="Alpine.store('flash').message || {{ $hasServerMessage ? json_encode($serverMessage) : json_encode('') }}">{{ $hasServerMessage ? $serverMessage : '' }}</span>

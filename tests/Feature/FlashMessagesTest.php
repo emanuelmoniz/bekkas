@@ -9,10 +9,10 @@ class FlashMessagesTest extends TestCase
     public function test_server_flash_renders_for_each_type()
     {
         $types = [
-            'success' => 'bg-green-100',
-            'error' => 'bg-red-100',
-            'warning' => 'bg-amber-50',
-            'info' => 'bg-blue-100',
+            'success' => 'text-status-success',
+            'error' => 'text-status-error',
+            'warning' => 'text-status-warning',
+            'info' => 'text-status-info',
         ];
 
         foreach ($types as $type => $expectedClass) {

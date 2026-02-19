@@ -101,7 +101,7 @@ Route::post('/cart/remove/{product}', [CartController::class, 'remove'])
 Route::get('/favorites', [FavoriteController::class, 'index'])
     ->name('favorites.index');
 
-Route::post('/favorites/toggle/{product}', [FavoriteController::class, 'toggle'])
+Route::post('/favorites/toggle/{product:id}', [FavoriteController::class, 'toggle'])
     ->middleware('throttle:30,1')
     ->name('favorites.toggle');
 

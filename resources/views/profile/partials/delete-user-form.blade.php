@@ -17,11 +17,7 @@
     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
         {{-- If the user is social-only (no local password) show the "send deletion link" path --}}
         @if (auth()->user()->socialAccounts()->exists())
-            @if (session('status') === 'deletion-link-sent')
-                <div class="mb-4 font-medium text-sm text-green-600">
-                    {{ t('profile.delete_by_email_sent') ?: 'A deletion link has been sent to your email address.' }}
-                </div>
-            @endif
+
 
             <form method="post" action="{{ route('profile.delete.request') }}" class="p-6">
                 @csrf

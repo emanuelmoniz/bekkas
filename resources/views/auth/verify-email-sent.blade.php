@@ -7,11 +7,7 @@
         {{ t('auth.check_spam') ?: 'If you do not see the message, please check your spam folder.' }}
     </div>
 
-    @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ t('auth.activation_sent') ?: 'A new activation email has been sent to your email address.' }}
-        </div>
-    @endif
+
 
     <form method="POST" action="{{ route('verification.resend.guest') }}">
         @csrf

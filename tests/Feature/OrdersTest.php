@@ -194,7 +194,8 @@ class OrdersTest extends TestCase
             ->actingAs($user)
             ->get(route('orders.index'))
             ->assertSee('Close flash message')
-            ->assertSee('bg-green-100 border border-green-400');
+            ->assertSee('border-l-4')
+            ->assertSee('text-status-success');
 
         // Two mails queued: one to customer and one to admin
         \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, 2);

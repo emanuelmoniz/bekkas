@@ -61,11 +61,5 @@
 
     </div>
 
-    @if(session('status') === 'social-linked')
-        <p class="mt-4 text-sm text-green-600">{{ t('profile.social_linked') ?: 'Social account linked.' }}</p>
-    @endif
 
-    @if(session('status') === 'social-unlinked')
-        <p class="mt-4 text-sm text-green-600">{{ t('profile.social_unlinked') ?: 'Social account unlinked.' }}</p>
-    @endif
 </div>
