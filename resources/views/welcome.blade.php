@@ -365,8 +365,8 @@
                 return;
             }
 
-            // Safety auto-dismiss after 5s so the site becomes reachable for keyboard-only users
-            setTimeout(hideSplash, 5000);
+            // Safety auto-dismiss after 3s so the site becomes reachable for keyboard-only users
+            setTimeout(hideSplash, 3000);
         })();
         </script>
 

@@ -11,7 +11,7 @@
             <p class="mt-2 text-sm">
                 {!! t('footer.designed_by', [
                     'az' => '<a href="https://azseashell.com" target="_blank" rel="noopener noreferrer" class="underline text-accent-primary hover:text-accent-primary">AZSeashell</a>',
-                    'sofia' => '<a href="https://www.linkedin.com/in/sofia-leite-alves-b5752a262/" target="_blank" rel="noopener noreferrer" class="underline text-accent-primary hover:text-accent-primary">Sofia Alves</a>'
+                    'sofia' => 'Sofia Alves'
                 ]) ?: 'Created by <a href="https://azseashell.com" target="_blank" rel="noopener noreferrer" class="underline text-accent-primary hover:text-accent-primary">AZSeashell</a> and <a href="https://www.linkedin.com/in/sofia-leite-alves-b5752a262/" target="_blank" rel="noopener noreferrer" class="underline text-accent-primary hover:text-accent-primary">Sofia Alves</a>' !!}
             </p>
         </div>
