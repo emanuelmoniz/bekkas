@@ -40,27 +40,31 @@
         <!-- BANNER SECTION -->
         @php
             // define slides for the homepage carousel; text/button reuse existing translation keys
-            $homeTagline = t('home.banner.tagline') ?: 'Printing Life layer by layer';
-            $homeButton  = t('home.banner.button')  ?: 'OUR SERVICES';
+            $homeTagline1 = t('home.banner.tagline1') ?: 'Printing Life layer by layer';
+            $homeButton1  = t('home.banner.button1')  ?: 'OUR SERVICES';
+            $homeTagline2 = t('home.banner.tagline2') ?: 'Printing Life layer by layer';
+            $homeButton2  = t('home.banner.button2')  ?: 'OUR SERVICES';
+            $homeTagline3 = t('home.banner.tagline3') ?: 'Printing Life layer by layer';
+            $homeButton3  = t('home.banner.button3')  ?: 'OUR SERVICES';
             $slides = [
                 [
                     // local placeholders copied during build
                     'image' => asset('images/slide1.jpg'),
-                    'tagline' => $homeTagline,
-                    'buttonText' => $homeButton,
+                    'tagline' => $homeTagline1,
+                    'buttonText' => $homeButton1,
                     'buttonUrl' => '#services',
                 ],
                 [
                     'image' => asset('images/slide2.jpg'),
-                    'tagline' => $homeTagline,
-                    'buttonText' => $homeButton,
-                    'buttonUrl' => '#services',
+                    'tagline' => $homeTagline2,
+                    'buttonText' => $homeButton2,
+                    'buttonUrl' => '/store',
                 ],
                 [
                     'image' => asset('images/slide3.jpg'),
-                    'tagline' => $homeTagline,
-                    'buttonText' => $homeButton,
-                    'buttonUrl' => '#services',
+                    'tagline' => $homeTagline3,
+                    'buttonText' => $homeButton3,
+                    'buttonUrl' => '/custom',
                 ],
             ];
         @endphp
