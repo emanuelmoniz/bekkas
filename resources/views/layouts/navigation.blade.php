@@ -128,11 +128,10 @@
                     @else
                         {{-- PUBLIC MENU --}}
                         
-                        {{-- Products --}}
+                        {{-- STORE --}}
                         @if(config('app.store_enabled'))
                             <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                                <!-- parent button is not clickable, just shows submenu on hover -->
-                                <x-nav-button :active="request()->routeIs('store.*')">
+                                <x-nav-button :active="request()->routeIs('store.*')" @click="window.location.href='{{ route('store.index') }}'">
                                     {{ t('nav.store') ?: 'Store' }}
                                 </x-nav-button>
                                 <div x-show="open"
