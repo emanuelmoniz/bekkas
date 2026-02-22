@@ -36,20 +36,34 @@
         </div>
 
         <!-- BANNER SECTION -->
-        <section class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-dark">
-            <!-- Background Image -->
-            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/banner.jpg') }}')">
-                <div class="absolute inset-0 bg-dark/40"></div>
-            </div>
-            
-            <!-- Content -->
-            <div class="relative z-10 text-center text-light px-6">
-                <h1 class="text-5xl md:text-7xl font-bold mb-6">{{ t('home.banner.tagline') ?: 'Printing Life layer by layer' }}</h1>
-                <a href="#services" class="inline-block bg-accent-primary hover:bg-accent-primary/90 text-light px-8 py-3 rounded font-semibold transition-colors">
-                    {{ t('home.banner.button') ?: 'OUR SERVICES' }}
-                </a>
-            </div>
-        </section>
+        @php
+            // define slides for the homepage carousel; text/button reuse existing translation keys
+            $homeTagline = t('home.banner.tagline') ?: 'Printing Life layer by layer';
+            $homeButton  = t('home.banner.button')  ?: 'OUR SERVICES';
+            $slides = [
+                [
+                    // local placeholders copied during build
+                    'image' => asset('images/slide1.jpg'),
+                    'tagline' => $homeTagline,
+                    'buttonText' => $homeButton,
+                    'buttonUrl' => '#services',
+                ],
+                [
+                    'image' => asset('images/slide2.jpg'),
+                    'tagline' => $homeTagline,
+                    'buttonText' => $homeButton,
+                    'buttonUrl' => '#services',
+                ],
+                [
+                    'image' => asset('images/slide3.jpg'),
+                    'tagline' => $homeTagline,
+                    'buttonText' => $homeButton,
+                    'buttonUrl' => '#services',
+                ],
+            ];
+        @endphp
+
+        <x-home-banner :slides="$slides" />
 
         <!-- SERVICES SECTION -->
         <section id="services" class="py-16 md:py-24 bg-white px-6">

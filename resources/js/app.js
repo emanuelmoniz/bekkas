@@ -4,6 +4,9 @@ import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
+// import the carousel helper for the home banner; it registers itself globally
+import './home-banner';
+
 // Initialize favorites store //...
 Alpine.store('favorites', {
     count: window.initialFavoritesCount || 0
