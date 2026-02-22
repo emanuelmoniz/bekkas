@@ -6,6 +6,8 @@ window.Alpine = Alpine;
 
 // import the carousel helper for the home banner; it registers itself globally
 import './home-banner';
+import './contact-validation';
+import './home-splash';
 
 // Initialize favorites store //...
 Alpine.store('favorites', {
