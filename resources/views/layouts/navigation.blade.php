@@ -130,10 +130,32 @@
                         
                         {{-- Products --}}
                         @if(config('app.store_enabled'))
-                            <div class="relative h-full flex items-center">
-                                <x-nav-button :active="request()->routeIs('store.*')" @click="window.location.href='{{ route('store.index') }}'">
+                            <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                                <!-- parent button is not clickable, just shows submenu on hover -->
+                                <x-nav-button :active="request()->routeIs('store.*')">
                                     {{ t('nav.store') ?: 'Store' }}
                                 </x-nav-button>
+                                <div x-show="open"
+                                     x-transition:enter="transition ease-out duration-200"
+                                     x-transition:enter-start="opacity-0 scale-95"
+                                     x-transition:enter-end="opacity-100 scale-100"
+                                     x-transition:leave="transition ease-in duration-150"
+                                     x-transition:leave-start="opacity-100 scale-100"
+                                     x-transition:leave-end="opacity-0 scale-95"
+                                     class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-light ring-1 ring-black ring-opacity-5 z-50"
+                                     style="display: none;">
+                                    <div class="py-1">
+                                        <a href="{{ route('store.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">
+                                            {{ t('nav.store.all_products') ?: 'All Products' }}
+                                        </a>
+                                        <a href="{{ route('store.index', ['is_new' => 1]) }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">
+                                            {{ t('nav.store.featured') ?: 'Featured' }}
+                                        </a>
+                                        <a href="{{ route('store.index', ['is_promo' => 1]) }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">
+                                            {{ t('nav.store.promotion') ?: 'Promotion' }}
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         @endif
 
@@ -383,9 +405,25 @@
             @else
                 {{-- PUBLIC MENU MOBILE --}}
                 @if(config('app.store_enabled'))
-                    <x-responsive-nav-link :href="route('store.index')" :active="request()->routeIs('store.*')">
-                        {{ t('nav.store') ?: 'Store' }}
-                    </x-responsive-nav-link>
+                    <div x-data="{ open: false }">
+                        <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-grey-dark hover:bg-grey-light">
+                            <span>{{ t('nav.store') ?: 'Store' }}</span>
+                            <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div x-show="open" class="pl-4 space-y-1">
+                            <x-responsive-nav-link :href="route('store.index')" :active="request()->routeIs('store.index') && !request()->filled('is_new') && !request()->filled('is_promo')">
+                                {{ t('nav.store.all_products') ?: 'All Products' }}
+                            </x-responsive-nav-link>
+                            <x-responsive-nav-link :href="route('store.index', ['is_new' => 1])" :active="request()->routeIs('store.index') && request()->filled('is_new')">
+                                {{ t('nav.store.featured') ?: 'Featured' }}
+                            </x-responsive-nav-link>
+                            <x-responsive-nav-link :href="route('store.index', ['is_promo' => 1])" :active="request()->routeIs('store.index') && request()->filled('is_promo')">
+                                {{ t('nav.store.promotion') ?: 'Promotion' }}
+                            </x-responsive-nav-link>
+                        </div>
+                    </div>
                 @endif
                 
                 <x-responsive-nav-link :href="route('custom.index')" :active="request()->routeIs('custom.*')">

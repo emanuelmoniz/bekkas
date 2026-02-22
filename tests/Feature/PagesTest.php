@@ -32,4 +32,27 @@ class PagesTest extends TestCase
         $response = $this->get('/');
         $response->assertStatus(200);
     }
+
+    public function test_navigation_displays_store_submenu()
+    {
+        // ensure store menu and its children are rendered when store is enabled
+        config(['app.store_enabled' => true]);
+
+        // seed translations so `t()` returns human text instead of key names
+        $this->seed(\Database\Seeders\StaticTranslationsSeeder::class);
+        // explicitly use English for predictable assertions
+        app()->setLocale('en-UK');
+
+        $response = $this->get('/');
+        $response->assertStatus(200);
+        $response->assertSeeText('Store');
+        $response->assertSeeText('All Products');
+        $response->assertSeeText('Featured');
+        $response->assertSeeText('Promotion');
+
+        // ensure the hrefs include the proper query parameters for filters
+        $response->assertSee(route('store.index'));
+        $response->assertSee(route('store.index', ['is_new' => 1]));
+        $response->assertSee(route('store.index', ['is_promo' => 1]));
+    }
 }

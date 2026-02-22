@@ -51,6 +51,14 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'nav.custom', 'locale' => 'pt-PT', 'value' => 'Produção', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'nav.custom', 'locale' => 'en-UK', 'value' => 'Custom', 'created_at' => $now, 'updated_at' => $now],
 
+            // store submenu entries
+            ['key' => 'nav.store.all_products', 'locale' => 'pt-PT', 'value' => 'Todos os Produtos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'nav.store.all_products', 'locale' => 'en-UK', 'value' => 'All Products', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'nav.store.featured', 'locale' => 'pt-PT', 'value' => 'Em Destaque', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'nav.store.featured', 'locale' => 'en-UK', 'value' => 'Featured', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'nav.store.promotion', 'locale' => 'pt-PT', 'value' => 'Promoção', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'nav.store.promotion', 'locale' => 'en-UK', 'value' => 'Promotion', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'nav.about', 'locale' => 'pt-PT', 'value' => 'Sobre Nós', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'nav.about', 'locale' => 'en-UK', 'value' => 'About Us', 'created_at' => $now, 'updated_at' => $now],
 
