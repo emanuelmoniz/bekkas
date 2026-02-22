@@ -13,7 +13,7 @@
         <div x-data="{ open:false, search:'', selected:'{{ request('category_id') }}' }" class="relative">
             <input type="hidden" name="category_id" :value="selected">
             <button type="button" @click="open=!open"
-                    class="w-full border rounded px-3 py-2 text-left">
+                    class="bg-white border-grey-medium w-full border rounded px-3 py-2 text-left">
                 {{ optional($categories->firstWhere('id', request('category_id'))?->translation())->name ?? t('store.filter.category') ?: 'Category' }}
             </button>
             <div x-show="open" @click.outside="open=false"
@@ -23,7 +23,7 @@
                     @php $name = optional($category->translation())->name; @endphp
                     <div x-show="'{{ strtolower($name) }}'.includes(search.toLowerCase())"
                          @click="selected='{{ $category->id }}'; open=false"
-                         class="px-3 py-2 hover:bg-grey-light cursor-pointer">
+                         class="bg-white px-3 py-2 hover:bg-grey-light cursor-pointer">
                         {{ $name }}
                     </div>
                 @endforeach
@@ -34,7 +34,7 @@
         <div x-data="{ open:false, search:'', selected:'{{ request('material_id') }}' }" class="relative">
             <input type="hidden" name="material_id" :value="selected">
             <button type="button" @click="open=!open"
-                    class="w-full border rounded px-3 py-2 text-left">
+                    class="bg-white border-grey-medium w-full border rounded px-3 py-2 text-left">
                 {{ optional($materials->firstWhere('id', request('material_id'))?->translation())->name ?? t('store.filter.material') ?: 'Material' }}
             </button>
             <div x-show="open" @click.outside="open=false"
@@ -44,7 +44,7 @@
                     @php $name = optional($material->translation())->name; @endphp
                     <div x-show="'{{ strtolower($name) }}'.includes(search.toLowerCase())"
                          @click="selected='{{ $material->id }}'; open=false"
-                         class="px-3 py-2 hover:bg-grey-light cursor-pointer">
+                         class="bg-white px-3 py-2 hover:bg-grey-light cursor-pointer">
                         {{ $name }}
                     </div>
                 @endforeach

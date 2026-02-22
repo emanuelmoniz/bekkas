@@ -38,7 +38,7 @@
         </section>
 
         <!-- FEATURES SECTION -->
-        <section class="py-16 md:py-24 bg-light px-6">
+        <section class="py-16 md:py-24 bg-white px-6">
             <div class="max-w-7xl mx-auto">
                 <h2 class="text-4xl font-bold mb-12 text-center text-dark">{{ t('custom.features.title') ?: 'Our Services' }}</h2>
                 
@@ -65,14 +65,14 @@
         </section>
 
         <!-- REQUEST SECTION -->
-        <section id="request" class="py-16 md:py-24 bg-light px-6">
-            <div class="max-w-3xl mx-auto">
+        <section id="request" class="py-16 md:py-24 bg-grey-light px-6">
+            <div class="bg-light rounded-lg pt-8 shadow-lg max-w-3xl mx-auto">
                 <h2 class="text-4xl font-bold mb-6 text-center text-dark">{{ t('custom.request.title') ?: 'Request a Quote' }}</h2>
                 <p class="text-center text-lg text-grey-dark mb-10">
                     {{ t('custom.request.cta') ?: 'Want more info or a quote for a specific project? Please send us a ticket and we will follow up.' }}
                 </p>
 
-                <div class="bg-light rounded-lg shadow-lg p-8 text-center">
+                <div class="p-8 text-center">
                     <a href="{{ route('tickets.create') }}" class="inline-flex items-center justify-center gap-2 bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-3 rounded-lg font-semibold transition-colors">
                         {{ t('custom.request.ticket_button') ?: 'Create new ticket' }}
                     </a>

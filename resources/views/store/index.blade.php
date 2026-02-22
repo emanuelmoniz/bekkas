@@ -52,7 +52,7 @@
                 @forelse ($products as $product)
                     <div class="bg-light rounded shadow p-4 hover:shadow-lg transition relative overflow-hidden isolate">
                         <button @click.prevent="toggleFavorite({{ $product->id }})" 
-                                class="absolute top-2 right-2 p-2 hover:bg-grey-light rounded-full transition z-10">
+                                class="absolute top-2 right-2 p-2 bg-white rounded-full transition z-10">
                             <svg xmlns="http://www.w3.org/2000/svg" 
                                  :fill="favorites.includes({{ $product->id }}) ? 'currentColor' : 'none'" 
                                  viewBox="0 0 24 24" 

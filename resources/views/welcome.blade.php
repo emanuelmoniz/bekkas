@@ -52,14 +52,14 @@
         </section>
 
         <!-- SERVICES SECTION -->
-        <section id="services" class="py-16 md:py-24 bg-light px-6">
+        <section id="services" class="py-16 md:py-24 bg-white px-6">
             <div class="max-w-7xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                     
                     <!-- Products Card -->
                     @if(config('app.store_enabled'))
                         <a href="{{ route('store.index') }}" class="group">
-                            <div class="bg-grey-light rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
+                            <div class="bg-light rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
                                 <div class="w-full h-64 md:h-80 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1569163139394-de4798aa62b1?w=500&h=400&fit=crop')"></div>
                                 <div class="p-6 flex flex-col flex-grow">
                                     <h3 class="text-2xl font-bold mb-3 text-dark">{{ t('home.services.store.title') ?: 'STORE' }}</h3>
@@ -74,7 +74,7 @@
 
                     <!-- Architecture Card -->
                     <a href="{{ route('tickets.index') }}" class="group">
-                        <div class="bg-grey-light rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
+                        <div class="bg-light rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
                             <div class="w-full h-64 md:h-80 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=400&fit=crop')"></div>
                             <div class="p-6 flex flex-col flex-grow">
                                 <h3 class="text-2xl font-bold mb-3 text-dark">{{ t('home.services.custom.title') ?: 'CUSTOM' }}</h3>
@@ -91,7 +91,7 @@
         </section>
 
         <!-- CONTACT SECTION -->
-        <section id="contact" class="py-16 md:py-24 bg-light px-6">
+        <section id="contact" class="py-16 md:py-24 bg-grey-light px-6">
             <div class="max-w-7xl mx-auto">
                 <h2 class="text-4xl font-bold mb-12 text-center text-dark">{{ t('home.contact.title') ?: 'Get in Touch' }}</h2>
                 
@@ -182,22 +182,18 @@
                             (function(){
                                 var script = document.currentScript;
                                 var container = (script && script.previousElementSibling && script.previousElementSibling.classList && script.previousElementSibling.classList.contains('g-recaptcha')) ? script.previousElementSibling : (script && script.parentElement && script.parentElement.querySelector('.g-recaptcha')) || document.querySelector('.g-recaptcha[data-sitekey]');
-                                if (!container) { console.debug('[recaptcha] container not found (welcome)'); return; }
-
+                                
                                 function loadRecaptcha(){
                                     if (window.__recaptchaLazyLoaded) return;
                                     window.__recaptchaLazyLoaded = true;
-                                    console.debug('[recaptcha] loading script (welcome)');
                                     var s = document.createElement('script');
                                     s.src = 'https://www.google.com/recaptcha/api.js';
                                     s.async = true; s.defer = true;
-                                    s.onload = function(){
-                                        console.debug('[recaptcha] script loaded (welcome)');
+                                    s.onload = function(){                                        
                                         try{
                                             var key = container.getAttribute('data-sitekey');
                                             if (window.grecaptcha && typeof window.grecaptcha.render === 'function' && !container.querySelector('iframe')) {
-                                                window.grecaptcha.render(container, { 'sitekey': key });
-                                                console.debug('[recaptcha] rendered (welcome)');
+                                                window.grecaptcha.render(container, { 'sitekey': key });                                                
                                             }
                                         } catch(e) { console.error('[recaptcha] render error (welcome)', e); }
                                     };
