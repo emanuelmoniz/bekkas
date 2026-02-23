@@ -81,6 +81,7 @@ class ProductController extends Controller
         $materials = Material::with('translations')->get();
         $taxes = Tax::where('is_active', true)->orderBy('percentage')->get();
 
+        // we don't need to pass option types on create – the form will be empty
         return view('admin.products.create', compact(
             'categories',
             'materials',
@@ -92,6 +93,24 @@ class ProductController extends Controller
     {
         $request->validate([
             'tax_id' => 'required|exists:taxes,id',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'production_time' => 'required|integer|min:0',
+            'weight' => 'required|numeric|min:0',
+            'width' => 'nullable|numeric|min:0',
+            'length' => 'nullable|numeric|min:0',
+            'height' => 'nullable|numeric|min:0',
+
+            // option-types are optional; if present validate structure
+            'option_types' => 'sometimes|array',
+            'option_types.*.is_active' => 'sometimes|boolean',
+            'option_types.*.name' => 'sometimes|array',
+            'option_types.*.description' => 'sometimes|array',
+            'option_types.*.options' => 'sometimes|array',
+            'option_types.*.options.*.is_active' => 'sometimes|boolean',
+            'option_types.*.options.*.stock' => 'sometimes|integer|min:0',
+            'option_types.*.options.*.name' => 'sometimes|array',
+            'option_types.*.options.*.description' => 'sometimes|array',
         ]);
 
         $product = Product::create([
@@ -112,6 +131,9 @@ class ProductController extends Controller
             'active' => $request->boolean('active'),
         ]);
 
+        // persist any option types that were submitted along with their options
+        $this->saveOptionTypes($product, $request->input('option_types', []));
+
         foreach (config('app.locales') as $locale => $name) {
             ProductTranslation::create([
                 'product_id' => $product->id,
@@ -124,12 +146,19 @@ class ProductController extends Controller
         $product->categories()->sync($request->categories ?? []);
         $product->materials()->sync($request->materials ?? []);
 
-        return redirect()->route('admin.products.index');
+        // go straight to the edit form so photos/options can be added immediately
+        return redirect()->route('admin.products.edit', $product);
     }
 
     public function edit(Product $product)
     {
-        $product->load(['translations', 'categories', 'materials']);
+        $product->load([
+            'translations',
+            'categories',
+            'materials',
+            'optionTypes.translations',
+            'optionTypes.options.translations',
+        ]);
 
         $categories = Category::with('translations')->get();
         $materials = Material::with('translations')->get();
@@ -147,6 +176,23 @@ class ProductController extends Controller
     {
         $request->validate([
             'tax_id' => 'required|exists:taxes,id',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'production_time' => 'required|integer|min:0',
+            'weight' => 'required|numeric|min:0',
+            'width' => 'nullable|numeric|min:0',
+            'length' => 'nullable|numeric|min:0',
+            'height' => 'nullable|numeric|min:0',
+
+            'option_types' => 'sometimes|array',
+            'option_types.*.is_active' => 'sometimes|boolean',
+            'option_types.*.name' => 'sometimes|array',
+            'option_types.*.description' => 'sometimes|array',
+            'option_types.*.options' => 'sometimes|array',
+            'option_types.*.options.*.is_active' => 'sometimes|boolean',
+            'option_types.*.options.*.stock' => 'sometimes|integer|min:0',
+            'option_types.*.options.*.name' => 'sometimes|array',
+            'option_types.*.options.*.description' => 'sometimes|array',
         ]);
 
         $product->update([
@@ -167,6 +213,16 @@ class ProductController extends Controller
             'active' => $request->boolean('active'),
         ]);
 
+        // wipe and re‑create associated option types/options so the simple
+        // form structure can just send the complete set each time
+        $product->optionTypes()->each(function ($t) {
+            $t->options()->delete();
+            $t->translations()->delete();
+        });
+        $product->optionTypes()->delete();
+
+        $this->saveOptionTypes($product, $request->input('option_types', []));
+
         foreach (config('app.locales') as $locale => $name) {
             $product->translations()
                 ->updateOrCreate(
@@ -181,7 +237,8 @@ class ProductController extends Controller
         $product->categories()->sync($request->categories ?? []);
         $product->materials()->sync($request->materials ?? []);
 
-        return redirect()->route('admin.products.index');
+        // stay on edit page after update for convenience
+        return redirect()->route('admin.products.edit', $product);
     }
 
     public function destroy(Product $product)
@@ -189,5 +246,49 @@ class ProductController extends Controller
         $product->delete();
 
         return redirect()->route('admin.products.index');
+    }
+
+    /**
+     * Create option types & options for a product from the raw array
+     * submitted by the form. We don't attempt to patch existing records;
+     * instead the caller is expected to delete any previous data before
+     * invoking this helper (simpler for our use‑case).
+     *
+     * @param  Product  $product
+     * @param  array    $types
+     * @return void
+     */
+    protected function saveOptionTypes(Product $product, array $types)
+    {
+        foreach ($types as $typeData) {
+            $type = $product->optionTypes()->create([
+                'is_active' => isset($typeData['is_active']) ? (bool) $typeData['is_active'] : false,
+            ]);
+
+            // translations
+            foreach (config('app.locales') as $locale => $label) {
+                $type->translations()->create([
+                    'locale' => $locale,
+                    'name' => $typeData['name'][$locale] ?? null,
+                    'description' => $typeData['description'][$locale] ?? null,
+                ]);
+            }
+
+            // options nested within this type
+            foreach ($typeData['options'] ?? [] as $optData) {
+                $opt = $type->options()->create([
+                    'is_active' => isset($optData['is_active']) ? (bool) $optData['is_active'] : false,
+                    'stock' => isset($optData['stock']) ? (int) $optData['stock'] : 0,
+                ]);
+
+                foreach (config('app.locales') as $locale => $label) {
+                    $opt->translations()->create([
+                        'locale' => $locale,
+                        'name' => $optData['name'][$locale] ?? null,
+                        'description' => $optData['description'][$locale] ?? null,
+                    ]);
+                }
+            }
+        }
     }
 }

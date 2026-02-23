@@ -128,4 +128,14 @@ class Product extends Model
     {
         return $this->hasOne(ProductPhoto::class)->where('is_primary', true);
     }
+
+    /**
+     * Option types attached to this product (e.g. colour, size, etc).
+     * A single product can have zero or more types, and each type in
+     * turn owns multiple concrete options.
+     */
+    public function optionTypes()
+    {
+        return $this->hasMany(ProductOptionType::class);
+    }
 }
