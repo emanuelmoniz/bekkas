@@ -41,6 +41,11 @@ class ProjectController extends Controller
             $query->where('is_active', (bool) $request->is_active);
         }
 
+        // FEATURED
+        if ($request->filled('is_featured')) {
+            $query->where('is_featured', (bool) $request->is_featured);
+        }
+
         $projects = $query->paginate(20)->withQueryString();
 
         $materials = Material::with('translations')->get();
@@ -66,6 +71,7 @@ class ProjectController extends Controller
             'dimensions' => $request->dimensions,
             'weight' => $request->weight,
             'is_active' => $request->boolean('is_active', true),
+            'is_featured' => $request->boolean('is_featured'),
         ]);
 
         foreach (config('app.locales') as $locale => $name) {
@@ -107,6 +113,7 @@ class ProjectController extends Controller
             'dimensions' => $request->dimensions,
             'weight' => $request->weight,
             'is_active' => $request->boolean('is_active'),
+            'is_featured' => $request->boolean('is_featured'),
         ]);
 
         foreach (config('app.locales') as $locale => $name) {

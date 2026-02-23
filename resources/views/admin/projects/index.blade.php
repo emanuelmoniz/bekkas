@@ -67,6 +67,13 @@
                         <option value="0" @selected(request('is_active')==='0')>No</option>
                     </select>
 
+                    {{-- FEATURED FLAG --}}
+                    <select name="is_featured" class="border rounded px-3 py-2">
+                        <option value="">Featured</option>
+                        <option value="1" @selected(request('is_featured')==='1')>Yes</option>
+                        <option value="0" @selected(request('is_featured')==='0')>No</option>
+                    </select>
+
                     {{-- ACTIONS --}}
                     <div class="flex gap-2">
                         <a href="{{ route('admin.projects.index') }}"
@@ -87,6 +94,7 @@
                         <tr>
                             <th class="px-4 py-2 text-left">Name</th>
                             <th class="px-4 py-2 text-left">Production Date</th>
+                            <th class="px-4 py-2 text-center">Featured</th>
                             <th class="px-4 py-2 text-left">Execution Time</th>
                             <th class="px-4 py-2 text-right">Actions</th>
                         </tr>
@@ -99,6 +107,13 @@
                                 </td>
                                 <td class="px-4 py-2">
                                     {{ $project->production_date ? $project->production_date->format('Y-m-d') : '-' }}
+                                </td>
+                                <td class="px-4 py-2 text-center">
+                                    @if($project->is_featured)
+                                        ✔️
+                                    @else
+                                        –
+                                    @endif
                                 </td>
                                 <td class="px-4 py-2">
                                     {{ $project->execution_time }}

@@ -101,12 +101,21 @@
     </div>
 
     {{-- FLAGS --}}
-    <label class="flex items-center gap-2">
-        <input type="checkbox"
-               name="is_active"
-               @checked(old('is_active', $project->is_active ?? true))>
-        Active
-    </label>
+    <div class="flex gap-6">
+        <label class="flex items-center gap-2">
+            <input type="checkbox"
+                   name="is_active"
+                   @checked(old('is_active', $project->is_active ?? true))>
+            Active
+        </label>
+
+        <label class="flex items-center gap-2">
+            <input type="checkbox"
+                   name="is_featured"
+                   @checked(old('is_featured', $project->is_featured ?? false))>
+            Featured
+        </label>
+    </div>
 
     {{-- SUBMIT --}}
     <div class="pt-4">

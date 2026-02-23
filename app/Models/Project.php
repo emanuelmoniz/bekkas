@@ -15,6 +15,7 @@ class Project extends Model
         'dimensions',
         'weight',
         'is_active',
+        'is_featured',
     ];
 
     protected $casts = [
@@ -22,6 +23,7 @@ class Project extends Model
         'execution_time' => 'decimal:2',
         'weight' => 'decimal:2',
         'is_active' => 'boolean',
+        'is_featured' => 'boolean',
     ];
 
     public function translations()
