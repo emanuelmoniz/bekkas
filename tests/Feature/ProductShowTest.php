@@ -58,7 +58,10 @@ class ProductShowTest extends TestCase
         $formatted = '€'.number_format($product->price,2);
         $response->assertSee($formatted);
 
-        // dimensions should render with mm unit (factory stores decimals)
-        $response->assertSee('10.00 × 20.00 × 30.00 mm');
+        // weight and dimensions should render without decimals
+        $product->update([ 'weight' => 123.45 ]); // fractional weight
+        $response = $this->get(route('store.show', $product));
+        $response->assertSee('123 g');
+        $response->assertSee('10 × 20 × 30 mm');
     }
 }

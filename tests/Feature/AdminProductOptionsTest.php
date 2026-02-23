@@ -112,6 +112,123 @@ class AdminProductOptionsTest extends TestCase
     }
 
     /** @test */
+    public function admin_can_create_option_without_stock_and_it_defaults_to_zero()
+    {
+        $tax = Tax::factory()->create(['percentage' => 23]);
+        $admin = \App\Models\User::factory()->create();
+        $admin->roles()->attach(Role::firstOrCreate(['name' => 'admin'])->id);
+        $this->actingAs($admin);
+
+        // omit the stock value for one of the options (blank string simulates form input)
+        $payload = [
+            'tax_id' => $tax->id,
+            'price' => '10.00',
+            'stock' => 5,
+            'production_time' => 0,
+            'weight' => 100,
+            'width' => 10,
+            'length' => 10,
+            'height' => 5,
+            'name' => [
+                'pt-PT' => 'Produto teste',
+                'en-UK' => 'Test product',
+            ],
+            'option_types' => [
+                [
+                    'is_active' => 1,
+                    'name' => [
+                        'pt-PT' => 'Tamanho',
+                        'en-UK' => 'Size',
+                    ],
+                    'options' => [
+                        [
+                            'is_active' => 1,
+                            // stock missing entirely – controller should treat as zero
+                            'name' => [
+                                'pt-PT' => 'Pequeno',
+                                'en-UK' => 'Small',
+                            ],
+                        ],
+                        [
+                            'is_active' => 1,
+                            'stock' => '', // blank string from form
+                            'name' => [
+                                'pt-PT' => 'Grande',
+                                'en-UK' => 'Large',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $response = $this->post(route('admin.products.store'), $payload);
+        $response->assertRedirect();
+
+        $product = Product::first();
+        $this->assertNotNull($product);
+        $type = $product->optionTypes->first();
+        $this->assertCount(2, $type->options);
+
+        // both options should exist and have zero stock; verify via translation
+        $options = $type->options()->get();
+        $this->assertCount(2, $options);
+        $this->assertEquals(0, $options[0]->stock);
+        $this->assertEquals(0, $options[1]->stock);
+        $this->assertEquals('Pequeno', $options[0]->translation('pt-PT')->name);
+        $this->assertEquals('Grande', $options[1]->translation('pt-PT')->name);
+    }
+
+    /** @test */
+    public function admin_can_update_product_and_add_option_without_stock()
+    {
+        $tax = Tax::factory()->create(['percentage' => 23]);
+        $admin = \App\Models\User::factory()->create();
+        $admin->roles()->attach(Role::firstOrCreate(['name' => 'admin'])->id);
+        $this->actingAs($admin);
+
+        // create initial product without options
+        $product = Product::create([
+            'tax_id' => $tax->id,
+            'price' => '5.00',
+            'stock' => 1,
+            'production_time' => 0,
+            'weight' => 50,
+        ]);
+
+        // now attempt to update by adding a second option with blank stock
+        $payload = [
+            'tax_id' => $tax->id,
+            'price' => '5.00',
+            'stock' => 1,
+            'production_time' => 0,
+            'weight' => 50,
+            'name' => [ 'pt-PT' => 'Produto existente', 'en-UK' => 'Existing product' ],
+            'option_types' => [
+                [
+                    'is_active' => 1,
+                    'name' => [ 'pt-PT' => 'Tipo 1', 'en-UK' => 'Type 1' ],
+                    'options' => [
+                        [
+                            'is_active' => 1,
+                            'stock' => '',
+                            'name' => [ 'pt-PT' => 'Novo', 'en-UK' => 'New' ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $response = $this->put(route('admin.products.update', $product), $payload);
+        $response->assertRedirect();
+
+        $this->assertEquals(1, $product->fresh()->optionTypes->first()->options()->count());
+        $newOpt = $product->fresh()->optionTypes->first()->options()->first();
+        $this->assertEquals(0, $newOpt->stock);
+        $this->assertEquals('Novo', $newOpt->translation('pt-PT')->name);
+    }
+
+    /** @test */
     public function admin_sees_errors_when_required_fields_missing()
     {
         $tax = Tax::factory()->create(['percentage' => 23]);

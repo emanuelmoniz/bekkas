@@ -122,14 +122,14 @@
 
                 {{-- WEIGHT --}}
                 <div class="text-sm text-grey-dark">
-                    {{ t('store.weight') ?: 'Weight' }}: {{ $product->weight }} g
+                    {{ t('store.weight') ?: 'Weight' }}: {{ (int) $product->weight }} g
                 </div>
 
                 {{-- DIMENSIONS --}}
                 @if($product->width || $product->length || $product->height)
                     <div class="text-sm text-grey-dark">
                         {{ t('store.dimensions') ?: 'Dimensions' }}: 
-                        {{ $product->width ?? '-' }} × {{ $product->length ?? '-' }} × {{ $product->height ?? '-' }} mm
+                        {{ isset($product->width) ? (int) $product->width : '-' }} × {{ isset($product->length) ? (int) $product->length : '-' }} × {{ isset($product->height) ? (int) $product->height : '-' }} mm
                     </div>
                 @endif
 

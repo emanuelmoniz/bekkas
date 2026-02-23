@@ -112,7 +112,8 @@ class ProductController extends Controller
             'option_types.*.description' => 'sometimes|array',
             'option_types.*.options' => 'sometimes|array',
             'option_types.*.options.*.is_active' => 'sometimes|boolean',
-            'option_types.*.options.*.stock' => 'sometimes|integer|min:0',
+            // stock may legitimately be left empty; treat an empty string as null
+            'option_types.*.options.*.stock' => 'sometimes|nullable|integer|min:0',
             'option_types.*.options.*.name' => 'sometimes|array',
             'option_types.*.options.*.description' => 'sometimes|array',
         ]);
@@ -195,7 +196,8 @@ class ProductController extends Controller
             'option_types.*.description' => 'sometimes|array',
             'option_types.*.options' => 'sometimes|array',
             'option_types.*.options.*.is_active' => 'sometimes|boolean',
-            'option_types.*.options.*.stock' => 'sometimes|integer|min:0',
+            // allow blank values here as well; will default to zero when saved
+            'option_types.*.options.*.stock' => 'sometimes|nullable|integer|min:0',
             'option_types.*.options.*.name' => 'sometimes|array',
             'option_types.*.options.*.description' => 'sometimes|array',
         ]);

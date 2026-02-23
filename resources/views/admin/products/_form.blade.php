@@ -398,7 +398,9 @@
         </label>
         <div class="mt-2">
             <label class="block font-medium mb-1">Stock</label>
-            <input type="number" min="0" name="option_types[__INDEX__][options][__OPT_INDEX__][stock]" class="w-full border rounded px-3 py-2">
+            <input type="number" min="0" name="option_types[__INDEX__][options][__OPT_INDEX__][stock]"
+                   value="0" placeholder="0"
+                   class="w-full border rounded px-3 py-2">
         </div>
     </div>
 </template>
