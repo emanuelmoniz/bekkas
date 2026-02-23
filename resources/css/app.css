@@ -1,3 +1,138 @@
+/* ───────── custom font definitions ───────── */
+/* Fonts are stored under resources/fonts; Vite will process and copy them via the
+   `assetsInclude` setting.  All weights/italics that exist have been declared so
+   the browser can pick the appropriate variant.  */
+
+@font-face {
+    font-family: 'Figtree';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('../fonts/figtree/Figtree-Light.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Figtree';
+    font-style: italic;
+    font-weight: 300;
+    font-display: swap;
+    src: url('../fonts/figtree/Figtree-LightItalic.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Figtree';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/figtree/Figtree-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Figtree';
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/figtree/Figtree-Italic.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Figtree';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../fonts/figtree/Figtree-Medium.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Figtree';
+    font-style: italic;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../fonts/figtree/Figtree-MediumItalic.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Figtree';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../fonts/figtree/Figtree-SemiBold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Figtree';
+    font-style: italic;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../fonts/figtree/Figtree-SemiBoldItalic.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Figtree';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/figtree/Figtree-Bold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Figtree';
+    font-style: italic;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/figtree/Figtree-BoldItalic.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Figtree';
+    font-style: normal;
+    font-weight: 800;
+    font-display: swap;
+    src: url('../fonts/figtree/Figtree-ExtraBold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Figtree';
+    font-style: italic;
+    font-weight: 800;
+    font-display: swap;
+    src: url('../fonts/figtree/Figtree-ExtraBoldItalic.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Figtree';
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: url('../fonts/figtree/Figtree-Black.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Figtree';
+    font-style: italic;
+    font-weight: 900;
+    font-display: swap;
+    src: url('../fonts/figtree/Figtree-BlackItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Signika';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('../fonts/signika/Signika-Light.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Signika';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/signika/Signika-Regular.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Signika';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../fonts/signika/Signika-Semibold.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Signika';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/signika/Signika-Bold.otf') format('opentype');
+}
+
+/* default-to-figtree for body text; headings override below */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -26,6 +161,11 @@
      with explicit utilities remain unchanged. */
   a {
     @apply text-accent-primary;
+  }
+
+  /* headings should use the Signika family */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Signika', sans-serif;
   }
 
   /* Keep prose links matching the same visual style */

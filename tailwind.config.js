@@ -61,7 +61,10 @@ export default {
                 'dark': 'rgb(var(--color-dark) / <alpha-value>)'
             },
             fontFamily: {
+                // primary interface font – all generic text
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                // explicit family for headings; base layer will apply it to h1‑h6
+                heading: ['Signika', 'Figtree', ...defaultTheme.fontFamily.sans],
             },
         },
     },
