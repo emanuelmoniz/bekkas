@@ -861,11 +861,17 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'footer.designed_by', 'locale' => 'pt-PT', 'value' => 'Criado por :az e :sofia', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'footer.designed_by', 'locale' => 'en-UK', 'value' => 'Created by :az and :sofia', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'footer.terms', 'locale' => 'pt-PT', 'value' => 'Termos', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'footer.terms', 'locale' => 'en-UK', 'value' => 'Terms', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'footer.terms', 'locale' => 'pt-PT', 'value' => 'Termos de Serviço', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'footer.terms', 'locale' => 'en-UK', 'value' => 'Service Terms', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'footer.privacy', 'locale' => 'pt-PT', 'value' => 'Privacidade', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'footer.privacy', 'locale' => 'en-UK', 'value' => 'Privacy', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'footer.return_refunds', 'locale' => 'pt-PT', 'value' => 'Política de Devoluções e Reembolsos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'footer.return_refunds', 'locale' => 'en-UK', 'value' => 'Return and Refunds Policy', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'footer.shipping_policy', 'locale' => 'pt-PT', 'value' => 'Política de Envios', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'footer.shipping_policy', 'locale' => 'en-UK', 'value' => 'Shipping Policy', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'footer.privacy', 'locale' => 'pt-PT', 'value' => 'Política de Privacidade', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'footer.privacy', 'locale' => 'en-UK', 'value' => 'Privacy Policy | Política de Privacidade', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'custom.banner.title', 'locale' => 'pt-PT', 'value' => 'Serviços de Produção', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.banner.title', 'locale' => 'en-UK', 'value' => 'Custom Services', 'created_at' => $now, 'updated_at' => $now],
@@ -1202,7 +1208,7 @@ class StaticTranslationsSeeder extends Seeder
 
             // Legal pages (Terms & Privacy)
             ['key' => 'legal.terms.title', 'locale' => 'pt-PT', 'value' => 'Termos de Serviço', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'legal.terms.title', 'locale' => 'en-UK', 'value' => 'Terms of Service', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.terms.title', 'locale' => 'en-UK', 'value' => 'Service Terms', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'legal.terms.content', 'locale' => 'pt-PT', 'value' => 'Estes Termos de Serviço regulam a utilização do site e dos serviços. Ao criar uma conta, concorda com estes termos.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'legal.terms.content', 'locale' => 'en-UK', 'value' => 'These Terms of Service govern your use of the site and services. By creating an account you agree to these terms.', 'created_at' => $now, 'updated_at' => $now],
@@ -1218,6 +1224,17 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'legal.terms.section_limitation', 'locale' => 'pt-PT', 'value' => 'A nossa responsabilidade está limitada conforme permitido por lei. Os serviços são fornecidos "tal como estão".', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'legal.terms.section_limitation', 'locale' => 'en-UK', 'value' => 'Our liability is limited as permitted by law. Services are provided "as-is".', 'created_at' => $now, 'updated_at' => $now],
+
+            // new sections added per requirement
+            ['key' => 'legal.terms.section_returns_title', 'locale' => 'pt-PT', 'value' => 'Política de Devoluções e Reembolsos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.terms.section_returns_title', 'locale' => 'en-UK', 'value' => 'Return and Refunds Policy', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.terms.section_returns', 'locale' => 'pt-PT', 'value' => 'Descrição da política de devoluções e reembolsos.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.terms.section_returns', 'locale' => 'en-UK', 'value' => 'Description of the return and refunds policy.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'legal.terms.section_shipping_title', 'locale' => 'pt-PT', 'value' => 'Política de Envios', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.terms.section_shipping_title', 'locale' => 'en-UK', 'value' => 'Shipping Policy', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.terms.section_shipping', 'locale' => 'pt-PT', 'value' => 'Descrição da política de envios.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'legal.terms.section_shipping', 'locale' => 'en-UK', 'value' => 'Description of the shipping policy.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'legal.terms.last_updated', 'locale' => 'pt-PT', 'value' => 'Última atualização: Fevereiro de 2026', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'legal.terms.last_updated', 'locale' => 'en-UK', 'value' => 'Last updated: February 2026', 'created_at' => $now, 'updated_at' => $now],

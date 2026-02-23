@@ -1,8 +1,10 @@
 <footer class="bg-dark text-grey-medium py-12 border-t border-grey-dark">
     <div class="container mx-auto px-4">
         <div class="text-center pb-8">
-            <a href="{{ route('terms') }}" class="underline text-sm me-4">{{ t('footer.terms') ?: 'Terms' }}</a>
-            <a href="{{ route('privacy') }}" class="underline text-sm">{{ t('footer.privacy') ?: 'Privacy' }}</a>
+            <a href="{{ route('terms') }}" class="underline text-sm me-4">{{ t('footer.terms') }}</a>
+            <a href="{{ route('terms') }}#returns" class="underline text-sm me-4">{{ t('footer.return_refunds') }}</a>
+            <a href="{{ route('terms') }}#shipping" class="underline text-sm me-4">{{ t('footer.shipping_policy') }}</a>
+            <a href="{{ route('privacy') }}" class="underline text-sm">{{ t('footer.privacy') }}</a>
         </div>
 
         <!-- Copyright -->
