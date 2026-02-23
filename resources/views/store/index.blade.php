@@ -1,10 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-grey-dark">
-            {{ t('store.title') ?: 'Store' }}
-        </h2>
-    </x-slot>
-
     <script id="favorites-data" type="application/json">
         {!! json_encode($favoriteIds ?? []) !!}
     </script>
