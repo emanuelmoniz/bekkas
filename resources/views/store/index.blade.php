@@ -62,8 +62,13 @@
                             <div class="font-semibold">
                                 {{ optional($product->translation())->name }}
                             </div>
-                            <div class="text-sm text-grey-dark">
+                            <div class="text-sm text-grey-dark flex items-baseline">
                                 €{{ number_format($product->is_promo ? ($product->promo_price ?? $product->price) : $product->price, 2) }}
+                                @if($product->is_promo)
+                                    <span class="text-xs text-grey-medium line-through ml-2">
+                                        €{{ number_format($product->price, 2) }}
+                                    </span>
+                                @endif
                             </div>
                             @if(isset($deliveryDates[$product->id]) && $deliveryDates[$product->id])
                                 <div class="text-xs text-grey-medium mt-1">

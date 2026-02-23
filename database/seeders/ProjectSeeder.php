@@ -42,7 +42,7 @@ class ProjectSeeder extends Seeder
         ]);
 
         DB::table('project_translations')->insert([
-            ['id' => 1, 'project_id' => 1, 'locale' => 'pt-PT', 'name' => 'Aquaterrário', 'description' => 'Plataforma para aquaterrario.'],
+            ['id' => 1, 'project_id' => 1, 'locale' => 'pt-PT', 'name' => 'Aquaterrário', 'description' => 'Plataforma para aquaterrário.'],
             ['id' => 2, 'project_id' => 1, 'locale' => 'en-UK', 'name' => 'Aquaterrarium', 'description' => null],
             ['id' => 3, 'project_id' => 2, 'locale' => 'pt-PT', 'name' => 'Porta-chaves FERRARI', 'description' => 'Porta-chaves bi-color.'],
             ['id' => 4, 'project_id' => 2, 'locale' => 'en-UK', 'name' => 'FERRARI keychain', 'description' => 'Bi-color keychain'],

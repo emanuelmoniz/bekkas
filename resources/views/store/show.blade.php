@@ -53,8 +53,13 @@
 
                 {{-- PRICE & FAVORITE --}}
                 <div class="flex items-center justify-between">
-                    <div class="text-xl font-semibold">
+                    <div class="text-xl font-semibold flex items-baseline">
                         €{{ number_format($product->is_promo ? ($product->promo_price ?? $product->price) : $product->price, 2) }}
+                        @if ($product->is_promo && $product->promo_price)
+                            <span class="text-sm text-grey-medium line-through ml-2">
+                                €{{ number_format($product->price, 2) }}
+                            </span>
+                        @endif
                     </div>
                     <button @click="toggle" class="p-2 hover:bg-grey-light rounded-full transition">
                         <svg xmlns="http://www.w3.org/2000/svg" :fill="isFavorite ? 'currentColor' : 'none'" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6" :class="isFavorite ? 'text-status-error' : 'text-grey-medium'">

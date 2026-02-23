@@ -10,7 +10,7 @@ class ProductOptionTranslation extends Model
 
     protected $fillable = ['product_option_id', 'locale', 'name', 'description'];
 
-    public function productOption()
+    public function option()
     {
         return $this->belongsTo(ProductOption::class);
     }
