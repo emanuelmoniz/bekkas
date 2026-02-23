@@ -1,5 +1,8 @@
 import './bootstrap';
 
+// register custom scripts
+import './image-scroller';
+
 import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;

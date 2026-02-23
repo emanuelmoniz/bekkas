@@ -80,7 +80,16 @@
                     @if(config('app.store_enabled'))
                         <a href="{{ route('store.index') }}" class="group anim-item" data-index="0">
                             <div class="bg-light rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
-                                <div class="w-full h-64 md:h-80 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1569163139394-de4798aa62b1?w=500&h=400&fit=crop')"></div>
+                                {{-- scroll images for store products --}}
+                                <x-image-scroller class="w-full aspect-square" :config="[
+                                    'interval' => 3000,
+                                    'max' => null,
+                                    'products' => [
+                                        'featured' => true,
+                                        'active' => true,
+                                        'per_item' => 1,
+                                    ],
+                                ]" />
                                 <div class="p-6 flex flex-col flex-grow">
                                     <h3 class="text-2xl font-bold mb-3 text-dark">{{ t('home.services.store.title') ?: 'STORE' }}</h3>
                                     <p class="text-grey-dark mb-6 flex-grow">{{ t('home.services.store.description') ?: 'Day to day life objects, gifts, souvenires' }}</p>
@@ -95,7 +104,16 @@
                     <!-- Architecture Card -->
                     <a href="{{ route('tickets.index') }}" class="group anim-item" data-index="1">
                         <div class="bg-light rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
-                            <div class="w-full h-64 md:h-80 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=400&fit=crop')"></div>
+                            {{-- scroll images for custom projects --}}
+                            <x-image-scroller class="w-full aspect-square" :config="[
+                                'interval' => 3000,
+                                'max' => null,
+                                'projects' => [
+                                    'active' => true,
+                                    'featured' => true,
+                                    'per_item' => 1,
+                                ],
+                            ]" />
                             <div class="p-6 flex flex-col flex-grow">
                                 <h3 class="text-2xl font-bold mb-3 text-dark">{{ t('home.services.custom.title') ?: 'CUSTOM' }}</h3>
                                 <p class="text-grey-dark mb-6 flex-grow">{{ t('home.services.custom.description') ?: 'Printing service for architects and architecture students including modeling and file preparation.' }}</p>
