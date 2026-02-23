@@ -1,81 +1,36 @@
-@props(['categories', 'materials', 'resetRoute' => 'store.index'])
+@props([
+    'categories',
+    'materials',
+    'categoryCounts' => [],
+    'materialCounts' => [],
+    'priceFloor' => 0,
+    'priceCeiling' => 0,
+    'resetRoute' => 'store.index',
+])
 
-<form method="GET" class="bg-light p-4 rounded shadow">
-    <div class="grid grid-cols-1 md:grid-cols-7 gap-4">
+{{--
+    Mobile: collapsible panel (Alpine.js toggle).
+    Desktop: always-visible sidebar.
+--}}
+<div x-data="{ open: false }">
 
-        <input type="text"
-               name="name"
-               value="{{ request('name') }}"
-               placeholder="{{ t('store.filter.name') ?: 'Name' }}"
-               class="border rounded px-3 py-2">
+    {{-- Mobile toggle button --}}
+    <button type="button"
+            @click="open = !open"
+            class="md:hidden w-full flex items-center justify-between bg-light border border-grey-light rounded px-4 py-3 mb-2 font-semibold">
+        <span>{{ t('store.filter.filters') ?: 'Filters' }}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+    </button>
 
-        {{-- CATEGORY --}}
-        <div x-data="{ open:false, search:'', selected:'{{ request('category_id') }}' }" class="relative">
-            <input type="hidden" name="category_id" :value="selected">
-            <button type="button" @click="open=!open"
-                    class="bg-white border-grey-medium w-full border rounded px-3 py-2 text-left">
-                {{ optional($categories->firstWhere('id', request('category_id'))?->translation())->name ?? t('store.filter.category') ?: 'Category' }}
-            </button>
-            <div x-show="open" @click.outside="open=false"
-                 class="absolute z-10 w-full bg-light border rounded shadow mt-1">
-                <input x-model="search" class="w-full px-3 py-2 border-b" placeholder="Search...">
-                @foreach ($categories as $category)
-                    @php $name = optional($category->translation())->name; @endphp
-                    <div x-show="'{{ strtolower($name) }}'.includes(search.toLowerCase())"
-                         @click="selected='{{ $category->id }}'; open=false"
-                         class="bg-white px-3 py-2 hover:bg-grey-light cursor-pointer">
-                        {{ $name }}
-                    </div>
-                @endforeach
-            </div>
-        </div>
-
-        {{-- MATERIAL --}}
-        <div x-data="{ open:false, search:'', selected:'{{ request('material_id') }}' }" class="relative">
-            <input type="hidden" name="material_id" :value="selected">
-            <button type="button" @click="open=!open"
-                    class="bg-white border-grey-medium w-full border rounded px-3 py-2 text-left">
-                {{ optional($materials->firstWhere('id', request('material_id'))?->translation())->name ?? t('store.filter.material') ?: 'Material' }}
-            </button>
-            <div x-show="open" @click.outside="open=false"
-                 class="absolute z-10 w-full bg-light border rounded shadow mt-1">
-                <input x-model="search" class="w-full px-3 py-2 border-b" placeholder="{{ t('store.filter.search') ?: 'Search...' }}">
-                @foreach ($materials as $material)
-                    @php $name = optional($material->translation())->name; @endphp
-                    <div x-show="'{{ strtolower($name) }}'.includes(search.toLowerCase())"
-                         @click="selected='{{ $material->id }}'; open=false"
-                         class="bg-white px-3 py-2 hover:bg-grey-light cursor-pointer">
-                        {{ $name }}
-                    </div>
-                @endforeach
-            </div>
-        </div>
-
-        <select name="is_featured" class="border rounded px-3 py-2">
-            <option value="">{{ t('store.filter.featured') ?: 'Featured' }}</option>
-            <option value="1" @selected(request('is_featured')==='1')>{{ t('store.filter.only_featured') ?: 'Only Featured' }}</option>
-            <option value="0" @selected(request('is_featured')==='0')>{{ t('store.filter.not_featured') ?: 'Not Featured' }}</option>
-        </select>
-
-        <select name="is_promo" class="border rounded px-3 py-2">
-            <option value="">{{ t('store.filter.promo') ?: 'Promo' }}</option>
-            <option value="1" @selected(request('is_promo')==='1')>{{ t('store.filter.only_promo') ?: 'Only Promo' }}</option>
-            <option value="0" @selected(request('is_promo')==='0')>{{ t('store.filter.not_promo') ?: 'Not Promo' }}</option>
-        </select>
-
-        <label class="flex items-center gap-2">
-            <input type="checkbox" name="available" value="1" @checked(request('available'))>
-            {{ t('store.filter.in_stock') ?: 'In stock' }}
-        </label>
-
-        <div class="flex gap-2">
-            <a href="{{ route($resetRoute) }}" 
-               class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
-                {{ t('store.filter.reset') ?: 'Reset' }}
-            </a>
-            <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
-                {{ t('store.filter.apply') ?: 'Filter' }}
-            </button>
-        </div>
+    {{-- Filter panel: hidden on mobile when closed, always visible on md+ --}}
+    <div x-show="open" x-cloak class="md:hidden">
+        @include('components.partials.product-filters-body', ['resetRoute' => $resetRoute, 'categories' => $categories, 'materials' => $materials, 'categoryCounts' => $categoryCounts, 'materialCounts' => $materialCounts, 'priceFloor' => $priceFloor, 'priceCeiling' => $priceCeiling])
     </div>
-</form>
+
+    <div class="hidden md:block">
+        @include('components.partials.product-filters-body', ['resetRoute' => $resetRoute, 'categories' => $categories, 'materials' => $materials, 'categoryCounts' => $categoryCounts, 'materialCounts' => $materialCounts, 'priceFloor' => $priceFloor, 'priceCeiling' => $priceCeiling])
+    </div>
+
+</div>

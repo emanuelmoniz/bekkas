@@ -22,80 +22,121 @@ class ProductController extends Controller
     {
         $query = Product::query()
             ->where('active', true)
-            ->with(['translations', 'primaryPhoto', 'categories', 'materials']);
+            ->with(['translations', 'primaryPhoto']);
 
         if ($request->filled('name')) {
             $query->whereHas('translations', function ($q) use ($request) {
-                $q->where('name', 'like', '%'.$request->name.'%');
+                $q->where('name', 'like', '%' . $request->name . '%');
             });
         }
 
-        if ($request->filled('category_id')) {
-            $query->whereHas('categories', function ($q) use ($request) {
-                $q->where('categories.id', $request->category_id);
+        $categoryIds = array_filter((array) $request->input('category_ids', []));
+        if (! empty($categoryIds)) {
+            $query->whereHas('categories', function ($q) use ($categoryIds) {
+                $q->whereIn('categories.id', $categoryIds);
             });
         }
 
-        if ($request->filled('material_id')) {
-            $query->whereHas('materials', function ($q) use ($request) {
-                $q->where('materials.id', $request->material_id);
+        $materialIds = array_filter((array) $request->input('material_ids', []));
+        if (! empty($materialIds)) {
+            $query->whereHas('materials', function ($q) use ($materialIds) {
+                $q->whereIn('materials.id', $materialIds);
             });
         }
 
-        if ($request->filled('is_featured')) {
-            $query->where('is_featured', (bool) $request->is_featured);
+        if ($request->boolean('is_featured')) {
+            $query->where('is_featured', true);
         }
 
-        if ($request->filled('is_promo')) {
-            $query->where('is_promo', (bool) $request->is_promo);
+        if ($request->boolean('is_promo')) {
+            $query->where('is_promo', true);
         }
 
         if ($request->boolean('available')) {
             $query->where('stock', '>', 0);
         }
 
+        if ($request->filled('price_min')) {
+            $min = (float) $request->price_min;
+            $query->whereRaw(
+                '(CASE WHEN is_promo THEN COALESCE(promo_price, price) ELSE price END) >= ?',
+                [$min]
+            );
+        }
+
+        if ($request->filled('price_max')) {
+            $max = (float) $request->price_max;
+            $query->whereRaw(
+                '(CASE WHEN is_promo THEN COALESCE(promo_price, price) ELSE price END) <= ?',
+                [$max]
+            );
+        }
+
         $products = $query->paginate(12)->withQueryString();
 
-        $activeProducts = Product::where('active', true)
-            ->with(['categories', 'materials'])
-            ->get();
+        // Build category/material lists with product counts (only from active products)
+        $activeProductsForCounts = Product::where('active', true)
+            ->with(['categories:id', 'materials:id'])
+            ->get(['id']);
 
-        $categoryIds = $activeProducts
-            ->pluck('categories')
-            ->flatten()
-            ->pluck('id')
-            ->unique();
+        $categoryCounts = [];
+        $materialCounts = [];
 
-        $materialIds = $activeProducts
-            ->pluck('materials')
-            ->flatten()
-            ->pluck('id')
-            ->unique();
+        foreach ($activeProductsForCounts as $p) {
+            foreach ($p->categories as $cat) {
+                $categoryCounts[$cat->id] = ($categoryCounts[$cat->id] ?? 0) + 1;
+            }
+            foreach ($p->materials as $mat) {
+                $materialCounts[$mat->id] = ($materialCounts[$mat->id] ?? 0) + 1;
+            }
+        }
 
-        $categories = Category::whereIn('id', $categoryIds)
+        $categories = Category::whereIn('id', array_keys($categoryCounts))
             ->with('translations')
             ->get();
 
-        $materials = Material::whereIn('id', $materialIds)
+        $materials = Material::whereIn('id', array_keys($materialCounts))
             ->with('translations')
             ->get();
+
+        // compute the bounds using effective price (promo price overrides)
+        $priceFloor = (int) floor(
+            Product::where('active', true)
+                ->selectRaw('MIN(CASE WHEN is_promo THEN COALESCE(promo_price, price) ELSE price END) as min_price')
+                ->value('min_price') ?? 0
+        );
+
+        $priceCeiling = (int) ceil(
+            Product::where('active', true)
+                ->selectRaw('MAX(CASE WHEN is_promo THEN COALESCE(promo_price, price) ELSE price END) as max_price')
+                ->value('max_price') ?? 0
+        );
 
         // Get favorite product IDs for the current user
-        $favoriteIds = [];
         if (Auth::check()) {
             $favoriteIds = Auth::user()->favorites()->pluck('product_id')->toArray();
         } else {
             $favoriteIds = session('favorites', []);
         }
 
-        // Calculate delivery dates for products
+        // Calculate delivery dates for paginated products
         $deliveryDates = [];
         foreach ($products as $product) {
             $deliveryInfo = $this->deliveryCalculator->calculateDeliveryDate($product);
             $deliveryDates[$product->id] = $deliveryInfo['formatted'];
         }
 
-        return view('store.index', compact('products', 'categories', 'materials', 'favoriteIds', 'deliveryDates'));
+        return view('store.index', compact(
+            'products',
+            'categories',
+            'materials',
+            'categoryCounts',
+            'materialCounts',
+            'priceFloor',
+            'priceCeiling',
+            'favoriteIds',
+            'deliveryDates'
+        ));
     }
 
     public function show(Product $product)

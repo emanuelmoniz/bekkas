@@ -98,8 +98,8 @@
                         </a>
                     @endif
 
-                    <!-- Architecture Card -->
-                    <a href="{{ route('tickets.index') }}" class="group anim-item" data-index="1">
+                    <!-- Custom Card -->
+                    <a href="{{ route('custom.index') }}" class="group anim-item" data-index="1">
                         <div class="bg-light rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
                             {{-- scroll images for custom projects --}}
                             <x-image-scroller class="w-full aspect-square" :config="[

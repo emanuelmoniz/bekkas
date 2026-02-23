@@ -402,41 +402,32 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'store.filter.name', 'locale' => 'pt-PT', 'value' => 'Nome', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.filter.name', 'locale' => 'en-UK', 'value' => 'Name', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'store.filter.category', 'locale' => 'pt-PT', 'value' => 'Categoria', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'store.filter.category', 'locale' => 'en-UK', 'value' => 'Category', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.filters', 'locale' => 'pt-PT', 'value' => 'Filtros', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.filters', 'locale' => 'en-UK', 'value' => 'Filters', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'store.filter.material', 'locale' => 'pt-PT', 'value' => 'Material', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'store.filter.material', 'locale' => 'en-UK', 'value' => 'Material', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.in_stock', 'locale' => 'pt-PT', 'value' => 'Em stock', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.in_stock', 'locale' => 'en-UK', 'value' => 'In Stock', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'store.filter.search', 'locale' => 'pt-PT', 'value' => 'Pesquisar...', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'store.filter.search', 'locale' => 'en-UK', 'value' => 'Search...', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.in_promotion', 'locale' => 'pt-PT', 'value' => 'Em promoção', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.in_promotion', 'locale' => 'en-UK', 'value' => 'In Promotion', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'store.filter.featured', 'locale' => 'pt-PT', 'value' => 'Destaque', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.filter.featured', 'locale' => 'en-UK', 'value' => 'Featured', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'store.filter.only_featured', 'locale' => 'pt-PT', 'value' => 'Apenas em destaque', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'store.filter.only_featured', 'locale' => 'en-UK', 'value' => 'Only Featured', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.categories', 'locale' => 'pt-PT', 'value' => 'Categorias', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.categories', 'locale' => 'en-UK', 'value' => 'Categories', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'store.filter.not_featured', 'locale' => 'pt-PT', 'value' => 'Não em destaque', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'store.filter.not_featured', 'locale' => 'en-UK', 'value' => 'Not Featured', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'store.filter.promo', 'locale' => 'pt-PT', 'value' => 'Promoção', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'store.filter.promo', 'locale' => 'en-UK', 'value' => 'Promo', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'store.filter.only_promo', 'locale' => 'pt-PT', 'value' => 'Apenas promoções', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'store.filter.only_promo', 'locale' => 'en-UK', 'value' => 'Only Promo', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'store.filter.not_promo', 'locale' => 'pt-PT', 'value' => 'Não em promoção', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'store.filter.not_promo', 'locale' => 'en-UK', 'value' => 'Not Promo', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'store.filter.in_stock', 'locale' => 'pt-PT', 'value' => 'Em stock', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'store.filter.in_stock', 'locale' => 'en-UK', 'value' => 'In stock', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.materials', 'locale' => 'pt-PT', 'value' => 'Materiais', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.materials', 'locale' => 'en-UK', 'value' => 'Materials', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'store.filter.apply', 'locale' => 'pt-PT', 'value' => 'Filtrar', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.filter.apply', 'locale' => 'en-UK', 'value' => 'Filter', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'store.filter.reset', 'locale' => 'pt-PT', 'value' => 'Limpar', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.filter.reset', 'locale' => 'en-UK', 'value' => 'Reset', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.filter.price_range', 'locale' => 'pt-PT', 'value' => 'Intervalo de Preço', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.price_range', 'locale' => 'en-UK', 'value' => 'Price Range', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'store.no_products', 'locale' => 'pt-PT', 'value' => 'Nenhum produto encontrado.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.no_products', 'locale' => 'en-UK', 'value' => 'No products found.', 'created_at' => $now, 'updated_at' => $now],
