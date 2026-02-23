@@ -444,11 +444,18 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'store.no_photos', 'locale' => 'pt-PT', 'value' => 'Sem fotos disponíveis', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.no_photos', 'locale' => 'en-UK', 'value' => 'No photos available', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'store.description', 'locale' => 'pt-PT', 'value' => 'Descrição', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.description', 'locale' => 'en-UK', 'value' => 'Description', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'store.technical_info', 'locale' => 'pt-PT', 'value' => 'Informação técnica', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.technical_info', 'locale' => 'en-UK', 'value' => 'Technical info', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'store.weight', 'locale' => 'pt-PT', 'value' => 'Peso', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.weight', 'locale' => 'en-UK', 'value' => 'Weight', 'created_at' => $now, 'updated_at' => $now],
+
+            // dimensions for products (shown in mm)
+            ['key' => 'store.dimensions', 'locale' => 'pt-PT', 'value' => 'Dimensões', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.dimensions', 'locale' => 'en-UK', 'value' => 'Dimensions', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'store.stock', 'locale' => 'pt-PT', 'value' => 'Stock', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.stock', 'locale' => 'en-UK', 'value' => 'Stock', 'created_at' => $now, 'updated_at' => $now],

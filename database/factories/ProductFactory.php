@@ -18,6 +18,11 @@ class ProductFactory extends Factory
             'promo_price' => null,
             'stock' => $this->faker->numberBetween(0, 10),
             'weight' => $this->faker->randomFloat(2, 0.1, 5),
+            // dimensions in millimetres -- not strictly required but useful for
+            // client pages that now display them.
+            'width' => $this->faker->randomFloat(2, 1, 100),
+            'length' => $this->faker->randomFloat(2, 1, 100),
+            'height' => $this->faker->randomFloat(2, 1, 100),
             'active' => true,
             'is_backorder' => false,
             'production_time' => 0,

@@ -1,10 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-grey-dark">
-            {{ optional($product->translation())->name }}
-        </h2>
-    </x-slot>
-
+    
     <script>
         function favoriteToggle(productId, initialFavorite) {
             return {
@@ -51,6 +46,11 @@
             {{-- DETAILS --}}
             <div class="bg-light p-6 rounded shadow space-y-4" x-data="favoriteToggle({{ $product->id }}, {{ json_encode($isFavorite ?? false) }})">
 
+                {{-- NAME (moved from header) --}}
+                <h2 class="font-semibold text-xl text-grey-dark">
+                    {{ optional($product->translation())->name }}
+                </h2>
+
                 {{-- PRICE & FAVORITE --}}
                 <div class="flex items-center justify-between">
                     <div class="text-xl font-semibold">
@@ -65,6 +65,9 @@
 
                 {{-- DESCRIPTION --}}
                 @if (optional($product->translation())->description)
+                    <h4 class="font-medium text-sm text-grey-dark mb-1">
+                        {{ t('store.description') ?: 'Description' }}:
+                    </h4>
                     <div class="text-grey-dark">
                         {!! nl2br(e(optional($product->translation())->description)) !!}
                     </div>
@@ -72,9 +75,43 @@
 
                 {{-- TECHNICAL INFO --}}
                 @if (optional($product->translation())->technical_info)
+                    <h4 class="font-medium text-sm text-grey-dark mb-1">
+                        {{ t('store.technical_info') ?: 'Technical info' }}:
+                    </h4>
                     <div class="text-grey-dark">
-                        <strong>{{ t('store.technical_info') ?: 'Technical info' }}:</strong><br>
                         {!! nl2br(e(optional($product->translation())->technical_info)) !!}
+                    </div>
+                @endif
+
+                {{-- CATEGORIES --}}
+                @if ($product->categories->isNotEmpty())
+                    <div>
+                        <h4 class="font-medium text-sm text-grey-dark mb-1">
+                            {{ t('store.categories') ?: 'Categories' }}
+                        </h4>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach ($product->categories as $category)
+                                <span class="bg-grey-light text-grey-dark text-xs px-2 py-1 rounded">
+                                    {{ optional($category->translation())->name }}
+                                </span>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+                {{-- MATERIALS --}}
+                @if ($product->materials->isNotEmpty())
+                    <div>
+                        <h4 class="font-medium text-sm text-grey-dark mb-1">
+                            {{ t('store.materials') ?: 'Materials' }}
+                        </h4>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach ($product->materials as $material)
+                                <span class="bg-grey-light text-grey-dark text-xs px-2 py-1 rounded">
+                                    {{ optional($material->translation())->name }}
+                                </span>
+                            @endforeach
+                        </div>
                     </div>
                 @endif
 
@@ -82,6 +119,14 @@
                 <div class="text-sm text-grey-dark">
                     {{ t('store.weight') ?: 'Weight' }}: {{ $product->weight }} g
                 </div>
+
+                {{-- DIMENSIONS --}}
+                @if($product->width || $product->length || $product->height)
+                    <div class="text-sm text-grey-dark">
+                        {{ t('store.dimensions') ?: 'Dimensions' }}: 
+                        {{ $product->width ?? '-' }} × {{ $product->length ?? '-' }} × {{ $product->height ?? '-' }} mm
+                    </div>
+                @endif
 
                 {{-- EXPECTED DELIVERY --}}
                 @if(isset($deliveryDate) && $deliveryDate)
@@ -119,38 +164,6 @@
                     <div class="text-sm">
                         {{ t('store.stock') ?: 'Stock' }}:
                         <span class="text-primary font-medium">{{ t('store.out_of_stock') ?: 'Out of stock' }}</span>
-                    </div>
-                @endif
-
-                {{-- CATEGORIES --}}
-                @if ($product->categories->isNotEmpty())
-                    <div>
-                        <h4 class="font-medium text-sm text-grey-dark mb-1">
-                            {{ t('store.categories') ?: 'Categories' }}
-                        </h4>
-                        <div class="flex flex-wrap gap-2">
-                            @foreach ($product->categories as $category)
-                                <span class="bg-grey-light text-grey-dark text-xs px-2 py-1 rounded">
-                                    {{ optional($category->translation())->name }}
-                                </span>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-
-                {{-- MATERIALS --}}
-                @if ($product->materials->isNotEmpty())
-                    <div>
-                        <h4 class="font-medium text-sm text-grey-dark mb-1">
-                            {{ t('store.materials') ?: 'Materials' }}
-                        </h4>
-                        <div class="flex flex-wrap gap-2">
-                            @foreach ($product->materials as $material)
-                                <span class="bg-grey-light text-grey-dark text-xs px-2 py-1 rounded">
-                                    {{ optional($material->translation())->name }}
-                                </span>
-                            @endforeach
-                        </div>
                     </div>
                 @endif
 
