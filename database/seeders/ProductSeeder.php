@@ -78,12 +78,12 @@ class ProductSeeder extends Seeder
         ]);
 
         DB::table('product_translations')->insert([
-            ['id' => 1, 'product_id' => 1, 'locale' => 'pt-PT', 'name' => 'Candeiro Lua', 'description' => null],
-            ['id' => 2, 'product_id' => 1, 'locale' => 'en-UK', 'name' => 'Moon Light', 'description' => null],
-            ['id' => 3, 'product_id' => 2, 'locale' => 'pt-PT', 'name' => 'Suporte de Caneta', 'description' => null],
-            ['id' => 4, 'product_id' => 2, 'locale' => 'en-UK', 'name' => 'Pen Holder', 'description' => null],
-            ['id' => 5, 'product_id' => 3, 'locale' => 'pt-PT', 'name' => 'Vaso para Plantas', 'description' => null],
-            ['id' => 6, 'product_id' => 3, 'locale' => 'en-UK', 'name' => 'Plant Vase', 'description' => null],
+            ['id' => 1, 'product_id' => 1, 'locale' => 'pt-PT', 'name' => 'Candeiro Lua', 'description' => null, 'technical_info' => null],
+            ['id' => 2, 'product_id' => 1, 'locale' => 'en-UK', 'name' => 'Moon Light', 'description' => null, 'technical_info' => null],
+            ['id' => 3, 'product_id' => 2, 'locale' => 'pt-PT', 'name' => 'Suporte de Caneta', 'description' => null, 'technical_info' => null],
+            ['id' => 4, 'product_id' => 2, 'locale' => 'en-UK', 'name' => 'Pen Holder', 'description' => null, 'technical_info' => null],
+            ['id' => 5, 'product_id' => 3, 'locale' => 'pt-PT', 'name' => 'Vaso para Plantas', 'description' => null, 'technical_info' => null],
+            ['id' => 6, 'product_id' => 3, 'locale' => 'en-UK', 'name' => 'Plant Vase', 'description' => null, 'technical_info' => null],
         ]);
 
         DB::table('category_product')->insert([

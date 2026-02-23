@@ -23,4 +23,20 @@ class ProductFactory extends Factory
             'production_time' => 0,
         ];
     }
+
+    public function configure()
+    {
+        // automatically create basic translations so that any code
+        // referencing `$product->translation()` does not return null in tests
+        return $this->afterCreating(function (Product $product) {
+            foreach (config('app.locales') as $locale => $label) {
+                $product->translations()->create([
+                    'locale' => $locale,
+                    'name' => ucfirst($this->faker->words(2, true)),
+                    'description' => $this->faker->sentence(),
+                    'technical_info' => $this->faker->sentence(),
+                ]);
+            }
+        });
+    }
 }

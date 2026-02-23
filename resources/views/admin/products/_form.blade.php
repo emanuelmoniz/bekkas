@@ -40,6 +40,40 @@
         @endforeach
     </div>
 
+    {{-- DESCRIPTION --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @foreach (['pt-PT', 'en-UK'] as $locale)
+            <div>
+                <label class="block font-medium mb-1">
+                    Description ({{ $locale }})
+                </label>
+                <textarea name="description[{{ $locale }}]"
+                          rows="3"
+                          class="w-full border rounded px-3 py-2">{{ old("description.$locale",
+                            $mode === 'edit'
+                                ? optional($product->translations->where('locale', $locale)->first())->description
+                                : '') }}</textarea>
+            </div>
+        @endforeach
+    </div>
+
+    {{-- TECHNICAL INFORMATION --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @foreach (['pt-PT', 'en-UK'] as $locale)
+            <div>
+                <label class="block font-medium mb-1">
+                    Technical Info ({{ $locale }})
+                </label>
+                <textarea name="technical_info[{{ $locale }}]"
+                          rows="3"
+                          class="w-full border rounded px-3 py-2">{{ old("technical_info.$locale",
+                            $mode === 'edit'
+                                ? optional($product->translations->where('locale', $locale)->first())->technical_info
+                                : '') }}</textarea>
+            </div>
+        @endforeach
+    </div>
+
     {{-- PRICE / TAX --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
@@ -187,7 +221,7 @@
 
 
 {{-- STOCK / DIMENSIONS / FLAGS --}}
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-6 gap-6">
     <div>
         <label class="block font-medium mb-1">Stock</label>
         <input type="number"
@@ -227,7 +261,45 @@
         @enderror
     </div>
 
-    <label class="flex items-center gap-2 mt-7">
+    <div>
+        <label class="block font-medium mb-1">Width (mm)</label>
+        <input type="number"
+               step="0.01"
+               name="width"
+               value="{{ old('width', $product->width ?? '') }}"
+               class="w-full border rounded px-3 py-2 @error('width') border-status-error @enderror">
+        @error('width')
+            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
+
+    <div>
+        <label class="block font-medium mb-1">Length (mm)</label>
+        <input type="number"
+               step="0.01"
+               name="length"
+               value="{{ old('length', $product->length ?? '') }}"
+               class="w-full border rounded px-3 py-2 @error('length') border-status-error @enderror">
+        @error('length')
+            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
+
+    <div>
+        <label class="block font-medium mb-1">Height (mm)</label>
+        <input type="number"
+               step="0.01"
+               name="height"
+               value="{{ old('height', $product->height ?? '') }}"
+               class="w-full border rounded px-3 py-2 @error('height') border-status-error @enderror">
+        @error('height')
+            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
+</div>
+
+<div class="mt-4">
+    <label class="flex items-center gap-2">
         <input type="checkbox"
                name="is_backorder"
                @checked(old('is_backorder', $product->is_backorder ?? true))>

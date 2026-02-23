@@ -41,6 +41,10 @@ class AdminProductOptionsTest extends TestCase
                 'pt-PT' => 'Descrição',
                 'en-UK' => 'Description',
             ],
+            'technical_info' => [
+                'pt-PT' => 'Informação técnica',
+                'en-UK' => 'Technical info',
+            ],
             'option_types' => [
                 [
                     'is_active' => 1,
@@ -92,6 +96,11 @@ class AdminProductOptionsTest extends TestCase
 
         $product = Product::first();
         $this->assertNotNull($product);
+
+        // make sure translations were saved correctly
+        $ptTrans = $product->translations()->where('locale', 'pt-PT')->first();
+        $this->assertEquals('Descrição', $ptTrans->description);
+        $this->assertEquals('Informação técnica', $ptTrans->technical_info);
 
         $this->assertCount(1, $product->optionTypes);
         $type = $product->optionTypes->first();

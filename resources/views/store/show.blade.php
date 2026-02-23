@@ -70,6 +70,14 @@
                     </div>
                 @endif
 
+                {{-- TECHNICAL INFO --}}
+                @if (optional($product->translation())->technical_info)
+                    <div class="text-grey-dark">
+                        <strong>{{ t('store.technical_info') ?: 'Technical info' }}:</strong><br>
+                        {!! nl2br(e(optional($product->translation())->technical_info)) !!}
+                    </div>
+                @endif
+
                 {{-- WEIGHT --}}
                 <div class="text-sm text-grey-dark">
                     {{ t('store.weight') ?: 'Weight' }}: {{ $product->weight }} g

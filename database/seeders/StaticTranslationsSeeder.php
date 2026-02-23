@@ -444,6 +444,9 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'store.no_photos', 'locale' => 'pt-PT', 'value' => 'Sem fotos disponíveis', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.no_photos', 'locale' => 'en-UK', 'value' => 'No photos available', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'store.technical_info', 'locale' => 'pt-PT', 'value' => 'Informação técnica', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.technical_info', 'locale' => 'en-UK', 'value' => 'Technical info', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'store.weight', 'locale' => 'pt-PT', 'value' => 'Peso', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.weight', 'locale' => 'en-UK', 'value' => 'Weight', 'created_at' => $now, 'updated_at' => $now],
 

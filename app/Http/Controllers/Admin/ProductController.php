@@ -101,6 +101,10 @@ class ProductController extends Controller
             'length' => 'nullable|numeric|min:0',
             'height' => 'nullable|numeric|min:0',
 
+            // translations are optional but when provided must be an array
+            'description' => 'sometimes|array',
+            'technical_info' => 'sometimes|array',
+
             // option-types are optional; if present validate structure
             'option_types' => 'sometimes|array',
             'option_types.*.is_active' => 'sometimes|boolean',
@@ -140,6 +144,7 @@ class ProductController extends Controller
                 'locale' => $locale,
                 'name' => $request->input("name.$locale"),
                 'description' => $request->input("description.$locale"),
+                'technical_info' => $request->input("technical_info.$locale"),
             ]);
         }
 
@@ -230,6 +235,7 @@ class ProductController extends Controller
                     [
                         'name' => $request->input("name.$locale"),
                         'description' => $request->input("description.$locale"),
+                        'technical_info' => $request->input("technical_info.$locale"),
                     ]
                 );
         }
