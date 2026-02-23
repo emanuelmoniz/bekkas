@@ -149,9 +149,9 @@
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <label class="flex items-center gap-2">
         <input type="checkbox"
-               name="is_new"
-               @checked(old('is_new', $product->is_new ?? false))>
-        New
+               name="is_featured"
+               @checked(old('is_featured', $product->is_featured ?? false))>
+        Featured
     </label>
 
     <label class="flex items-center gap-2">

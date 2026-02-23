@@ -78,7 +78,7 @@
                     </div>
 
                     {{-- FLAGS --}}
-                    @foreach (['is_new'=>'New','is_promo'=>'Promo','active'=>'Active'] as $key=>$label)
+                    @foreach (['is_featured'=>'Featured','is_promo'=>'Promo','active'=>'Active'] as $key=>$label)
                         <select name="{{ $key }}" class="border rounded px-3 py-2">
                             <option value="">{{ $label }}</option>
                             <option value="1" @selected(request($key)==='1')>Yes</option>

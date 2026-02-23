@@ -52,7 +52,7 @@ class PagesTest extends TestCase
 
         // ensure the hrefs include the proper query parameters for filters
         $response->assertSee(route('store.index'));
-        $response->assertSee(route('store.index', ['is_new' => 1]));
+        $response->assertSee(route('store.index', ['is_featured' => 1]));
         $response->assertSee(route('store.index', ['is_promo' => 1]));
     }
 }

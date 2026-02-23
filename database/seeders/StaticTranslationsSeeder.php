@@ -411,14 +411,14 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'store.filter.search', 'locale' => 'pt-PT', 'value' => 'Pesquisar...', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.filter.search', 'locale' => 'en-UK', 'value' => 'Search...', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'store.filter.new', 'locale' => 'pt-PT', 'value' => 'Novo', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'store.filter.new', 'locale' => 'en-UK', 'value' => 'New', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.featured', 'locale' => 'pt-PT', 'value' => 'Destaque', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.featured', 'locale' => 'en-UK', 'value' => 'Featured', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'store.filter.only_new', 'locale' => 'pt-PT', 'value' => 'Apenas novos', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'store.filter.only_new', 'locale' => 'en-UK', 'value' => 'Only New', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.only_featured', 'locale' => 'pt-PT', 'value' => 'Apenas em destaque', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.only_featured', 'locale' => 'en-UK', 'value' => 'Only Featured', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'store.filter.not_new', 'locale' => 'pt-PT', 'value' => 'Não novos', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'store.filter.not_new', 'locale' => 'en-UK', 'value' => 'Not New', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.not_featured', 'locale' => 'pt-PT', 'value' => 'Não em destaque', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.filter.not_featured', 'locale' => 'en-UK', 'value' => 'Not Featured', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'store.filter.promo', 'locale' => 'pt-PT', 'value' => 'Promoção', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.filter.promo', 'locale' => 'en-UK', 'value' => 'Promo', 'created_at' => $now, 'updated_at' => $now],

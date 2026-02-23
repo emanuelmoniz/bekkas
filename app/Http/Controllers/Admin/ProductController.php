@@ -48,9 +48,9 @@ class ProductController extends Controller
             });
         }
 
-        // NEW
-        if ($request->filled('is_new')) {
-            $query->where('is_new', (bool) $request->is_new);
+        // FEATURED (previously "new")
+        if ($request->filled('is_featured')) {
+            $query->where('is_featured', (bool) $request->is_featured);
         }
 
         // PROMO
@@ -107,7 +107,7 @@ class ProductController extends Controller
 
             // BOOLEAN NORMALIZATION
             'is_backorder' => $request->boolean('is_backorder', true),
-            'is_new' => $request->boolean('is_new'),
+            'is_featured' => $request->boolean('is_featured'),
             'is_promo' => $request->boolean('is_promo'),
             'active' => $request->boolean('active'),
         ]);
@@ -162,7 +162,7 @@ class ProductController extends Controller
 
             // ✅ BOOLEAN NORMALIZATION
             'is_backorder' => $request->boolean('is_backorder'),
-            'is_new' => $request->boolean('is_new'),
+            'is_featured' => $request->boolean('is_featured'),
             'is_promo' => $request->boolean('is_promo'),
             'active' => $request->boolean('active'),
         ]);

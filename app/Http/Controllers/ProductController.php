@@ -42,8 +42,8 @@ class ProductController extends Controller
             });
         }
 
-        if ($request->filled('is_new')) {
-            $query->where('is_new', (bool) $request->is_new);
+        if ($request->filled('is_featured')) {
+            $query->where('is_featured', (bool) $request->is_featured);
         }
 
         if ($request->filled('is_promo')) {

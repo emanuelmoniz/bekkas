@@ -54,9 +54,9 @@ class FavoriteController extends Controller
             });
         }
 
-        // New filter
-        if ($request->filled('is_new')) {
-            $query->where('is_new', (bool) $request->is_new);
+        // Featured filter (was "new")
+        if ($request->filled('is_featured')) {
+            $query->where('is_featured', (bool) $request->is_featured);
         }
 
         // Promo filter

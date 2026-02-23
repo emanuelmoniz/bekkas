@@ -147,7 +147,7 @@
                                         <a href="{{ route('store.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">
                                             {{ t('nav.store.all_products') ?: 'All Products' }}
                                         </a>
-                                        <a href="{{ route('store.index', ['is_new' => 1]) }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">
+                                        <a href="{{ route('store.index', ['is_featured' => 1]) }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">
                                             {{ t('nav.store.featured') ?: 'Featured' }}
                                         </a>
                                         <a href="{{ route('store.index', ['is_promo' => 1]) }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">
@@ -412,10 +412,10 @@
                             </svg>
                         </button>
                         <div x-show="open" class="pl-4 space-y-1">
-                            <x-responsive-nav-link :href="route('store.index')" :active="request()->routeIs('store.index') && !request()->filled('is_new') && !request()->filled('is_promo')">
+                            <x-responsive-nav-link :href="route('store.index')" :active="request()->routeIs('store.index') && !request()->filled('is_featured') && !request()->filled('is_promo')">
                                 {{ t('nav.store.all_products') ?: 'All Products' }}
                             </x-responsive-nav-link>
-                            <x-responsive-nav-link :href="route('store.index', ['is_new' => 1])" :active="request()->routeIs('store.index') && request()->filled('is_new')">
+                            <x-responsive-nav-link :href="route('store.index', ['is_featured' => 1])" :active="request()->routeIs('store.index') && request()->filled('is_featured')">
                                 {{ t('nav.store.featured') ?: 'Featured' }}
                             </x-responsive-nav-link>
                             <x-responsive-nav-link :href="route('store.index', ['is_promo' => 1])" :active="request()->routeIs('store.index') && request()->filled('is_promo')">

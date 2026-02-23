@@ -51,10 +51,10 @@
             </div>
         </div>
 
-        <select name="is_new" class="border rounded px-3 py-2">
-            <option value="">{{ t('store.filter.new') ?: 'New' }}</option>
-            <option value="1" @selected(request('is_new')==='1')>{{ t('store.filter.only_new') ?: 'Only New' }}</option>
-            <option value="0" @selected(request('is_new')==='0')>{{ t('store.filter.not_new') ?: 'Not New' }}</option>
+        <select name="is_featured" class="border rounded px-3 py-2">
+            <option value="">{{ t('store.filter.featured') ?: 'Featured' }}</option>
+            <option value="1" @selected(request('is_featured')==='1')>{{ t('store.filter.only_featured') ?: 'Only Featured' }}</option>
+            <option value="0" @selected(request('is_featured')==='0')>{{ t('store.filter.not_featured') ?: 'Not Featured' }}</option>
         </select>
 
         <select name="is_promo" class="border rounded px-3 py-2">

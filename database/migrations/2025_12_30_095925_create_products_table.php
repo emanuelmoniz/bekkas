@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
 
-            $table->boolean('is_new')->default(false);
+            // renamed from `is_new` in a later migration; new installations use
+            // `is_featured` directly.
+            $table->boolean('is_featured')->default(false);
             $table->boolean('is_promo')->default(false);
 
             $table->decimal('price', 10, 2);

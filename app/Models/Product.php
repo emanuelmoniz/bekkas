@@ -17,7 +17,7 @@ class Product extends Model
         'stock',
         'production_time',
         'is_backorder',
-        'is_new',
+        'is_featured',
         'is_promo',
         'active',
         'width',
@@ -30,7 +30,7 @@ class Product extends Model
      * Use UUIDs for public URL generation and route model binding.
      */
     protected $casts = [
-        'is_new' => 'boolean',
+        'is_featured' => 'boolean',
         'is_promo' => 'boolean',
         'is_backorder' => 'boolean',
         'active' => 'boolean',
