@@ -39,6 +39,26 @@
                             </div>
                         </div>
 
+                        {{-- Projects with dropdown --}}
+                        <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                            <x-nav-button :active="request()->is('admin/projects*')" @click="window.location.href='{{ route('admin.projects.index') }}'">
+                                Projects
+                            </x-nav-button>
+                            <div x-show="open"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100"
+                                 x-transition:leave-end="opacity-0 scale-95"
+                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-light ring-1 ring-black ring-opacity-5 z-50"
+                                 style="display: none;">
+                                <div class="py-1">
+                                    <a href="{{ route('admin.projects.create') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Create Project</a>
+                                </div>
+                            </div>
+                        </div>
+
                         {{-- Tickets with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
                             <x-nav-button :active="request()->is('admin/tickets*') || request()->is('admin/ticket-categories*')" @click="window.location.href='{{ route('admin.tickets.index') }}'">
@@ -326,6 +346,24 @@
                         </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('admin.materials.index')" :active="request()->is('admin/materials*')">
                             Materials
+                        </x-responsive-nav-link>
+                    </div>
+                </div>
+
+                {{-- Projects --}}
+                <div x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-grey-dark hover:bg-grey-light">
+                        <span>Projects</span>
+                        <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div x-show="open" class="pl-4 space-y-1">
+                        <x-responsive-nav-link :href="route('admin.projects.index')" :active="request()->is('admin/projects*')">
+                            All Projects
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('admin.projects.create')" :active="false">
+                            Create Project
                         </x-responsive-nav-link>
                     </div>
                 </div>

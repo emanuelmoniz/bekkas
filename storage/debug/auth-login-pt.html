@@ -12,29 +12,29 @@
         <link rel="icon" type="image/png" sizes="32x32" href="https://localhost/images/favicon/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="https://localhost/images/favicon/favicon-16x16.png">
         <link rel="manifest" href="https://localhost/site.webmanifest">
-        <meta name="theme-color" content="#ffffff">
+        <meta name="theme-color" content="#f4eee4">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        <script type="module" src="http://[::1]:5173/@vite/client"></script><link rel="stylesheet" href="http://[::1]:5173/resources/css/app.css" /><script type="module" src="http://[::1]:5173/resources/js/app.js"></script>
+        <link rel="preload" as="style" href="https://localhost/build/assets/app-DOegI7n1.css" /><link rel="modulepreload" as="script" href="https://localhost/build/assets/app-Begk1o-U.js" /><link rel="stylesheet" href="https://localhost/build/assets/app-DOegI7n1.css" /><script type="module" src="https://localhost/build/assets/app-Begk1o-U.js"></script>
         <!-- Google reCAPTCHA (loaded only on pages that request it) -->
             </head>
-        <body class="font-sans text-gray-900 antialiased" >
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+        <body class="font-sans text-dark antialiased" >
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-grey-light">
             <div>
                 <a href="/">
                     <img src="https://localhost/images/hero_logo.svg" alt="BEKKAS" class="h-28 w-auto">
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-10 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full sm:max-w-md mt-10 px-6 py-4 bg-light shadow-md overflow-hidden sm:rounded-lg">
                 <!-- Flash Messages (canonical; supports success|error|warning|info) -->
                 <!-- Canonical flash partial: server-rendered fallback + Alpine-driven runtime -->
 <div data-flash-root x-data="{ localShow: false }" x-show="Alpine.store('flash').show || localShow" x-cloak class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4"  style="display:none"  x-bind:aria-hidden="!(Alpine.store('flash').show || localShow)">
-    <div class="px-4 py-3 rounded relative pr-12 border border-gray-200 border-l-4"
+    <div class="px-4 py-3 rounded relative pr-12 border border-grey-light border-l-4"
          x-show="Alpine.store('flash').show || localShow"
          x-init="localShow && setTimeout(() => localShow = false, 6000)"
          x-transition
@@ -67,12 +67,12 @@
     
     <!-- Social login -->
     <div class="mb-4 text-center space-y-2">
-                    <a href="https://localhost/login/google" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-white hover:bg-gray-50">
+                    <a href="https://localhost/login/google" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-light hover:bg-light">
                 <img src="/images/google-logo.svg" alt="Google" class="me-2 h-5 w-5">
                 auth.continue_with_google
             </a>
         
-                    <a href="https://localhost/login/microsoft" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-white hover:bg-gray-50">
+                    <a href="https://localhost/login/microsoft" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-light hover:bg-light">
                 <img src="/images/microsoft-logo.svg" alt="Microsoft" class="me-2 h-5 w-5">
                 auth.continue_with_microsoft
             </a>
@@ -85,43 +85,43 @@
         <input type="hidden" name="_token" value="test" autocomplete="off">
         <!-- Email Address -->
         <div>
-            <label class="block font-medium text-sm text-gray-700" for="email">
+            <label class="block font-medium text-sm text-grey-dark" for="email">
     auth.email
 </label>
-            <input  class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full" id="email" type="email" name="email" required="required" autofocus="autofocus" autocomplete="username">
+            <input  class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm block mt-1 w-full" id="email" type="email" name="email" required="required" autofocus="autofocus" autocomplete="username">
                     </div>
 
         <!-- Password -->
         <div class="mt-4">
-            <label class="block font-medium text-sm text-gray-700" for="password">
+            <label class="block font-medium text-sm text-grey-dark" for="password">
     auth.password
 </label>
 
-            <input  class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full" id="password" type="password" name="password" required="required" autocomplete="current-password">
+            <input  class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm block mt-1 w-full" id="password" type="password" name="password" required="required" autocomplete="current-password">
 
                     </div>
 
         <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">auth.remember_me</span>
+                <input id="remember_me" type="checkbox" class="rounded border-grey-medium text-accent-primary shadow-sm focus:ring-accent-primary" name="remember">
+                <span class="ms-2 text-sm text-grey-dark">auth.remember_me</span>
             </label>
         </div>
 
         <div class="flex items-center justify-end mt-4">
-                            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="https://localhost/forgot-password">
+                            <a class="underline text-sm text-grey-dark hover:text-dark rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-primary" href="https://localhost/forgot-password">
                     Esqueceu-se da sua palavra-passe? Sem problema.
                 </a>
             
-            <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 ms-3">
+            <button type="submit" class="inline-flex items-center px-4 py-2 bg-accent-primary border border-transparent rounded-md font-semibold text-xs text-light uppercase tracking-widest hover:bg-accent-primary/90 focus:bg-accent-primary/90 active:opacity-95 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2 transition ease-in-out duration-150 disabled:opacity-25 ms-3">
     Entrar
 </button>
         </div>
 
         <div class="mt-4 text-center">
-            <span class="text-sm text-gray-600">auth.not_a_user</span>
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="https://localhost/register">
+            <span class="text-sm text-grey-dark">auth.not_a_user</span>
+            <a class="underline text-sm text-grey-dark hover:text-dark rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-primary" href="https://localhost/register">
                 auth.please_register
             </a>
         </div>
@@ -129,7 +129,7 @@
             </div>
         </div>
 
-        <footer class="bg-gray-900 dark:bg-gray-950 text-gray-300 py-12 border-t border-gray-800">
+        <footer class="bg-dark text-grey-medium py-12 border-t border-grey-dark">
     <div class="container mx-auto px-4">
         <div class="text-center pb-8">
             <a href="https://localhost/terms" class="underline text-sm me-4">footer.terms</a>
@@ -137,7 +137,7 @@
         </div>
 
         <!-- Copyright -->
-        <div class="border-t border-gray-800 pt-8 text-center text-sm">
+        <div class="border-t border-grey-dark pt-8 text-center text-sm">
             <p>&copy; 2026 BEKKAS - 3D Printing Studio. footer.rights</p>
             <p class="mt-2 text-sm">
                 footer.designed_by

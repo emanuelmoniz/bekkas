@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\OrderStatusController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductPhotoController;
+use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\ProjectPhotoController;
 use App\Http\Controllers\Admin\RegionController;
 use App\Http\Controllers\Admin\ShippingConfigController;
 use App\Http\Controllers\Admin\ShippingTierController;
@@ -292,6 +294,24 @@ Route::middleware(['auth', 'is_admin'])
             'photos/{photo}',
             [ProductPhotoController::class, 'destroy']
         )->name('photos.destroy');
+
+        // Projects
+        Route::resource('projects', ProjectController::class);
+
+        Route::post(
+            'projects/{project}/photos',
+            [ProjectPhotoController::class, 'store']
+        )->name('projects.photos.store');
+
+        Route::post(
+            'project-photos/{photo}/primary',
+            [ProjectPhotoController::class, 'makePrimary']
+        )->name('project-photos.primary');
+
+        Route::delete(
+            'project-photos/{photo}',
+            [ProjectPhotoController::class, 'destroy']
+        )->name('project-photos.destroy');
 
         Route::resource('categories', CategoryController::class);
         Route::resource('materials', MaterialController::class);
