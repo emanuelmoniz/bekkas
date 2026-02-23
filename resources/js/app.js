@@ -8,6 +8,7 @@ window.Alpine = Alpine;
 import './home-banner';
 import './contact-validation';
 import './home-splash';
+import './section-animations';
 
 // Initialize favorites store //...
 Alpine.store('favorites', {

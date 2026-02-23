@@ -48,9 +48,9 @@
             <x-product-filters :categories="$categories" :materials="$materials" reset-route="store.index" />
 
             {{-- PRODUCTS --}}
-            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6" x-data="favoritesData()">
+            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 animate-sequence" x-data="favoritesData()">
                 @forelse ($products as $product)
-                    <div class="bg-light rounded shadow p-4 hover:shadow-lg transition relative overflow-hidden isolate">
+                    <div class="bg-light rounded shadow p-4 hover:shadow-lg transition relative overflow-hidden isolate anim-item" data-index="{{ $loop->index }}">
                         <button @click.prevent="toggleFavorite({{ $product->id }})" 
                                 class="absolute top-2 right-2 p-2 bg-white rounded-full transition z-10">
                             <svg xmlns="http://www.w3.org/2000/svg" 

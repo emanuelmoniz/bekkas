@@ -35,8 +35,8 @@
         </section>
 
         <!-- MISSION SECTION -->
-        <section class="py-16 md:py-24 bg-light px-6">
-            <div class="max-w-4xl mx-auto text-center">
+        <section class="py-16 md:py-24 bg-light px-6 animate-sequence">
+            <div class="max-w-4xl mx-auto text-center anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-8 text-dark">{{ t('about.mission.title') ?: 'Our Mission' }}</h2>
                 <p class="text-lg md:text-xl text-grey-dark mb-6 leading-relaxed">
                     {{ t('about.mission.intro') ?: 'At BEKKAS, we believe that everyone deserves access to the transformative power of 3D printing technology.' }}
@@ -52,21 +52,21 @@
             <div class="max-w-7xl mx-auto">
                 <h2 class="text-4xl font-bold mb-12 text-center text-dark">{{ t('about.values.title') ?: 'What We Stand For' }}</h2>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 animate-sequence">
                     <!-- Value 1 -->
-                    <div class="bg-light p-8 rounded-lg">
+                    <div class="bg-light p-8 rounded-lg anim-item" data-index="0">
                         <h3 class="text-xl font-bold mb-4 text-dark">{{ t('about.values.accessibility') ?: 'Accessibility' }}</h3>
                         <p class="text-grey-dark">{{ t('about.values.accessibility_desc') ?: 'We make 3D printing technology available to everyone, from students to professionals, with affordable solutions and expert guidance.' }}</p>
                     </div>
 
                     <!-- Value 2 -->
-                    <div class="bg-light p-8 rounded-lg">
+                    <div class="bg-light p-8 rounded-lg anim-item" data-index="1">
                         <h3 class="text-xl font-bold mb-4 text-dark">{{ t('about.values.uniqueness') ?: 'Uniqueness' }}</h3>
                         <p class="text-grey-dark">{{ t('about.values.uniqueness_desc') ?: 'Every project is different. We help you create something truly unique and personalizable that stands out from mass-produced items.' }}</p>
                     </div>
 
                     <!-- Value 3 -->
-                    <div class="bg-light p-8 rounded-lg">
+                    <div class="bg-light p-8 rounded-lg anim-item" data-index="2">
                         <h3 class="text-xl font-bold mb-4 text-dark">{{ t('about.values.quality') ?: 'Quality' }}</h3>
                         <p class="text-grey-dark">{{ t('about.values.quality_desc') ?: 'We never compromise on quality. From material selection to final delivery, every step is executed with precision and care.' }}</p>
                     </div>
@@ -75,8 +75,8 @@
         </section>
 
         <!-- STORY SECTION -->
-        <section class="py-16 md:py-24 bg-light px-6">
-            <div class="max-w-4xl mx-auto">
+        <section class="py-16 md:py-24 bg-light px-6 animate-sequence">
+            <div class="max-w-4xl mx-auto anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-8 text-center text-dark">{{ t('about.story.title') ?: 'Our Story' }}</h2>
                 <div class="space-y-6 text-lg text-grey-dark">
                     <p>
@@ -93,19 +93,19 @@
         </section>
 
         <!-- CTA SECTION -->
-        <section class="py-16 md:py-24 bg-accent-primary px-6">
-            <div class="max-w-4xl mx-auto text-center text-light">
+        <section class="py-16 md:py-24 bg-accent-primary px-6 animate-sequence">
+            <div class="max-w-4xl mx-auto text-center text-light anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-6">{{ t('about.cta.title') ?: 'Ready to Start Your Project?' }}</h2>
                 <p class="text-xl mb-8">
                     {{ t('about.cta.description') ?: 'Join hundreds of satisfied customers who have brought their ideas to life with BEKKAS.' }}
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center animate-sequence">
                     @if(config('app.store_enabled'))
-                        <a href="{{ route('store.index') }}" class="inline-block bg-light text-accent-primary hover:bg-grey-light px-8 py-3 rounded font-semibold transition-colors">
+                        <a href="{{ route('store.index') }}" class="inline-block bg-light text-accent-primary hover:bg-grey-light px-8 py-3 rounded font-semibold transition-colors anim-item" data-index="0">
                             {{ t('about.cta.shop') ?: 'Browse Products' }}
                         </a>
                     @endif
-                    <a href="{{ route('tickets.create') }}" class="inline-block bg-accent-primary/90 hover:bg-accent-primary/95 text-light px-8 py-3 rounded font-semibold transition-colors">
+                    <a href="{{ route('tickets.create') }}" class="inline-block bg-accent-primary/90 hover:bg-accent-primary/95 text-light px-8 py-3 rounded font-semibold transition-colors anim-item" data-index="1">
                         {{ t('about.cta.contact') ?: 'Start a Project' }}
                     </a>
                 </div>

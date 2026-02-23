@@ -72,13 +72,13 @@
         <x-home-banner :slides="$slides" />
 
         <!-- SERVICES SECTION -->
-        <section id="services" class="py-16 md:py-24 bg-white px-6">
+        <section id="services" class="py-16 md:py-24 bg-white px-6 animate-sequence">
             <div class="max-w-7xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                     
                     <!-- Products Card -->
                     @if(config('app.store_enabled'))
-                        <a href="{{ route('store.index') }}" class="group">
+                        <a href="{{ route('store.index') }}" class="group anim-item" data-index="0">
                             <div class="bg-light rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
                                 <div class="w-full h-64 md:h-80 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1569163139394-de4798aa62b1?w=500&h=400&fit=crop')"></div>
                                 <div class="p-6 flex flex-col flex-grow">
@@ -93,7 +93,7 @@
                     @endif
 
                     <!-- Architecture Card -->
-                    <a href="{{ route('tickets.index') }}" class="group">
+                    <a href="{{ route('tickets.index') }}" class="group anim-item" data-index="1">
                         <div class="bg-light rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
                             <div class="w-full h-64 md:h-80 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=400&fit=crop')"></div>
                             <div class="p-6 flex flex-col flex-grow">
@@ -115,10 +115,10 @@
             <div class="max-w-7xl mx-auto">
                 <h2 class="text-4xl font-bold mb-12 text-center text-dark">{{ t('home.contact.title') ?: 'Get in Touch' }}</h2>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 animate-sequence">
                     
                     <!-- Contact Info -->
-                    <div class="space-y-8">
+                    <div class="space-y-8 anim-item" data-index="0">
                         <div>
                             <h3 class="text-lg font-semibold text-dark mb-2">{{ t('home.contact.location') ?: 'Location' }}</h3>
                             <p class="text-grey-dark">Lisbon, Portugal</p>
@@ -152,7 +152,7 @@
                     </div>
 
                     <!-- Contact Form -->
-                    <div class="bg-light rounded-lg shadow-lg p-8">
+                    <div class="bg-light rounded-lg shadow-lg p-8 anim-item" data-index="1">
                         @include('partials.contact-form')
                     </div>
 
