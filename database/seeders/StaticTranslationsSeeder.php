@@ -429,6 +429,28 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'store.filter.price_range', 'locale' => 'pt-PT', 'value' => 'Intervalo de Preço', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.filter.price_range', 'locale' => 'en-UK', 'value' => 'Price Range', 'created_at' => $now, 'updated_at' => $now],
 
+            // ordering options
+            ['key' => 'store.order.default', 'locale' => 'pt-PT', 'value' => 'Ordenar', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.order.default', 'locale' => 'en-UK', 'value' => 'Sort', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.order.name_az', 'locale' => 'pt-PT', 'value' => 'Nome A‑Z', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.order.name_az', 'locale' => 'en-UK', 'value' => 'Name A-Z', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.order.name_za', 'locale' => 'pt-PT', 'value' => 'Nome Z‑A', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.order.name_za', 'locale' => 'en-UK', 'value' => 'Name Z-A', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.order.price_low_high', 'locale' => 'pt-PT', 'value' => 'Preço Crescente', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.order.price_low_high', 'locale' => 'en-UK', 'value' => 'Price Low-High', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.order.price_high_low', 'locale' => 'pt-PT', 'value' => 'Preço Decrescente', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.order.price_high_low', 'locale' => 'en-UK', 'value' => 'Price High-Low', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.order.featured_first', 'locale' => 'pt-PT', 'value' => 'Destaques Primeiro', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.order.featured_first', 'locale' => 'en-UK', 'value' => 'Featured First', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.order.promo_first', 'locale' => 'pt-PT', 'value' => 'Promoções Primeiro', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.order.promo_first', 'locale' => 'en-UK', 'value' => 'Promo First', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'store.no_products', 'locale' => 'pt-PT', 'value' => 'Nenhum produto encontrado.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.no_products', 'locale' => 'en-UK', 'value' => 'No products found.', 'created_at' => $now, 'updated_at' => $now],
 

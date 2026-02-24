@@ -1,5 +1,18 @@
 <form method="GET" class="bg-light border border-grey-light rounded p-4 space-y-5">
 
+    {{-- ORDER --}}
+    <select name="order"
+            onchange="this.form.submit()"
+            class="w-full border border-grey-light rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent-primary">
+        <option value="">{{ t('store.order.default') ?: 'Sort' }}</option>
+        <option value="name_az" @selected(request('order') === 'name_az')>{{ t('store.order.name_az') ?: 'Name A-Z' }}</option>
+        <option value="name_za" @selected(request('order') === 'name_za')>{{ t('store.order.name_za') ?: 'Name Z-A' }}</option>
+        <option value="price_low_high" @selected(request('order') === 'price_low_high')>{{ t('store.order.price_low_high') ?: 'Price Low-High' }}</option>
+        <option value="price_high_low" @selected(request('order') === 'price_high_low')>{{ t('store.order.price_high_low') ?: 'Price High-Low' }}</option>
+        <option value="featured_first" @selected(request('order') === 'featured_first')>{{ t('store.order.featured_first') ?: 'Featured First' }}</option>
+        <option value="promo_first" @selected(request('order') === 'promo_first')>{{ t('store.order.promo_first') ?: 'Promo First' }}</option>
+    </select>
+
     {{-- NAME --}}
     <input type="text"
            name="name"

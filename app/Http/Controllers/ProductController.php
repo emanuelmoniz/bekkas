@@ -72,6 +72,41 @@ class ProductController extends Controller
             );
         }
 
+        // ORDERING
+        if ($request->filled('order')) {
+            switch ($request->order) {
+                case 'name_az':
+                case 'name_za':
+                    // join product_translations for ordering by name in current locale
+                    $dir = $request->order === 'name_az' ? 'asc' : 'desc';
+                    $query->join('product_translations as pt', 'products.id', '=', 'pt.product_id')
+                          ->where('pt.locale', app()->getLocale())
+                          // avoid selecting translation columns in paginator
+                          ->select('products.*')
+                          ->orderBy('pt.name', $dir);
+                    break;
+                case 'price_low_high':
+                    $query->orderByRaw(
+                        '(CASE WHEN is_promo THEN COALESCE(promo_price, price) ELSE price END) asc'
+                    );
+                    break;
+                case 'price_high_low':
+                    $query->orderByRaw(
+                        '(CASE WHEN is_promo THEN COALESCE(promo_price, price) ELSE price END) desc'
+                    );
+                    break;
+                case 'featured_first':
+                    $query->orderByDesc('is_featured');
+                    break;
+                case 'promo_first':
+                    $query->orderByDesc('is_promo');
+                    break;
+                default:
+                    // ignore unknown values
+                    break;
+            }
+        }
+
         $products = $query->paginate(12)->withQueryString();
 
         // Build category/material lists with product counts (only from active products)

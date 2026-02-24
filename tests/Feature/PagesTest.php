@@ -55,4 +55,67 @@ class PagesTest extends TestCase
         $response->assertSee(route('store.index', ['is_featured' => 1]));
         $response->assertSee(route('store.index', ['is_promo' => 1]));
     }
+
+    public function test_store_order_dropdown_appears_and_correctly_labels()
+    {
+        config(['app.store_enabled' => true]);
+        $this->seed(\Database\Seeders\StaticTranslationsSeeder::class);
+        app()->setLocale('en-UK');
+
+        $response = $this->get(route('store.index'));
+        $response->assertStatus(200);
+        // ensure the select options are rendered with translations
+        $response->assertSee('Name A-Z');
+        $response->assertSee('Name Z-A');
+        $response->assertSee('Price Low-High');
+        $response->assertSee('Price High-Low');
+        $response->assertSee('Featured First');
+        $response->assertSee('Promo First');
+
+        // selecting an order should mark the option as selected
+        $resp2 = $this->get(route('store.index', ['order' => 'price_high_low']));
+        // disable escaping because response HTML encodes quotes as &quot;
+        $resp2->assertSee('value="price_high_low" selected', false);
+    }
+
+    public function test_store_products_can_be_ordered_by_query_param()
+    {
+        config(['app.store_enabled' => true]);
+        $this->seed(\Database\Seeders\StaticTranslationsSeeder::class);
+        app()->setLocale('en-UK');
+
+        // create two products with distinct names and prices
+        $pA = \App\Models\Product::factory()->create(['price' => 5.00, 'is_featured' => false, 'is_promo' => false, 'active' => true]);
+        $pB = \App\Models\Product::factory()->create(['price' => 2.00, 'is_featured' => false, 'is_promo' => false, 'active' => true]);
+        // update their english translation names
+        $pA->translations()->where('locale', 'en-UK')->update(['name' => 'Alpha']);
+        $pB->translations()->where('locale', 'en-UK')->update(['name' => 'Beta']);
+
+        // name ascending should show Alpha before Beta
+        $resp1 = $this->get(route('store.index', ['order' => 'name_az']));
+        $resp1->assertSeeInOrder(['Alpha', 'Beta']);
+
+        // name descending should flip
+        $resp2 = $this->get(route('store.index', ['order' => 'name_za']));
+        $resp2->assertSeeInOrder(['Beta', 'Alpha']);
+
+        // price low-high: B then A
+        $resp3 = $this->get(route('store.index', ['order' => 'price_low_high']));
+        $resp3->assertSeeInOrder(['Beta', 'Alpha']);
+
+        // price high-low: A then B
+        $resp4 = $this->get(route('store.index', ['order' => 'price_high_low']));
+        $resp4->assertSeeInOrder(['Alpha', 'Beta']);
+
+        // featured first
+        $pA->update(['is_featured' => true]);
+        $resp5 = $this->get(route('store.index', ['order' => 'featured_first']));
+        $resp5->assertSeeInOrder(['Alpha', 'Beta']);
+
+        // promo first
+        $pB->update(['is_featured' => false, 'is_promo' => true]);
+        $resp6 = $this->get(route('store.index', ['order' => 'promo_first']));
+        // Beta is promo now so should appear before Alpha
+        $resp6->assertSeeInOrder(['Beta', 'Alpha']);
+    }
 }
