@@ -1,39 +1,4 @@
 <x-app-layout>
-    <script id="favorites-data" type="application/json">
-        {!! json_encode($favoriteIds ?? []) !!}
-    </script>
-
-    <script>
-        function favoritesData() {
-            return {
-                favorites: JSON.parse(document.getElementById('favorites-data').textContent),
-                async toggleFavorite(productId) {
-                    try {
-                        const response = await fetch(`/favorites/toggle/${productId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                                'Accept': 'application/json'
-                            }
-                        });
-                        const data = await response.json();
-                        if (data.isFavorite) {
-                            this.favorites.push(productId);
-                        } else {
-                            this.favorites = this.favorites.filter(id => id !== productId);
-                        }
-                        // Update Alpine store
-                        if (window.Alpine && window.Alpine.store) {
-                            window.Alpine.store('favorites').count = data.favoritesCount;
-                        }
-                    } catch (error) {
-                        console.error('Error toggling favorite:', error);
-                    }
-                }
-            }
-        }
-    </script>
 
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -55,77 +20,14 @@
 
                 {{-- PRODUCTS --}}
                 <div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-sequence"
-                         x-data="favoritesData()">
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-6 animate-sequence">
                         @forelse ($products as $product)
-                            <div class="bg-light rounded shadow hover:shadow-lg transition relative overflow-hidden isolate anim-item"
-                                 data-index="{{ $loop->index }}">
-                                {{-- badges for featured / promo products --}}
-                                <div class="absolute top-2 left-2 flex flex-col items-start gap-2 z-10">
-                                    @if($product->is_featured)
-                                        <span class="inline-block w-auto bg-accent-secondary text-white text-xs font-semibold uppercase px-2 py-1 rounded">
-                                            {{ t('store.badge.featured') ?: 'FEATURED' }}
-                                        </span>
-                                    @endif
-                                    @if($product->is_promo)
-                                        <span class="inline-block w-auto bg-accent-primary text-white text-xs font-semibold uppercase px-2 py-1 rounded">
-                                            {{ t('store.badge.promo') ?: 'PROMO' }}
-                                        </span>
-                                    @endif
-                                </div>
-                                <button @click.prevent="toggleFavorite({{ $product->id }})"
-                                        class="absolute top-2 right-2 p-2 bg-white rounded-full transition z-10">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         :fill="favorites.includes({{ $product->id }}) ? 'currentColor' : 'none'"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor"
-                                         class="w-5 h-5"
-                                         :class="favorites.includes({{ $product->id }}) ? 'text-status-error' : 'text-grey-medium'">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                    </svg>
-                                </button>
-                                <a href="{{ route('store.show', $product) }}" class="block">
-                                    @php
-                                        $scrollerImages = $product->photos
-                                            ->sortByDesc('is_primary')
-                                            ->map(fn($p) => asset('storage/' . $p->path));
-                                    @endphp
-                                    @if($scrollerImages->isNotEmpty())
-                                        <x-image-scroller 
-                                            class="w-full aspect-square" 
-                                            :images="$scrollerImages" 
-                                            :config="[
-                                                'interval' => 1500, 
-                                                'autoplay_mobile' => true,
-                                                'autoplay_desktop'=> false,
-                                            ]" 
-                                        />
-                                    @else
-                                        <div class="w-full aspect-square bg-grey-light flex items-center justify-center">
-                                            <span class="text-grey-medium text-sm">{{ t('store.no_photos') ?: 'No photo' }}</span>
-                                        </div>
-                                    @endif
-                                    <div class="p-4 pt-3">
-                                        <div class="font-semibold">
-                                            {{ optional($product->translation())->name }}
-                                        </div>
-                                        <div class="text-sm text-grey-dark flex items-baseline">
-                                            €{{ number_format($product->is_promo ? ($product->promo_price ?? $product->price) : $product->price, 2) }}
-                                            @if($product->is_promo)
-                                                <span class="text-xs text-grey-medium line-through ml-2">
-                                                    €{{ number_format($product->price, 2) }}
-                                                </span>
-                                            @endif
-                                        </div>
-                                        @if(isset($deliveryDates[$product->id]) && $deliveryDates[$product->id])
-                                            <div class="text-xs text-grey-medium mt-1">
-                                                {{ t('store.expected_delivery') ?: 'Expected delivery' }}: {{ $deliveryDates[$product->id] }}
-                                            </div>
-                                        @endif
-                                    </div>
-                                </a>
-                            </div>
+                            <x-product-card
+                                :product="$product"
+                                :is-favorite="in_array($product->id, $favoriteIds ?? [])"
+                                :delivery-date="$deliveryDates[$product->id] ?? null"
+                                :index="$loop->index"
+                            />
                         @empty
                             <p class="text-grey-dark col-span-full text-center">
                                 {{ t('store.no_products') ?: 'No products found.' }}
