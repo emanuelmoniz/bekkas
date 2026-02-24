@@ -29,22 +29,28 @@
     </script>
 
     <div class="py-6">
-        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-6 animate-sequence">
 
             {{-- GALLERY --}}
-            <div class="space-y-4">
-                @forelse ($product->photos as $photo)
-                    <img src="{{ asset('storage/' . $photo->path) }}"
-                         class="w-full rounded shadow">
-                @empty
-                    <div class="bg-grey-light h-64 flex items-center justify-center rounded">
-                        <span class="text-grey-medium">{{ t('store.no_photos') ?: 'No photos available' }}</span>
-                    </div>
-                @endforelse
-            </div>
+            @php
+                $galleryImages = $product->photos
+                    ->sortByDesc('is_primary')
+                    ->map(fn ($photo) => [
+                        'url'      => asset('storage/' . $photo->path),
+                        'original' => $photo->original_path
+                            ? asset('storage/' . $photo->original_path)
+                            : null,
+                    ])
+                    ->values()
+                    ->toArray();
+            @endphp
 
+            <div class="anim-item">
+                <x-image-gallery :images="$galleryImages"/>
+            </div>
+            
             {{-- DETAILS --}}
-            <div class="bg-light p-6 rounded shadow space-y-4" x-data="favoriteToggle({{ $product->id }}, {{ json_encode($isFavorite ?? false) }})">
+            <div class="bg-light p-6 rounded shadow space-y-4 anim-item" x-data="favoriteToggle({{ $product->id }}, {{ json_encode($isFavorite ?? false) }})">
 
                 {{-- NAME (moved from header) --}}
                 <h2 class="font-semibold text-xl text-grey-dark">

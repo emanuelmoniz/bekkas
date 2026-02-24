@@ -2,6 +2,7 @@ import './bootstrap';
 
 // register custom scripts
 import './image-scroller';
+import './image-gallery';
 
 import Alpine from 'alpinejs';
 

@@ -92,13 +92,15 @@
                                             ->map(fn($p) => asset('storage/' . $p->path));
                                     @endphp
                                     @if($scrollerImages->isNotEmpty())
-                                        <x-image-scroller class="w-full aspect-square" 
+                                        <x-image-scroller 
+                                            class="w-full aspect-square" 
                                             :images="$scrollerImages" 
                                             :config="[
                                                 'interval' => 1500, 
                                                 'autoplay_mobile' => true,
                                                 'autoplay_desktop'=> false,
-                                            ]" />
+                                            ]" 
+                                        />
                                     @else
                                         <div class="w-full aspect-square bg-grey-light flex items-center justify-center">
                                             <span class="text-grey-medium text-sm">{{ t('store.no_photos') ?: 'No photo' }}</span>
