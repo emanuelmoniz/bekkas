@@ -109,6 +109,10 @@ class ProductController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
 
+        // remember search/filters page so product view can link back
+        // only store if it's actually the listing (avoid storing when paginating from other pages)
+        session()->put('store_return_url', $request->fullUrl());
+
         // Build category/material lists with product counts (only from active products)
         $activeProductsForCounts = Product::where('active', true)
             ->with(['categories:id', 'materials:id'])
@@ -193,6 +197,7 @@ class ProductController extends Controller
         $deliveryInfo = $this->deliveryCalculator->calculateDeliveryDate($product);
         $deliveryDate = $deliveryInfo['formatted'];
 
-        return view('store.show', compact('product', 'isFavorite', 'deliveryDate'));
+        $backUrl = session('store_return_url', route('store.index'));
+        return view('store.show', compact('product', 'isFavorite', 'deliveryDate', 'backUrl'));
     }
 }

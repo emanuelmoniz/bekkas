@@ -1,8 +1,11 @@
 <x-app-layout>
     
     <script>
-        function favoriteToggle(productId, initialFavorite) {
+        // Alpine component for the product page: handles favorites and cart additions
+        // `addUrl` parameter allows the server to generate the correct path (prefix, locale, etc.)
+        function productPage(productId, initialFavorite, addUrl) {
             return {
+                // favorite toggle behaviour moved from previous helper
                 isFavorite: initialFavorite,
                 async toggle() {
                     try {
@@ -23,8 +26,55 @@
                     } catch (error) {
                         console.error('Error toggling favorite:', error);
                     }
+                },
+
+                // cart behaviour
+                quantity: 1,
+                adding: false,
+                async addToCart(event) {
+                    event.preventDefault();
+                    if (this.adding) return;
+                    this.adding = true;
+                    try {
+                        const response = await fetch(addUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({ quantity: this.quantity })
+                        });
+
+                        // if the server returned a 404 we convert to a friendly message
+                        if (response.status === 404) {
+                            throw new Error('Product unavailable');
+                        }
+
+                        if (! response.ok) throw new Error('Network response was not ok');
+                        const data = await response.json();
+
+                        // flash message
+                        if (window.Alpine && window.Alpine.store && window.Alpine.store('flash')) {
+                            window.Alpine.store('flash').showMessage('{{ t("store.added_to_cart") ?: 'Added to cart' }}');
+                        }
+
+                        // update cart count store if available
+                        if (window.Alpine && window.Alpine.store && window.Alpine.store('cart')) {
+                            window.Alpine.store('cart').count = data.cartCount;
+                        }
+                    } catch (error) {
+                        console.error('Error adding to cart:', error);
+                        if (window.Alpine && window.Alpine.store && window.Alpine.store('flash')) {
+                            // display the error message if we have it, otherwise a generic failure
+                            const msg = error.message || '{{ t("store.add_to_cart_failed") ?: 'Unable to add to cart' }}';
+                            window.Alpine.store('flash').showMessage(msg, 'error');
+                        }
+                    } finally {
+                        this.adding = false;
+                    }
                 }
-            }
+            };
         }
     </script>
 
@@ -48,9 +98,19 @@
             <div class="anim-item">
                 <x-image-gallery :images="$galleryImages"/>
             </div>
-            
+
             {{-- DETAILS --}}
-            <div class="bg-light p-6 rounded shadow space-y-4 anim-item" x-data="favoriteToggle({{ $product->id }}, {{ json_encode($isFavorite ?? false) }})">
+            <div class="bg-light p-6 rounded shadow space-y-4 anim-item" x-data="productPage({{ $product->id }}, {{ json_encode($isFavorite ?? false) }}, '{{ route('cart.add', $product) }}')">
+
+                {{-- BACK LINK --}}
+                <div>
+                    <a href="{{ $backUrl }}" class="text-sm text-accent-primary hover:underline flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                        </svg>
+                        {{ t('store.back_to_store') ?: 'Back to store' }}
+                    </a>
+                </div>
 
                 {{-- NAME (moved from header) --}}
                 <h2 class="font-semibold text-xl text-grey-dark">
@@ -181,16 +241,19 @@
 @if ($product->stock > 0 || $product->is_backorder)
     <form method="POST"
           action="{{ route('cart.add', $product) }}"
+          @submit.prevent="addToCart"
           class="pt-4 flex gap-2">
         @csrf
         <input type="number"
                name="quantity"
+               x-model.number="quantity"
                value="1"
                min="1"
                @if(!$product->is_backorder) max="{{ $product->stock }}" @endif
                class="w-20 border rounded px-2 py-1">
-        <button class="bg-accent-primary text-light px-4 py-2 rounded">
-            {{ t('store.add_to_cart') ?: 'Add to cart' }}
+        <button :disabled="adding"
+                class="bg-accent-primary text-light px-4 py-2 rounded"
+                x-text="adding ? '{{ t('store.adding') ?: 'Adding...' }}' : '{{ t('store.add_to_cart') ?: 'Add to cart' }}'">
         </button>
     </form>
 @endif

@@ -57,11 +57,24 @@ class CartController extends Controller
     public function add(AddToCartRequest $request, Product $product)
     {
         if (! $product->active) {
+            // JSON clients expect a structured error
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => t('store.product_unavailable') ?: 'Product unavailable',
+                ], 404);
+            }
             abort(404);
         }
 
         // Check if product has stock (unless backorder is allowed)
         if (! $product->is_backorder && $product->stock <= 0) {
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => t('store.out_of_stock') ?: 'This product is out of stock.',
+                ], 422);
+            }
             return back()->with('error', 'This product is out of stock.');
         }
 
@@ -81,6 +94,15 @@ class CartController extends Controller
         // Store the referrer URL so user can continue shopping from where they left off
         if ($request->headers->get('referer') && ! str_contains($request->headers->get('referer'), '/cart')) {
             session()->put('shopping_return_url', $request->headers->get('referer'));
+        }
+
+        // If this was an AJAX/json request, respond with data instead of redirecting
+        if ($request->wantsJson() || $request->ajax()) {
+            $totalItems = array_sum(session('cart', []));
+            return response()->json([
+                'success' => true,
+                'cartCount' => $totalItems,
+            ]);
         }
 
         return redirect()->route('cart.index');

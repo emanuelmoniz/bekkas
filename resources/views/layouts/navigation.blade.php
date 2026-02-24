@@ -230,17 +230,15 @@
                 </div>
 
                 <!-- Cart Icon -->
-                @if($cartCount > 0 && config('app.store_enabled'))
-                    <div class="relative">
-                        <a href="{{ route('cart.index') }}" class="flex items-center text-grey-dark hover:text-dark" aria-label="Cart">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25h11.118c.51 0 .955-.343 1.087-.835l1.518-5.688a1.125 1.125 0 00-1.087-1.415H5.106" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25L5.106 4.272M7.5 14.25l-2.25 3m0 0h13.5m-13.5 0a1.5 1.5 0 103 0m10.5 0a1.5 1.5 0 103 0" />
-                            </svg>
-                            <span class="absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-status-error text-light text-xs px-1.5 py-0.5 min-w-[1.25rem]">{{ $cartCount }}</span>
-                        </a>
-                    </div>
-                @endif
+                <div x-data="{}" x-show="$store.cart.count > 0 && {{ config('app.store_enabled') ? 'true' : 'false' }}" class="relative" style="display: none;">
+                    <a href="{{ route('cart.index') }}" class="flex items-center text-grey-dark hover:text-dark" aria-label="Cart">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25h11.118c.51 0 .955-.343 1.087-.835l1.518-5.688a1.125 1.125 0 00-1.087-1.415H5.106" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25L5.106 4.272M7.5 14.25l-2.25 3m0 0h13.5m-13.5 0a1.5 1.5 0 103 0m10.5 0a1.5 1.5 0 103 0" />
+                        </svg>
+                        <span class="absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-status-error text-light text-xs px-1.5 py-0.5 min-w-[1.25rem]" x-text="$store.cart.count"></span>
+                    </a>
+                </div>
 
                 @auth
                     <div class="h-full flex items-center">
@@ -480,11 +478,11 @@
                 </div>
                 
                 @php $cartCount = array_sum(session('cart', [])); @endphp
-                @if($cartCount > 0 && config('app.store_enabled'))
+                <div x-data="{}" x-show="$store.cart.count > 0 && {{ config('app.store_enabled') ? 'true' : 'false' }}">
                     <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
-                        {{ t('nav.cart') ?: 'Cart' }} ({{ $cartCount }})
+                        {{ t('nav.cart') ?: 'Cart' }} (<span x-text="$store.cart.count"></span>)
                     </x-responsive-nav-link>
-                @endif
+                </div>
             @endif
         </div>
 

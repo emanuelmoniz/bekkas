@@ -19,6 +19,11 @@ Alpine.store('favorites', {
     count: window.initialFavoritesCount || 0
 });
 
+// Optional cart count store for UI components that might need it
+Alpine.store('cart', {
+    count: window.initialCartCount || 0
+});
+
 // Global flash store — use for client-displayed flash messages (keeps UI consistent)
 Alpine.store('flash', {
     show: false,

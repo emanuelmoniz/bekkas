@@ -494,6 +494,21 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'store.add_to_cart', 'locale' => 'pt-PT', 'value' => 'Adicionar ao carrinho', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.add_to_cart', 'locale' => 'en-UK', 'value' => 'Add to cart', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'store.adding', 'locale' => 'pt-PT', 'value' => 'A adicionar...', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.adding', 'locale' => 'en-UK', 'value' => 'Adding...', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.added_to_cart', 'locale' => 'pt-PT', 'value' => 'Item adicionado ao carrinho', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.added_to_cart', 'locale' => 'en-UK', 'value' => 'Added to cart', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.add_to_cart_failed', 'locale' => 'pt-PT', 'value' => 'Não foi possível adicionar ao carrinho', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.add_to_cart_failed', 'locale' => 'en-UK', 'value' => 'Unable to add to cart', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.product_unavailable', 'locale' => 'pt-PT', 'value' => 'Produto indisponível', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.product_unavailable', 'locale' => 'en-UK', 'value' => 'Product unavailable', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.back_to_store', 'locale' => 'pt-PT', 'value' => 'Voltar à loja', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.back_to_store', 'locale' => 'en-UK', 'value' => 'Back to store', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'store.expected_delivery', 'locale' => 'pt-PT', 'value' => 'Entrega prevista', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.expected_delivery', 'locale' => 'en-UK', 'value' => 'Expected delivery', 'created_at' => $now, 'updated_at' => $now],
 
