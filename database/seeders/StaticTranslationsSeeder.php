@@ -429,6 +429,12 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'store.filter.price_range', 'locale' => 'pt-PT', 'value' => 'Intervalo de Preço', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.filter.price_range', 'locale' => 'en-UK', 'value' => 'Price Range', 'created_at' => $now, 'updated_at' => $now],
 
+            // badges shown on product cards
+            ['key' => 'store.badge.featured', 'locale' => 'pt-PT', 'value' => 'DESTAQUE', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.badge.featured', 'locale' => 'en-UK', 'value' => 'FEATURED', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.badge.promo', 'locale' => 'pt-PT', 'value' => 'SALDOS', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.badge.promo', 'locale' => 'en-UK', 'value' => 'PROMO', 'created_at' => $now, 'updated_at' => $now],
+
             // ordering options
             ['key' => 'store.order.default', 'locale' => 'pt-PT', 'value' => 'Ordenar', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.order.default', 'locale' => 'en-UK', 'value' => 'Sort', 'created_at' => $now, 'updated_at' => $now],

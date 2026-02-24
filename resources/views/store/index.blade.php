@@ -60,6 +60,19 @@
                         @forelse ($products as $product)
                             <div class="bg-light rounded shadow hover:shadow-lg transition relative overflow-hidden isolate anim-item"
                                  data-index="{{ $loop->index }}">
+                                {{-- badges for featured / promo products --}}
+                                <div class="absolute top-2 left-2 flex flex-col items-start gap-2 z-10">
+                                    @if($product->is_featured)
+                                        <span class="inline-block w-auto bg-accent-secondary text-white text-xs font-semibold uppercase px-2 py-1 rounded">
+                                            {{ t('store.badge.featured') ?: 'FEATURED' }}
+                                        </span>
+                                    @endif
+                                    @if($product->is_promo)
+                                        <span class="inline-block w-auto bg-accent-primary text-white text-xs font-semibold uppercase px-2 py-1 rounded">
+                                            {{ t('store.badge.promo') ?: 'PROMO' }}
+                                        </span>
+                                    @endif
+                                </div>
                                 <button @click.prevent="toggleFavorite({{ $product->id }})"
                                         class="absolute top-2 right-2 p-2 bg-white rounded-full transition z-10">
                                     <svg xmlns="http://www.w3.org/2000/svg"

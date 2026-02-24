@@ -118,4 +118,30 @@ class PagesTest extends TestCase
         // Beta is promo now so should appear before Alpha
         $resp6->assertSeeInOrder(['Beta', 'Alpha']);
     }
+
+    public function test_store_displays_featured_and_promo_badges_on_product_cards()
+    {
+        config(['app.store_enabled' => true]);
+        $this->seed(\Database\Seeders\StaticTranslationsSeeder::class);
+        app()->setLocale('en-UK');
+
+        // create a few products with the various badge combinations
+        \App\Models\Product::factory()->create(['is_featured' => true, 'is_promo' => false, 'active' => true]);
+        \App\Models\Product::factory()->create(['is_featured' => false, 'is_promo' => true, 'active' => true]);
+        // also one with both flags to ensure both badges can coexist
+        \App\Models\Product::factory()->create(['is_featured' => true, 'is_promo' => true, 'active' => true]);
+
+        $response = $this->get(route('store.index'));
+
+        // badges should appear at least once with correct text and styling
+        $response->assertSeeText('FEATURED');
+        $response->assertSeeText('PROMO');
+        // text should be white regardless of background
+        $response->assertSee('text-white');
+        // background colours correspond to accent primary/secondary tokens
+        $response->assertSee('bg-accent-secondary');
+        $response->assertSee('bg-accent-primary');
+        // spacing between badges increased so check for gap class
+        $response->assertSee('gap-2');
+    }
 }
