@@ -23,6 +23,17 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'orders.yes', 'locale' => 'en-UK', 'value' => 'Yes', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.no', 'locale' => 'pt-PT', 'value' => 'Não', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.no', 'locale' => 'en-UK', 'value' => 'No', 'created_at' => $now, 'updated_at' => $now],
+            // Pagination summary (used by component)
+            ['key' => 'pagination.showing', 'locale' => 'pt-PT', 'value' => 'A mostrar :first a :last de :total resultados', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'pagination.showing', 'locale' => 'en-UK', 'value' => 'Showing :first to :last of :total results', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'pagination.previous', 'locale' => 'pt-PT', 'value' => 'Anterior', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'pagination.previous', 'locale' => 'en-UK', 'value' => 'Previous', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'pagination.next', 'locale' => 'pt-PT', 'value' => 'Seguinte', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'pagination.next', 'locale' => 'en-UK', 'value' => 'Next', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'pagination.navigation', 'locale' => 'pt-PT', 'value' => 'Navegação de paginação', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'pagination.navigation', 'locale' => 'en-UK', 'value' => 'Pagination Navigation', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'pagination.goto_page', 'locale' => 'pt-PT', 'value' => 'Ir para a página :page', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'pagination.goto_page', 'locale' => 'en-UK', 'value' => 'Go to page :page', 'created_at' => $now, 'updated_at' => $now],
             // Navigation
             ['key' => 'nav.dashboard', 'locale' => 'pt-PT', 'value' => 'Painel', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'nav.dashboard', 'locale' => 'en-UK', 'value' => 'Dashboard', 'created_at' => $now, 'updated_at' => $now],

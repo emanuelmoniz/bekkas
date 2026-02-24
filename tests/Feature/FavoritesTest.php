@@ -44,4 +44,33 @@ class FavoritesTest extends TestCase
 
         $this->assertDatabaseMissing('favorites', ['user_id' => $user->id, 'product_id' => $product->id]);
     }
+
+    public function test_favorites_index_shows_translated_pagination_summary()
+    {
+        $user = User::factory()->create();
+        $products = Product::factory()->count(13)->create();
+
+        // record each product as favourite in the database
+        foreach ($products as $p) {
+            \App\Models\Favorite::create([ 'user_id' => $user->id, 'product_id' => $p->id ]);
+        }
+
+        $this->actingAs($user);
+        $this->seed(\Database\Seeders\StaticTranslationsSeeder::class);
+        app()->setLocale('en-UK');
+
+        $response = $this->get(route('favorites.index'));
+        $response->assertSeeText('Showing 1 to 12 of 13 results');
+        $response->assertSee('Next');
+        $this->assertEquals(1, substr_count($response->getContent(), 'Showing 1 to 12 of 13 results'));
+
+        $resp2 = $this->get(route('favorites.index', ['page' => 2]));
+        $resp2->assertSeeText('Showing 13 to 13 of 13 results');
+        $resp2->assertSee('Previous');
+
+        app()->setLocale('pt-PT');
+        $respPt = $this->get(route('favorites.index'));
+        $respPt->assertSeeText('A mostrar 1 a 12 de 13 resultados');
+        $respPt->assertSee('Seguinte');
+    }
 }

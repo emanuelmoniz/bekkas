@@ -119,6 +119,33 @@ class PagesTest extends TestCase
         $resp6->assertSeeInOrder(['Beta', 'Alpha']);
     }
 
+    public function test_store_index_shows_translated_pagination_summary()
+    {
+        config(['app.store_enabled' => true]);
+        $this->seed(\Database\Seeders\StaticTranslationsSeeder::class);
+        app()->setLocale('en-UK');
+
+        // create more than one page worth of products (12 per page)
+        \App\Models\Product::factory()->count(13)->create(['active' => true]);
+
+        $response = $this->get(route('store.index'));
+        $response->assertSeeText('Showing 1 to 12 of 13 results');
+        // first page should show a "Next" link but no "Previous"
+        $response->assertSee('Next');
+        $this->assertEquals(1, substr_count($response->getContent(), 'Showing 1 to 12 of 13 results'));
+
+        // second page should show previous link and update summary
+        $resp2 = $this->get(route('store.index', ['page' => 2]));
+        $resp2->assertSeeText('Showing 13 to 13 of 13 results');
+        $resp2->assertSee('Previous');
+
+        // and check portuguese locale uses translated text
+        app()->setLocale('pt-PT');
+        $responsePt = $this->get(route('store.index'));
+        $responsePt->assertSeeText('A mostrar 1 a 12 de 13 resultados');
+        $responsePt->assertSee('Seguinte');
+    }
+
     public function test_store_displays_featured_and_promo_badges_on_product_cards()
     {
         config(['app.store_enabled' => true]);

@@ -128,7 +128,7 @@ $imageData = collect($images)
             <button
                 @click="thumbPrev()"
                 :disabled="!canThumbPrev"
-                class="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-grey-light hover:bg-grey-medium/30 text-grey-dark shadow transition opacity-0 group-hover:opacity-100 disabled:group-hover:opacity-30 disabled:cursor-not-allowed z-10"
+                class="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-grey-light text-grey-dark shadow transition opacity-0 group-hover:opacity-100 disabled:group-hover:opacity-30 disabled:cursor-not-allowed z-10"
                 aria-label="{{ t('gallery.prev_thumbnails') ?: 'Previous thumbnails' }}"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
@@ -140,7 +140,7 @@ $imageData = collect($images)
             <button
                 @click="thumbNext()"
                 :disabled="!canThumbNext"
-                class="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-grey-light hover:bg-grey-medium/30 text-grey-dark shadow transition opacity-0 group-hover:opacity-100 disabled:group-hover:opacity-30 disabled:cursor-not-allowed z-10"
+                class="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-grey-light text-grey-dark shadow transition opacity-0 group-hover:opacity-100 disabled:group-hover:opacity-30 disabled:cursor-not-allowed z-10"
                 aria-label="{{ t('gallery.next_thumbnails') ?: 'Next thumbnails' }}"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">

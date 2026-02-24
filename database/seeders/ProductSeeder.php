@@ -22,64 +22,7 @@ class ProductSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         DB::table('products')->insert([
-            [
-                'id' => 1,
-                'uuid' => '823f1687-a1ff-4a1f-af85-fc17cdbac088',
-                'tax_id' => 1,
-                'is_featured' => true,
-                'is_promo' => false,
-                'price' => '20.00',
-                'promo_price' => '15.00',
-                'width' => '120.00',
-                'length' => '120.00',
-                'height' => '140.00',
-                'weight' => '200.000',
-                'stock' => 10,
-                'production_time' => 2,
-                'is_backorder' => true,
-                'active' => true,
-                'created_at' => '2026-02-23 17:24:29',
-                'updated_at' => '2026-02-23 17:24:29',
-            ],
-            [
-                'id' => 2,
-                'uuid' => '6d42492a-3ed8-4596-87ff-e1c95cb89a12',
-                'tax_id' => 1,
-                'is_featured' => true,
-                'is_promo' => true,
-                'price' => '3.00',
-                'promo_price' => '2.00',
-                'width' => '80.00',
-                'length' => '8.00',
-                'height' => '30.00',
-                'weight' => '5.000',
-                'stock' => 10,
-                'production_time' => 1,
-                'is_backorder' => true,
-                'active' => true,
-                'created_at' => '2026-02-23 17:30:07',
-                'updated_at' => '2026-02-23 17:30:07',
-            ],
-            [
-                'id' => 3,
-                'uuid' => 'b0f5a3b1-b8fc-4937-8b40-4027f176240e',
-                'tax_id' => 1,
-                'is_featured' => false,
-                'is_promo' => false,
-                'price' => '10.00',
-                'promo_price' => '8.00',
-                'width' => '140.00',
-                'length' => '140.00',
-                'height' => '180.00',
-                'weight' => '250.000',
-                'stock' => 10,
-                'production_time' => 2,
-                'is_backorder' => true,
-                'active' => true,
-                'created_at' => '2026-02-23 17:34:20',
-                'updated_at' => '2026-02-23 17:34:20',
-            ],
-            // twenty additional sample products
+            // twenty sample products – original first three items have been removed
             [
                 'id' => 4,
                 'uuid' => 'a1b2c3d4-e5f6-47ab-89cd-1234567890ab',
@@ -463,24 +406,6 @@ class ProductSeeder extends Seeder
         ]);
 
         DB::table('product_translations')->insert([
-            ['id' => 1, 'product_id' => 1, 'locale' => 'pt-PT', 'name' => 'Candeiro Lua',
-                'description' => "Pequeno candeeiro em forma de lua.\nInclui luz RGB e controlo remoto",
-                'technical_info' => "Usa 2 pilhas tipo AA (não incluidas)"],
-            ['id' => 2, 'product_id' => 1, 'locale' => 'en-UK', 'name' => 'Moon Light',
-                'description' => "Small light with moon shell.\nIncludes RGB light and remote control.",
-                'technical_info' => "Use 2 AA batteries (not included)"],
-            ['id' => 3, 'product_id' => 2, 'locale' => 'pt-PT', 'name' => 'Suporte de Caneta',
-                'description' => "Clip para livro ou caderno.\nSuporte para 1 caneta ou lápis, de forma redonda.\nPodem contactar-nos para outras versões.",
-                'technical_info' => "Diâmetro do clip deve ser igual ou 1mm inferior ao da caneta."],
-            ['id' => 4, 'product_id' => 2, 'locale' => 'en-UK', 'name' => 'Pen Holder',
-                'description' => "Book or notebook clip.\nFor one round pen or pencil.\nContact us for other versions.",
-                'technical_info' => "Clip diameter should be equal or 1mm smaller than the pen."],
-            ['id' => 5, 'product_id' => 3, 'locale' => 'pt-PT', 'name' => 'Vaso para Plantas',
-                'description' => "Vaso com base removível para drenar o excesso de água.",
-                'technical_info' => "Zona da planta com fundo permeável para escoar água."],
-            ['id' => 6, 'product_id' => 3, 'locale' => 'en-UK', 'name' => 'Plant Vase',
-                'description' => "Vase with removable base to drain excess water.",
-                'technical_info' => "Permeable bottom section allows water to escape."],
             // realistic products aligned with categories
             ['id' => 7, 'product_id' => 4, 'locale' => 'pt-PT', 'name' => 'Ornamento Estrela de Natal',
                 'description' => "Estrela decorativa para pendurar na árvore de Natal.",
@@ -605,9 +530,6 @@ class ProductSeeder extends Seeder
         ]);
 
         DB::table('category_product')->insert([
-            ['product_id' => 1, 'category_id' => 2],
-            ['product_id' => 2, 'category_id' => 3],
-            ['product_id' => 3, 'category_id' => 4],
             // sample mappings for additional products
             ['product_id' => 4, 'category_id' => 1],
             ['product_id' => 5, 'category_id' => 1],
@@ -633,9 +555,6 @@ class ProductSeeder extends Seeder
         ]);
 
         DB::table('material_product')->insert([
-            ['product_id' => 1, 'material_id' => 1],
-            ['product_id' => 2, 'material_id' => 1],
-            ['product_id' => 3, 'material_id' => 1],
             // all additional products use the same sample material
             ['product_id' => 4, 'material_id' => 1],
             ['product_id' => 5, 'material_id' => 1],
@@ -659,27 +578,12 @@ class ProductSeeder extends Seeder
             ['product_id' => 23, 'material_id' => 1],
         ]);
 
-        DB::table('product_photos')->insert([
-            ['id' => 26, 'product_id' => 1, 'path' => 'products/8O4TzrtiaI7EZRDfbRtBbprZsZw3SPIsytiW34LC.jpg', 'original_path' => 'products/originals/8O4TzrtiaI7EZRDfbRtBbprZsZw3SPIsytiW34LC.jpg', 'is_primary' => 1, 'created_at' => '2026-02-24 12:44:19', 'updated_at' => '2026-02-24 12:44:19'],
-            ['id' => 27, 'product_id' => 1, 'path' => 'products/yGGaANnYvMWYnAZCIozO3MSTZPCY5x3lSJ9NWZNO.jpg', 'original_path' => 'products/originals/yGGaANnYvMWYnAZCIozO3MSTZPCY5x3lSJ9NWZNO.jpg', 'is_primary' => 0, 'created_at' => '2026-02-24 12:44:20', 'updated_at' => '2026-02-24 12:44:20'],
-            ['id' => 28, 'product_id' => 1, 'path' => 'products/YYId1c1ZDtviYcf8NTSh7uv10YjxgC6EjYIZ6p7a.jpg', 'original_path' => 'products/originals/YYId1c1ZDtviYcf8NTSh7uv10YjxgC6EjYIZ6p7a.jpg', 'is_primary' => 0, 'created_at' => '2026-02-24 12:44:21', 'updated_at' => '2026-02-24 12:44:21'],
-            ['id' => 21, 'product_id' => 2, 'path' => 'products/A0Jk9AIAIZglQC55o824pnw7cMPahEaWvRLpIUpf.jpg', 'original_path' => 'products/originals/A0Jk9AIAIZglQC55o824pnw7cMPahEaWvRLpIUpf.jpg', 'is_primary' => 1, 'created_at' => '2026-02-24 12:41:51', 'updated_at' => '2026-02-24 12:41:51'],
-            ['id' => 22, 'product_id' => 2, 'path' => 'products/q0BM6vfjEh1CNAvLsveJumOhCPyJmOH01UOoXzHT.jpg', 'original_path' => 'products/originals/q0BM6vfjEh1CNAvLsveJumOhCPyJmOH01UOoXzHT.jpg', 'is_primary' => 0, 'created_at' => '2026-02-24 12:41:52', 'updated_at' => '2026-02-24 12:41:52'],
-            ['id' => 23, 'product_id' => 2, 'path' => 'products/pgYqfKGmVbsWVSRvFC2VDBVY5tN6ycs9UgrV9xYr.jpg', 'original_path' => 'products/originals/pgYqfKGmVbsWVSRvFC2VDBVY5tN6ycs9UgrV9xYr.jpg', 'is_primary' => 0, 'created_at' => '2026-02-24 12:41:53', 'updated_at' => '2026-02-24 12:41:53'],
-            ['id' => 24, 'product_id' => 2, 'path' => 'products/L0BQdh9Ma8W6Q0wvM1LNWnscZmUGSGT6sRXccUz0.jpg', 'original_path' => 'products/originals/L0BQdh9Ma8W6Q0wvM1LNWnscZmUGSGT6sRXccUz0.jpg', 'is_primary' => 0, 'created_at' => '2026-02-24 12:41:53', 'updated_at' => '2026-02-24 12:41:53'],
-            ['id' => 25, 'product_id' => 2, 'path' => 'products/LVePTeYVcxtdITL6v5RysXzIpAEeoab51BCp0UVW.jpg', 'original_path' => 'products/originals/LVePTeYVcxtdITL6v5RysXzIpAEeoab51BCp0UVW.jpg', 'is_primary' => 0, 'created_at' => '2026-02-24 12:41:54', 'updated_at' => '2026-02-24 12:41:54'],
-            ['id' => 15, 'product_id' => 3, 'path' => 'products/FG0GH4BQKOZ722SpaoqN3R1vDkc55u4qCrzmcMNQ.jpg', 'original_path' => 'products/originals/FG0GH4BQKOZ722SpaoqN3R1vDkc55u4qCrzmcMNQ.jpg', 'is_primary' => 1, 'created_at' => '2026-02-24 12:39:18', 'updated_at' => '2026-02-24 12:39:18'],
-            ['id' => 16, 'product_id' => 3, 'path' => 'products/28hqtzhqDytQTeDS3hgbjDa6sW9ZE4xTp5v3IMm9.jpg', 'original_path' => 'products/originals/28hqtzhqDytQTeDS3hgbjDa6sW9ZE4xTp5v3IMm9.jpg', 'is_primary' => 0, 'created_at' => '2026-02-24 12:39:19', 'updated_at' => '2026-02-24 12:39:19'],
-            ['id' => 17, 'product_id' => 3, 'path' => 'products/oQt0rr5DVASYpNdCphIKCL4cEZcjDeJriRbDCiwy.jpg', 'original_path' => 'products/originals/oQt0rr5DVASYpNdCphIKCL4cEZcjDeJriRbDCiwy.jpg', 'is_primary' => 0, 'created_at' => '2026-02-24 12:39:20', 'updated_at' => '2026-02-24 12:39:20'],
-            ['id' => 18, 'product_id' => 3, 'path' => 'products/F3HI5a2Da2s6dmpUIuJGAcTNtHxPygJGCcjjh9EJ.jpg', 'original_path' => 'products/originals/F3HI5a2Da2s6dmpUIuJGAcTNtHxPygJGCcjjh9EJ.jpg', 'is_primary' => 0, 'created_at' => '2026-02-24 12:39:21', 'updated_at' => '2026-02-24 12:39:21'],
-            ['id' => 19, 'product_id' => 3, 'path' => 'products/qN4YPHetXQ2fZ760kEvuCHRDcV1mA0VZI1vhgmTf.jpg', 'original_path' => 'products/originals/qN4YPHetXQ2fZ760kEvuCHRDcV1mA0VZI1vhgmTf.jpg', 'is_primary' => 0, 'created_at' => '2026-02-24 12:39:21', 'updated_at' => '2026-02-24 12:39:21'],
-            ['id' => 20, 'product_id' => 3, 'path' => 'products/4iO9UQui08BpbLIgByVcIfHDHnOU2lOsN0gwuALE.jpg', 'original_path' => 'products/originals/4iO9UQui08BpbLIgByVcIfHDHnOU2lOsN0gwuALE.jpg', 'is_primary' => 0, 'created_at' => '2026-02-24 12:39:22', 'updated_at' => '2026-02-24 12:39:22'],
-        ]);
 
-        // dynamically download representative photos for the new products
+        // dynamically download representative photos for the retained products
         $service = new ImageThumbnailService;
         $unsplashService = app(\App\Services\UnsplashService::class);
         $queries = [
+            // keep the same mapping as before – these IDs correspond to the 20 products we kept
             4 => 'christmas star ornament',
             5 => 'wooden advent calendar',
             6 => 'wall candle holder',
@@ -704,31 +608,57 @@ class ProductSeeder extends Seeder
 
         $nextId = DB::table('product_photos')->max('id') + 1;
         $photoRows = [];
+        $basePhotos = []; // will store the initial download rows for reuse
 
+        // first pass: one photo per product, mark primary
         foreach ($queries as $pid => $query) {
-            for ($i = 0; $i < 2; $i++) {
-                try {
-                    $downloaded = $unsplashService->searchAndDownload($query, 'seed-temp');
-                    if ($downloaded) {
-                        $filePath = public_path($downloaded);
-                        if (file_exists($filePath)) {
-                            $file = new UploadedFile($filePath, basename($filePath), null, null, true);
-                            $paths = $service->store($file, 'products');
-                            $photoRows[] = [
-                                'id' => $nextId++,
-                                'product_id' => $pid,
-                                'path' => $paths['path'],
-                                'original_path' => $paths['original_path'],
-                                'is_primary' => $i === 0 ? 1 : 0,
-                                'created_at' => now(),
-                                'updated_at' => now(),
-                            ];
-                            @unlink($filePath);
-                        }
+            try {
+                $downloaded = $unsplashService->searchAndDownload($query, 'seed-temp');
+                if ($downloaded) {
+                    $filePath = public_path($downloaded);
+                    if (file_exists($filePath)) {
+                        $file = new UploadedFile($filePath, basename($filePath), null, null, true);
+                        $paths = $service->store($file, 'products');
+                        $row = [
+                            'id' => $nextId++,
+                            'product_id' => $pid,
+                            'path' => $paths['path'],
+                            'original_path' => $paths['original_path'],
+                            'is_primary' => 1,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
+                        $photoRows[] = $row;
+                        $basePhotos[] = $row;
+                        @unlink($filePath);
                     }
-                } catch (\Exception $e) {
-                    // ignore errors and continue seeding
                 }
+            } catch (\Exception $e) {
+                // ignore errors and continue
+            }
+        }
+
+        // allocate additional photos by randomly reusing the downloaded set
+        if (!empty($basePhotos)) {
+            // start each product count at 1 (primary photo)
+            $counts = array_fill_keys(array_keys($queries), 1);
+            // continue until every product has at least 5 photos
+            while (min($counts) < 5) {
+                $eligible = array_filter($counts, function ($c) {
+                    return $c < 5;
+                });
+                $targetPid = array_rand($eligible);
+                $sample = $basePhotos[array_rand($basePhotos)];
+                $photoRows[] = [
+                    'id' => $nextId++,
+                    'product_id' => $targetPid,
+                    'path' => $sample['path'],
+                    'original_path' => $sample['original_path'],
+                    'is_primary' => 0,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+                $counts[$targetPid]++;
             }
         }
 

@@ -238,36 +238,39 @@
                     </div>
                 @endif
 
-@if ($product->stock > 0 || $product->is_backorder)
-    <form method="POST"
-          action="{{ route('cart.add', $product) }}"
-          @submit.prevent="addToCart"
-          class="pt-4 flex gap-2">
-        @csrf
-        <input type="number"
-               name="quantity"
-               x-model.number="quantity"
-               value="1"
-               min="1"
-               @if(!$product->is_backorder) max="{{ $product->stock }}" @endif
-               class="w-20 border rounded px-2 py-1">
-        <button :disabled="adding"
-                class="bg-accent-primary text-light px-4 py-2 rounded"
-                x-text="adding ? '{{ t('store.adding') ?: 'Adding...' }}' : '{{ t('store.add_to_cart') ?: 'Add to cart' }}'">
-        </button>
-    </form>
-@endif
+                @if ($product->stock > 0 || $product->is_backorder)
+                    <form method="POST"
+                        action="{{ route('cart.add', $product) }}"
+                        @submit.prevent="addToCart"
+                        class="pt-4 flex gap-2">
+                        @csrf
+                        <input type="number"
+                            name="quantity"
+                            x-model.number="quantity"
+                            value="1"
+                            min="1"
+                            @if(!$product->is_backorder) max="{{ $product->stock }}" @endif
+                            class="w-20 border rounded px-2 py-1">
+                        <button :disabled="adding"
+                                class="bg-accent-primary text-light px-4 py-2 rounded"
+                                x-text="adding ? '{{ t('store.adding') ?: 'Adding...' }}' : '{{ t('store.add_to_cart') ?: 'Add to cart' }}'">
+                        </button>
+                    </form>
+                @endif
 
             </div>
         </div>
     </div>
 
     {{-- RELATED PRODUCTS --}}
-    <x-related-products
-        :categories="$product->categories"
-        :exclude-id="$product->id"
-        :title="t('store.related_products') ?: 'Related Products'"
-        order="random"
-        :max="8"
-    />
+    <div class="animate-sequence">
+        <x-related-products 
+            class="anim-item"
+            :categories="$product->categories"
+            :exclude-id="$product->id"
+            :title="t('store.related_products') ?: 'Related Products'"
+            order="random"
+            :max="8"
+        />
+    </div>
 </x-app-layout>
