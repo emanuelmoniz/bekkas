@@ -12,6 +12,7 @@ class ProjectPhoto extends Model
     protected $fillable = [
         'project_id',
         'path',
+        'original_path',
         'is_primary',
     ];
 

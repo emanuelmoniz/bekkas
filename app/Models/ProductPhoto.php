@@ -9,6 +9,7 @@ class ProductPhoto extends Model
     protected $fillable = [
         'product_id',
         'path',
+        'original_path',
         'is_primary',
     ];
 

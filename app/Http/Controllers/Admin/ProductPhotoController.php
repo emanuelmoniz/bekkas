@@ -5,25 +5,26 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductPhoto;
+use App\Services\ImageThumbnailService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProductPhotoController extends Controller
 {
-    public function store(Request $request, Product $product)
+    public function store(Request $request, Product $product, ImageThumbnailService $thumbnails)
     {
         $request->validate([
-            'photos.*' => 'required|image|max:4096',
+            'photos.*' => 'required|image|max:20480',
         ]);
 
         $hasPrimary = $product->photos()->where('is_primary', true)->exists();
 
         foreach ($request->file('photos', []) as $index => $file) {
-            $path = $file->store('products', 'public');
+            $stored = $thumbnails->store($file, 'products');
 
             $product->photos()->create([
-                'path' => $path,
-                'is_primary' => ! $hasPrimary && $index === 0,
+                'path'          => $stored['path'],
+                'original_path' => $stored['original_path'],
+                'is_primary'    => ! $hasPrimary && $index === 0,
             ]);
         }
 
@@ -38,11 +39,12 @@ class ProductPhotoController extends Controller
         return back();
     }
 
-    public function destroy(ProductPhoto $photo)
+    public function destroy(ProductPhoto $photo, ImageThumbnailService $thumbnails)
     {
-        Storage::disk('public')->delete($photo->path);
+        $thumbnails->delete($photo->path, $photo->original_path);
         $photo->delete();
 
         return back();
     }
 }
+
