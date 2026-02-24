@@ -22,7 +22,7 @@ class ProductController extends Controller
     {
         $query = Product::query()
             ->where('active', true)
-            ->with(['translations', 'primaryPhoto']);
+            ->with(['translations', 'photos']);
 
         if ($request->filled('name')) {
             $query->whereHas('translations', function ($q) use ($request) {

@@ -58,7 +58,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-sequence"
                          x-data="favoritesData()">
                         @forelse ($products as $product)
-                            <div class="bg-light rounded shadow p-4 hover:shadow-lg transition relative overflow-hidden isolate anim-item"
+                            <div class="bg-light rounded shadow hover:shadow-lg transition relative overflow-hidden isolate anim-item"
                                  data-index="{{ $loop->index }}">
                                 <button @click.prevent="toggleFavorite({{ $product->id }})"
                                         class="absolute top-2 right-2 p-2 bg-white rounded-full transition z-10">
@@ -73,24 +73,36 @@
                                     </svg>
                                 </button>
                                 <a href="{{ route('store.show', $product) }}" class="block">
-                                    <img src="{{ asset('storage/' . optional($product->primaryPhoto)->path) }}"
-                                         class="h-40 w-full object-cover rounded mb-3">
-                                    <div class="font-semibold">
-                                        {{ optional($product->translation())->name }}
-                                    </div>
-                                    <div class="text-sm text-grey-dark flex items-baseline">
-                                        €{{ number_format($product->is_promo ? ($product->promo_price ?? $product->price) : $product->price, 2) }}
-                                        @if($product->is_promo)
-                                            <span class="text-xs text-grey-medium line-through ml-2">
-                                                €{{ number_format($product->price, 2) }}
-                                            </span>
-                                        @endif
-                                    </div>
-                                    @if(isset($deliveryDates[$product->id]) && $deliveryDates[$product->id])
-                                        <div class="text-xs text-grey-medium mt-1">
-                                            {{ t('store.expected_delivery') ?: 'Expected delivery' }}: {{ $deliveryDates[$product->id] }}
+                                    @php
+                                        $scrollerImages = $product->photos
+                                            ->sortByDesc('is_primary')
+                                            ->map(fn($p) => asset('storage/' . $p->path));
+                                    @endphp
+                                    @if($scrollerImages->isNotEmpty())
+                                        <x-image-scroller class="w-full aspect-square" :images="$scrollerImages" :config="['interval' => 3000, 'autoplay' => false]" />
+                                    @else
+                                        <div class="w-full aspect-square bg-grey-light flex items-center justify-center">
+                                            <span class="text-grey-medium text-sm">{{ t('store.no_photos') ?: 'No photo' }}</span>
                                         </div>
                                     @endif
+                                    <div class="p-4 pt-3">
+                                        <div class="font-semibold">
+                                            {{ optional($product->translation())->name }}
+                                        </div>
+                                        <div class="text-sm text-grey-dark flex items-baseline">
+                                            €{{ number_format($product->is_promo ? ($product->promo_price ?? $product->price) : $product->price, 2) }}
+                                            @if($product->is_promo)
+                                                <span class="text-xs text-grey-medium line-through ml-2">
+                                                    €{{ number_format($product->price, 2) }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                        @if(isset($deliveryDates[$product->id]) && $deliveryDates[$product->id])
+                                            <div class="text-xs text-grey-medium mt-1">
+                                                {{ t('store.expected_delivery') ?: 'Expected delivery' }}: {{ $deliveryDates[$product->id] }}
+                                            </div>
+                                        @endif
+                                    </div>
                                 </a>
                             </div>
                         @empty

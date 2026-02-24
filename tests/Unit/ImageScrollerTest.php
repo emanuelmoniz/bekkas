@@ -80,4 +80,15 @@ class ImageScrollerTest extends TestCase
         $this->assertStringContainsString('data-image-scroller', $html);
         $this->assertStringContainsString('background-image:url', $html);
     }
+
+    public function test_autoplay_config_serializes_into_attribute()
+    {
+        $images = collect(['https://foo/bar.jpg']);
+        $html = view('components.image-scroller', ['images' => $images, 'config' => ['interval' => 5000, 'autoplay' => false]])->render();
+
+        // ensure the JSON output includes both keys and correct boolean
+        // note: attribute is HTML‑escaped so quotes appear as &quot;
+        $this->assertStringContainsString('&quot;interval&quot;:5000', $html);
+        $this->assertStringContainsString('&quot;autoplay&quot;:false', $html);
+    }
 }

@@ -24,6 +24,7 @@ function initialiseScroller(container) {
     }
 
     const interval = (config.interval || 3000) | 0;
+    const autoplay = config.autoplay !== false; // default true
     const scroller = container.querySelector('.scroller');
     const slides = Array.from(container.querySelectorAll('.slide'));
     if (!scroller || slides.length <= 1) {
@@ -36,7 +37,8 @@ function initialiseScroller(container) {
     const total = slides.length;
     let index = 0;
     let timer = null;
-    let paused = false;
+    // when autoplay is disabled we start paused until user interaction
+    let paused = !autoplay;
 
     function schedule() {
         timer = setTimeout(step, interval);
@@ -79,11 +81,31 @@ function initialiseScroller(container) {
         schedule();
     }
 
-    // pause/resume on pointer enter/leave; covers mouse and touch
-    container.addEventListener('pointerenter', pause);
-    container.addEventListener('pointerleave', resume);
+    // event handling differs depending on autoplay setting
+    // target elements: the scroller itself and any enclosing link (card) element.
+    const targets = [container];
+    const linkAncestor = container.closest('a');
+    if (linkAncestor && !targets.includes(linkAncestor)) {
+        targets.push(linkAncestor);
+    }
 
-    schedule();
+    const addListeners = (elem) => {
+        if (autoplay) {
+            // default: auto scroll continuously, pause on hover/touch
+            elem.addEventListener('pointerenter', pause);
+            elem.addEventListener('pointerleave', resume);
+        } else {
+            // non-autoplay: remain still until user interacts, then scroll until leave
+            elem.addEventListener('pointerenter', resume);
+            elem.addEventListener('pointerleave', pause);
+        }
+    };
+
+    targets.forEach(addListeners);
+
+    if (autoplay) {
+        schedule();
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
