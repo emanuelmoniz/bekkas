@@ -68,7 +68,9 @@ class ProjectController extends Controller
         $project = Project::create([
             'production_date' => $request->production_date,
             'execution_time' => $request->execution_time,
-            'dimensions' => $request->dimensions,
+            'width' => $request->width ?: null,
+            'length' => $request->length ?: null,
+            'height' => $request->height ?: null,
             'weight' => $request->weight,
             'is_active' => $request->boolean('is_active', true),
             'is_featured' => $request->boolean('is_featured'),
@@ -110,7 +112,9 @@ class ProjectController extends Controller
         $project->update([
             'production_date' => $request->production_date,
             'execution_time' => $request->execution_time,
-            'dimensions' => $request->dimensions,
+            'width' => $request->width ?: null,
+            'length' => $request->length ?: null,
+            'height' => $request->height ?: null,
             'weight' => $request->weight,
             'is_active' => $request->boolean('is_active'),
             'is_featured' => $request->boolean('is_featured'),

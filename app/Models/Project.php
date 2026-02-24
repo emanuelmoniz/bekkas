@@ -12,7 +12,9 @@ class Project extends Model
     protected $fillable = [
         'production_date',
         'execution_time',
-        'dimensions',
+        'width',
+        'length',
+        'height',
         'weight',
         'is_active',
         'is_featured',

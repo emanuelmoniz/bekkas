@@ -64,10 +64,29 @@
         </div>
 
         <div>
-            <label class="block font-medium mb-1">Dimensions</label>
-            <input type="text"
-                   name="dimensions"
-                   value="{{ old('dimensions', $project->dimensions ?? '') }}"
+            <label class="block font-medium mb-1">Width (mm)</label>
+            <input type="number"
+                   min="0"
+                   name="width"
+                   value="{{ old('width', $project->width ?? '') }}"
+                   class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+            <label class="block font-medium mb-1">Length (mm)</label>
+            <input type="number"
+                   min="0"
+                   name="length"
+                   value="{{ old('length', $project->length ?? '') }}"
+                   class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+            <label class="block font-medium mb-1">Height (mm)</label>
+            <input type="number"
+                   min="0"
+                   name="height"
+                   value="{{ old('height', $project->height ?? '') }}"
                    class="w-full border rounded px-3 py-2">
         </div>
     </div>

@@ -25,8 +25,16 @@
                         <p class="text-dark">{{ $project->execution_time }}</p>
                     </div>
                     <div>
-                        <strong class="text-grey-dark">Dimensions:</strong>
-                        <p class="text-dark">{{ $project->dimensions ?? '-' }}</p>
+                        <strong class="text-grey-dark">Width (mm):</strong>
+                        <p class="text-dark">{{ $project->width ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <strong class="text-grey-dark">Length (mm):</strong>
+                        <p class="text-dark">{{ $project->length ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <strong class="text-grey-dark">Height (mm):</strong>
+                        <p class="text-dark">{{ $project->height ?? '-' }}</p>
                     </div>
                     <div>
                         <strong class="text-grey-dark">Weight:</strong>
