@@ -266,3 +266,118 @@ if (! function_exists('image_scroller_images')) {
         })->values();
     }
 }
+
+
+// maintenance helper ------------------------------------------------------
+if (! function_exists('cleanup_unused_images')) {
+    /**
+     * Find image files on the public disk that are no longer referenced by any
+     * database record.  Supports products, projects and social avatars, along
+     * with their full‑resolution originals.  When run with the optional
+     * `$actuallyDelete` flag the helper will remove the files it returns.
+     *
+     * The helper is not executed automatically; run it manually when you need
+     * to clean up stray files (for example from tinker or an artisan command).
+     *
+     * Example usage from a shell:
+     *
+     * ```bash
+     * php artisan tinker
+     * >>> cleanup_unused_images();        // just lists unreferenced files
+     * >>> cleanup_unused_images(true);    // deletes them as well
+     * ```
+     *
+     * The returned array contains the paths relative to the storage disk
+     * (e.g. `products/xyz.jpg`).
+     *
+     * @param bool $actuallyDelete
+     * @return array<string>
+     */
+    function cleanup_unused_images(bool $actuallyDelete = false): array
+    {
+        $disk = \Illuminate\Support\Facades\Storage::disk('public');
+
+        // gather referenced paths from the database
+        $referenced = collect();
+
+        // product photos
+        $referenced = $referenced->merge(
+            \App\Models\ProductPhoto::query()
+                ->pluck('path')
+                ->filter()
+        );
+        $referenced = $referenced->merge(
+            \App\Models\ProductPhoto::query()
+                ->pluck('original_path')
+                ->filter()
+        );
+
+        // project photos
+        $referenced = $referenced->merge(
+            \App\Models\ProjectPhoto::query()
+                ->pluck('path')
+                ->filter()
+        );
+        $referenced = $referenced->merge(
+            \App\Models\ProjectPhoto::query()
+                ->pluck('original_path')
+                ->filter()
+        );
+
+        // social avatars – only the ones stored locally under /storage
+        $avatars = \App\Models\SocialAccount::query()
+            ->whereNotNull('avatar')
+            ->pluck('avatar')
+            ->filter(function ($a) {
+                return is_string($a) && str_starts_with($a, '/storage/');
+            })
+            ->map(function ($a) {
+                return ltrim(str_replace('/storage/', '', $a), '/');
+            });
+
+        $referenced = $referenced->merge($avatars);
+
+        // normalise to remove leading slashes and dedupe
+        $referenced = $referenced->map(fn($p) => ltrim((string) $p, '/'))
+                                 ->unique()
+                                 ->values();
+
+        // ensure we also protect originals for any thumbnail we know about
+        // (some rows still have null `original_path` but the file is present).
+        $extra = $referenced->map(function ($p) {
+            // match e.g. "products/abc.jpg" or "projects/xyz.png" and
+            // build corresponding "<folder>/originals/<file>" path.
+            if (preg_match('#^(products|projects)/([^/]+)$#', $p, $m)) {
+                return $m[1].'/originals/'.$m[2];
+            }
+            return null;
+        })->filter();
+
+        if ($extra->isNotEmpty()) {
+            $referenced = $referenced->merge($extra)->unique()->values();
+        }
+
+        $unused = [];
+
+        // directories we consider part of the image system
+        $folders = ['products', 'projects', 'avatars'];
+
+        foreach ($folders as $folder) {
+            if (! $disk->exists($folder)) {
+                continue;
+            }
+            $files = $disk->allFiles($folder);
+            foreach ($files as $file) {
+                if (! $referenced->contains($file)) {
+                    $unused[] = $file;
+                }
+            }
+        }
+
+        if ($actuallyDelete && ! empty($unused)) {
+            $disk->delete($unused);
+        }
+
+        return $unused;
+    }
+}
