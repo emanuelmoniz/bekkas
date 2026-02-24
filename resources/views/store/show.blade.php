@@ -261,4 +261,13 @@
             </div>
         </div>
     </div>
+
+    {{-- RELATED PRODUCTS --}}
+    <x-related-products
+        :categories="$product->categories"
+        :exclude-id="$product->id"
+        :title="t('store.related_products') ?: 'Related Products'"
+        order="random"
+        :max="8"
+    />
 </x-app-layout>

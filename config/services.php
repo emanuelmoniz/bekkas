@@ -55,4 +55,12 @@ return [
         'enabled' => env('MICROSOFT_SOCIALITE_ENABLED', false),
     ],
 
+    'unsplash' => [
+        'app_id'      => env('UNSPLASH_APP_ID'),
+        'access_key'  => env('UNSPLASH_ACCESS_KEY'),
+        'secret'      => env('UNSPLASH_SECRET_KEY'),
+        // simple utm source for tracking, default to application name
+        'utm_source'  => env('APP_NAME', 'laravel'),
+    ],
+
 ];

@@ -418,6 +418,12 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'store.filter.categories', 'locale' => 'en-UK', 'value' => 'Categories', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'store.filter.materials', 'locale' => 'pt-PT', 'value' => 'Materiais', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.related_products', 'locale' => 'pt-PT', 'value' => 'Produtos Relacionados', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.related_products', 'locale' => 'en-UK', 'value' => 'Related Products', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.scroll_prev', 'locale' => 'pt-PT', 'value' => 'Anterior', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.scroll_prev', 'locale' => 'en-UK', 'value' => 'Previous', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.scroll_next', 'locale' => 'pt-PT', 'value' => 'Seguinte', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.scroll_next', 'locale' => 'en-UK', 'value' => 'Next', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.filter.materials', 'locale' => 'en-UK', 'value' => 'Materials', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'store.filter.apply', 'locale' => 'pt-PT', 'value' => 'Filtrar', 'created_at' => $now, 'updated_at' => $now],

@@ -185,3 +185,14 @@
     @apply opacity-100 translate-y-0 transition-all duration-150 ease-in;
   }
 }
+
+@layer utilities {
+  /* hide scrollbar track while keeping scroll functionality */
+  .no-scrollbar {
+    scrollbar-width: none;         /* Firefox */
+    -ms-overflow-style: none;      /* IE / Edge */
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;                 /* Chrome / Safari / Opera */
+  }
+}
