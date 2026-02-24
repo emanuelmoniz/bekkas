@@ -8,6 +8,7 @@ use App\Models\Material;
 use App\Models\Product;
 use App\Models\ProductTranslation;
 use App\Models\Tax;
+use App\Services\ImageThumbnailService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -249,8 +250,15 @@ class ProductController extends Controller
         return redirect()->route('admin.products.edit', $product);
     }
 
-    public function destroy(Product $product)
+    public function destroy(Product $product, ImageThumbnailService $thumbnails)
     {
+        // explicit cleanup here mirrors the model event defined on
+        // Product; having both ensures that even if the event ever
+        // misfires the controller still tidies up storage.
+        foreach ($product->photos as $photo) {
+            $thumbnails->delete($photo->path, $photo->original_path);
+        }
+
         $product->delete();
 
         return redirect()->route('admin.products.index');

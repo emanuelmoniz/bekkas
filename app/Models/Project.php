@@ -53,4 +53,22 @@ class Project extends Model
     {
         return $this->hasOne(ProjectPhoto::class)->where('is_primary', true);
     }
+
+    /**
+     * When a project is deleted we need to remove any associated
+     * image files (thumbnail + original) from storage.  The HTTP
+     * controllers already call the thumbnail service when individual
+     * photos are removed, but the model event guarantees cleanup
+     * regardless of how the project is deleted (artisanal scripts,
+     * factories, seeds, etc.).
+     */
+    protected static function booted()
+    {
+        static::deleting(function (Project $project) {
+            $thumbnails = app(\App\Services\ImageThumbnailService::class);
+            foreach ($project->photos as $photo) {
+                $thumbnails->delete($photo->path, $photo->original_path);
+            }
+        });
+    }
 }

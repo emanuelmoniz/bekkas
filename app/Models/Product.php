@@ -53,6 +53,16 @@ class Product extends Model
                 $product->uuid = (string) Str::uuid();
             }
         });
+
+        // clean up image files (thumbnails + originals) when the product
+        // is removed.  this complements the controller logic and makes
+        // sure deletions are safe in all contexts.
+        static::deleting(function (Product $product) {
+            $thumbnails = app(\App\Services\ImageThumbnailService::class);
+            foreach ($product->photos as $photo) {
+                $thumbnails->delete($photo->path, $photo->original_path);
+            }
+        });
     }
 
     /**

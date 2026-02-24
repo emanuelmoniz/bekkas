@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Material;
 use App\Models\Project;
 use App\Models\ProjectTranslation;
+use App\Services\ImageThumbnailService;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -136,11 +137,12 @@ class ProjectController extends Controller
         return redirect()->route('admin.projects.index');
     }
 
-    public function destroy(Project $project)
+    public function destroy(Project $project, ImageThumbnailService $thumbnails)
     {
-        // remove files from storage so orphaned images are not kept
+        // delete both thumbnail and original – the service handles a
+        // null original_path gracefully for legacy rows.
         foreach ($project->photos as $photo) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($photo->path);
+            $thumbnails->delete($photo->path, $photo->original_path);
         }
 
         $project->delete();
