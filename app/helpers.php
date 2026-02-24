@@ -86,26 +86,91 @@ if (! function_exists('image_scroller_images')) {
      * Build a collection of image URLs according to the configuration options
      * originally used by the class‑based ImageScroller component.
      *
+     * The helper ensures that when photos originate from products or projects
+     * the primary image for each item is always returned before any non‑primary
+     * photos.  When only one image per item is requested the primary image is
+     * chosen if present; otherwise the newest photo is used.  For multiple
+     * images the primary image is placed at the front and the rest are
+     * sorted by descending creation date.  Finally the overall list is sorted
+     * such that primaries precede non‑primaries and then by photo age, which
+     * allows any global `max` limit to cut the newest entries.
+     *
      * @param  array  $config
      * @return \Illuminate\Support\Collection
      */
     function image_scroller_images(array $config = [])
     {
         $max = isset($config['max']) && $config['max'] > 0 ? (int) $config['max'] : null;
-        $images = collect();
+        // we build an intermediate collection of "entries" containing path,
+        // created_at and a priority flag.  this lets us reorder globally and
+        // favour primary photos while still respecting the various limits.
+        $entries = collect();
 
-        $collectFromProduct = function ($prod, $limit) use (&$images) {
+        /**
+         * Prepare a list of photo models according to the requirements for a
+         * single item (product or project).  The resulting array contains
+         * entry arrays rather than raw paths.
+         *
+         * @param \Illuminate\Database\Eloquent\Collection $photos
+         * @param int|null $limit
+         */
+        $addEntriesForPhotos = function ($photos, $limit) use (&$entries) {
+            if ($photos->isEmpty()) {
+                return;
+            }
+
+            // ensure we have a concrete collection so we can manipulate it
+            $photos = $photos->sortByDesc('created_at')->values();
+
+            // find primary photo if any
+            $primary = $photos->firstWhere('is_primary', true);
+
+            if ($limit === 1) {
+                $chosen = $primary ?? $photos->first();
+                if ($chosen) {
+                    $entries->push([
+                        'path' => $chosen->path,
+                        'created_at' => $chosen->created_at,
+                        'priority' => $chosen->is_primary ? 0 : 1,
+                    ]);
+                }
+                return;
+            }
+
+            // when more than one image is requested we always output the
+            // primary image first (if present) then the rest by descending
+            // date.  the limit (if any) is applied *after* we have arranged the
+            // set so that the primary image is retained.
+            if ($primary) {
+                $entries->push([
+                    'path' => $primary->path,
+                    'created_at' => $primary->created_at,
+                    'priority' => 0,
+                ]);
+                $photos = $photos->reject(fn($p) => $p->id === $primary->id)->values();
+            }
+
+            foreach ($photos as $photo) {
+                $entries->push([
+                    'path' => $photo->path,
+                    'created_at' => $photo->created_at,
+                    'priority' => 1,
+                ]);
+                if ($limit && $entries->count() >= $limit) {
+                    break;
+                }
+            }
+        };
+
+        $collectFromProduct = function ($prod, $limit) use (&$addEntriesForPhotos) {
             if (! $prod) {
                 return;
             }
-            $photos = $prod->photos()->orderByDesc('created_at');
-            if ($limit) {
-                $photos->take($limit);
-            }
-            $images->push(...$photos->pluck('path')->all());
+            $photos = $prod->photos()->get();
+            $addEntriesForPhotos($photos, $limit);
         };
 
-        $collectFromProducts = function (array $conf, $globalMax) use (&$images) {
+        $collectFromProducts = function (array $conf, $globalMax) use (&$entries, &$addEntriesForPhotos) {
             $query = App\Models\Product::query();
 
             if (! empty($conf['ids'])) {
@@ -123,30 +188,24 @@ if (! function_exists('image_scroller_images')) {
             $items = $query->orderByDesc('created_at')->get();
 
             foreach ($items as $item) {
-                $photos = $item->photos()->orderByDesc('created_at');
-                if ($perItem) {
-                    $photos->take($perItem);
-                }
-                $images->push(...$photos->pluck('path')->all());
+                $photos = $item->photos()->get();
+                $addEntriesForPhotos($photos, $perItem);
 
-                if ($globalMax && $images->count() >= $globalMax) {
+                if ($globalMax && $entries->count() >= $globalMax) {
                     break;
                 }
             }
         };
 
-        $collectFromSingleProject = function ($proj, $limit) use (&$images) {
+        $collectFromSingleProject = function ($proj, $limit) use (&$addEntriesForPhotos) {
             if (! $proj) {
                 return;
             }
-            $photos = $proj->photos()->orderByDesc('created_at');
-            if ($limit) {
-                $photos->take($limit);
-            }
-            $images->push(...$photos->pluck('path')->all());
+            $photos = $proj->photos()->get();
+            $addEntriesForPhotos($photos, $limit);
         };
 
-        $collectFromProjects = function (array $conf, $globalMax) use (&$images) {
+        $collectFromProjects = function (array $conf, $globalMax) use (&$entries, &$addEntriesForPhotos) {
             $query = App\Models\Project::query();
 
             if (! empty($conf['ids'])) {
@@ -164,13 +223,10 @@ if (! function_exists('image_scroller_images')) {
             $items = $query->orderByDesc('created_at')->get();
 
             foreach ($items as $item) {
-                $photos = $item->photos()->orderByDesc('created_at');
-                if ($perItem) {
-                    $photos->take($perItem);
-                }
-                $images->push(...$photos->pluck('path')->all());
+                $photos = $item->photos()->get();
+                $addEntriesForPhotos($photos, $perItem);
 
-                if ($globalMax && $images->count() >= $globalMax) {
+                if ($globalMax && $entries->count() >= $globalMax) {
                     break;
                 }
             }
@@ -192,12 +248,21 @@ if (! function_exists('image_scroller_images')) {
             $collectFromProjects($config['projects'], $max);
         }
 
+        // once all requested sources have pushed entries we perform a
+        // global sort; primary photos (priority 0) always come before others,
+        // and within the same priority we sort by descending creation date.  a
+        // final max constraint is applied after sorting.
+        $ordered = $entries->sortBy([
+            ['priority', 'asc'],
+            ['created_at', 'desc'],
+        ])->values();
+
         if ($max) {
-            $images = $images->take($max);
+            $ordered = $ordered->take($max);
         }
 
-        return $images->map(function ($path) {
-            return asset('storage/' . ltrim($path, '/'));
+        return $ordered->map(function ($entry) {
+            return asset('storage/' . ltrim($entry['path'], '/'));
         })->values();
     }
 }

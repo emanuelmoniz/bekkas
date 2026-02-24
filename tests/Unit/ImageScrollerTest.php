@@ -16,7 +16,8 @@ class ImageScrollerTest extends TestCase
     public function test_single_product_produces_correct_urls()
     {
         $product = Product::factory()->create();
-        $product->photos()->create(['path' => 'foo.jpg']);
+        // mark the first photo as primary so it should always appear first
+        $product->photos()->create(['path' => 'foo.jpg', 'is_primary' => true]);
         $product->photos()->create(['path' => 'bar.jpg']);
 
         $images = image_scroller_images(['product' => $product->id]);
@@ -33,7 +34,8 @@ class ImageScrollerTest extends TestCase
         // product without photos should be ignored gracefully
         $p3 = Product::factory()->create(['is_featured' => true, 'active' => false]);
 
-        $p1->photos()->create(['path' => 'p1a.jpg']);
+        // the primary photo should be selected when per_item = 1
+        $p1->photos()->create(['path' => 'p1a.jpg', 'is_primary' => true]);
         $p1->photos()->create(['path' => 'p1b.jpg']);
         $p2->photos()->create(['path' => 'p2a.jpg']);
         $p3->photos()->create(['path' => 'p3a.jpg']);
@@ -48,18 +50,43 @@ class ImageScrollerTest extends TestCase
 
         $images = image_scroller_images($conf);
 
-        $this->assertCount(1, $images); // only p1 and only first photo
+        $this->assertCount(1, $images); // only p1 and only its primary photo
         $this->assertStringEndsWith('p1a.jpg', $images->first());
     }
 
     public function test_projects_behaviour_is_similar()
     {
         $proj = Project::factory()->create(['is_active' => true, 'is_featured' => false]);
-        $proj->photos()->create(['path' => 'proj1.jpg']);
+        $proj->photos()->create(['path' => 'proj1.jpg', 'is_primary' => true]);
 
         $images = image_scroller_images(['project' => $proj->id]);
         $this->assertCount(1, $images);
         $this->assertStringEndsWith('proj1.jpg', $images->first());
+    }
+
+    public function test_primary_photo_precedes_newest_within_single_item()
+    {
+        $prod = Product::factory()->create();
+        $prod->photos()->create(['path' => 'old.jpg', 'created_at' => now()->subDay(), 'is_primary' => true]);
+        $prod->photos()->create(['path' => 'new.jpg', 'created_at' => now()]);
+
+        $images = image_scroller_images(['product' => $prod->id]);
+        // primary should come first even though it is older
+        $this->assertStringEndsWith('old.jpg', $images->first());
+        $this->assertStringEndsWith('new.jpg', $images->last());
+    }
+
+    public function test_per_item_one_multiple_items_sorted_by_photo_date()
+    {
+        $p1 = Product::factory()->create();
+        $p1->photos()->create(['path' => 'p1.jpg', 'created_at' => now()->subDays(2), 'is_primary' => true]);
+        $p2 = Product::factory()->create();
+        $p2->photos()->create(['path' => 'p2.jpg', 'created_at' => now()->subDay(), 'is_primary' => true]);
+
+        $images = image_scroller_images(['products' => ['per_item' => 1]]);
+        // although both are primary we expect the newer photo (p2) to appear first
+        $this->assertStringEndsWith('p2.jpg', $images->first());
+        $this->assertStringEndsWith('p1.jpg', $images->last());
     }
 
     public function test_maximum_limit_applies_across_sources()
