@@ -32,6 +32,7 @@ class ConfigurationServiceProvider extends ServiceProvider
         $map = [
             // DB field => config key(s)
             'app_name' => ['app.name'],
+            'default_locale' => ['app.locale'],
 
             // Mail
             'mail_admin' => ['mail.admin_address'],

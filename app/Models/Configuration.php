@@ -11,6 +11,7 @@ class Configuration extends Model
 
     protected $fillable = [
         'app_name',
+        'default_locale',
         'store_enabled',
         'send_mails_enabled',
         'easypay_enabled',

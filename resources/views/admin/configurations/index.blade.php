@@ -10,9 +10,20 @@
 
             @php $c = $config ?? null; @endphp
 
-            <div>
-                <label class="block font-semibold mb-2">App Name</label>
-                <input name="app_name" value="{{ old('app_name', $c->app_name ?? config('app.name')) }}" class="w-full border rounded px-3 py-2">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-semibold mb-2">App Name</label>
+                    <input name="app_name" value="{{ old('app_name', $c->app_name ?? config('app.name')) }}" class="w-full border rounded px-3 py-2">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-2">Default Language</label>
+                    <select name="default_locale" class="w-full border rounded px-3 py-2">
+                        @foreach(config('app.locales', []) as $code => $label)
+                            <option value="{{ $code }}" @selected(old('default_locale', $c->default_locale ?? config('app.locale')) === $code)>{{ $label }} ({{ $code }})</option>
+                        @endforeach
+                    </select>
+                    <p class="text-xs text-grey-dark mt-1">Applied when the visitor has not yet chosen a language.</p>
+                </div>
             </div>
 
             <div class="grid grid-cols-4 gap-4">

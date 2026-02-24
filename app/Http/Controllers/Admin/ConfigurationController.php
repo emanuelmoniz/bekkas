@@ -20,6 +20,7 @@ class ConfigurationController extends Controller
     {
         $data = $request->validate([
             'app_name' => 'nullable|string',
+            'default_locale' => 'nullable|string|max:10|in:' . implode(',', array_keys(config('app.locales', []))),
             'store_enabled' => 'nullable|boolean',
             'send_mails_enabled' => 'nullable|boolean',
             'easypay_enabled' => 'nullable|boolean',
