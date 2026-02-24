@@ -79,8 +79,7 @@
                             <div class="bg-light rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
                                 {{-- scroll images for store products --}}
                                 <x-image-scroller class="w-full aspect-square" :config="[
-                                    'interval' => 3000,
-                                    'max' => null,
+                                    'interval' => 1500,
                                     'products' => [
                                         'featured' => true,
                                         'active' => true,

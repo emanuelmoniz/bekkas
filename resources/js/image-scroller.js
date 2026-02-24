@@ -24,7 +24,27 @@ function initialiseScroller(container) {
     }
 
     const interval = (config.interval || 3000) | 0;
-    const autoplay = config.autoplay !== false; // default true
+    // determine autoplay according to new rules:
+    // 1. if config.autoplay is explicitly provided we use that and ignore
+    //    the desktop/mobile flags.
+    // 2. otherwise, pick the appropriate flag depending on the md
+    //    breakpoint (768px).  defaults are false for desktop, true for
+    //    mobile, matching the Blade component defaults.
+    let autoplay;
+    if (Object.prototype.hasOwnProperty.call(config, 'autoplay')) {
+        autoplay = !!config.autoplay;
+    } else {
+        const isDesktop = window.matchMedia('(min-width:768px)').matches;
+        if (isDesktop) {
+            autoplay = Object.prototype.hasOwnProperty.call(config, 'autoplay_desktop')
+                ? !!config.autoplay_desktop
+                : false;
+        } else {
+            autoplay = Object.prototype.hasOwnProperty.call(config, 'autoplay_mobile')
+                ? !!config.autoplay_mobile
+                : true;
+        }
+    }
     const scroller = container.querySelector('.scroller');
     const slides = Array.from(container.querySelectorAll('.slide'));
     if (!scroller || slides.length <= 1) {

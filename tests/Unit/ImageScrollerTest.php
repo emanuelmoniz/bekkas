@@ -91,4 +91,33 @@ class ImageScrollerTest extends TestCase
         $this->assertStringContainsString('&quot;interval&quot;:5000', $html);
         $this->assertStringContainsString('&quot;autoplay&quot;:false', $html);
     }
-}
+
+    public function test_desktop_and_mobile_autoplay_defaults_are_present()
+    {
+        $images = collect(['https://foo/bar.jpg']);
+        $html = view('components.image-scroller', ['images' => $images, 'config' => ['interval' => 2000]])->render();
+
+        $this->assertStringContainsString('&quot;autoplay_desktop&quot;:false', $html);
+        $this->assertStringContainsString('&quot;autoplay_mobile&quot;:true', $html);
+    }
+
+    public function test_device_specific_autoplay_can_be_overridden()
+    {
+        $images = collect(['https://foo/bar.jpg']);
+        $conf = ['interval' => 1111, 'autoplay_desktop' => true, 'autoplay_mobile' => false];
+        $html = view('components.image-scroller', ['images' => $images, 'config' => $conf])->render();
+
+        $this->assertStringContainsString('&quot;autoplay_desktop&quot;:true', $html);
+        $this->assertStringContainsString('&quot;autoplay_mobile&quot;:false', $html);
+    }
+
+    public function test_explicit_autoplay_overrides_device_flags()
+    {
+        $images = collect(['https://foo/bar.jpg']);
+        $conf = ['interval' => 2222, 'autoplay' => true, 'autoplay_desktop' => false, 'autoplay_mobile' => false];
+        $html = view('components.image-scroller', ['images' => $images, 'config' => $conf])->render();
+
+        $this->assertStringContainsString('&quot;autoplay&quot;:true', $html);
+        $this->assertStringNotContainsString('autoplay_desktop', $html);
+        $this->assertStringNotContainsString('autoplay_mobile', $html);
+    }}
