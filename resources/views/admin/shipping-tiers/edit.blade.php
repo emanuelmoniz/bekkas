@@ -10,9 +10,9 @@
               action="{{ route('admin.shipping-tiers.update', $shippingTier) }}"
               class="bg-white shadow rounded p-6 space-y-4"
               x-data="{
-                  selectedCountries: {{ json_encode($shippingTier->countries->pluck('id')->toArray()) }},
+                  selectedCountries: {{ json_encode($shippingTier->countries->pluck('id')->map(fn ($id) => (string) $id)->toArray()) }},
                   availableRegions: [],
-                  selectedRegions: {{ json_encode($shippingTier->regions->pluck('id')->toArray()) }},
+                  selectedRegions: {{ json_encode($shippingTier->regions->pluck('id')->map(fn ($id) => (string) $id)->toArray()) }},
                   async loadRegions() {
                       if (this.selectedCountries.length === 0) {
                           this.availableRegions = [];

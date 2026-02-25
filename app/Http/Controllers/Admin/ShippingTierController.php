@@ -217,10 +217,17 @@ class ShippingTierController extends Controller
             'country_ids.*' => 'exists:countries,id',
         ]);
 
-        $regions = Region::whereIn('country_id', $request->country_ids)
+        $regions = Region::with('translations')
+            ->whereIn('country_id', $request->country_ids)
             ->where('is_active', true)
-            ->orderBy('name')
-            ->get(['id', 'name', 'country_id']);
+            ->get()
+            ->sortBy(fn ($r) => $r->name ?? '')
+            ->values()
+            ->map(fn ($r) => [
+                'id'         => $r->id,
+                'name'       => $r->name,
+                'country_id' => $r->country_id,
+            ]);
 
         return response()->json($regions);
     }
