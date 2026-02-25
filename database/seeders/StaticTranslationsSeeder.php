@@ -58,6 +58,8 @@ class StaticTranslationsSeeder extends Seeder
             'stock.'                     => 'Cart & checkout — stock validation messages',
             'error.'                     => 'Error pages (404, 500)',
             'pagination.'                => 'Shared pagination component (all listing pages)',
+            'gallery.'                   => 'Image gallery component (product & project pages)',
+            'tax.'                       => 'Cart & checkout — tax display',
             'verification-link-sent'     => 'Profile page — email verification status',
         ];
 
@@ -1625,6 +1627,92 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'error.500.message', 'locale' => 'pt-PT', 'value' => 'Lamentamos — ocorreu um erro no nosso lado.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'error.500.message', 'locale' => 'en-UK', 'value' => 'Sorry — something went wrong on our end.', 'created_at' => $now, 'updated_at' => $now],
+
+            // Checkout — payment gateway disabled
+            ['key' => 'checkout.gateways.disabled', 'locale' => 'pt-PT', 'value' => 'O sistema de pagamento está temporariamente indisponível — por favor verifique os detalhes do seu pedido num momento e tente novamente.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'checkout.gateways.disabled', 'locale' => 'en-UK', 'value' => 'Payment system is temporarily unavailable — please check your order details in a moment and try again.', 'created_at' => $now, 'updated_at' => $now],
+
+            // Checkout — address form validation (max-length & format messages)
+            ['key' => 'checkout.validation.title_max', 'locale' => 'pt-PT', 'value' => 'O título da morada é demasiado longo.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'checkout.validation.title_max', 'locale' => 'en-UK', 'value' => 'Address title is too long.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'checkout.validation.nif_max', 'locale' => 'pt-PT', 'value' => 'O NIF/NIT é demasiado longo.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'checkout.validation.nif_max', 'locale' => 'en-UK', 'value' => 'NIF/VAT number is too long.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'checkout.validation.address_line_1_max', 'locale' => 'pt-PT', 'value' => 'A morada é demasiado longa.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'checkout.validation.address_line_1_max', 'locale' => 'en-UK', 'value' => 'Address is too long.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'checkout.validation.address_line_2_invalid', 'locale' => 'pt-PT', 'value' => 'O formato da linha 2 da morada é inválido.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'checkout.validation.address_line_2_invalid', 'locale' => 'en-UK', 'value' => 'Address line 2 format is invalid.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'checkout.validation.address_line_2_max', 'locale' => 'pt-PT', 'value' => 'A linha 2 da morada é demasiado longa.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'checkout.validation.address_line_2_max', 'locale' => 'en-UK', 'value' => 'Address line 2 is too long.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'checkout.validation.postal_code_max', 'locale' => 'pt-PT', 'value' => 'O código postal é demasiado longo.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'checkout.validation.postal_code_max', 'locale' => 'en-UK', 'value' => 'Postal code is too long.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'checkout.validation.city_max', 'locale' => 'pt-PT', 'value' => 'O nome da cidade é demasiado longo.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'checkout.validation.city_max', 'locale' => 'en-UK', 'value' => 'City name is too long.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'checkout.validation.country_invalid', 'locale' => 'pt-PT', 'value' => 'Por favor selecione um país válido.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'checkout.validation.country_invalid', 'locale' => 'en-UK', 'value' => 'Please select a valid country.', 'created_at' => $now, 'updated_at' => $now],
+
+            // Image gallery component — accessibility labels
+            ['key' => 'gallery.prev_image', 'locale' => 'pt-PT', 'value' => 'Imagem anterior', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'gallery.prev_image', 'locale' => 'en-UK', 'value' => 'Previous image', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'gallery.next_image', 'locale' => 'pt-PT', 'value' => 'Imagem seguinte', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'gallery.next_image', 'locale' => 'en-UK', 'value' => 'Next image', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'gallery.view_image', 'locale' => 'pt-PT', 'value' => 'Ver imagem', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'gallery.view_image', 'locale' => 'en-UK', 'value' => 'View image', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'gallery.prev_thumbnails', 'locale' => 'pt-PT', 'value' => 'Miniaturas anteriores', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'gallery.prev_thumbnails', 'locale' => 'en-UK', 'value' => 'Previous thumbnails', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'gallery.next_thumbnails', 'locale' => 'pt-PT', 'value' => 'Miniaturas seguintes', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'gallery.next_thumbnails', 'locale' => 'en-UK', 'value' => 'Next thumbnails', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'gallery.lightbox', 'locale' => 'pt-PT', 'value' => 'Visualizador de imagens', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'gallery.lightbox', 'locale' => 'en-UK', 'value' => 'Image viewer', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'gallery.zoom_in', 'locale' => 'pt-PT', 'value' => 'Ampliar', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'gallery.zoom_in', 'locale' => 'en-UK', 'value' => 'Zoom in', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'gallery.zoom_out', 'locale' => 'pt-PT', 'value' => 'Reduzir', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'gallery.zoom_out', 'locale' => 'en-UK', 'value' => 'Zoom out', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'gallery.zoom_reset', 'locale' => 'pt-PT', 'value' => 'Repor zoom', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'gallery.zoom_reset', 'locale' => 'en-UK', 'value' => 'Reset zoom', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'gallery.close', 'locale' => 'pt-PT', 'value' => 'Fechar', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'gallery.close', 'locale' => 'en-UK', 'value' => 'Close', 'created_at' => $now, 'updated_at' => $now],
+
+            // Orders email — shipping line label
+            ['key' => 'orders.email.shipping_label', 'locale' => 'pt-PT', 'value' => 'Envio', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.email.shipping_label', 'locale' => 'en-UK', 'value' => 'Shipping', 'created_at' => $now, 'updated_at' => $now],
+
+            // Profile — data deletion & social auth
+            ['key' => 'profile.deletion_link_sent', 'locale' => 'pt-PT', 'value' => 'Foi enviado um link de eliminação da conta para o seu endereço de e-mail.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.deletion_link_sent', 'locale' => 'en-UK', 'value' => 'A deletion link has been sent to your email address.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.provider_disabled', 'locale' => 'pt-PT', 'value' => 'O início de sessão social está atualmente desativado.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.provider_disabled', 'locale' => 'en-UK', 'value' => 'Social sign-in is currently disabled.', 'created_at' => $now, 'updated_at' => $now],
+
+            // Store — product card favourites buttons
+            ['key' => 'store.add_to_favorites', 'locale' => 'pt-PT', 'value' => 'Adicionar aos favoritos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.add_to_favorites', 'locale' => 'en-UK', 'value' => 'Add to favourites', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.remove_from_favorites', 'locale' => 'pt-PT', 'value' => 'Remover dos favoritos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.remove_from_favorites', 'locale' => 'en-UK', 'value' => 'Remove from favourites', 'created_at' => $now, 'updated_at' => $now],
+
+            // Tax — cart & checkout note
+            ['key' => 'tax.included_in_price', 'locale' => 'pt-PT', 'value' => 'Todos os impostos estão incluídos no preço', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tax.included_in_price', 'locale' => 'en-UK', 'value' => 'All taxes are included in the price', 'created_at' => $now, 'updated_at' => $now],
+
+            // Tickets — message send failure
+            ['key' => 'tickets.message_failed', 'locale' => 'pt-PT', 'value' => 'Não foi possível guardar a mensagem. Por favor tente novamente.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.message_failed', 'locale' => 'en-UK', 'value' => 'Failed to save message. Please try again.', 'created_at' => $now, 'updated_at' => $now],
         ];
 
         DB::table('static_translations')->upsert(
