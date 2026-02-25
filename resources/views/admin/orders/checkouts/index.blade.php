@@ -5,7 +5,7 @@
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
                 <input name="order_number" placeholder="Order Number"
                        value="{{ request('order_number') }}"
                        class="border rounded px-3 py-2">
