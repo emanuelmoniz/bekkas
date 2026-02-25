@@ -26,7 +26,7 @@
                                 :product="$product"
                                 :is-favorite="in_array($product->id, $favoriteIds ?? [])"
                                 :delivery-date="$deliveryDates[$product->id] ?? null"
-                                :index="$loop->index"
+                                :animated="true"
                             />
                         @empty
                             <p class="text-grey-dark col-span-full text-center">

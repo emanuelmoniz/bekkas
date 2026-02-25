@@ -2,7 +2,7 @@
     'product',
     'isFavorite'     => false,
     'deliveryDate'   => null,
-    'index'          => null,
+    'animated'       => false,
     'scrollerConfig' => [],
 ])
 
@@ -18,10 +18,8 @@
                            favourited. Defaults to `false`.
       - `deliveryDate`   – formatted delivery date string (e.g. "Mar 2026").
                            When null/empty the delivery row is hidden.
-      - `index`          – integer position in the parent grid (0-based).
-                           When provided the `anim-item` class and
-                           `data-index` attribute are added for staggered
-                           entrance animations.
+      - `animated`       – boolean; when true the `anim-item` class is added
+                           so the card participates in the entrance animation.
       - `scrollerConfig` – array of image-scroller config keys to merge on
                            top of the card defaults.  Accepts any key that
                            `<x-image-scroller>` understands:
@@ -36,7 +34,7 @@
           :product="$product"
           :is-favorite="in_array($product->id, $favoriteIds ?? [])"
           :delivery-date="$deliveryDates[$product->id] ?? null"
-          :index="$loop->index"
+          :animated="true"
       />
       ```
 --}}
@@ -54,8 +52,7 @@
         ->map(fn ($p) => asset('storage/' . $p->path));
 @endphp
 
-<div {{ $attributes->merge(['class' => 'bg-white rounded shadow hover:shadow-lg transition relative overflow-hidden isolate' . ($index !== null ? ' anim-item' : '')]) }}
-     @if($index !== null) data-index="{{ $index }}" @endif>
+<div {{ $attributes->merge(['class' => 'bg-white rounded shadow hover:shadow-lg transition relative overflow-hidden isolate' . ($animated ? ' anim-item' : '')]) }}>
 
     {{-- Badges: featured / promo --}}
     <div class="absolute top-2 left-2 flex flex-col items-start gap-2 z-10">

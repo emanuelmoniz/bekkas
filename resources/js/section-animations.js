@@ -1,12 +1,10 @@
 // animation helper for sequential slide-up of any grouped items
-// usage: surround a set of elements with a container having class
-// `animate-sequence` and give each child the class `anim-item`. An
-// optional `data-index` lets you override the automatic ordering.
+// usage: surround a set of elements with a container having the class
+// `animate-sequence` and give each child the class `anim-item`.
 
 document.addEventListener('DOMContentLoaded', () => {
-    const DELAY_STEP = 200; // ms between each item
+    const DELAY_STEP = 200; // ms between each item in a visible batch
 
-    // find all containers that should animate their children in sequence
     const containers = document.querySelectorAll('.animate-sequence');
     if (!containers.length) return;
 
@@ -15,21 +13,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!items.length) return;
 
         const observer = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const el = entry.target;
-                    const dataIdx = parseInt(el.dataset.index, 10);
-                    // default to position in NodeList if no valid data-index
-                    const idx = !isNaN(dataIdx) ? dataIdx : items.indexOf(el);
+            // Sort newly-visible items top-to-bottom so stagger order matches
+            // their visual position, regardless of any data-index attribute.
+            const visible = entries
+                .filter(e => e.isIntersecting)
+                .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
 
-                    setTimeout(() => {
-                        el.classList.add('animate-in');
-                    }, idx * DELAY_STEP);
+            visible.forEach((entry, batchIdx) => {
+                setTimeout(() => {
+                    entry.target.classList.add('animate-in');
+                }, batchIdx * DELAY_STEP);
 
-                    obs.unobserve(el);
-                }
+                obs.unobserve(entry.target);
             });
-        }, { threshold: 0.3 });
+        }, { threshold: 0.05 });
 
         items.forEach(item => observer.observe(item));
     });

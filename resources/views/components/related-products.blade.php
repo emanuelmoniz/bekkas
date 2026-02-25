@@ -30,8 +30,8 @@
       - Navigation prev/next arrows are rendered when items overflow:
           • count > 4 → arrows on desktop  (+ mobile)
           • count > 2 → arrows on mobile only
-      - Container uses `animate-sequence`; each card contributes `anim-item` + `data-index`
-        via the product-card component (index prop).
+      - Container uses `animate-sequence`; each card contributes `anim-item`
+        via the product-card component (animated prop).
 --}}
 
 @php
@@ -164,7 +164,7 @@
                         <x-product-card
                             class="flex-none w-[calc(50%-8px)] sm:w-[calc(25%-12px)] snap-start"
                             :product="$relatedProduct"
-                            :index="$loop->index"
+                            :animated="true"
                         />
                     @endforeach
                 </div>
