@@ -26,7 +26,7 @@
     <div class="py-6 max-w-5xl mx-auto space-y-6">
 
         {{-- TICKET META --}}
-        <div class="bg-light p-6 rounded shadow space-y-2">
+        <div class="bg-white p-6 rounded shadow space-y-2">
             <div>
                 <strong>{{ t('tickets.ticket_id') ?: 'Ticket ID' }}:</strong>
                 <span class="font-mono text-sm">{{ $ticket->ticket_number ?? $ticket->uuid }}</span>
@@ -68,7 +68,7 @@
         </div>
 
         {{-- CLOSE / REOPEN --}}
-        <div class="bg-light p-6 rounded shadow">
+        <div class="bg-white p-6 rounded shadow">
             @if ($ticket->status === 'open')
                 <form method="POST" action="{{ route('tickets.close', $ticket) }}">
                     @csrf
@@ -97,7 +97,7 @@
         {{-- MESSAGES --}}
         <div class="space-y-4">
             @foreach ($ticket->messages as $msg)
-                <div class="bg-light p-4 rounded shadow">
+                <div class="bg-white p-4 rounded shadow">
                     <div class="text-sm text-grey-dark mb-1">
                         {{ $msg->is_system ? t('tickets.system', 'System') : ($msg->user?->name ?? '—') }}
                         · {{ $msg->created_at }}
@@ -128,7 +128,7 @@
             <form method="POST"
                   action="{{ route('tickets.messages.store', $ticket) }}"
                   enctype="multipart/form-data"
-                  class="bg-light p-6 rounded shadow space-y-4">
+                  class="bg-white p-6 rounded shadow space-y-4">
                 @csrf
 
                 <div>

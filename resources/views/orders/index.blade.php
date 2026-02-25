@@ -4,7 +4,7 @@
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-light shadow rounded">
+        <div class="bg-white shadow rounded">
             <table class="min-w-full border">
                 <thead class="bg-grey-light">
                     <tr>

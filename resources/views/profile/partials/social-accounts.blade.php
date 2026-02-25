@@ -1,4 +1,4 @@
-<div class="p-6 bg-light border rounded shadow-sm">
+<div class="p-6 bg-white border rounded shadow-sm">
     <h2 class="text-lg font-medium text-dark">{{ t('profile.social_accounts') ?: 'Social accounts' }}</h2>
     <p class="mt-1 text-sm text-grey-dark">{{ t('profile.social_accounts_desc') ?: 'Link external accounts (Google) to sign in quickly.' }}</p>
 

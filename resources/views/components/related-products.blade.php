@@ -123,7 +123,7 @@
                     x-show="canScrollLeft"
                     x-transition.opacity
                     @click="prev"
-                    class="absolute top-1/2 -translate-y-1/2 z-10 flex items-center justify-center bg-light shadow-md rounded-full text-grey-dark hover:bg-grey-light transition -left-1 w-8 h-8 {{ $showNavDesktop ? 'sm:-left-5 sm:w-9 sm:h-9' : 'sm:hidden' }}"
+                    class="absolute top-1/2 -translate-y-1/2 z-10 flex items-center justify-center bg-white shadow-md rounded-full text-grey-dark hover:bg-grey-light transition -left-1 w-8 h-8 {{ $showNavDesktop ? 'sm:-left-5 sm:w-9 sm:h-9' : 'sm:hidden' }}"
                     aria-label="{{ t('store.scroll_prev') ?: 'Previous' }}"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -138,7 +138,7 @@
                     x-show="canScrollRight"
                     x-transition.opacity
                     @click="next"
-                    class="absolute top-1/2 -translate-y-1/2 z-10 flex items-center justify-center bg-light shadow-md rounded-full text-grey-dark hover:bg-grey-light transition -right-1 w-8 h-8 {{ $showNavDesktop ? 'sm:-right-5 sm:w-9 sm:h-9' : 'sm:hidden' }}"
+                    class="absolute top-1/2 -translate-y-1/2 z-10 flex items-center justify-center bg-white shadow-md rounded-full text-grey-dark hover:bg-grey-light transition -right-1 w-8 h-8 {{ $showNavDesktop ? 'sm:-right-5 sm:w-9 sm:h-9' : 'sm:hidden' }}"
                     aria-label="{{ t('store.scroll_next') ?: 'Next' }}"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

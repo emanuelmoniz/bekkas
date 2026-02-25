@@ -14,7 +14,7 @@
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
     </head>
-    <body class="bg-light text-dark">
+    <body class="bg-white text-dark">
         @include('layouts.navigation')
 
         <!-- BANNER SECTION -->
@@ -41,19 +41,19 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <!-- Feature 1 -->
-                    <div class="bg-light p-8 rounded-lg">
+                    <div class="bg-white p-8 rounded-lg">
                         <h3 class="text-xl font-bold mb-4 text-dark">{{ t('custom.features.modeling') ?: '3D Modeling' }}</h3>
                         <p class="text-grey-dark">{{ t('custom.features.modeling_desc') ?: 'Professional 3D model preparation and optimization for printing.' }}</p>
                     </div>
 
                     <!-- Feature 2 -->
-                    <div class="bg-light p-8 rounded-lg">
+                    <div class="bg-white p-8 rounded-lg">
                         <h3 class="text-xl font-bold mb-4 text-dark">{{ t('custom.features.materials') ?: 'Multiple Materials' }}</h3>
                         <p class="text-grey-dark">{{ t('custom.features.materials_desc') ?: 'Choose from various materials and finishes to suit your project needs.' }}</p>
                     </div>
 
                     <!-- Feature 3 -->
-                    <div class="bg-light p-8 rounded-lg">
+                    <div class="bg-white p-8 rounded-lg">
                         <h3 class="text-xl font-bold mb-4 text-dark">{{ t('custom.features.support') ?: 'Expert Support' }}</h3>
                         <p class="text-grey-dark">{{ t('custom.features.support_desc') ?: 'Dedicated support from design consultation to final delivery.' }}</p>
                     </div>
@@ -63,7 +63,7 @@
 
         <!-- REQUEST SECTION -->
         <section id="request" class="py-16 md:py-24 bg-grey-light px-6">
-            <div class="bg-light rounded-lg pt-8 shadow-lg max-w-3xl mx-auto">
+            <div class="bg-white rounded-lg pt-8 shadow-lg max-w-3xl mx-auto">
                 <h2 class="text-4xl font-bold mb-6 text-center text-dark">{{ t('custom.request.title') ?: 'Request a Quote' }}</h2>
                 <p class="text-center text-lg text-grey-dark mb-10">
                     {{ t('custom.request.cta') ?: 'Want more info or a quote for a specific project? Please send us a ticket and we will follow up.' }}

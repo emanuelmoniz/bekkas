@@ -2,7 +2,7 @@
       action="{{ $mode === 'edit'
             ? route('admin.projects.update', $project)
             : route('admin.projects.store') }}"
-      class="bg-light p-6 rounded shadow space-y-6">
+      class="bg-white p-6 rounded shadow space-y-6">
 
     @csrf
     @if ($mode === 'edit')

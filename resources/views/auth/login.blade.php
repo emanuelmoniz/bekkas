@@ -5,14 +5,14 @@
     <!-- Social login -->
     <div class="mb-4 text-center space-y-2">
         @if(config('services.google.enabled') && \Illuminate\Support\Facades\Route::has('login.provider'))
-            <a href="{{ route('login.provider', 'google') }}" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-light hover:bg-light">
+            <a href="{{ route('login.provider', 'google') }}" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-white hover:bg-white">
                 <img src="/images/google-logo.svg" alt="Google" class="me-2 h-5 w-5">
                 {{ t('auth.continue_with_google') ?: 'Continue with Google' }}
             </a>
         @endif
 
         @if(config('services.microsoft.enabled') && \Illuminate\Support\Facades\Route::has('login.provider'))
-            <a href="{{ route('login.provider', 'microsoft') }}" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-light hover:bg-light">
+            <a href="{{ route('login.provider', 'microsoft') }}" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-white hover:bg-white">
                 <img src="/images/microsoft-logo.svg" alt="Microsoft" class="me-2 h-5 w-5">
                 {{ t('auth.continue_with_microsoft') ?: 'Continue with Microsoft' }}
             </a>

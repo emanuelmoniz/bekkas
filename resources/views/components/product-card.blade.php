@@ -88,7 +88,7 @@
         ->map(fn ($p) => asset('storage/' . $p->path));
 @endphp
 
-<div {{ $attributes->merge(['class' => 'bg-light rounded shadow hover:shadow-lg transition relative overflow-hidden isolate' . ($index !== null ? ' anim-item' : '')]) }}
+<div {{ $attributes->merge(['class' => 'bg-white rounded shadow hover:shadow-lg transition relative overflow-hidden isolate' . ($index !== null ? ' anim-item' : '')]) }}
      @if($index !== null) data-index="{{ $index }}" @endif
      x-data="productCard({{ $product->id }}, {{ $isFavorite ? 'true' : 'false' }})">
 

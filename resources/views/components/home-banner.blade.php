@@ -1,6 +1,6 @@
 @props(['slides'])
 
-<section x-data="carousel({{ json_encode($slides) }})" x-init="init()" class="relative w-full overflow-hidden bg-white py-12 rounded-xl">
+<section x-data="carousel({{ json_encode($slides) }})" x-init="init()" class="relative w-full overflow-hidden bg-light py-12 rounded-xl">
     <!-- outer wrapper adds horizontal padding to let prev/next slides peek inside -->
     <div x-ref="trackContainer" 
          class="relative z-10 w-full flex items-center justify-center overflow-visible px-6"
@@ -31,7 +31,7 @@
     <!-- navigation bars below carousel -->
     <div class="absolute bottom-3 left-0 w-full flex justify-center gap-4">
         <template x-for="(slide,index) in slides" :key="index">
-            <div class="w-12 h-2 bg-gray-200 overflow-hidden rounded-full cursor-pointer" @click="goTo(index)">
+            <div class="w-12 h-2 bg-white overflow-hidden rounded-full cursor-pointer" @click="goTo(index)">
                 <div class="h-full bg-gray-800 transition-width duration-200" :style="current === index ? `width: ${progress*100}%` : 'width:0'" ></div>
             </div>
         </template>

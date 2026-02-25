@@ -7,7 +7,7 @@
 
     <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8">
 
-        <form method="POST" action="{{ route('admin.shipping-config.update') }}" class="bg-light p-6 rounded shadow space-y-6">
+        <form method="POST" action="{{ route('admin.shipping-config.update') }}" class="bg-white p-6 rounded shadow space-y-6">
             @csrf
             @method('PUT')
 

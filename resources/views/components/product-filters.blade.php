@@ -17,7 +17,7 @@
     {{-- Mobile toggle button --}}
     <button type="button"
             @click="open = !open"
-            class="md:hidden w-full flex items-center justify-between bg-light border border-grey-light rounded px-4 py-3 mb-2 font-semibold">
+            class="md:hidden w-full flex items-center justify-between bg-white border border-grey-light rounded px-4 py-3 mb-2 font-semibold">
         <span>{{ t('store.filter.filters') ?: 'Filters' }}</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />

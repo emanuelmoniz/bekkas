@@ -12,7 +12,7 @@
                 @csrf
 
                 {{-- USER INFORMATION --}}
-                <div class="bg-light p-6 rounded shadow mb-6 space-y-4">
+                <div class="bg-white p-6 rounded shadow mb-6 space-y-4">
                     <h3 class="text-lg font-semibold border-b pb-2">User Information</h3>
 
                     {{-- NAME --}}
@@ -89,7 +89,7 @@
                 </div>
 
                 {{-- DEFAULT ADDRESS --}}
-                <div class="bg-light p-6 rounded shadow mb-6 space-y-4">
+                <div class="bg-white p-6 rounded shadow mb-6 space-y-4">
                     <h3 class="text-lg font-semibold border-b pb-2">Default Address</h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

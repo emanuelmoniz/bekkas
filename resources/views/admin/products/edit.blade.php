@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             {{-- PHOTOS --}}
-            <div class="bg-light p-6 rounded shadow mb-6">
+            <div class="bg-white p-6 rounded shadow mb-6">
                 <h3 class="font-semibold mb-4">Photos</h3>
 
                 <form method="POST"

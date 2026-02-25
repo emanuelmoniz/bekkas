@@ -1,4 +1,4 @@
-<form method="GET" class="bg-light border border-grey-light rounded p-4 space-y-5">
+<form method="GET" class="bg-white border border-grey-light rounded p-4 space-y-5">
 
     {{-- ORDER --}}
     <select name="order"

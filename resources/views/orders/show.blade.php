@@ -8,7 +8,7 @@
     <div class="py-6 max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
         {{-- STATUS --}}
-        <div class="bg-light shadow rounded p-4">
+        <div class="bg-white shadow rounded p-4">
 
             @if(! empty($paymentStatusMessage))
                 <div class="my-3 p-3 rounded border border-grey-light border-l-4 bg-accent-primary/10 text-accent-primary text-sm">
@@ -54,7 +54,7 @@
 
                     {{-- If a persisted payment is pending, show payment information and a link to the pay page (change/payment) --}}
                     @if(isset($paymentInfo) && $paymentInfo?->payment_status === 'pending')
-                        <div class="mb-4 bg-light border rounded p-4 text-sm">
+                        <div class="mb-4 bg-white border rounded p-4 text-sm">
                             <h3 class="font-semibold mb-2">{{ t('checkout.pay.payment_info_title') ?: 'Payment information' }}</h3>
                             <div class="space-y-2 text-grey-dark">
                                 @if($paymentInfo->mb_entity)
@@ -94,7 +94,7 @@
         </div>
 
         {{-- ADDRESS --}}
-        <div class="bg-light shadow rounded p-4">
+        <div class="bg-white shadow rounded p-4">
             <h3 class="font-semibold mb-2">{{ t('orders.shipping_address') ?: 'Shipping Address' }}</h3>
             <p>{{ $order->address_title }}</p>
             <p>{{ $order->address_line_1 }}</p>
@@ -107,7 +107,7 @@
         </div>
 
         {{-- PRODUCTS --}}
-        <div class="bg-light shadow rounded p-4">
+        <div class="bg-white shadow rounded p-4">
             <h3 class="font-semibold mb-2">{{ t('orders.products') ?: 'Products' }}</h3>
             <table class="min-w-full border">
                 <thead class="bg-grey-light">
@@ -134,7 +134,7 @@
         </div>
 
         {{-- TOTALS --}}
-        <div class="bg-light shadow rounded p-4 text-right space-y-1">
+        <div class="bg-white shadow rounded p-4 text-right space-y-1">
             <p>{{ t('orders.products_net') ?: 'Products (net)' }}: {{ number_format($order->products_total_net, 2) }} €</p>
 
             @if($order->tax_enabled)

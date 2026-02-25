@@ -12,7 +12,7 @@
                 @csrf
 
                 {{-- TRANSLATIONS --}}
-                <div class="bg-light p-6 rounded shadow mb-6">
+                <div class="bg-white p-6 rounded shadow mb-6">
                     <h3 class="font-semibold mb-4">Translations</h3>
 
                     @foreach (\App\Models\Locale::activeList() as $locale => $label)

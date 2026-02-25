@@ -13,7 +13,7 @@
                 @method('PUT')
 
                 {{-- TRANSLATIONS --}}
-                <div class="bg-light p-6 rounded shadow mb-6">
+                <div class="bg-white p-6 rounded shadow mb-6">
                     <h3 class="font-semibold mb-4">Translations</h3>
 
                     @foreach (\App\Models\Locale::activeList() as $locale => $label)
@@ -34,7 +34,7 @@
                 </div>
 
                 {{-- ACTIONS --}}
-                <div class="bg-light p-6 rounded shadow flex justify-between">
+                <div class="bg-white p-6 rounded shadow flex justify-between">
                     <a href="{{ route('admin.materials.index') }}"
                        class="bg-grey-medium hover:bg-grey-medium text-grey-dark px-6 py-3 rounded">
                         Cancel

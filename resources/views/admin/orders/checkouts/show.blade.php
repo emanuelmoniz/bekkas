@@ -6,14 +6,14 @@
     <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4">
             <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">
-                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-grey-light' : 'hover:bg-light' }}">Orders</a>
-                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payloads</a>
-                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-grey-light' : 'hover:bg-light' }}">Checkouts</a>
-                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payments</a>
+                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-grey-light' : 'hover:bg-white' }}">Orders</a>
+                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-grey-light' : 'hover:bg-white' }}">Payloads</a>
+                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-grey-light' : 'hover:bg-white' }}">Checkouts</a>
+                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-grey-light' : 'hover:bg-white' }}">Payments</a>
             </nav>
         </div>
 
-        <div class="bg-light shadow rounded p-4 space-y-4">
+        <div class="bg-white shadow rounded p-4 space-y-4">
 
 
             <div class="flex justify-between items-start gap-4">
@@ -65,7 +65,7 @@
                             <a href="{{ route('admin.orders.payloads.show', $session->payload) }}" class="inline-flex items-center bg-accent-primary/10 border-accent-primary/30 text-accent-primary border px-4 py-2 rounded text-sm ms-2">View payload</a>
                         @endif
 
-                        <a href="{{ route('admin.orders.payments.index', ['order_number' => optional($session->order)->order_number]) }}" class="inline-flex items-center bg-light border px-4 py-2 rounded text-sm ms-2">View payments</a>
+                        <a href="{{ route('admin.orders.payments.index', ['order_number' => optional($session->order)->order_number]) }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">View payments</a>
 
                         <form method="POST" action="{{ route('admin.orders.checkouts.refresh', $session) }}" class="inline-block ms-2">
                             @csrf
@@ -77,7 +77,7 @@
                             <button class="bg-status-error/10 border-status-error text-status-error border px-4 py-2 rounded text-sm" title="Cancel checkout">Cancel</button>
                         </form>
 
-                        <a href="{{ route('admin.orders.checkouts.index') }}" class="inline-flex items-center bg-light border px-4 py-2 rounded text-sm ms-2">Back</a>
+                        <a href="{{ route('admin.orders.checkouts.index') }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">Back</a>
                     </div>
                 </div>
 
@@ -85,7 +85,7 @@
 
             <div>
                 <h3 class="font-semibold mb-2">Gateway response / message</h3>
-                <pre class="whitespace-pre-wrap bg-light border rounded p-4 text-sm overflow-auto" style="max-height:48vh;overflow-wrap:anywhere;word-break:break-word;">{{ json_encode(json_decode($session->message ?: '{}'), JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) }}</pre>
+                <pre class="whitespace-pre-wrap bg-white border rounded p-4 text-sm overflow-auto" style="max-height:48vh;overflow-wrap:anywhere;word-break:break-word;">{{ json_encode(json_decode($session->message ?: '{}'), JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) }}</pre>
             </div>
         </div>
     </div>

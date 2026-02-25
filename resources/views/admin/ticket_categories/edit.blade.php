@@ -12,7 +12,7 @@
             @csrf
             @method('PUT')
 
-            <div class="bg-light p-6 rounded shadow mb-6">
+            <div class="bg-white p-6 rounded shadow mb-6">
                 <h3 class="font-semibold mb-4">Translations</h3>
 
                 @foreach (['pt-PT' => 'Português', 'en-UK' => 'English'] as $locale => $label)
@@ -30,7 +30,7 @@
                 @endforeach
             </div>
 
-            <div class="bg-light p-6 rounded shadow mb-6">
+            <div class="bg-white p-6 rounded shadow mb-6">
                 <label class="inline-flex items-center">
                     <input type="checkbox" name="active" @checked($category->active)>
                     <span class="ml-2">Active</span>

@@ -57,8 +57,8 @@ export default {
                 'status-error': 'rgb(var(--color-error) / <alpha-value>)',
                 'status-warning': 'rgb(var(--color-warning) / <alpha-value>)',
                 'status-info': 'rgb(var(--color-info) / <alpha-value>)',
-                'light': 'rgb(var(--color-light) / <alpha-value>)',
-                'dark': 'rgb(var(--color-dark) / <alpha-value>)'
+                light: 'rgb(var(--color-light) / <alpha-value>)',
+                dark: 'rgb(var(--color-dark) / <alpha-value>)'
             },
             fontFamily: {
                 // primary interface font – all generic text

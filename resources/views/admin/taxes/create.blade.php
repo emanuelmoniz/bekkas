@@ -8,7 +8,7 @@
     <div class="py-6 max-w-xl mx-auto sm:px-6 lg:px-8">
         <form method="POST"
               action="{{ route('admin.taxes.store') }}"
-              class="bg-light shadow rounded p-6 space-y-4">
+              class="bg-white shadow rounded p-6 space-y-4">
             @csrf
 
             <div>

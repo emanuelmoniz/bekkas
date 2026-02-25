@@ -13,7 +13,7 @@
                 @csrf
                 @method('PATCH')
 
-                <div class="bg-light p-6 rounded shadow space-y-4">
+                <div class="bg-white p-6 rounded shadow space-y-4">
                     <h3 class="text-lg font-semibold border-b pb-2">User Information</h3>
 
                     {{-- NAME --}}
@@ -96,7 +96,7 @@
             </form>
 
             {{-- ADDRESSES --}}
-            <div class="bg-light p-6 rounded shadow mb-6">
+            <div class="bg-white p-6 rounded shadow mb-6">
                 <h3 class="text-lg font-semibold border-b pb-2 mb-4">Addresses</h3>
 
                 @foreach ($user->addresses as $address)
@@ -207,7 +207,7 @@
                 @endforeach
 
                 {{-- ADD NEW ADDRESS --}}
-                <form method="POST" action="{{ route('admin.users.addresses.store', $user) }}" class="border-2 border-dashed border-grey-medium rounded p-4 bg-light">
+                <form method="POST" action="{{ route('admin.users.addresses.store', $user) }}" class="border-2 border-dashed border-grey-medium rounded p-4 bg-white">
                     @csrf
 
                     <h4 class="font-semibold mb-3">Add New Address</h4>

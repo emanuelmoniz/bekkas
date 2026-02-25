@@ -12,7 +12,7 @@
               enctype="multipart/form-data">
             @csrf
 
-            <div class="bg-light p-6 rounded shadow mb-6 space-y-4">
+            <div class="bg-white p-6 rounded shadow mb-6 space-y-4">
 
                 <div>
                     <label class="block font-semibold mb-1">{{ t('tickets.category') ?: 'Category' }} *</label>

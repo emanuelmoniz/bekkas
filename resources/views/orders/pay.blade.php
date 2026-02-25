@@ -47,7 +47,7 @@
         {{-- Payment information removed from the frontend per spec --}}
 
         @if(config('easypay.enabled') && config('easypay.sdk_url', env('EASYPAY_SDK_URL')) && $order->status === 'WAITING_PAYMENT' && ! $order->is_paid)
-          <div id="easypay-inline-root" class="bg-light shadow rounded p-4" aria-live="polite">
+          <div id="easypay-inline-root" class="bg-white shadow rounded p-4" aria-live="polite">
             <div id="easypay-checkout" class="min-h-[120px] flex items-center justify-center text-sm text-grey-dark">
               <span id="easypay-checkout-loading">{{ t('checkout.pay.loading_widget') ?: 'Loading payment widget…' }}</span>
             </div>

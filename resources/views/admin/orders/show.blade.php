@@ -9,17 +9,17 @@
 
         <div class="mb-4">
             <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">
-                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-grey-light' : 'hover:bg-light' }}">Orders</a>
-                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payloads</a>
-                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-grey-light' : 'hover:bg-light' }}">Checkouts</a>
-                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payments</a>
+                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-grey-light' : 'hover:bg-white' }}">Orders</a>
+                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-grey-light' : 'hover:bg-white' }}">Payloads</a>
+                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-grey-light' : 'hover:bg-white' }}">Checkouts</a>
+                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-grey-light' : 'hover:bg-white' }}">Payments</a>
             </nav>
         </div>
 
         {{-- =======================
              ORDER STATUS (READ)
         ======================= --}}
-        <div class="bg-light shadow rounded p-4 grid md:grid-cols-2 gap-4">
+        <div class="bg-white shadow rounded p-4 grid md:grid-cols-2 gap-4">
             <div>
                 <p><strong>Date:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
                 <p><strong>{{ t('orders.status') ?: 'Status' }}:</strong> 
@@ -47,11 +47,11 @@
                 @endif
                 @if($order->easypayPayload)
                     <div class="mt-3">
-                        <a href="{{ route('admin.orders.payloads.show', $order->easypayPayload) }}" class="inline-block bg-light border px-4 py-2 rounded text-sm">Payload</a>
+                        <a href="{{ route('admin.orders.payloads.show', $order->easypayPayload) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm">Payload</a>
 
-                        <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-light border px-4 py-2 rounded text-sm ms-2">Checkouts</a>
+                        <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Checkouts</a>
 
-                        <a href="{{ route('admin.orders.payments.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-light border px-4 py-2 rounded text-sm ms-2">Payments</a>
+                        <a href="{{ route('admin.orders.payments.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Payments</a>
                     </div>
                 @else
                     <div class="mt-3">
@@ -67,7 +67,7 @@
         {{-- =======================
              SHIPPING ADDRESS
         ======================= --}}
-        <div class="bg-light shadow rounded p-4">
+        <div class="bg-white shadow rounded p-4">
             <h3 class="font-semibold mb-2">Shipping Address</h3>
 
             <p>{{ $order->address_title }}</p>
@@ -83,7 +83,7 @@
         {{-- =======================
              PRODUCTS
         ======================= --}}
-        <div class="bg-light shadow rounded p-4">
+        <div class="bg-white shadow rounded p-4">
             <h3 class="font-semibold mb-2">Products</h3>
 
             <table class="min-w-full border">
@@ -115,7 +115,7 @@
         {{-- =======================
              TOTALS
         ======================= --}}
-        <div class="bg-light shadow rounded p-4 text-right space-y-1">
+        <div class="bg-white shadow rounded p-4 text-right space-y-1">
             <p>Products (net): {{ number_format($order->products_total_net, 2) }} €</p>
 
             @if($order->tax_enabled)
@@ -138,7 +138,7 @@
         ======================= --}}
         <form method="POST"
               action="{{ route('admin.orders.update', $order) }}"
-              class="bg-light shadow rounded p-4 space-y-4">
+              class="bg-white shadow rounded p-4 space-y-4">
             @csrf
             @method('PATCH')
 

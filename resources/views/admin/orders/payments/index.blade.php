@@ -6,14 +6,14 @@
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4">
             <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">
-                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-grey-light' : 'hover:bg-light' }}">Orders</a>
-                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payloads</a>
-                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-grey-light' : 'hover:bg-light' }}">Checkouts</a>
-                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payments</a>
+                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-grey-light' : 'hover:bg-white' }}">Orders</a>
+                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-grey-light' : 'hover:bg-white' }}">Payloads</a>
+                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-grey-light' : 'hover:bg-white' }}">Checkouts</a>
+                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-grey-light' : 'hover:bg-white' }}">Payments</a>
             </nav>
         </div>
 
-        <form method="GET" class="mb-6 bg-light p-4 rounded shadow">
+        <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
             <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
                 <input name="order_number" placeholder="Order Number"
                        value="{{ request('order_number') }}"
@@ -54,7 +54,7 @@
             </div>
         </form>
 
-        <div class="bg-light shadow rounded">
+        <div class="bg-white shadow rounded">
             <table class="min-w-full border">
                 <thead class="bg-grey-light">
                     <tr>

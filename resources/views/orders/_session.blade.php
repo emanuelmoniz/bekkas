@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <details class="mt-3 bg-light p-3 rounded">
+    <details class="mt-3 bg-white p-3 rounded">
         <summary class="cursor-pointer">Raw response / message</summary>
         <pre class="mt-2 text-sm">{{ $s->message }}</pre>
     </details>

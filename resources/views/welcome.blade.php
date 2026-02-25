@@ -69,14 +69,14 @@
         <x-home-banner :slides="$slides" />
 
         <!-- SERVICES SECTION -->
-        <section id="services" class="py-16 md:py-24 bg-white px-6 animate-sequence">
+        <section id="services" class="py-16 md:py-24 bg-light px-6 animate-sequence">
             <div class="max-w-7xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                     
                     <!-- Products Card -->
                     @if(config('app.store_enabled'))
                         <a href="{{ route('store.index') }}" class="group anim-item" data-index="0">
-                            <div class="bg-light rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
+                            <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
                                 {{-- scroll images for store products --}}
                                 <x-image-scroller class="w-full aspect-square" :config="[
                                     'interval' => 1500,
@@ -99,7 +99,7 @@
 
                     <!-- Custom Card -->
                     <a href="{{ route('custom.index') }}" class="group anim-item" data-index="1">
-                        <div class="bg-light rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
                             {{-- scroll images for custom projects --}}
                             <x-image-scroller class="w-full aspect-square" :config="[
                                 'interval' => 3000,
@@ -125,7 +125,7 @@
         </section>
 
         <!-- CONTACT SECTION -->
-        <section id="contact" class="py-16 md:py-24 bg-grey-light px-6">
+        <section id="contact" class="py-16 md:py-24 bg-secondary px-6">
             <div class="max-w-7xl mx-auto">
                 <h2 class="text-4xl font-bold mb-12 text-center text-dark">{{ t('home.contact.title') ?: 'Get in Touch' }}</h2>
                 
@@ -166,7 +166,7 @@
                     </div>
 
                     <!-- Contact Form -->
-                    <div class="bg-light rounded-lg shadow-lg p-8 anim-item" data-index="1">
+                    <div class="bg-white rounded-lg shadow-lg p-8 anim-item" data-index="1">
                         @include('partials.contact-form')
                     </div>
 

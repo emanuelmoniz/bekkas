@@ -17,7 +17,7 @@
             </div>
 
             {{-- TABLE --}}
-            <div class="bg-light shadow rounded">
+            <div class="bg-white shadow rounded">
                 <table class="min-w-full border">
                     <thead class="bg-grey-light">
                         <tr>

@@ -11,7 +11,7 @@
             {{-- LEFT --}}
             <form method="POST"
                   action="{{ route('checkout.place') }}"
-                  class="md:col-span-2 bg-light p-6 rounded shadow space-y-4">
+                  class="md:col-span-2 bg-white p-6 rounded shadow space-y-4">
                 @csrf
 
                 {{-- Validation Errors --}}
@@ -112,7 +112,7 @@
                     </div>
                     
                     <template x-for="tier in availableTiers" :key="tier.id">
-                        <label class="block border p-3 rounded cursor-pointer mb-2 hover:bg-light" :class="{ 'border-accent-primary bg-accent-primary/10 text-accent-primary': tier.is_free }">
+                        <label class="block border p-3 rounded cursor-pointer mb-2 hover:bg-white" :class="{ 'border-accent-primary bg-accent-primary/10 text-accent-primary': tier.is_free }">
                             <input type="radio"
                                    name="shipping_tier_id"
                                    :value="tier.id"
@@ -143,7 +143,7 @@
             </form>
 
             {{-- RIGHT --}}
-            <div class="bg-light p-6 rounded shadow space-y-2">
+            <div class="bg-white p-6 rounded shadow space-y-2">
                 <h3 class="font-semibold">{{ t('checkout.summary') ?: 'Summary' }}</h3>
 
                 @foreach ($items as $item)

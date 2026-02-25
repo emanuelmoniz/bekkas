@@ -100,7 +100,7 @@
             </div>
 
             {{-- DETAILS --}}
-            <div class="bg-light p-6 rounded shadow space-y-4 anim-item" x-data="productPage({{ $product->id }}, {{ json_encode($isFavorite ?? false) }}, '{{ route('cart.add', $product) }}')">
+            <div class="bg-white p-6 rounded shadow space-y-4 anim-item" x-data="productPage({{ $product->id }}, {{ json_encode($isFavorite ?? false) }}, '{{ route('cart.add', $product) }}')">
 
                 {{-- BACK LINK --}}
                 <div>

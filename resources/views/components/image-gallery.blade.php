@@ -66,7 +66,7 @@ $imageData = collect($images)
             <button
                 @click.stop="prevImage()"
                 :disabled="!canPrev"
-                class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-light/80 hover:bg-light text-grey-dark shadow transition opacity-0 group-hover:opacity-100 disabled:group-hover:opacity-30 disabled:cursor-not-allowed"
+                class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 hover:bg-white text-grey-dark shadow transition opacity-0 group-hover:opacity-100 disabled:group-hover:opacity-30 disabled:cursor-not-allowed"
                 aria-label="{{ t('gallery.prev_image') ?: 'Previous image' }}"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
@@ -80,7 +80,7 @@ $imageData = collect($images)
             <button
                 @click.stop="nextImage()"
                 :disabled="!canNext"
-                class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-light/80 hover:bg-light text-grey-dark shadow transition opacity-0 group-hover:opacity-100 disabled:group-hover:opacity-30 disabled:cursor-not-allowed"
+                class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 hover:bg-white text-grey-dark shadow transition opacity-0 group-hover:opacity-100 disabled:group-hover:opacity-30 disabled:cursor-not-allowed"
                 aria-label="{{ t('gallery.next_image') ?: 'Next image' }}"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">

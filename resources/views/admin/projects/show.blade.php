@@ -8,7 +8,7 @@
     <div class="py-6">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
 
-            <div class="bg-light p-6 rounded shadow mb-6 space-y-4">
+            <div class="bg-white p-6 rounded shadow mb-6 space-y-4">
                 <h3 class="text-lg font-semibold border-b pb-2">Basic Information</h3>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -54,7 +54,7 @@
             </div>
 
             {{-- PHOTOS --}}
-            <div class="bg-light p-6 rounded shadow mb-6">
+            <div class="bg-white p-6 rounded shadow mb-6">
                 <h3 class="text-lg font-semibold border-b pb-2 mb-4">Photos</h3>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     @foreach($project->photos as $photo)

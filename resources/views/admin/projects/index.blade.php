@@ -17,7 +17,7 @@
             </div>
 
             {{-- FILTERS --}}
-            <form method="GET" class="mb-6 bg-light p-4 rounded shadow">
+            <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 
                     {{-- NAME --}}
@@ -47,7 +47,7 @@
                             {{ optional($materials->firstWhere('id', request('material_id'))?->translation())->name ?? 'Material' }}
                         </button>
                         <div x-show="open" @click.outside="open=false"
-                             class="absolute z-10 w-full bg-light border rounded shadow mt-1">
+                             class="absolute z-10 w-full bg-white border rounded shadow mt-1">
                             <input x-model="search" class="w-full px-3 py-2 border-b" placeholder="Search...">
                             @foreach($materials as $material)
                                 @php $name = optional($material->translation())->name; @endphp
@@ -88,7 +88,7 @@
             </form>
 
             {{-- TABLE --}}
-            <div class="bg-light shadow rounded">
+            <div class="bg-white shadow rounded">
                 <table class="min-w-full border">
                     <thead class="bg-grey-light">
                         <tr>

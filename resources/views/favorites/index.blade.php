@@ -16,7 +16,7 @@
                     {{-- PRODUCTS --}}
                     <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
                         @foreach ($products as $product)
-                            <div class="bg-light rounded shadow p-4 hover:shadow-lg transition relative isolate">
+                            <div class="bg-white rounded shadow p-4 hover:shadow-lg transition relative isolate">
                                 <a href="{{ route('store.show', $product) }}">
                                     <img src="{{ asset('storage/' . optional($product->primaryPhoto)->path) }}"
                                          class="h-40 w-full object-cover rounded mb-3">
@@ -45,12 +45,12 @@
 
                     {{ $products->links() }}
                 @else
-                    <div class="bg-light p-6 rounded shadow text-center text-grey-dark">
+                    <div class="bg-white p-6 rounded shadow text-center text-grey-dark">
                         {{ t('favorites.no_results') ?: 'No favorites match your filter criteria.' }}
                     </div>
                 @endif
             @else
-                <div class="bg-light p-6 rounded shadow text-center text-grey-dark">
+                <div class="bg-white p-6 rounded shadow text-center text-grey-dark">
                     {{ t('favorites.empty') ?: 'You have no favorite products yet.' }}
                     
                     @if(config('app.store_enabled'))

@@ -2,7 +2,7 @@
       action="{{ $mode === 'edit'
             ? route('admin.products.update', $product)
             : route('admin.products.store') }}"
-      class="bg-light p-6 rounded shadow space-y-6">
+      class="bg-white p-6 rounded shadow space-y-6">
 
     @csrf
 
@@ -158,7 +158,7 @@
 </div>
 
 {{-- OPTION TYPES (for products with choices like size/color) --}}
-<div class="bg-light p-6 rounded shadow mb-6">
+<div class="bg-white p-6 rounded shadow mb-6">
     <h3 class="font-semibold mb-4">Option Types</h3>
     <div id="option-types-container" class="space-y-4">
         @php

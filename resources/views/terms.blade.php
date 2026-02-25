@@ -14,7 +14,7 @@
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
     </head>
-    <body class="bg-light text-dark">
+    <body class="bg-white text-dark">
         @include('layouts.navigation')
 
         <section class="py-16 md:py-24 px-6">

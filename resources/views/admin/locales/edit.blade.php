@@ -4,7 +4,7 @@
     </x-slot>
 
     <div class="py-6 max-w-xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-light shadow rounded p-6">
+        <div class="bg-white shadow rounded p-6">
             <form method="POST" action="{{ route('admin.locales.update', $locale) }}" class="space-y-5">
                 @csrf
                 @method('PUT')

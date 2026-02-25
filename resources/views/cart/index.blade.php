@@ -9,7 +9,7 @@
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             @if (empty($items))
-                <div class="bg-light p-6 rounded shadow text-center text-grey-dark">
+                <div class="bg-white p-6 rounded shadow text-center text-grey-dark">
                     {{ t('cart.empty') ?: 'Your cart is empty.' }}
                     
                     @if(config('app.store_enabled'))
@@ -22,7 +22,7 @@
                     @endif
                 </div>
             @else
-                <div class="bg-light rounded shadow divide-y">
+                <div class="bg-white rounded shadow divide-y">
                     @foreach ($items as $item)
                         <div class="p-4 flex justify-between items-center">
                             <div>
@@ -65,7 +65,7 @@
                     @endforeach
                 </div>
 
-                <div class="bg-light p-6 rounded shadow space-y-2">
+                <div class="bg-white p-6 rounded shadow space-y-2">
                     <div class="flex justify-between">
                         <span>{{ t('cart.summary.products') ?: 'Products' }}</span>
                         <span>€{{ number_format($productsGross, 2) }}</span>

@@ -17,7 +17,7 @@
             </div>
 
             {{-- FILTERS --}}
-            <form method="GET" class="mb-6 bg-light p-4 rounded shadow">
+            <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 
                     {{-- NAME --}}
@@ -62,7 +62,7 @@
             </form>
 
             {{-- TABLE --}}
-            <div class="bg-light shadow rounded">
+            <div class="bg-white shadow rounded">
                 <table class="min-w-full border">
                     <thead class="bg-grey-light">
                         <tr>

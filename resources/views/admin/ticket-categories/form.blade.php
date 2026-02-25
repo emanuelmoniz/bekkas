@@ -1,7 +1,7 @@
 <div class="py-6 max-w-xl mx-auto">
     <form method="POST"
           action="{{ $action }}"
-          class="bg-light p-6 rounded shadow space-y-4">
+          class="bg-white p-6 rounded shadow space-y-4">
         @csrf
         @if ($method !== 'POST')
             @method($method)

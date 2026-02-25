@@ -6,7 +6,7 @@
     <div class="py-6 max-w-3xl mx-auto sm:px-6 lg:px-8">
         <form method="POST"
               action="{{ route('admin.static-translations.store') }}"
-              class="bg-light p-6 rounded shadow space-y-5">
+              class="bg-white p-6 rounded shadow space-y-5">
             @csrf
 
             @if ($errors->any())

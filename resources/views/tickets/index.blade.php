@@ -16,7 +16,7 @@
         </div>
 
         {{-- Filters --}}
-        <form method="GET" class="mb-6 bg-light p-4 rounded shadow">
+        <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
             <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
 
                 {{-- Ticket ID --}}
@@ -53,7 +53,7 @@
                     <button
                         type="button"
                         @click="open = !open"
-                        class="w-full border rounded px-3 py-2 text-left bg-light"
+                        class="w-full border rounded px-3 py-2 text-left bg-white"
                     >
                         @if(request('category_id'))
                             {{
@@ -70,7 +70,7 @@
                     <div
                         x-show="open"
                         @click.outside="open = false"
-                        class="absolute z-10 mt-1 w-full bg-light border rounded shadow"
+                        class="absolute z-10 mt-1 w-full bg-white border rounded shadow"
                     >
                         <input
                             type="text"
@@ -114,7 +114,7 @@
         </form>
 
         {{-- Tickets table (UNCHANGED) --}}
-        <div class="bg-light shadow rounded">
+        <div class="bg-white shadow rounded">
             <table class="min-w-full border">
                 <thead class="bg-grey-light">
                     <tr>

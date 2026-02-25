@@ -8,7 +8,7 @@
     <div class="py-6 max-w-3xl mx-auto sm:px-6 lg:px-8">
         <form method="POST"
               action="{{ route('admin.shipping-tiers.store') }}"
-              class="bg-light shadow rounded p-6 space-y-4"
+              class="bg-white shadow rounded p-6 space-y-4"
               x-data="{
                   selectedCountries: [],
                   availableRegions: [],

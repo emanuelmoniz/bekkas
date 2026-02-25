@@ -6,14 +6,14 @@
     <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4">
             <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">
-                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-grey-light' : 'hover:bg-light' }}">Orders</a>
-                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payloads</a>
-                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-grey-light' : 'hover:bg-light' }}">Checkouts</a>
-                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-grey-light' : 'hover:bg-light' }}">Payments</a>
+                <a href="{{ route('admin.orders.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders') ? 'bg-grey-light' : 'hover:bg-white' }}">Orders</a>
+                <a href="{{ route('admin.orders.payloads.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payloads*') ? 'bg-grey-light' : 'hover:bg-white' }}">Payloads</a>
+                <a href="{{ route('admin.orders.checkouts.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/checkouts*') ? 'bg-grey-light' : 'hover:bg-white' }}">Checkouts</a>
+                <a href="{{ route('admin.orders.payments.index') }}" class="px-3 py-2 rounded {{ request()->is('admin/orders/payments*') ? 'bg-grey-light' : 'hover:bg-white' }}">Payments</a>
             </nav>
         </div>
 
-        <div class="bg-light shadow rounded p-4 space-y-4">
+        <div class="bg-white shadow rounded p-4 space-y-4">
             <div class="grid md:grid-cols-2 gap-4 items-start">
                 <div>
                     <p><strong>Payment ID:</strong> {{ $payment->payment_id ?? $payment->id }}</p>
@@ -55,7 +55,7 @@
                                 $payload = $payment->checkoutSession?->payload ?? $payment->order?->easypayPayload ?? null;
                             @endphp
                             @if($payload)
-                                <a href="{{ route('admin.orders.payloads.show', $payload) }}" class="inline-flex items-center bg-light border px-4 py-2 rounded text-sm ms-2">Payload</a>
+                                <a href="{{ route('admin.orders.payloads.show', $payload) }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">Payload</a>
                             @endif
                         @endif
 
@@ -72,7 +72,7 @@
                         @if(strtolower((string) $payment->payment_status) === 'paid' && optional($payment->order)->is_paid)
                             <form method="POST" action="{{ route('admin.orders.payments.refund', $payment) }}" onsubmit="return confirm('Confirm refund request?');" class="inline-block ms-2">
                                 @csrf
-                                <button type="submit" class="inline-flex items-center bg-light border px-4 py-2 rounded text-sm text-grey-dark hover:bg-light">Refund</button>
+                                <button type="submit" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm text-grey-dark hover:bg-white">Refund</button>
                             </form>
 
                             @if(! empty($payment->refund_id))
@@ -83,14 +83,14 @@
                             @endif
                         @endif
 
-                        <a href="{{ route('admin.orders.payments.index') }}" class="inline-flex items-center bg-light border px-4 py-2 rounded text-sm ms-2">Back</a>
+                        <a href="{{ route('admin.orders.payments.index') }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">Back</a>
                     </div>
                 </div>
             </div>
 
             <div>
                 <h3 class="font-semibold mb-2">Gateway raw response</h3>
-                <pre class="whitespace-pre-wrap bg-light border rounded p-4 text-sm overflow-auto" style="max-height:48vh;overflow-wrap:anywhere;word-break:break-word;">{{ json_encode($payment->raw_response ?: [], JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) }}</pre>
+                <pre class="whitespace-pre-wrap bg-white border rounded p-4 text-sm overflow-auto" style="max-height:48vh;overflow-wrap:anywhere;word-break:break-word;">{{ json_encode($payment->raw_response ?: [], JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) }}</pre>
             </div>
         </div>
     </div>

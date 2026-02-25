@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-6 max-w-3xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-light shadow rounded p-6 space-y-4">
+        <div class="bg-white shadow rounded p-6 space-y-4">
             <div>
                 <strong class="text-grey-dark">Country:</strong>
                 <p class="text-dark">

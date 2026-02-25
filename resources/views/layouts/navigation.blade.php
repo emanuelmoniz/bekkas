@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="sticky top-0 bg-light border-b border-grey-light z-50">
+<nav x-data="{ open: false }" class="sticky top-0 bg-white border-b border-grey-light z-50">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -29,7 +29,7 @@
                                  x-transition:leave="transition ease-in duration-150"
                                  x-transition:leave-start="opacity-100 scale-100"
                                  x-transition:leave-end="opacity-0 scale-95"
-                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-light ring-1 ring-black ring-opacity-5 z-50"
+                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
                                     <a href="{{ route('admin.products.create') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Create Product</a>
@@ -51,7 +51,7 @@
                                  x-transition:leave="transition ease-in duration-150"
                                  x-transition:leave-start="opacity-100 scale-100"
                                  x-transition:leave-end="opacity-0 scale-95"
-                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-light ring-1 ring-black ring-opacity-5 z-50"
+                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
                                     <a href="{{ route('admin.projects.create') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Create Project</a>
@@ -71,7 +71,7 @@
                                  x-transition:leave="transition ease-in duration-150"
                                  x-transition:leave-start="opacity-100 scale-100"
                                  x-transition:leave-end="opacity-0 scale-95"
-                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-light ring-1 ring-black ring-opacity-5 z-50"
+                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
                                     <a href="{{ route('admin.tickets.create') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Create Ticket</a>
@@ -92,7 +92,7 @@
                                  x-transition:leave="transition ease-in duration-150"
                                  x-transition:leave-start="opacity-100 scale-100"
                                  x-transition:leave-end="opacity-0 scale-95"
-                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-light ring-1 ring-black ring-opacity-5 z-50"
+                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
                                     <a href="{{ route('admin.order-statuses.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Order Statuses</a>
@@ -112,7 +112,7 @@
                                  x-transition:leave="transition ease-in duration-150"
                                  x-transition:leave-start="opacity-100 scale-100"
                                  x-transition:leave-end="opacity-0 scale-95"
-                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-light ring-1 ring-black ring-opacity-5 z-50"
+                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
                                     <a href="{{ route('admin.users.create') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Create User</a>
@@ -132,7 +132,7 @@
                                  x-transition:leave="transition ease-in duration-150"
                                  x-transition:leave-start="opacity-100 scale-100"
                                  x-transition:leave-end="opacity-0 scale-95"
-                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-light ring-1 ring-black ring-opacity-5 z-50"
+                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
                                     <a href="{{ route('admin.shipping-config.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Shipping</a>
@@ -162,7 +162,7 @@
                                      x-transition:leave="transition ease-in duration-150"
                                      x-transition:leave-start="opacity-100 scale-100"
                                      x-transition:leave-end="opacity-0 scale-95"
-                                     class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-light ring-1 ring-black ring-opacity-5 z-50"
+                                     class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                      style="display: none;">
                                     <div class="py-1">
                                         <a href="{{ route('store.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">
@@ -245,7 +245,7 @@
                     <div class="h-full flex items-center">
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
-                                <button class="h-full inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-grey-medium bg-light hover:text-grey-dark focus:outline-none transition">
+                                <button class="h-full inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-grey-medium bg-white hover:text-grey-dark focus:outline-none transition">
                                     <div>{{ Auth::user()->name }}</div>
                                     <div class="ms-1">
                                         <svg class="fill-current h-4 w-4" viewBox="0 0 20 20">
