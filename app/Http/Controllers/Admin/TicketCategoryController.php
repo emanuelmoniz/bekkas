@@ -38,10 +38,16 @@ class TicketCategoryController extends Controller
     {
         $this->ensureAdmin();
 
-        $request->validate([
-            'name.pt-PT' => 'required|string|max:255',
-            'name.en-UK' => 'required|string|max:255',
+        \Illuminate\Support\Facades\Log::info('TicketCategory store attempt', [
+            'input' => $request->all(),
+            'name_array' => $request->input('name'),
         ]);
+
+        $rules = [];
+        foreach (Locale::activeCodes() as $locale) {
+            $rules["name.$locale"] = 'required|string|max:255';
+        }
+        $request->validate($rules);
 
         $category = TicketCategory::create([
             'active' => true,
@@ -71,11 +77,11 @@ class TicketCategoryController extends Controller
     {
         $this->ensureAdmin();
 
-        $request->validate([
-            'name.pt-PT' => 'required|string|max:255',
-            'name.en-UK' => 'required|string|max:255',
-            'active' => 'nullable|boolean',
-        ]);
+        $rules = ['active' => 'nullable|boolean'];
+        foreach (Locale::activeCodes() as $locale) {
+            $rules["name.$locale"] = 'required|string|max:255';
+        }
+        $request->validate($rules);
 
         $ticketCategory->update([
             'active' => (bool) $request->active,

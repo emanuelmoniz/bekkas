@@ -12,8 +12,11 @@
             <label class="block font-semibold mb-1">Name ({{ $label }}) *</label>
             <input type="text"
                    name="name[{{ $locale }}]"
-                   class="w-full border rounded px-3 py-2"
-                   value="{{ $category?->translations->where('locale', $locale)->first()?->name }}">
+                   class="w-full border rounded px-3 py-2{{ $errors->has('name.' . $locale) ? ' border-red-500' : '' }}"
+                   value="{{ old('name.' . $locale) ?? $category?->translations->where('locale', $locale)->first()?->name }}">
+            @if ($errors->has('name.' . $locale))
+                <p class="text-red-600 text-sm mt-1">{{ $errors->first('name.' . $locale) }}</p>
+            @endif
         </div>
         @endforeach
 
