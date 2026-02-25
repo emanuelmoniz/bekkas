@@ -36,7 +36,7 @@
                     @endforeach
                 </select>
 
-                <select name="is_paid" class="border rounded px-3 py-2">
+                <select name="is_paid" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                     <option value="">Paid (all)</option>
                     <option value="1" @selected(request('is_paid') === '1')>Yes</option>
                     <option value="0" @selected(request('is_paid') === '0')>No</option>

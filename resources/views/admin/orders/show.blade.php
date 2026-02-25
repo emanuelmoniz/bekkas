@@ -94,7 +94,7 @@
                 <div class="mt-4">
                     <form method="POST" action="{{ route('admin.orders.payloads.store', $order) }}" onsubmit="return confirm('Create Easypay payload for this order?');" class="inline-block">
                         @csrf
-                        <button class="bg-status-success border-green-200 text-status-success border px-4 py-2 rounded text-sm">Create payload</button>
+                        <button class="bg-status-success/10 border-green-200 text-status-success border px-4 py-2 rounded text-sm">Create payload</button>
                     </form>
                 </div>
             @endif

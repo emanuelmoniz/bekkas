@@ -60,14 +60,14 @@
                     </div>
 
                     {{-- ACTIVE FLAG --}}
-                    <select name="is_active" class="border rounded px-3 py-2">
+                    <select name="is_active" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                         <option value="">Active</option>
                         <option value="1" @selected(request('is_active')==='1')>Yes</option>
                         <option value="0" @selected(request('is_active')==='0')>No</option>
                     </select>
 
                     {{-- FEATURED FLAG --}}
-                    <select name="is_featured" class="border rounded px-3 py-2">
+                    <select name="is_featured" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                         <option value="">Featured</option>
                         <option value="1" @selected(request('is_featured')==='1')>Yes</option>
                         <option value="0" @selected(request('is_featured')==='0')>No</option>
