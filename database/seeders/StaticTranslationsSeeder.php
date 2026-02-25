@@ -10,6 +10,69 @@ class StaticTranslationsSeeder extends Seeder
     public function run(): void
     {
         $now = now();
+
+        // Context descriptions: keyed by prefix (longer/more-specific prefixes first).
+        // Used to set the context column on INSERT only — admin edits are never overwritten.
+        $contextMap = [
+            'checkout.pay.'              => 'Checkout — payment widget page (Easypay SDK)',
+            'checkout.validation.'       => 'Checkout — address form validation messages',
+            'checkout.'                  => 'Checkout page — address & shipping selection',
+            'orders.email.'              => 'Order email notifications',
+            'orders.'                    => 'My Orders page & order detail page',
+            'store.badge.'               => 'Store — product card badges',
+            'store.filter.'              => 'Store — filter panel',
+            'store.order.'               => 'Store — sort options',
+            'store.'                     => 'Store — product listing & detail page',
+            'favorites.filter.'          => 'My Favorites page — filter panel',
+            'favorites.'                 => 'My Favorites page',
+            'nav.'                       => 'Global navigation menu (all pages)',
+            'page.'                      => 'Page title tags',
+            'cart.'                      => 'Shopping cart page',
+            'shipping_config.'           => 'Admin — shipping configuration page',
+            'profile.'                   => 'User profile page — settings, addresses, password',
+            'auth.'                      => 'Auth pages — login, register, password reset, email verification',
+            'home.banner.'               => 'Home page — hero banner',
+            'home.services.'             => 'Home page — services section',
+            'home.contact.'              => 'Home page — contact preview section',
+            'home.'                      => 'Home page',
+            'footer.'                    => 'Global footer (all pages)',
+            'custom.banner.'             => 'Custom services page — hero banner',
+            'custom.features.'           => 'Custom services page — features section',
+            'custom.request.'            => 'Custom services page — quote request section',
+            'custom.'                    => 'Custom services page',
+            'tickets.email.'             => 'Ticket email notifications',
+            'tickets.'                   => 'Support tickets — create, list, detail pages',
+            'about.banner.'              => 'About page — hero banner',
+            'about.mission.'             => 'About page — mission section',
+            'about.values.'              => 'About page — values section',
+            'about.story.'               => 'About page — story section',
+            'about.cta.'                 => 'About page — call to action section',
+            'about.'                     => 'About page',
+            'legal.terms.'               => 'Terms of Service page',
+            'legal.privacy.'             => 'Privacy Policy page',
+            'legal.'                     => 'Legal pages',
+            'contact.email.'             => 'Contact form email notifications',
+            'contact.'                   => 'Contact page & contact form',
+            'validation.password.'       => 'Shared validation — password rules',
+            'validation.'                => 'Shared form validation messages',
+            'stock.'                     => 'Cart & checkout — stock validation messages',
+            'error.'                     => 'Error pages (404, 500)',
+            'pagination.'                => 'Shared pagination component (all listing pages)',
+            'verification-link-sent'     => 'Profile page — email verification status',
+        ];
+
+        // Sort by prefix length descending so the most-specific prefix wins.
+        uksort($contextMap, fn($a, $b) => strlen($b) <=> strlen($a));
+
+        $getContext = function (string $key) use ($contextMap): string {
+            foreach ($contextMap as $prefix => $context) {
+                if (str_starts_with($key, $prefix)) {
+                    return $context;
+                }
+            }
+            return '';
+        };
+
         $rows = [
             // Profile language labels
             ['key' => 'profile.language', 'locale' => 'pt-PT', 'value' => 'Idioma', 'created_at' => $now, 'updated_at' => $now],
@@ -1564,7 +1627,27 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'error.500.message', 'locale' => 'en-UK', 'value' => 'Sorry — something went wrong on our end.', 'created_at' => $now, 'updated_at' => $now],
         ];
 
-        DB::table('static_translations')->upsert($rows, ['key', 'locale']);
+        DB::table('static_translations')->upsert(
+            // Add context to each row (used on INSERT only — see update columns below)
+            array_map(fn($r) => $r + ['context' => $getContext($r['key'])], $rows),
+            // Unique key for conflict detection
+            ['key', 'locale'],
+            // On conflict only update value & timestamps; context edits made via admin are preserved
+            ['value', 'updated_at']
+        );
+
+        // Backfill context for rows that don't have one yet (initial migration or new keys).
+        // Rows that already have a context (set by admin or a previous seed) are untouched.
+        $uniqueKeys = array_unique(array_column($rows, 'key'));
+        foreach ($uniqueKeys as $key) {
+            $context = $getContext($key);
+            if ($context !== '') {
+                DB::table('static_translations')
+                    ->where('key', $key)
+                    ->whereNull('context')
+                    ->update(['context' => $context]);
+            }
+        }
 
         // Ensure any cached static translations are refreshed immediately
         \Illuminate\Support\Facades\Cache::forget('static_translations_all');
