@@ -21,7 +21,8 @@ class TermsPageTest extends TestCase
         $response = $this->get('/terms');
 
         $response->assertStatus(200);
-        $response->assertSee('Service Terms | Termos de Serviço');
+        // After seeding, t() returns the locale-specific value (not the bilingual fallback)
+        $response->assertSee('Termos de Serviço');
         $response->assertSee('Política de Devoluções e Reembolsos');
         $response->assertSee('Política de Envios');
 
@@ -43,9 +44,10 @@ class TermsPageTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200);
-        $response->assertSee('Service Terms | Termos de Serviço');
+        // footer.terms en-UK value is 'Service Terms' (locale-specific after seeding)
+        $response->assertSee('Service Terms');
         $response->assertSee('Return and Refunds Policy');
         $response->assertSee('Shipping Policy');
-        $response->assertSee('Privacy Policy | Política de Privacidade');
+        $response->assertSee('Privacy Policy');
     }
 }

@@ -27,7 +27,7 @@ class ContactEmailLocaleTest extends TestCase
 
         $resp = $this->post(route('contact.store'), [
             'name' => 'Rui',
-            'email' => 'rui@example.test',
+            'email' => 'rui@gmail.com',
             'message' => 'Olá',
         ]);
 
@@ -42,7 +42,7 @@ class ContactEmailLocaleTest extends TestCase
     {
         Mail::fake();
 
-        $user = User::factory()->create(['language' => 'en-UK']);
+        $user = User::factory()->create(['language' => 'en-UK', 'email' => 'testuser@gmail.com']);
         $this->actingAs($user);
 
         $resp = $this->post(route('contact.store'), [

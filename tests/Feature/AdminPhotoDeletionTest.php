@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class AdminPhotoDeletionTest extends TestCase
@@ -27,7 +28,7 @@ class AdminPhotoDeletionTest extends TestCase
         return $admin;
     }
 
-    /** @test */
+    #[Test]
     public function deleting_a_product_photo_removes_thumbnail_and_original()
     {
         Storage::fake('public');
@@ -50,7 +51,7 @@ class AdminPhotoDeletionTest extends TestCase
         Storage::disk('public')->assertMissing($photo->original_path);
     }
 
-    /** @test */
+    #[Test]
     public function deleting_a_project_photo_removes_thumbnail_and_original()
     {
         Storage::fake('public');
@@ -72,7 +73,7 @@ class AdminPhotoDeletionTest extends TestCase
         Storage::disk('public')->assertMissing($photo->original_path);
     }
 
-    /** @test */
+    #[Test]
     public function deleting_a_product_removes_all_associated_images()
     {
         Storage::fake('public');
@@ -102,7 +103,7 @@ class AdminPhotoDeletionTest extends TestCase
         Storage::disk('public')->assertMissing($photo2->original_path);
     }
 
-    /** @test */
+    #[Test]
     public function deleting_a_project_removes_all_associated_images()
     {
         Storage::fake('public');

@@ -29,7 +29,7 @@ class ContactTest extends TestCase
 
         $response = $this->post(route('contact.store'), [
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'test@gmail.com',
             'message' => 'Hello',
             // reCAPTCHA skipped in tests when secret not set
         ]);
@@ -52,7 +52,7 @@ class ContactTest extends TestCase
 
         $response = $this->post(route('contact.store'), [
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'test@gmail.com',
             'message' => 'Hello',
         ]);
 

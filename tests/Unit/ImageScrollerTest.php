@@ -78,10 +78,16 @@ class ImageScrollerTest extends TestCase
 
     public function test_per_item_one_multiple_items_sorted_by_photo_date()
     {
+        // Use time-travel so Eloquent's auto-timestamping sets reliable created_at
+        // (created_at is not in ProductPhoto's $fillable, so explicit values are dropped)
+        $this->travel(-2)->days();
         $p1 = Product::factory()->create();
-        $p1->photos()->create(['path' => 'p1.jpg', 'created_at' => now()->subDays(2), 'is_primary' => true]);
+        $p1->photos()->create(['path' => 'p1.jpg', 'is_primary' => true]);
+
+        $this->travel(1)->days();
         $p2 = Product::factory()->create();
-        $p2->photos()->create(['path' => 'p2.jpg', 'created_at' => now()->subDay(), 'is_primary' => true]);
+        $p2->photos()->create(['path' => 'p2.jpg', 'is_primary' => true]);
+        $this->travelBack();
 
         $images = image_scroller_images(['products' => ['per_item' => 1]]);
         // although both are primary we expect the newer photo (p2) to appear first

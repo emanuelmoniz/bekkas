@@ -7,13 +7,23 @@ use App\Models\Role;
 use App\Models\Tax;
 use App\Models\ProductOptionType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class AdminProductOptionsTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Seed locales so Locale::activeList() returns pt-PT/en-UK
+        // (required for product/option translations to be saved)
+        $this->seed(\Database\Seeders\LocaleSeeder::class);
+    }
+
+    #[Test]
     public function admin_can_create_product_with_option_types_and_options()
     {
         // prepare tax and user
@@ -111,7 +121,7 @@ class AdminProductOptionsTest extends TestCase
         $this->assertEquals('Pequeno', $option->translation('pt-PT')->name);
     }
 
-    /** @test */
+    #[Test]
     public function admin_can_create_option_without_stock_and_it_defaults_to_zero()
     {
         $tax = Tax::factory()->create(['percentage' => 23]);
@@ -179,7 +189,7 @@ class AdminProductOptionsTest extends TestCase
         $this->assertEquals('Grande', $options[1]->translation('pt-PT')->name);
     }
 
-    /** @test */
+    #[Test]
     public function admin_can_update_product_and_add_option_without_stock()
     {
         $tax = Tax::factory()->create(['percentage' => 23]);
@@ -228,7 +238,7 @@ class AdminProductOptionsTest extends TestCase
         $this->assertEquals('Novo', $newOpt->translation('pt-PT')->name);
     }
 
-    /** @test */
+    #[Test]
     public function admin_sees_errors_when_required_fields_missing()
     {
         $tax = Tax::factory()->create(['percentage' => 23]);

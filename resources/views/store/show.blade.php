@@ -28,30 +28,8 @@
 
     <script>
         // Alpine component for the product page: handles favorites, options and cart additions
-        function productPage(productId, initialFavorite, addUrl, optionTypes, basePrice, basePromoPrice, isPromo) {
+        function productPage(addUrl, optionTypes, basePrice, basePromoPrice, isPromo) {
             return {
-                // favorite toggle
-                isFavorite: initialFavorite,
-                async toggle() {
-                    try {
-                        const response = await fetch(`/favorites/toggle/${productId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                                'Accept': 'application/json'
-                            }
-                        });
-                        const data = await response.json();
-                        this.isFavorite = data.isFavorite;
-                        if (window.Alpine && window.Alpine.store) {
-                            window.Alpine.store('favorites').count = data.favoritesCount;
-                        }
-                    } catch (error) {
-                        console.error('Error toggling favorite:', error);
-                    }
-                },
-
                 // option types data (array of {id, name, have_stock, have_price, options[]})
                 optionTypes: optionTypes,
                 // expose isPromo so Alpine template expressions (x-show, x-text) can reference it
@@ -211,8 +189,6 @@
 
             {{-- DETAILS --}}
             <div class="bg-white p-6 rounded shadow space-y-4 anim-item" x-data="productPage(
-                {{ $product->id }},
-                {{ json_encode($isFavorite ?? false) }},
                 '{{ route('cart.add', $product) }}',
                 {{ json_encode($optionTypesData) }},
                 {{ (float) $product->price }},
@@ -241,11 +217,12 @@
                             @endif
                         </span>
                     </div>
-                    <button @click="toggle" class="p-2 hover:bg-grey-light rounded-full transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" :fill="isFavorite ? 'currentColor' : 'none'" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6" :class="isFavorite ? 'text-status-error' : 'text-grey-medium'">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg>
-                    </button>
+                    <x-favorite-button
+                        :product-id="$product->id"
+                        :is-favorite="$isFavorite ?? false"
+                        class="hover:bg-grey-light"
+                        icon-size="lg"
+                    />
                 </div>
 
                 {{-- DESCRIPTION --}}

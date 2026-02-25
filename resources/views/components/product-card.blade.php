@@ -41,40 +41,6 @@
       ```
 --}}
 
-@once
-    <script>
-        function productCard(productId, isInitialFavorite) {
-            return {
-                isFavorite: isInitialFavorite,
-                toggling: false,
-                async toggleFavorite() {
-                    if (this.toggling) return;
-                    this.toggling = true;
-                    try {
-                        const res = await fetch(`/favorites/toggle/${productId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                                'Accept': 'application/json',
-                            },
-                        });
-                        const data = await res.json();
-                        this.isFavorite = data.isFavorite;
-                        if (window.Alpine && window.Alpine.store) {
-                            window.Alpine.store('favorites').count = data.favoritesCount;
-                        }
-                    } catch (e) {
-                        console.error('toggleFavorite error', e);
-                    } finally {
-                        this.toggling = false;
-                    }
-                },
-            };
-        }
-    </script>
-@endonce
-
 @php
     // Merge caller-supplied config on top of the card defaults.
     $resolvedScrollerConfig = array_merge([
@@ -89,8 +55,7 @@
 @endphp
 
 <div {{ $attributes->merge(['class' => 'bg-white rounded shadow hover:shadow-lg transition relative overflow-hidden isolate' . ($index !== null ? ' anim-item' : '')]) }}
-     @if($index !== null) data-index="{{ $index }}" @endif
-     x-data="productCard({{ $product->id }}, {{ $isFavorite ? 'true' : 'false' }})">
+     @if($index !== null) data-index="{{ $index }}" @endif>
 
     {{-- Badges: featured / promo --}}
     <div class="absolute top-2 left-2 flex flex-col items-start gap-2 z-10">
@@ -107,20 +72,12 @@
     </div>
 
     {{-- Favourite toggle button --}}
-    <button @click.prevent="toggleFavorite()"
-            class="absolute top-2 right-2 p-2 bg-white rounded-full transition z-10"
-            :disabled="toggling"
-            :aria-label="isFavorite ? '{{ t('store.remove_from_favorites') ?: 'Remove from favourites' }}' : '{{ t('store.add_to_favorites') ?: 'Add to favourites' }}'">
-        <svg xmlns="http://www.w3.org/2000/svg"
-             :fill="isFavorite ? 'currentColor' : 'none'"
-             viewBox="0 0 24 24"
-             stroke="currentColor"
-             class="w-5 h-5"
-             :class="isFavorite ? 'text-status-error' : 'text-grey-medium'">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-        </svg>
-    </button>
+    <x-favorite-button
+        :product-id="$product->id"
+        :is-favorite="$isFavorite"
+        class="absolute top-2 right-2 bg-white z-10"
+        icon-size="sm"
+    />
 
     {{-- Card body: image scroller + product info --}}
     <a href="{{ route('store.show', $product) }}" class="block">

@@ -2,15 +2,17 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\CartController;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class AddToCartAjaxTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_returns_json_and_does_not_redirect_when_adding_via_ajax()
     {
         $product = Product::factory()->create([
@@ -25,14 +27,14 @@ class AddToCartAjaxTest extends TestCase
         $response->assertStatus(200)
                  ->assertJson([ 'success' => true, 'cartCount' => 3 ]);
 
-        // session should have cart entry
-        $this->assertEquals(
-            session('cart')[$product->id],
-            3
-        );
+        // session should have cart entry (composite key: "{id}_" with array value)
+        $cartKey = CartController::makeCartKey($product->id, []);
+        $cart = session('cart');
+        $this->assertArrayHasKey($cartKey, $cart);
+        $this->assertEquals(3, $cart[$cartKey]['quantity']);
     }
 
-    /** @test */
+    #[Test]
     public function it_respects_existing_quantity_when_adding_more()
     {
         $product = Product::factory()->create([
@@ -46,10 +48,11 @@ class AddToCartAjaxTest extends TestCase
         $response = $this->postJson(route('cart.add', $product), ['quantity' => 1]);
 
         $response->assertJson([ 'cartCount' => 3 ]);
-        $this->assertEquals(session('cart')[$product->id], 3);
+        $cartKey = CartController::makeCartKey($product->id, []);
+        $this->assertEquals(3, session('cart')[$cartKey]['quantity']);
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_404_json_if_product_inactive()
     {
         $product = Product::factory()->create([
@@ -62,7 +65,7 @@ class AddToCartAjaxTest extends TestCase
                  ->assertJson(['success' => false]);
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_error_when_stock_unavailable()
     {
         $product = Product::factory()->create([

@@ -13,6 +13,10 @@ import './home-banner';
 import './contact-validation';
 import './home-splash';
 import './section-animations';
+import { favoriteToggle } from './favorite-toggle';
+
+// Register Alpine data components
+Alpine.data('favoriteToggle', favoriteToggle);
 
 // Initialize favorites store //...
 Alpine.store('favorites', {

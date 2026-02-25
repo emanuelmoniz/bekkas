@@ -4,13 +4,14 @@ namespace Tests\Feature;
 
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ProductShowTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function product_page_displays_description_and_technical_info()
     {
         // ensure UI translations are available in tests
