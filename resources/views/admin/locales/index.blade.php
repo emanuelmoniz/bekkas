@@ -5,12 +5,6 @@
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-        @if (session('success'))
-            <div class="mb-4 px-4 py-2 bg-status-success/10 text-status-success rounded">
-                {{ session('success') }}
-            </div>
-        @endif
-
         <div class="mb-4 flex justify-end">
             <a href="{{ route('admin.locales.create') }}"
                class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">

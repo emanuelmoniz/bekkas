@@ -5,10 +5,6 @@
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-        @if (session('success'))
-            <div class="mb-4 px-4 py-2 bg-green-100 text-green-800 rounded">{{ session('success') }}</div>
-        @endif
-
         <div class="bg-light p-4 rounded shadow">
 
             {{-- Toolbar --}}
