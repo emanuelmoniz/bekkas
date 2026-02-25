@@ -22,7 +22,10 @@
                 <tbody>
                     @foreach ($taxes as $tax)
                         <tr class="border-t">
-                            <td class="px-4 py-2">{{ $tax->name }}</td>
+                            <td class="px-4 py-2">
+                                {{ $tax->name }}
+                                <x-missing-locale-badge :model="$tax" />
+                            </td>
                             <td class="px-4 py-2">{{ $tax->percentage }}</td>
                             <td class="px-4 py-2">{{ $tax->is_active ? 'Yes' : 'No' }}</td>
                             <td class="px-4 py-2 text-right">

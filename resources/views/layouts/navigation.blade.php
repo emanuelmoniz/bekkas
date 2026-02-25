@@ -17,10 +17,10 @@
                     @if(request()->is('admin/*') || request()->is('admin'))
                         {{-- ADMIN MENU --}}
                         
-                        {{-- Products with dropdown --}}
+                        {{-- CONTENT with dropdown (no link) --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->is('admin/products*') || request()->is('admin/categories*') || request()->is('admin/materials*')" @click="window.location.href='{{ route('admin.products.index') }}'">
-                                Products
+                            <x-nav-button :active="request()->is('admin/products*') || request()->is('admin/projects*')">
+                                CONTENT
                             </x-nav-button>
                             <div x-show="open"
                                  x-transition:enter="transition ease-out duration-200"
@@ -32,17 +32,16 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.products.create') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Create Product</a>
-                                    <a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Categories</a>
-                                    <a href="{{ route('admin.materials.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Materials</a>
+                                    <a href="{{ route('admin.products.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Products</a>
+                                    <a href="{{ route('admin.projects.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Projects</a>
                                 </div>
                             </div>
                         </div>
 
-                        {{-- Projects with dropdown --}}
+                        {{-- ORDERS with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->is('admin/projects*')" @click="window.location.href='{{ route('admin.projects.index') }}'">
-                                Projects
+                            <x-nav-button :active="request()->is('admin/orders*') || request()->is('admin/order-statuses*')" @click="window.location.href='{{ route('admin.orders.index') }}'">
+                                ORDERS
                             </x-nav-button>
                             <div x-show="open"
                                  x-transition:enter="transition ease-out duration-200"
@@ -54,7 +53,10 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.projects.create') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Create Project</a>
+                                    <a href="{{ route('admin.orders.payloads.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Payloads</a>
+                                    <a href="{{ route('admin.orders.checkouts.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Checkouts</a>
+                                    <a href="{{ route('admin.orders.payments.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Payments</a>
+                                    <a href="{{ route('admin.order-statuses.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Order Statuses</a>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +64,7 @@
                         {{-- Tickets with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
                             <x-nav-button :active="request()->is('admin/tickets*') || request()->is('admin/ticket-categories*')" @click="window.location.href='{{ route('admin.tickets.index') }}'">
-                                Tickets
+                                TICKETS
                             </x-nav-button>
                             <div x-show="open"
                                  x-transition:enter="transition ease-out duration-200"
@@ -80,30 +82,10 @@
                             </div>
                         </div>
 
-                        {{-- Orders with dropdown --}}
-                        <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->is('admin/orders*') || request()->is('admin/order-statuses*')" @click="window.location.href='{{ route('admin.orders.index') }}'">
-                                Orders
-                            </x-nav-button>
-                            <div x-show="open"
-                                 x-transition:enter="transition ease-out duration-200"
-                                 x-transition:enter-start="opacity-0 scale-95"
-                                 x-transition:enter-end="opacity-100 scale-100"
-                                 x-transition:leave="transition ease-in duration-150"
-                                 x-transition:leave-start="opacity-100 scale-100"
-                                 x-transition:leave-end="opacity-0 scale-95"
-                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
-                                 style="display: none;">
-                                <div class="py-1">
-                                    <a href="{{ route('admin.order-statuses.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Order Statuses</a>
-                                </div>
-                            </div>
-                        </div>
-
                         {{-- Users with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
                             <x-nav-button :active="request()->is('admin/users*')" @click="window.location.href='{{ route('admin.users.index') }}'">
-                                Users
+                                USERS
                             </x-nav-button>
                             <div x-show="open"
                                  x-transition:enter="transition ease-out duration-200"
@@ -122,8 +104,8 @@
 
                         {{-- Configuration with dropdown --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->is('admin/countries*') || request()->is('admin/regions*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*') || request()->is('admin/shipping-tiers*') || request()->is('admin/shipping-config*') || request()->is('admin/configurations*')" @click="window.location.href='{{ route('admin.configurations.index') }}'">
-                                Configuration
+                            <x-nav-button :active="request()->is('admin/countries*') || request()->is('admin/regions*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*') || request()->is('admin/shipping-tiers*') || request()->is('admin/shipping-config*') || request()->is('admin/configurations*') || request()->is('admin/categories*') || request()->is('admin/materials*')" @click="window.location.href='{{ route('admin.configurations.index') }}'">
+                                CONFIGURATIONS
                             </x-nav-button>
                             <div x-show="open"
                                  x-transition:enter="transition ease-out duration-200"
@@ -135,13 +117,15 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
+                                    <a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Categories</a>
+                                    <a href="{{ route('admin.materials.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Materials</a>
                                     <a href="{{ route('admin.shipping-config.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Shipping</a>
                                     <a href="{{ route('admin.shipping-tiers.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Shipping Tiers</a>
                                     <a href="{{ route('admin.countries.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Countries</a>
                                     <a href="{{ route('admin.regions.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Regions</a>
-                                    <a href="{{ route('admin.taxes.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Taxes</a>
+                                    <a href="{{ route('admin.taxes.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">TAXES</a>
                                     <a href="{{ route('admin.static-translations.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Translations</a>
-                                    <a href="{{ route('admin.locales.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Locales</a>
+                                    <a href="{{ route('admin.locales.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Site Locales</a>
                                 </div>
                             </div>
                         </div>
@@ -324,53 +308,56 @@
         <div class="pt-2 pb-3 space-y-1">
             @if(request()->is('admin/*') || request()->is('admin'))
                 {{-- ADMIN MENU MOBILE --}}
-                
-                {{-- Products --}}
+
+                {{-- CONTENT --}}
                 <div x-data="{ open: false }">
                     <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-grey-dark hover:bg-grey-light">
-                        <span>Products</span>
+                        <span>CONTENT</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
                     <div x-show="open" class="pl-4 space-y-1">
                         <x-responsive-nav-link :href="route('admin.products.index')" :active="request()->is('admin/products*')">
-                            All Products
+                            Products
                         </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('admin.products.create')" :active="false">
-                            Create Product
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->is('admin/categories*')">
-                            Categories
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('admin.materials.index')" :active="request()->is('admin/materials*')">
-                            Materials
+                        <x-responsive-nav-link :href="route('admin.projects.index')" :active="request()->is('admin/projects*')">
+                            Projects
                         </x-responsive-nav-link>
                     </div>
                 </div>
 
-                {{-- Projects --}}
+                {{-- ORDERS --}}
                 <div x-data="{ open: false }">
                     <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-grey-dark hover:bg-grey-light">
-                        <span>Projects</span>
+                        <span>ORDERS</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
                     <div x-show="open" class="pl-4 space-y-1">
-                        <x-responsive-nav-link :href="route('admin.projects.index')" :active="request()->is('admin/projects*')">
-                            All Projects
+                        <x-responsive-nav-link :href="route('admin.orders.index')" :active="request()->is('admin/orders') || request()->is('admin/orders?*')">
+                            All Orders
                         </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('admin.projects.create')" :active="false">
-                            Create Project
+                        <x-responsive-nav-link :href="route('admin.orders.payloads.index')" :active="request()->is('admin/orders/payloads*')">
+                            Payloads
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('admin.orders.checkouts.index')" :active="request()->is('admin/orders/checkouts*')">
+                            Checkouts
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('admin.orders.payments.index')" :active="request()->is('admin/orders/payments*')">
+                            Payments
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('admin.order-statuses.index')" :active="request()->is('admin/order-statuses*')">
+                            Order Statuses
                         </x-responsive-nav-link>
                     </div>
                 </div>
 
-                {{-- Tickets --}}
+                {{-- TICKETS --}}
                 <div x-data="{ open: false }">
                     <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-grey-dark hover:bg-grey-light">
-                        <span>Tickets</span>
+                        <span>TICKETS</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
@@ -388,24 +375,6 @@
                     </div>
                 </div>
 
-                {{-- Orders --}}
-                <div x-data="{ open: false }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-grey-dark hover:bg-grey-light">
-                        <span>Orders</span>
-                        <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div x-show="open" class="pl-4 space-y-1">
-                        <x-responsive-nav-link :href="route('admin.orders.index')" :active="request()->is('admin/orders*')">
-                            All Orders
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('admin.order-statuses.index')" :active="request()->is('admin/order-statuses*')">
-                            Order Statuses
-                        </x-responsive-nav-link>
-                    </div>
-                </div>
-
                 {{-- Configuration --}}
                 <div x-data="{ open: false }">
                     <div class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-grey-dark hover:bg-grey-light">
@@ -417,6 +386,12 @@
                         </button>
                     </div>
                     <div x-show="open" class="pl-4 space-y-1">
+                        <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->is('admin/categories*')">
+                            Categories
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('admin.materials.index')" :active="request()->is('admin/materials*')">
+                            Materials
+                        </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('admin.shipping-config.index')" :active="request()->is('admin/shipping-config*')">
                             Shipping
                         </x-responsive-nav-link>
@@ -430,13 +405,13 @@
                             Regions
                         </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('admin.taxes.index')" :active="request()->is('admin/taxes*')">
-                            Taxes
+                            TAX's
                         </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('admin.static-translations.index')" :active="request()->is('admin/static-translations*')">
                             Translations
                         </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('admin.locales.index')" :active="request()->is('admin/locales*')">
-                            Locales
+                            Site Locales
                         </x-responsive-nav-link>
                     </div>
                 </div>

@@ -29,6 +29,7 @@
                         <tr class="border-t">
                             <td class="px-4 py-2">
                                 {{ $country->translation('en-UK')?->name ?? '—' }}
+                                <x-missing-locale-badge :model="$country" />
                             </td>
                             <td class="px-4 py-2">{{ $country->iso_alpha2 }}</td>
                             <td class="px-4 py-2">{{ $country->country_code }}</td>

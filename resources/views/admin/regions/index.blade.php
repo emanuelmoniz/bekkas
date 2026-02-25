@@ -77,7 +77,10 @@
                 <tbody>
                     @forelse ($regions as $region)
                         <tr class="border-t">
-                            <td class="px-4 py-2">{{ $region->name }}</td>
+                            <td class="px-4 py-2">
+                                {{ $region->name }}
+                                <x-missing-locale-badge :model="$region" />
+                            </td>
                             <td class="px-4 py-2">
                                 {{ $region->country?->name }}
                             </td>

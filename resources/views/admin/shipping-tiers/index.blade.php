@@ -82,6 +82,7 @@
                         <tr class="border-t">
                             <td class="px-4 py-2">
                                 {{ $tier->translation()?->name }}
+                                <x-missing-locale-badge :model="$tier" />
                             </td>
                             <td class="px-4 py-2">{{ $tier->weight_from }}</td>
                             <td class="px-4 py-2">{{ $tier->weight_to }}</td>
