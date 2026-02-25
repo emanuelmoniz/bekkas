@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
             {{-- PHOTOS --}}
             <div class="bg-white p-6 rounded shadow mb-6">
@@ -67,14 +67,6 @@
 
             {{-- PRODUCT FORM --}}
             @include('admin.products._form', ['mode' => 'edit'])
-
-            {{-- CANCEL --}}
-            <div class="mt-4">
-                <a href="{{ route('admin.products.index') }}"
-                   class="inline-flex bg-grey-medium hover:bg-grey-medium text-grey-dark px-6 py-3 rounded">
-                    Cancel
-                </a>
-            </div>
 
         </div>
     </div>

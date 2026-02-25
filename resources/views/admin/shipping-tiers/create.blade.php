@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-6 max-w-3xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8">
         <form method="POST"
               action="{{ route('admin.shipping-tiers.store') }}"
               class="bg-white shadow rounded p-6 space-y-4"
@@ -41,79 +41,51 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 @foreach ($locales as $locale => $label)
                 <div>
-                    <label class="block text-sm font-medium">Name ({{ $label }}) *</label>
+                    <x-input-label>Name ({{ $label }}) <span class="text-status-error">*</span></x-input-label>
                     <input type="text"
                            name="name[{{ $locale }}]"
                            value="{{ old('name.'.$locale) }}"
                            required
-                           class="w-full border rounded px-3 py-2 @error('name.'.$locale) border-status-error @enderror">
-                    @error('name.'.$locale)
-                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                           class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                    <x-input-error :messages="$errors->get('name.'.$locale)" class="mt-2" />
                 </div>
                 @endforeach
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium">Weight from (g) *</label>
-                    <input type="number"
-                           name="weight_from"
-                           value="{{ old('weight_from') }}"
-                           required
-                           class="w-full border rounded px-3 py-2 @error('weight_from') border-status-error @enderror">
-                    @error('weight_from')
-                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <x-input-label for="weight_from">Weight from (g) <span class="text-status-error">*</span></x-input-label>
+                    <x-text-input id="weight_from" name="weight_from" type="number" class="mt-1 block w-full" :value="old('weight_from')" required />
+                    <x-input-error :messages="$errors->get('weight_from')" class="mt-2" />
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium">Weight to (g) *</label>
-                    <input type="number"
-                           name="weight_to"
-                           value="{{ old('weight_to') }}"
-                           required
-                           class="w-full border rounded px-3 py-2 @error('weight_to') border-status-error @enderror">
-                    @error('weight_to')
-                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <x-input-label for="weight_to">Weight to (g) <span class="text-status-error">*</span></x-input-label>
+                    <x-text-input id="weight_to" name="weight_to" type="number" class="mt-1 block w-full" :value="old('weight_to')" required />
+                    <x-input-error :messages="$errors->get('weight_to')" class="mt-2" />
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium">Cost (gross) *</label>
-                    <input type="number"
-                           step="0.01"
-                           name="cost_gross"
-                           value="{{ old('cost_gross') }}"
-                           required
-                           class="w-full border rounded px-3 py-2 @error('cost_gross') border-status-error @enderror">
-                    @error('cost_gross')
-                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <x-input-label for="cost_gross">Cost (gross) <span class="text-status-error">*</span></x-input-label>
+                    <x-text-input id="cost_gross" name="cost_gross" type="number" step="0.01" class="mt-1 block w-full" :value="old('cost_gross')" required />
+                    <x-input-error :messages="$errors->get('cost_gross')" class="mt-2" />
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium">Shipping Days *</label>
-                    <input type="number"
-                           name="shipping_days"
-                           value="{{ old('shipping_days', 1) }}"
-                           min="1"
-                           required
-                           class="w-full border rounded px-3 py-2 @error('shipping_days') border-status-error @enderror">
-                    @error('shipping_days')
-                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <x-input-label for="shipping_days">Shipping Days <span class="text-status-error">*</span></x-input-label>
+                    <x-text-input id="shipping_days" name="shipping_days" type="number" class="mt-1 block w-full" :value="old('shipping_days', 1)" min="1" required />
+                    <x-input-error :messages="$errors->get('shipping_days')" class="mt-2" />
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium">Tax *</label>
-                    <select name="tax_id"
+                    <x-input-label for="tax_id">Tax <span class="text-status-error">*</span></x-input-label>
+                    <select id="tax_id" name="tax_id"
                             required
-                            class="w-full border rounded px-3 py-2 @error('tax_id') border-status-error @enderror">
+                            class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                         <option value="">— Select tax —</option>
                         @foreach ($taxes as $tax)
                             <option value="{{ $tax->id }}"
@@ -122,15 +94,13 @@
                             </option>
                         @endforeach
                     </select>
-                    @error('tax_id')
-                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <x-input-error :messages="$errors->get('tax_id')" class="mt-2" />
                 </div>
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-2">Countries * (select at least one)</label>
-                <div class="border rounded p-3 max-h-48 overflow-y-auto @error('countries') border-status-error @enderror">
+                <x-input-label class="mb-2">Countries <span class="text-status-error">*</span> <span class="font-normal text-grey-dark">(select at least one)</span></x-input-label>
+                <div class="border-grey-medium border rounded-md p-3 max-h-48 overflow-y-auto">
                     @foreach ($countries as $country)
                         <label class="flex items-center gap-2 py-1">
                             <input type="checkbox"
@@ -144,14 +114,12 @@
                         </label>
                     @endforeach
                 </div>
-                @error('countries')
-                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                @enderror
+                <x-input-error :messages="$errors->get('countries')" class="mt-2" />
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-2">Regions * (select countries first)</label>
-                <div class="border rounded p-3 max-h-48 overflow-y-auto @error('regions') border-status-error @enderror"
+                <x-input-label class="mb-2">Regions <span class="text-status-error">*</span> <span class="font-normal text-grey-dark">(select countries first)</span></x-input-label>
+                <div class="border-grey-medium border rounded-md p-3 max-h-48 overflow-y-auto"
                      x-show="availableRegions.length > 0">
                     <template x-for="region in availableRegions" :key="region.id">
                         <label class="flex items-center gap-2 py-1">
@@ -182,13 +150,10 @@
 
             <div class="flex justify-between">
                 <a href="{{ route('admin.shipping-tiers.index') }}"
-                   class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
+                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     Cancel
                 </a>
-                <button type="submit"
-                        class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
-                    Save
-                </button>
+                <x-primary-button>Save</x-primary-button>
             </div>
         </form>
     </div>

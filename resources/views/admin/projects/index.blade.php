@@ -103,7 +103,9 @@
                         @forelse ($projects as $project)
                             <tr class="border-t">
                                 <td class="px-4 py-2">
-                                    {{ optional($project->translation())->name }}
+                                    <a href="{{ route('admin.projects.show', $project) }}" class="text-accent-secondary hover:underline font-medium">
+                                        {{ optional($project->translation())->name }}
+                                    </a>
                                     <x-missing-locale-badge :model="$project" />
                                 </td>
                                 <td class="px-4 py-2">
@@ -111,9 +113,9 @@
                                 </td>
                                 <td class="px-4 py-2 text-center">
                                     @if($project->is_featured)
-                                        ✔️
+                                        <span class="text-status-success font-bold">&#10003;</span>
                                     @else
-                                        –
+                                        <span class="text-status-error font-bold">&#10007;</span>
                                     @endif
                                 </td>
                                 <td class="px-4 py-2">

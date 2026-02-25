@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
             <form method="POST" action="{{ route('admin.categories.store') }}">
                 @csrf
@@ -16,14 +16,14 @@
                     <h3 class="font-semibold mb-4">Translations</h3>
 
                     @foreach (\App\Models\Locale::activeList() as $locale => $label)
-                        <div class="border p-4 mb-4">
-                            <h4 class="font-medium mb-2">{{ $label }}</h4>
-
+                        <div class="mb-4">
+                            <x-input-label>{{ $label }}</x-input-label>
                             <input type="text"
                                    name="name[{{ $locale }}]"
                                    placeholder="Category name"
-                                   class="w-full border rounded px-3 py-2"
+                                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm"
                                    required>
+                            <x-input-error :messages="$errors->get('name.'.$locale)" class="mt-2" />
                         </div>
                     @endforeach
                 </div>
@@ -32,7 +32,7 @@
                 <div class="bg-white p-6 rounded shadow mb-6">
                     <h3 class="font-semibold mb-4">Parent Category</h3>
 
-                    <select name="parent_id" class="border rounded px-3 py-2 w-full">
+                    <select name="parent_id" class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                         <option value="">— None —</option>
 
                         @foreach ($categories as $category)
@@ -43,10 +43,14 @@
                     </select>
                 </div>
 
-                <button type="submit"
-                    class="bg-accent-primary text-light px-6 py-2 rounded">
-                        Create Category
-                </button>
+                {{-- ACTIONS --}}
+                <div class="bg-white p-6 rounded shadow flex justify-between">
+                    <a href="{{ route('admin.categories.index') }}"
+                       class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                        Cancel
+                    </a>
+                    <x-primary-button>Create Category</x-primary-button>
+                </div>
 
             </form>
 

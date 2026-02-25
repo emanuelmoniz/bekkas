@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-6 max-w-xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8">
         <form method="POST"
               action="{{ route('admin.taxes.update', $tax) }}"
               class="bg-white shadow rounded p-6 space-y-4">
@@ -17,29 +17,20 @@
                 $existingName = $tax->translations->where('locale', $localeCode)->first()?->name;
             @endphp
             <div>
-                <label class="block text-sm font-medium text-grey-dark">
+                <label class="block font-medium text-sm text-grey-dark">
                     Name ({{ $localeName }})
                 </label>
                 <input type="text"
                        name="translations[{{ $localeCode }}]"
                        value="{{ old("translations.{$localeCode}", $existingName) }}"
-                       class="mt-1 block w-full border rounded px-3 py-2 @error("translations.{$localeCode}") border-status-error @enderror">
-                @error("translations.{$localeCode}")
-                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                @enderror
+                       class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                <x-input-error :messages="$errors->get('translations.'.$localeCode)" class="mt-2" />
             </div>
             @endforeach
 
             <div>
-                <label class="block text-sm font-medium text-grey-dark">
-                    Tax Percentage
-                </label>
-                <input type="number"
-                       step="0.01"
-                       name="percentage"
-                       value="{{ $tax->percentage }}"
-                       required
-                       class="mt-1 block w-full border rounded px-3 py-2">
+                <x-input-label for="percentage">Tax Percentage</x-input-label>
+                <x-text-input id="percentage" name="percentage" type="number" step="0.01" class="mt-1 block w-full" :value="$tax->percentage" required />
             </div>
 
             <label class="flex items-center gap-2">
@@ -48,11 +39,12 @@
                 Active
             </label>
 
-            <div class="flex justify-end">
-                <button type="submit"
-                        class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
-                    Update
-                </button>
+            <div class="flex justify-between">
+                <a href="{{ route('admin.taxes.index') }}"
+                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                    Cancel
+                </a>
+                <x-primary-button>Update</x-primary-button>
             </div>
         </form>
     </div>

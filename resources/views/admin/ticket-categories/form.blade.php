@@ -1,4 +1,4 @@
-<div class="py-6 max-w-xl mx-auto">
+<div class="py-6 max-w-4xl mx-auto">
     <form method="POST"
           action="{{ $action }}"
           class="bg-white p-6 rounded shadow space-y-4">
@@ -9,14 +9,12 @@
 
         @foreach (\App\Models\Locale::activeList() as $locale => $label)
         <div>
-            <label class="block font-semibold mb-1">Name ({{ $label }}) *</label>
+            <x-input-label>Name ({{ $label }}) <span class="text-status-error">*</span></x-input-label>
             <input type="text"
                    name="name[{{ $locale }}]"
-                   class="w-full border rounded px-3 py-2{{ $errors->has('name.' . $locale) ? ' border-red-500' : '' }}"
+                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm"
                    value="{{ old('name.' . $locale) ?? $category?->translations->where('locale', $locale)->first()?->name }}">
-            @if ($errors->has('name.' . $locale))
-                <p class="text-red-600 text-sm mt-1">{{ $errors->first('name.' . $locale) }}</p>
-            @endif
+            <x-input-error :messages="$errors->get('name.'.$locale)" class="mt-2" />
         </div>
         @endforeach
 
@@ -32,13 +30,10 @@
 
         <div class="flex justify-between">
             <a href="{{ route('admin.ticket-categories.index') }}"
-               class="bg-grey-medium px-4 py-2 rounded">
+               class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                 Cancel
             </a>
-
-            <button class="bg-accent-primary text-light px-6 py-2 rounded">
-                Save
-            </button>
+            <x-primary-button>Save</x-primary-button>
         </div>
     </form>
 </div>

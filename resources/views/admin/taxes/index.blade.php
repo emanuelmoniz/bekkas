@@ -4,10 +4,12 @@
     </x-slot>
 
     <div class="py-6 max-w-5xl mx-auto sm:px-6 lg:px-8">
-        <a href="{{ route('admin.taxes.create') }}"
-           class="bg-accent-primary text-light px-4 py-2 rounded mb-4 inline-block">
-            New Tax
-        </a>
+        <div class="mb-4 flex justify-end">
+            <a href="{{ route('admin.taxes.create') }}"
+               class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
+                New Tax
+            </a>
+        </div>
 
         <div class="bg-white shadow rounded">
             <table class="min-w-full border">
@@ -27,10 +29,16 @@
                                 <x-missing-locale-badge :model="$tax" />
                             </td>
                             <td class="px-4 py-2">{{ $tax->percentage }}</td>
-                            <td class="px-4 py-2">{{ $tax->is_active ? 'Yes' : 'No' }}</td>
+                            <td class="px-4 py-2">
+                                @if($tax->is_active)
+                                    <span class="text-status-success font-bold">&#10003;</span>
+                                @else
+                                    <span class="text-status-error font-bold">&#10007;</span>
+                                @endif
+                            </td>
                             <td class="px-4 py-2 text-right">
                                 <a href="{{ route('admin.taxes.edit', $tax) }}"
-                                   class="text-accent-secondary hover:underline">
+                                   class="inline-flex items-center px-3 py-1 rounded bg-accent-primary text-light text-sm">
                                     Edit
                                 </a>
                             </td>

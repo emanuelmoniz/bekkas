@@ -78,7 +78,9 @@
                     @forelse ($regions as $region)
                         <tr class="border-t">
                             <td class="px-4 py-2">
-                                {{ $region->name }}
+                                <a href="{{ route('admin.regions.show', $region) }}" class="text-accent-secondary hover:underline font-medium">
+                                    {{ $region->name }}
+                                </a>
                                 <x-missing-locale-badge :model="$region" />
                             </td>
                             <td class="px-4 py-2">
@@ -87,17 +89,15 @@
                             <td class="px-4 py-2">{{ $region->postal_code_from }}</td>
                             <td class="px-4 py-2">{{ $region->postal_code_to }}</td>
                             <td class="px-4 py-2">
-                                <span class="px-2 py-1 rounded text-xs {{ $region->is_active ? 'bg-status-success text-status-success' : 'bg-status-error/10 text-status-error' }}">
-                                    {{ $region->is_active ? 'Yes' : 'No' }}
-                                </span>
+                                @if($region->is_active)
+                                    <span class="text-status-success font-bold">&#10003;</span>
+                                @else
+                                    <span class="text-status-error font-bold">&#10007;</span>
+                                @endif
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
-                                <a href="{{ route('admin.regions.show', $region) }}"
-                                   class="text-grey-dark hover:underline">
-                                    View
-                                </a>
                                 <a href="{{ route('admin.regions.edit', $region) }}"
-                                   class="text-accent-secondary hover:underline">
+                                   class="inline-flex items-center px-3 py-1 rounded bg-accent-primary text-light text-sm">
                                     Edit
                                 </a>
 
@@ -107,7 +107,7 @@
                                       onsubmit="return confirm('Delete this region?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="text-grey-dark hover:underline">
+                                    <button class="inline-flex items-center px-3 py-1 rounded bg-status-error/10 text-status-error text-sm">
                                         Delete
                                     </button>
                                 </form>

@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-6">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+<div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
             <form method="POST" action="{{ route('admin.users.store') }}">
                 @csrf
@@ -17,61 +17,36 @@
 
                     {{-- NAME --}}
                     <div>
-                        <label class="block font-semibold mb-1">Name *</label>
-                        <input type="text"
-                               name="name"
-                               value="{{ old('name') }}"
-                               required
-                               class="border rounded px-3 py-2 w-full @error('name') border-status-error @enderror">
-                        @error('name')
-                            <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                        <x-input-label for="name">Name <span class="text-status-error">*</span></x-input-label>
+                        <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name')" required />
+                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
                     {{-- EMAIL --}}
                     <div>
-                        <label class="block font-semibold mb-1">Email *</label>
-                        <input type="email"
-                               name="email"
-                               value="{{ old('email') }}"
-                               required
-                               class="border rounded px-3 py-2 w-full @error('email') border-status-error @enderror">
-                        @error('email')
-                            <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                        <x-input-label for="email">Email <span class="text-status-error">*</span></x-input-label>
+                        <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email')" required />
+                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
                     {{-- PHONE --}}
                     <div>
-                        <label class="block font-semibold mb-1">Phone</label>
-                        <input type="text"
-                               name="phone"
-                               value="{{ old('phone') }}"
-                               class="border rounded px-3 py-2 w-full @error('phone') border-status-error @enderror">
-                        @error('phone')
-                            <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                        <x-input-label for="phone">Phone</x-input-label>
+                        <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone')" />
+                        <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                     </div>
 
                     {{-- PASSWORD --}}
                     <div>
-                        <label class="block font-semibold mb-1">Password *</label>
-                        <input type="password"
-                               name="password"
-                               required
-                               class="border rounded px-3 py-2 w-full @error('password') border-status-error @enderror">
-                        @error('password')
-                            <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                        <x-input-label for="password">Password <span class="text-status-error">*</span></x-input-label>
+                        <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" required />
+                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 
                     {{-- PASSWORD CONFIRMATION --}}
                     <div>
-                        <label class="block font-semibold mb-1">Confirm Password *</label>
-                        <input type="password"
-                               name="password_confirmation"
-                               required
-                               class="border rounded px-3 py-2 w-full">
+                        <x-input-label for="password_confirmation">Confirm Password <span class="text-status-error">*</span></x-input-label>
+                        <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" required />
                     </div>
 
                     {{-- IS_ACTIVE --}}
@@ -95,104 +70,64 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {{-- TITLE --}}
                         <div>
-                            <label class="block font-semibold mb-1">Title</label>
-                            <input type="text"
-                                   name="title"
-                                   value="{{ old('title') }}"
-                                   class="border rounded px-3 py-2 w-full @error('title') border-status-error @enderror">
-                            @error('title')
-                                <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                            <x-input-label for="title">Title</x-input-label>
+                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title')" />
+                            <x-input-error :messages="$errors->get('title')" class="mt-2" />
                         </div>
 
                         {{-- NIF --}}
                         <div>
-                            <label class="block font-semibold mb-1">NIF</label>
-                            <input type="text"
-                                   name="nif"
-                                   value="{{ old('nif') }}"
-                                   class="border rounded px-3 py-2 w-full @error('nif') border-status-error @enderror">
-                            @error('nif')
-                                <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                            <x-input-label for="nif">NIF</x-input-label>
+                            <x-text-input id="nif" name="nif" type="text" class="mt-1 block w-full" :value="old('nif')" />
+                            <x-input-error :messages="$errors->get('nif')" class="mt-2" />
                         </div>
 
                         {{-- ADDRESS LINE 1 --}}
                         <div class="md:col-span-2">
-                            <label class="block font-semibold mb-1">Address Line 1 *</label>
-                            <input type="text"
-                                   name="address_line_1"
-                                   value="{{ old('address_line_1') }}"
-                                   required
-                                   class="border rounded px-3 py-2 w-full @error('address_line_1') border-status-error @enderror">
-                            @error('address_line_1')
-                                <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                            <x-input-label for="address_line_1">Address Line 1 <span class="text-status-error">*</span></x-input-label>
+                            <x-text-input id="address_line_1" name="address_line_1" type="text" class="mt-1 block w-full" :value="old('address_line_1')" required />
+                            <x-input-error :messages="$errors->get('address_line_1')" class="mt-2" />
                         </div>
 
                         {{-- ADDRESS LINE 2 --}}
                         <div class="md:col-span-2">
-                            <label class="block font-semibold mb-1">Address Line 2</label>
-                            <input type="text"
-                                   name="address_line_2"
-                                   value="{{ old('address_line_2') }}"
-                                   class="border rounded px-3 py-2 w-full @error('address_line_2') border-status-error @enderror">
-                            @error('address_line_2')
-                                <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                            <x-input-label for="address_line_2">Address Line 2</x-input-label>
+                            <x-text-input id="address_line_2" name="address_line_2" type="text" class="mt-1 block w-full" :value="old('address_line_2')" />
+                            <x-input-error :messages="$errors->get('address_line_2')" class="mt-2" />
                         </div>
 
                         {{-- POSTAL CODE --}}
                         <div>
-                            <label class="block font-semibold mb-1">Postal Code *</label>
-                            <input type="text"
-                                   name="postal_code"
-                                   value="{{ old('postal_code') }}"
-                                   required
-                                   class="border rounded px-3 py-2 w-full @error('postal_code') border-status-error @enderror">
-                            @error('postal_code')
-                                <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                            <x-input-label for="postal_code">Postal Code <span class="text-status-error">*</span></x-input-label>
+                            <x-text-input id="postal_code" name="postal_code" type="text" class="mt-1 block w-full" :value="old('postal_code')" required />
+                            <x-input-error :messages="$errors->get('postal_code')" class="mt-2" />
                         </div>
 
                         {{-- CITY --}}
                         <div>
-                            <label class="block font-semibold mb-1">City *</label>
-                            <input type="text"
-                                   name="city"
-                                   value="{{ old('city') }}"
-                                   required
-                                   class="border rounded px-3 py-2 w-full @error('city') border-status-error @enderror">
-                            @error('city')
-                                <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                            <x-input-label for="city">City <span class="text-status-error">*</span></x-input-label>
+                            <x-text-input id="city" name="city" type="text" class="mt-1 block w-full" :value="old('city')" required />
+                            <x-input-error :messages="$errors->get('city')" class="mt-2" />
                         </div>
 
                         {{-- COUNTRY --}}
                         <div class="md:col-span-2">
-                            <label class="block font-semibold mb-1">Country *</label>
-                            <select name="country_id" required class="border rounded px-3 py-2 w-full @error('country_id') border-status-error @enderror">
+                            <x-input-label for="country_id">Country <span class="text-status-error">*</span></x-input-label>
+                            <select id="country_id" name="country_id" required class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                                 @foreach ($countries as $country)
                                     <option value="{{ $country->id }}" @selected(old('country_id') == $country->id)>
                                         {{ $country->name }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('country_id')
-                                <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                            <x-input-error :messages="$errors->get('country_id')" class="mt-2" />
                         </div>
 
                         {{-- PHONE --}}
                         <div>
-                            <label class="block font-semibold mb-1">Phone</label>
-                            <input type="text"
-                                   name="address_phone"
-                                   value="{{ old('address_phone') }}"
-                                   class="border rounded px-3 py-2 w-full @error('address_phone') border-status-error @enderror">
-                            @error('address_phone')
-                                <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                            <x-input-label for="address_phone">Phone</x-input-label>
+                            <x-text-input id="address_phone" name="address_phone" type="text" class="mt-1 block w-full" :value="old('address_phone')" />
+                            <x-input-error :messages="$errors->get('address_phone')" class="mt-2" />
                         </div>
 
                         {{-- IS DEFAULT --}}
@@ -214,14 +149,10 @@
                 {{-- ACTIONS --}}
                 <div class="flex justify-between">
                     <a href="{{ route('admin.users.index') }}"
-                       class="bg-grey-medium hover:bg-grey-dark text-light px-6 py-3 rounded">
+                       class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                         Cancel
                     </a>
-
-                    <button type="submit"
-                            class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-3 rounded">
-                        Create User
-                    </button>
+                    <x-primary-button>Create User</x-primary-button>
                 </div>
 
             </form>

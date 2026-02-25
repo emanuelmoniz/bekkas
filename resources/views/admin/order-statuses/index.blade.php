@@ -16,8 +16,7 @@
                 <thead class="bg-grey-light">
                     <tr>
                         <th class="px-4 py-2 text-left">Code</th>
-                        <th class="px-4 py-2 text-left">Name (pt-PT)</th>
-                        <th class="px-4 py-2 text-left">Name (en-UK)</th>
+                        <th class="px-4 py-2 text-left">Name</th>
                         <th class="px-4 py-2 text-left">Sort Order</th>
                         <th class="px-4 py-2"></th>
                     </tr>
@@ -27,16 +26,13 @@
                         <tr class="border-t">
                             <td class="px-4 py-2">{{ $status->code }}</td>
                             <td class="px-4 py-2">
-                                {{ optional($status->translations->firstWhere('locale', 'pt-PT'))->name }}
-                                <x-missing-locale-badge :model="$status" />
-                            </td>
-                            <td class="px-4 py-2">
                                 {{ optional($status->translations->firstWhere('locale', 'en-UK'))->name }}
+                                <x-missing-locale-badge :model="$status" />
                             </td>
                             <td class="px-4 py-2">{{ $status->sort_order }}</td>
                             <td class="px-4 py-2 text-right space-x-2">
                                 <a href="{{ route('admin.order-statuses.edit', $status) }}"
-                                   class="text-accent-secondary hover:underline">
+                                   class="inline-flex items-center px-3 py-1 rounded bg-accent-primary text-light text-sm">
                                     Edit
                                 </a>
                                 <form action="{{ route('admin.order-statuses.destroy', $status) }}"
@@ -45,7 +41,7 @@
                                       onsubmit="return confirm('Are you sure?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-grey-dark hover:underline">
+                                    <button type="submit" class="inline-flex items-center px-3 py-1 rounded bg-status-error/10 text-status-error text-sm">
                                         Delete
                                     </button>
                                 </form>

@@ -77,7 +77,7 @@
                         @forelse ($users as $user)
                             <tr class="border-t">
                                 <td class="px-4 py-2">
-                                    {{ $user->name }}
+                                    <a href="{{ route('admin.users.show', $user) }}" class="text-accent-secondary hover:underline font-medium">{{ $user->name }}</a>
                                 </td>
                                 <td class="px-4 py-2">
                                     {{ $user->email }}
@@ -86,15 +86,13 @@
                                     {{ $user->phone ?? '-' }}
                                 </td>
                                 <td class="px-4 py-2">
-                                    <span class="px-2 py-1 rounded text-xs {{ $user->is_active ? 'bg-status-success text-status-success' : 'bg-status-error/10 text-status-error' }}">
-                                        {{ $user->is_active ? 'Yes' : 'No' }}
-                                    </span>
+                                    @if($user->is_active)
+                                        <span class="text-status-success font-bold">&#10003;</span>
+                                    @else
+                                        <span class="text-status-error font-bold">&#10007;</span>
+                                    @endif
                                 </td>
                                 <td class="px-4 py-2 text-right space-x-2">
-                                    <a href="{{ route('admin.users.show', $user) }}"
-                                       class="inline-flex bg-grey-dark text-light px-3 py-1 rounded text-sm">
-                                        View
-                                    </a>
                                     <a href="{{ route('admin.users.edit', $user) }}"
                                        class="inline-flex bg-accent-primary text-light px-3 py-1 rounded text-sm">
                                         Edit

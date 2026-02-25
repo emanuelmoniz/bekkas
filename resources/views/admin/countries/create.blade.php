@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-6 max-w-xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8">
         <form method="POST"
               action="{{ route('admin.countries.store') }}"
               class="bg-white shadow rounded p-6 space-y-4">
@@ -13,42 +13,26 @@
 
             @foreach ($locales as $localeCode => $localeName)
             <div>
-                <label class="block text-sm font-medium">Name ({{ $localeName }}) *</label>
+                <label class="block font-medium text-sm text-grey-dark">Name ({{ $localeName }}) <span class="text-status-error">*</span></label>
                 <input type="text"
                        name="translations[{{ $localeCode }}]"
                        value="{{ old("translations.{$localeCode}") }}"
                        required
-                       class="w-full border rounded px-3 py-2 @error("translations.{$localeCode}") border-status-error @enderror">
-                @error("translations.{$localeCode}")
-                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                @enderror
+                       class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                <x-input-error :messages="$errors->get('translations.'.$localeCode)" class="mt-2" />
             </div>
             @endforeach
 
             <div>
-                <label class="block text-sm font-medium">ISO 3166 Alpha-2 *</label>
-                <input type="text"
-                       name="iso_alpha2"
-                       value="{{ old('iso_alpha2') }}"
-                       maxlength="2"
-                       required
-                       class="w-full border rounded px-3 py-2 @error('iso_alpha2') border-status-error @enderror">
-                @error('iso_alpha2')
-                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                @enderror
+                <x-input-label for="iso_alpha2">ISO 3166 Alpha-2 <span class="text-status-error">*</span></x-input-label>
+                <x-text-input id="iso_alpha2" name="iso_alpha2" type="text" class="mt-1 block w-full" :value="old('iso_alpha2')" maxlength="2" required />
+                <x-input-error :messages="$errors->get('iso_alpha2')" class="mt-2" />
             </div>
 
             <div>
-                <label class="block text-sm font-medium">Country Code *</label>
-                <input type="text"
-                       name="country_code"
-                       value="{{ old('country_code') }}"
-                       placeholder="+351"
-                       required
-                       class="w-full border rounded px-3 py-2 @error('country_code') border-status-error @enderror">
-                @error('country_code')
-                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                @enderror
+                <x-input-label for="country_code">Country Code <span class="text-status-error">*</span></x-input-label>
+                <x-text-input id="country_code" name="country_code" type="text" class="mt-1 block w-full" :value="old('country_code')" placeholder="+351" required />
+                <x-input-error :messages="$errors->get('country_code')" class="mt-2" />
             </div>
 
             <label class="flex items-center gap-2">
@@ -58,13 +42,10 @@
 
             <div class="flex justify-between">
                 <a href="{{ route('admin.countries.index') }}"
-                   class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
+                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     Cancel
                 </a>
-                <button type="submit"
-                        class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
-                    Save
-                </button>
+                <x-primary-button>Save</x-primary-button>
             </div>
         </form>
     </div>

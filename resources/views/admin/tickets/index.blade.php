@@ -102,7 +102,9 @@
                 <tbody>
                     @forelse ($tickets as $ticket)
                         <tr class="border-t">
-                            <td class="px-4 py-2 font-mono text-sm">{{ $ticket->ticket_number ?? $ticket->uuid }}</td>
+                            <td class="px-4 py-2 font-mono text-sm">
+                                <a href="{{ route('admin.tickets.show', $ticket) }}" class="text-accent-secondary hover:underline font-medium">{{ $ticket->ticket_number ?? $ticket->uuid }}</a>
+                            </td>
 
                             <td class="px-4 py-2 font-semibold">
                                 <a href="{{ route('admin.tickets.show', $ticket) }}"

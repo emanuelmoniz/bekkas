@@ -13,9 +13,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
-                <label class="block font-medium mb-1">
-                    Name ({{ $locale }})
-                </label>
+                <x-input-label>Name ({{ $locale }})</x-input-label>
                 <input type="text"
                        name="name[{{ $locale }}]"
                        value="{{ old("name.$locale",
@@ -23,7 +21,8 @@
                                 ? optional($project->translations->where('locale', $locale)->first())->name
                                 : '') }}"
                        required
-                       class="w-full border rounded px-3 py-2">
+                       class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                <x-input-error :messages="$errors->get('name.'.$locale)" class="mt-2" />
             </div>
         @endforeach
     </div>
@@ -31,12 +30,10 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
-                <label class="block font-medium mb-1">
-                    Description ({{ $locale }})
-                </label>
+                <x-input-label>Description ({{ $locale }})</x-input-label>
                 <textarea name="description[{{ $locale }}]"
                           rows="3"
-                          class="w-full border rounded px-3 py-2">{{ old("description.$locale",
+                          class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">{{ old("description.$locale",
                             $mode === 'edit'
                                 ? optional($project->translations->where('locale', $locale)->first())->description
                                 : '') }}</textarea>
@@ -47,65 +44,71 @@
     {{-- PROJECT FIELDS --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
-            <label class="block font-medium mb-1">Production Date</label>
+            <x-input-label for="production_date">Production Date</x-input-label>
             <input type="date"
+                   id="production_date"
                    name="production_date"
                    value="{{ old('production_date', isset($project) ? $project->production_date?->format('Y-m-d') : '') }}"
-                   class="w-full border rounded px-3 py-2">
+                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
         </div>
 
         <div>
-            <label class="block font-medium mb-1">Execution Time</label>
+            <x-input-label for="execution_time">Execution Time</x-input-label>
             <input type="number"
+                   id="execution_time"
                    step="0.01"
                    name="execution_time"
                    value="{{ old('execution_time', $project->execution_time ?? '') }}"
-                   class="w-full border rounded px-3 py-2">
+                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
         </div>
 
         <div>
-            <label class="block font-medium mb-1">Width (mm)</label>
+            <x-input-label for="width">Width (mm)</x-input-label>
             <input type="number"
+                   id="width"
                    min="0"
                    name="width"
                    value="{{ old('width', $project->width ?? '') }}"
-                   class="w-full border rounded px-3 py-2">
+                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
         </div>
 
         <div>
-            <label class="block font-medium mb-1">Length (mm)</label>
+            <x-input-label for="length">Length (mm)</x-input-label>
             <input type="number"
+                   id="length"
                    min="0"
                    name="length"
                    value="{{ old('length', $project->length ?? '') }}"
-                   class="w-full border rounded px-3 py-2">
+                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
         </div>
 
         <div>
-            <label class="block font-medium mb-1">Height (mm)</label>
+            <x-input-label for="height">Height (mm)</x-input-label>
             <input type="number"
+                   id="height"
                    min="0"
                    name="height"
                    value="{{ old('height', $project->height ?? '') }}"
-                   class="w-full border rounded px-3 py-2">
+                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
         </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-            <label class="block font-medium mb-1">Weight</label>
+            <x-input-label for="weight">Weight</x-input-label>
             <input type="number"
+                   id="weight"
                    step="0.01"
                    name="weight"
                    value="{{ old('weight', $project->weight ?? '') }}"
-                   class="w-full border rounded px-3 py-2">
+                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
         </div>
 
         <div>
-            <label class="block font-medium mb-1">Materials</label>
+            <x-input-label>Materials</x-input-label>
             <select name="materials[]"
                     multiple
-                    class="w-full border rounded px-3 py-2">
+                    class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                 @foreach($materials as $material)
                     <option value="{{ $material->id }}"
                         @selected(
@@ -137,10 +140,11 @@
     </div>
 
     {{-- SUBMIT --}}
-    <div class="pt-4">
-        <button type="submit"
-                class="bg-accent-primary hover:bg-accent-primary/90 text-light font-semibold px-6 py-3 rounded">
-            {{ $mode === 'edit' ? 'Update Project' : 'Create Project' }}
-        </button>
+    <div class="pt-4 flex justify-between">
+        <a href="{{ route('admin.projects.index') }}"
+           class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+            Cancel
+        </a>
+        <x-primary-button>{{ $mode === 'edit' ? 'Update Project' : 'Create Project' }}</x-primary-button>
     </div>
 </form>

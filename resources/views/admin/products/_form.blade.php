@@ -6,17 +6,6 @@
 
     @csrf
 
-    {{-- show validation errors if any (previously missing) --}}
-    @if ($errors->any())
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-            <ul class="list-disc pl-5">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     @if ($mode === 'edit')
         @method('PATCH')
     @endif
@@ -25,9 +14,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
-                <label class="block font-medium mb-1">
-                    Name ({{ $locale }})
-                </label>
+                <x-input-label>Name ({{ $locale }})</x-input-label>
                 <input type="text"
                        name="name[{{ $locale }}]"
                        value="{{ old("name.$locale",
@@ -35,7 +22,8 @@
                                 ? optional($product->translations->where('locale', $locale)->first())->name
                                 : '') }}"
                        required
-                       class="w-full border rounded px-3 py-2">
+                       class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                <x-input-error :messages="$errors->get('name.'.$locale)" class="mt-2" />
             </div>
         @endforeach
     </div>
@@ -44,12 +32,10 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
-                <label class="block font-medium mb-1">
-                    Description ({{ $locale }})
-                </label>
+                <x-input-label>Description ({{ $locale }})</x-input-label>
                 <textarea name="description[{{ $locale }}]"
                           rows="3"
-                          class="w-full border rounded px-3 py-2">{{ old("description.$locale",
+                          class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">{{ old("description.$locale",
                             $mode === 'edit'
                                 ? optional($product->translations->where('locale', $locale)->first())->description
                                 : '') }}</textarea>
@@ -61,12 +47,10 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
-                <label class="block font-medium mb-1">
-                    Technical Info ({{ $locale }})
-                </label>
+                <x-input-label>Technical Info ({{ $locale }})</x-input-label>
                 <textarea name="technical_info[{{ $locale }}]"
                           rows="3"
-                          class="w-full border rounded px-3 py-2">{{ old("technical_info.$locale",
+                          class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">{{ old("technical_info.$locale",
                             $mode === 'edit'
                                 ? optional($product->translations->where('locale', $locale)->first())->technical_info
                                 : '') }}</textarea>
@@ -77,40 +61,34 @@
     {{-- PRICE / TAX --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div id="product-price-wrapper">
-            <label class="block font-medium mb-1">Price (gross)</label>
+            <x-input-label for="price">Price (gross)</x-input-label>
             <input type="number"
                    step="0.01"
                    name="price"
                    value="{{ old('price', $product->price ?? '') }}"
                    required
-                   class="w-full border rounded px-3 py-2 @error('price') border-status-error @enderror">
+                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
             <p class="option-override-notice text-xs text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type price</p>
-            @error('price')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-            @enderror
+            <x-input-error :messages="$errors->get('price')" class="mt-2" />
         </div>
 
         <div id="product-promo-price-wrapper">
-            <label class="block font-medium mb-1">Promo Price</label>
+            <x-input-label for="promo_price">Promo Price</x-input-label>
             <input type="number"
                    step="0.01"
                    name="promo_price"
                    value="{{ old('promo_price', $product->promo_price ?? '') }}"
-                   class="w-full border rounded px-3 py-2">
+                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
             <p class="option-override-notice text-xs text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type price</p>
         </div>
 
         {{-- ✅ TAX SELECTOR --}}
         <div>
-            <label class="block font-medium mb-1">Tax</label>
+            <x-input-label for="tax_id">Tax</x-input-label>
             <select name="tax_id"
                     required
-                    class="w-full border rounded px-3 py-2 @error('tax_id') border-status-error @enderror">
-            @error('tax_id')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-            @enderror
+                    class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                 <option value="">— Select tax —</option>
-
                 @foreach ($taxes as $tax)
                     <option value="{{ $tax->id }}"
                         @selected(
@@ -120,15 +98,16 @@
                     </option>
                 @endforeach
             </select>
+            <x-input-error :messages="$errors->get('tax_id')" class="mt-2" />
         </div>
     </div>
 
 {{-- CATEGORIES --}}
 <div>
-    <label class="block font-medium mb-1">Categories</label>
+    <x-input-label>Categories</x-input-label>
     <select name="categories[]"
             multiple
-            class="w-full border rounded px-3 py-2">
+            class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
         @foreach ($categories as $category)
             <option value="{{ $category->id }}"
                 @selected(
@@ -143,10 +122,10 @@
 
 {{-- MATERIALS --}}
 <div>
-    <label class="block font-medium mb-1">Materials</label>
+    <x-input-label>Materials</x-input-label>
     <select name="materials[]"
             multiple
-            class="w-full border rounded px-3 py-2">
+            class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
         @foreach ($materials as $material)
             <option value="{{ $material->id }}"
                 @selected(
@@ -229,81 +208,69 @@
 {{-- STOCK / DIMENSIONS / FLAGS --}}
 <div class="grid grid-cols-1 md:grid-cols-6 gap-6">
     <div>
-        <label class="block font-medium mb-1">Stock</label>
+        <x-input-label for="stock">Stock</x-input-label>
         <div id="product-stock-wrapper">
         <input type="number"
                name="stock"
                value="{{ old('stock', $product->stock ?? 0) }}"
                min="0"
                required
-               class="w-full border rounded px-3 py-2 @error('stock') border-status-error @enderror">
+               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
         <p class="option-override-notice text-xs text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type stock</p>
-        @error('stock')
-            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-        @enderror
+        <x-input-error :messages="$errors->get('stock')" class="mt-2" />
         </div>
     </div>
 
     <div>
-        <label class="block font-medium mb-1">Production Time (days)</label>
+        <x-input-label for="production_time">Production Time (days)</x-input-label>
         <input type="number"
                name="production_time"
                value="{{ old('production_time', $product->production_time ?? 0) }}"
                min="0"
                required
-               class="w-full border rounded px-3 py-2 @error('production_time') border-status-error @enderror">
-        @error('production_time')
-            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-        @enderror
+               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+        <x-input-error :messages="$errors->get('production_time')" class="mt-2" />
     </div>
 
     <div>
-        <label class="block font-medium mb-1">Weight (grams)</label>
+        <x-input-label for="weight">Weight (grams)</x-input-label>
         <input type="number"
                name="weight"
                min="0"
                value="{{ old('weight', $product->weight ?? '') }}"
                required
-               class="w-full border rounded px-3 py-2 @error('weight') border-status-error @enderror">
-        @error('weight')
-            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-        @enderror
+               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+        <x-input-error :messages="$errors->get('weight')" class="mt-2" />
     </div>
 
     <div>
-        <label class="block font-medium mb-1">Width (mm)</label>
+        <x-input-label for="width">Width (mm)</x-input-label>
         <input type="number"
                step="0.01"
                name="width"
                value="{{ old('width', $product->width ?? '') }}"
-               class="w-full border rounded px-3 py-2 @error('width') border-status-error @enderror">
-        @error('width')
-            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-        @enderror
+               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+        <x-input-error :messages="$errors->get('width')" class="mt-2" />
     </div>
 
     <div>
-        <label class="block font-medium mb-1">Length (mm)</label>
+        <x-input-label for="length">Length (mm)</x-input-label>
         <input type="number"
                step="0.01"
                name="length"
                value="{{ old('length', $product->length ?? '') }}"
-               class="w-full border rounded px-3 py-2 @error('length') border-status-error @enderror">
-        @error('length')
-            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-        @enderror
+               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+        <x-input-error :messages="$errors->get('length')" class="mt-2" />
     </div>
 
     <div>
-        <label class="block font-medium mb-1">Height (mm)</label>
+        <x-input-label for="height">Height (mm)</x-input-label>
         <input type="number"
                step="0.01"
                name="height"
                value="{{ old('height', $product->height ?? '') }}"
-               class="w-full border rounded px-3 py-2 @error('height') border-status-error @enderror">
-        @error('height')
-            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-        @enderror
+               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+        <x-input-error :messages="$errors->get('height')" class="mt-2" />
     </div>
 </div>
 
@@ -341,11 +308,12 @@
     </label>
 
     {{-- SUBMIT --}}
-    <div class="pt-4">
-        <button type="submit"
-                class="bg-accent-primary hover:bg-accent-primary/90 text-light font-semibold px-6 py-3 rounded">
-            {{ $mode === 'edit' ? 'Update Product' : 'Create Product' }}
-        </button>
+    <div class="pt-4 flex justify-between">
+        <a href="{{ route('admin.products.index') }}"
+           class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+            Cancel
+        </a>
+        <x-primary-button>{{ $mode === 'edit' ? 'Update Product' : 'Create Product' }}</x-primary-button>
     </div>
 </form>
 

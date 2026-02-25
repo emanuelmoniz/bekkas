@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-6">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+<div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
             {{-- USER INFORMATION --}}
             <form method="POST" action="{{ route('admin.users.update', $user) }}" class="mb-6">
@@ -18,59 +18,36 @@
 
                     {{-- NAME --}}
                     <div>
-                        <label class="block font-semibold mb-1">Name *</label>
-                        <input type="text"
-                               name="name"
-                               value="{{ old('name', $user->name) }}"
-                               required
-                               class="border rounded px-3 py-2 w-full @error('name') border-status-error @enderror">
-                        @error('name')
-                            <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                        <x-input-label for="name">Name <span class="text-status-error">*</span></x-input-label>
+                        <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required />
+                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
                     {{-- EMAIL --}}
                     <div>
-                        <label class="block font-semibold mb-1">Email *</label>
-                        <input type="email"
-                               name="email"
-                               value="{{ old('email', $user->email) }}"
-                               required
-                               class="border rounded px-3 py-2 w-full @error('email') border-status-error @enderror">
-                        @error('email')
-                            <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                        <x-input-label for="email">Email <span class="text-status-error">*</span></x-input-label>
+                        <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required />
+                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
                     {{-- PHONE --}}
                     <div>
-                        <label class="block font-semibold mb-1">Phone</label>
-                        <input type="text"
-                               name="phone"
-                               value="{{ old('phone', $user->phone) }}"
-                               class="border rounded px-3 py-2 w-full @error('phone') border-status-error @enderror">
-                        @error('phone')
-                            <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                        <x-input-label for="phone">Phone</x-input-label>
+                        <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" />
+                        <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                     </div>
 
                     {{-- PASSWORD --}}
                     <div>
-                        <label class="block font-semibold mb-1">New Password (leave blank to keep current)</label>
-                        <input type="password"
-                               name="password"
-                               class="border rounded px-3 py-2 w-full @error('password') border-status-error @enderror">
-                        @error('password')
-                            <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                        <x-input-label for="password">New Password <span class="font-normal text-grey-dark">(leave blank to keep current)</span></x-input-label>
+                        <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" />
+                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 
                     {{-- PASSWORD CONFIRMATION --}}
                     <div>
-                        <label class="block font-semibold mb-1">Confirm Password</label>
-                        <input type="password"
-                               name="password_confirmation"
-                               class="border rounded px-3 py-2 w-full">
+                        <x-input-label for="password_confirmation">Confirm Password</x-input-label>
+                        <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" />
                     </div>
 
                     {{-- IS_ACTIVE --}}
@@ -86,11 +63,12 @@
                         </label>
                     </div>
 
-                    <div class="flex justify-end">
-                        <button type="submit"
-                                class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-3 rounded">
-                            Update User
-                        </button>
+                    <div class="flex justify-between">
+                        <a href="{{ route('admin.users.index') }}"
+                           class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                            Cancel
+                        </a>
+                        <x-primary-button>Update User</x-primary-button>
                     </div>
                 </div>
             </form>
@@ -107,65 +85,44 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             {{-- TITLE --}}
                             <div>
-                                <label class="block font-semibold mb-1">Title</label>
-                                <input type="text"
-                                       name="title"
-                                       value="{{ old('title', $address->title) }}"
-                                       class="border rounded px-3 py-2 w-full">
+                                <x-input-label for="title_{{ $address->id }}">Title</x-input-label>
+                                <x-text-input id="title_{{ $address->id }}" name="title" type="text" class="mt-1 block w-full" :value="old('title', $address->title)" />
                             </div>
 
                             {{-- NIF --}}
                             <div>
-                                <label class="block font-semibold mb-1">NIF</label>
-                                <input type="text"
-                                       name="nif"
-                                       value="{{ old('nif', $address->nif) }}"
-                                       class="border rounded px-3 py-2 w-full">
+                                <x-input-label for="nif_{{ $address->id }}">NIF</x-input-label>
+                                <x-text-input id="nif_{{ $address->id }}" name="nif" type="text" class="mt-1 block w-full" :value="old('nif', $address->nif)" />
                             </div>
 
                             {{-- ADDRESS LINE 1 --}}
                             <div class="md:col-span-2">
-                                <label class="block font-semibold mb-1">Address Line 1 *</label>
-                                <input type="text"
-                                       name="address_line_1"
-                                       value="{{ old('address_line_1', $address->address_line_1) }}"
-                                       required
-                                       class="border rounded px-3 py-2 w-full">
+                                <x-input-label>Address Line 1 <span class="text-status-error">*</span></x-input-label>
+                                <x-text-input name="address_line_1" type="text" class="mt-1 block w-full" :value="old('address_line_1', $address->address_line_1)" required />
                             </div>
 
                             {{-- ADDRESS LINE 2 --}}
                             <div class="md:col-span-2">
-                                <label class="block font-semibold mb-1">Address Line 2</label>
-                                <input type="text"
-                                       name="address_line_2"
-                                       value="{{ old('address_line_2', $address->address_line_2) }}"
-                                       class="border rounded px-3 py-2 w-full">
+                                <x-input-label>Address Line 2</x-input-label>
+                                <x-text-input name="address_line_2" type="text" class="mt-1 block w-full" :value="old('address_line_2', $address->address_line_2)" />
                             </div>
 
                             {{-- POSTAL CODE --}}
                             <div>
-                                <label class="block font-semibold mb-1">Postal Code *</label>
-                                <input type="text"
-                                       name="postal_code"
-                                       value="{{ old('postal_code', $address->postal_code) }}"
-                                       required
-                                       class="border rounded px-3 py-2 w-full">
+                                <x-input-label>Postal Code <span class="text-status-error">*</span></x-input-label>
+                                <x-text-input name="postal_code" type="text" class="mt-1 block w-full" :value="old('postal_code', $address->postal_code)" required />
                             </div>
 
                             {{-- CITY --}}
                             <div>
-                                <label class="block font-semibold mb-1">City *</label>
-                                <input type="text"
-                                       name="city"
-                                       value="{{ old('city', $address->city) }}"
-                                       required
-                                       class="border rounded px-3 py-2 w-full">
+                                <x-input-label>City <span class="text-status-error">*</span></x-input-label>
+                                <x-text-input name="city" type="text" class="mt-1 block w-full" :value="old('city', $address->city)" required />
                             </div>
 
                             {{-- COUNTRY --}}
                             <div class="md:col-span-2">
-                                <label class="block font-semibold mb-1">Country *</label>
-                                <select name="country_id" required class="border rounded px-3 py-2 w-full">
+                                <x-input-label>Country <span class="text-status-error">*</span></x-input-label>
+                                <select name="country_id" required class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                                     @foreach ($countries as $country)
                                         <option value="{{ $country->id }}" @selected(old('country_id', $address->country_id) == $country->id)>
                                             {{ $country->name }}
@@ -176,11 +133,8 @@
 
                             {{-- PHONE --}}
                             <div>
-                                <label class="block font-semibold mb-1">Phone</label>
-                                <input type="text"
-                                       name="phone"
-                                       value="{{ old('phone', $address->phone) }}"
-                                       class="border rounded px-3 py-2 w-full">
+                                <x-input-label>Phone</x-input-label>
+                                <x-text-input name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $address->phone)" />
                             </div>
 
                             {{-- IS DEFAULT --}}
@@ -198,10 +152,7 @@
                         </div>
 
                         <div class="flex justify-end">
-                            <button type="submit"
-                                    class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded text-sm">
-                                Update Address
-                            </button>
+                            <x-primary-button>Update Address</x-primary-button>
                         </div>
                     </form>
                 @endforeach
@@ -215,59 +166,44 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         {{-- TITLE --}}
                         <div>
-                            <label class="block font-semibold mb-1">Title</label>
-                            <input type="text"
-                                   name="title"
-                                   class="border rounded px-3 py-2 w-full">
+                            <x-input-label for="new_title">Title</x-input-label>
+                            <x-text-input id="new_title" name="title" type="text" class="mt-1 block w-full" />
                         </div>
 
                         {{-- NIF --}}
                         <div>
-                            <label class="block font-semibold mb-1">NIF</label>
-                            <input type="text"
-                                   name="nif"
-                                   class="border rounded px-3 py-2 w-full">
+                            <x-input-label for="new_nif">NIF</x-input-label>
+                            <x-text-input id="new_nif" name="nif" type="text" class="mt-1 block w-full" />
                         </div>
 
                         {{-- ADDRESS LINE 1 --}}
                         <div class="md:col-span-2">
-                            <label class="block font-semibold mb-1">Address Line 1 *</label>
-                            <input type="text"
-                                   name="address_line_1"
-                                   required
-                                   class="border rounded px-3 py-2 w-full">
+                            <x-input-label>Address Line 1 <span class="text-status-error">*</span></x-input-label>
+                            <x-text-input name="address_line_1" type="text" class="mt-1 block w-full" required />
                         </div>
 
                         {{-- ADDRESS LINE 2 --}}
                         <div class="md:col-span-2">
-                            <label class="block font-semibold mb-1">Address Line 2</label>
-                            <input type="text"
-                                   name="address_line_2"
-                                   class="border rounded px-3 py-2 w-full">
+                            <x-input-label>Address Line 2</x-input-label>
+                            <x-text-input name="address_line_2" type="text" class="mt-1 block w-full" />
                         </div>
 
                         {{-- POSTAL CODE --}}
                         <div>
-                            <label class="block font-semibold mb-1">Postal Code *</label>
-                            <input type="text"
-                                   name="postal_code"
-                                   required
-                                   class="border rounded px-3 py-2 w-full">
+                            <x-input-label>Postal Code <span class="text-status-error">*</span></x-input-label>
+                            <x-text-input name="postal_code" type="text" class="mt-1 block w-full" required />
                         </div>
 
                         {{-- CITY --}}
                         <div>
-                            <label class="block font-semibold mb-1">City *</label>
-                            <input type="text"
-                                   name="city"
-                                   required
-                                   class="border rounded px-3 py-2 w-full">
+                            <x-input-label>City <span class="text-status-error">*</span></x-input-label>
+                            <x-text-input name="city" type="text" class="mt-1 block w-full" required />
                         </div>
 
                         {{-- COUNTRY --}}
                         <div class="md:col-span-2">
-                            <label class="block font-semibold mb-1">Country *</label>
-                            <select name="country_id" required class="border rounded px-3 py-2 w-full">
+                            <x-input-label>Country <span class="text-status-error">*</span></x-input-label>
+                            <select name="country_id" required class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                                 @foreach ($countries as $country)
                                     <option value="{{ $country->id }}">
                                         {{ $country->name }}
@@ -278,10 +214,8 @@
 
                         {{-- PHONE --}}
                         <div>
-                            <label class="block font-semibold mb-1">Phone</label>
-                            <input type="text"
-                                   name="phone"
-                                   class="border rounded px-3 py-2 w-full">
+                            <x-input-label>Phone</x-input-label>
+                            <x-text-input name="phone" type="text" class="mt-1 block w-full" />
                         </div>
 
                         {{-- IS DEFAULT --}}
@@ -298,10 +232,7 @@
                     </div>
 
                     <div class="flex justify-end">
-                        <button type="submit"
-                                class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded text-sm">
-                            Add Address
-                        </button>
+                        <x-primary-button>Add Address</x-primary-button>
                     </div>
                 </form>
             </div>
@@ -309,7 +240,7 @@
             {{-- BACK BUTTON --}}
             <div class="flex justify-start">
                 <a href="{{ route('admin.users.index') }}"
-                   class="bg-grey-medium hover:bg-grey-dark text-light px-6 py-3 rounded">
+                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     Back to Users
                 </a>
             </div>

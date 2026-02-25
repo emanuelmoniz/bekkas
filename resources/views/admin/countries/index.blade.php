@@ -34,11 +34,15 @@
                             <td class="px-4 py-2">{{ $country->iso_alpha2 }}</td>
                             <td class="px-4 py-2">{{ $country->country_code }}</td>
                             <td class="px-4 py-2">
-                                {{ $country->is_active ? 'Yes' : 'No' }}
+                                @if($country->is_active)
+                                    <span class="text-status-success font-bold">&#10003;</span>
+                                @else
+                                    <span class="text-status-error font-bold">&#10007;</span>
+                                @endif
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
                                 <a href="{{ route('admin.countries.edit', $country) }}"
-                                   class="text-accent-secondary hover:underline">
+                                   class="inline-flex items-center px-3 py-1 rounded bg-accent-primary text-light text-sm">
                                     Edit
                                 </a>
 
@@ -48,7 +52,7 @@
                                       onsubmit="return confirm('Delete this country?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="text-grey-dark hover:underline">
+                                    <button class="inline-flex items-center px-3 py-1 rounded bg-status-error/10 text-status-error text-sm">
                                         Delete
                                     </button>
                                 </form>

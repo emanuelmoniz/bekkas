@@ -97,13 +97,15 @@
                                 <span class="text-xs">{{ $tier->regions->count() }}</span>
                             </td>
                             <td class="px-4 py-2">
-                                <span class="px-2 py-1 rounded text-xs {{ $tier->active ? 'bg-status-success text-status-success' : 'bg-status-error/10 text-status-error' }}">
-                                    {{ $tier->active ? 'Yes' : 'No' }}
-                                </span>
+                                @if($tier->active)
+                                    <span class="text-status-success font-bold">&#10003;</span>
+                                @else
+                                    <span class="text-status-error font-bold">&#10007;</span>
+                                @endif
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
                                 <a href="{{ route('admin.shipping-tiers.edit', $tier) }}"
-                                   class="text-accent-secondary hover:underline">
+                                   class="inline-flex items-center px-3 py-1 rounded bg-accent-primary text-light text-sm">
                                     Edit
                                 </a>
 
@@ -111,7 +113,7 @@
                                       action="{{ route('admin.shipping-tiers.duplicate', $tier) }}"
                                       class="inline">
                                     @csrf
-                                    <button class="text-status-success hover:underline">
+                                    <button class="inline-flex items-center px-3 py-1 rounded bg-grey-light text-grey-dark text-sm">
                                         Duplicate
                                     </button>
                                 </form>
@@ -122,7 +124,7 @@
                                       onsubmit="return confirm('Delete this tier?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="text-grey-dark hover:underline">
+                                    <button class="inline-flex items-center px-3 py-1 rounded bg-status-error/10 text-status-error text-sm">
                                         Delete
                                     </button>
                                 </form>

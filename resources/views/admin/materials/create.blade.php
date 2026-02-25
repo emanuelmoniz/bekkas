@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
             <form method="POST" action="{{ route('admin.materials.store') }}">
                 @csrf
@@ -16,22 +16,26 @@
                     <h3 class="font-semibold mb-4">Translations</h3>
 
                     @foreach (\App\Models\Locale::activeList() as $locale => $label)
-                        <div class="border p-4 mb-4">
-                            <h4 class="font-medium mb-2">{{ $label }}</h4>
-
+                        <div class="mb-4">
+                            <x-input-label>{{ $label }}</x-input-label>
                             <input type="text"
                                    name="name[{{ $locale }}]"
-                                   class="w-full border rounded px-3 py-2"
+                                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm"
                                    placeholder="Material name"
                                    required>
+                            <x-input-error :messages="$errors->get('name.'.$locale)" class="mt-2" />
                         </div>
                     @endforeach
                 </div>
 
-                    <button type="submit"
-                            class="bg-accent-primary text-light font-semibold px-6 py-2 rounded">
-                        Create Material
-                    </button>
+                {{-- ACTIONS --}}
+                <div class="bg-white p-6 rounded shadow flex justify-between">
+                    <a href="{{ route('admin.materials.index') }}"
+                       class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                        Cancel
+                    </a>
+                    <x-primary-button>Create Material</x-primary-button>
+                </div>
 
             </form>
 
