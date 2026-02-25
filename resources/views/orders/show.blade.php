@@ -122,6 +122,13 @@
                         <tr class="border-t">
                             <td class="px-3 py-2">
                                 {{ optional($item->product->translation())->name }}
+                                @if($item->orderItemOptions->count())
+                                    <div class="text-xs text-gray-500 mt-0.5 space-y-0.5">
+                                        @foreach($item->orderItemOptions as $opt)
+                                            <span class="block">{{ $opt->option_type_name }}: {{ $opt->option_name }}</span>
+                                        @endforeach
+                                    </div>
+                                @endif
                             </td>
                             <td class="px-3 py-2 text-center">{{ $item->quantity }}</td>
                             <td class="px-3 py-2 text-right">

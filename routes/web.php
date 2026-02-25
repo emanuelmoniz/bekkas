@@ -96,7 +96,7 @@ Route::post('/cart/update/{product}', [CartController::class, 'update'])
     ->middleware(['throttle:30,1', \App\Http\Middleware\EnsureStoreEnabled::class])
     ->name('cart.update');
 
-Route::post('/cart/remove/{product}', [CartController::class, 'remove'])
+Route::post('/cart/remove', [CartController::class, 'remove'])
     ->middleware(['throttle:30,1', \App\Http\Middleware\EnsureStoreEnabled::class])
     ->name('cart.remove');
 

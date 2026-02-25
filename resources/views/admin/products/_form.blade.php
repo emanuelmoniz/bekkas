@@ -76,7 +76,7 @@
 
     {{-- PRICE / TAX --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div>
+        <div id="product-price-wrapper">
             <label class="block font-medium mb-1">Price (gross)</label>
             <input type="number"
                    step="0.01"
@@ -84,18 +84,20 @@
                    value="{{ old('price', $product->price ?? '') }}"
                    required
                    class="w-full border rounded px-3 py-2 @error('price') border-status-error @enderror">
+            <p class="option-override-notice text-xs text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type price</p>
             @error('price')
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
 
-        <div>
+        <div id="product-promo-price-wrapper">
             <label class="block font-medium mb-1">Promo Price</label>
             <input type="number"
                    step="0.01"
                    name="promo_price"
                    value="{{ old('promo_price', $product->promo_price ?? '') }}"
                    class="w-full border rounded px-3 py-2">
+            <p class="option-override-notice text-xs text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type price</p>
         </div>
 
         {{-- ✅ TAX SELECTOR --}}
@@ -177,10 +179,12 @@
                 @php
                     // convert model to array to reuse same partial
                     $type = [
-                        'is_active' => $typeModel->is_active,
-                        'name' => [],
+                        'is_active'  => $typeModel->is_active,
+                        'have_stock' => $typeModel->have_stock,
+                        'have_price' => $typeModel->have_price,
+                        'name'        => [],
                         'description' => [],
-                        'options' => [],
+                        'options'     => [],
                     ];
 
                     foreach (\App\Models\Locale::activeList() as $locale => $label) {
@@ -191,9 +195,11 @@
 
                     foreach ($typeModel->options as $opt) {
                         $optArr = [
-                            'is_active' => $opt->is_active,
-                            'stock' => $opt->stock,
-                            'name' => [],
+                            'is_active'   => $opt->is_active,
+                            'stock'       => $opt->stock,
+                            'price'       => $opt->price,
+                            'promo_price' => $opt->promo_price,
+                            'name'        => [],
                             'description' => [],
                         ];
                         foreach (\App\Models\Locale::activeList() as $loc => $lbl) {
@@ -224,15 +230,18 @@
 <div class="grid grid-cols-1 md:grid-cols-6 gap-6">
     <div>
         <label class="block font-medium mb-1">Stock</label>
+        <div id="product-stock-wrapper">
         <input type="number"
                name="stock"
                value="{{ old('stock', $product->stock ?? 0) }}"
                min="0"
                required
                class="w-full border rounded px-3 py-2 @error('stock') border-status-error @enderror">
+        <p class="option-override-notice text-xs text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type stock</p>
         @error('stock')
             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
         @enderror
+        </div>
     </div>
 
     <div>
@@ -362,10 +371,22 @@
                 </div>
             @endforeach
         </div>
-        <label class="flex items-center gap-2 mt-4">
-            <input type="checkbox" name="option_types[__INDEX__][is_active]" value="1">
-            Active
-        </label>
+        <div class="flex flex-wrap items-center gap-6 mt-4">
+            <label class="flex items-center gap-2">
+                <input type="checkbox" name="option_types[__INDEX__][is_active]" value="1">
+                Active
+            </label>
+            <label class="flex items-center gap-2">
+                <input type="checkbox" name="option_types[__INDEX__][have_stock]" value="1" class="have-stock-checkbox">
+                Controls Stock
+                <span class="text-xs text-grey-medium">(overrides product-level stock)</span>
+            </label>
+            <label class="flex items-center gap-2">
+                <input type="checkbox" name="option_types[__INDEX__][have_price]" value="1" class="have-price-checkbox">
+                Controls Price
+                <span class="text-xs text-grey-medium">(overrides product-level price)</span>
+            </label>
+        </div>
         <div class="options-list mt-4 space-y-2"></div>
         <button type="button" class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-3 py-1 rounded add-option">
             + Add option
@@ -402,6 +423,20 @@
                    value="0" placeholder="0"
                    class="w-full border rounded px-3 py-2">
         </div>
+        <div class="option-price-fields mt-2 grid grid-cols-1 md:grid-cols-2 gap-4" style="display:none">
+            <div>
+                <label class="block font-medium mb-1">Price (gross)</label>
+                <input type="number" step="0.01" min="0"
+                       name="option_types[__INDEX__][options][__OPT_INDEX__][price]"
+                       class="w-full border rounded px-3 py-2">
+            </div>
+            <div>
+                <label class="block font-medium mb-1">Promo Price</label>
+                <input type="number" step="0.01" min="0"
+                       name="option_types[__INDEX__][options][__OPT_INDEX__][promo_price]"
+                       class="w-full border rounded px-3 py-2">
+            </div>
+        </div>
     </div>
 </template>
 
@@ -419,16 +454,72 @@
                 }
             });
 
+        /**
+         * Enforce mutual exclusion: only one type block may have have_stock = true
+         * and only one may have have_price = true across all blocks.
+         * When a checkbox is checked, disable all other same-class checkboxes.
+         * When unchecked, re-enable them.
+         */
+        function syncOptionTypeFlags() {
+            const stockBoxes = Array.from(container.querySelectorAll('.have-stock-checkbox'));
+            const priceBoxes = Array.from(container.querySelectorAll('.have-price-checkbox'));
+
+            const anyStock = stockBoxes.some(cb => cb.checked);
+            const anyPrice = priceBoxes.some(cb => cb.checked);
+
+            stockBoxes.forEach(cb => {
+                cb.disabled = anyStock && !cb.checked;
+            });
+
+            priceBoxes.forEach(cb => {
+                cb.disabled = anyPrice && !cb.checked;
+            });
+
+            // Show/hide price fields per type block based on have_price
+            Array.from(container.querySelectorAll('.option-type-block')).forEach(block => {
+                const priceCheckbox = block.querySelector('.have-price-checkbox');
+                const showPrice = priceCheckbox && priceCheckbox.checked;
+                block.querySelectorAll('.option-price-fields').forEach(el => {
+                    el.style.display = showPrice ? '' : 'none';
+                });
+            });
+
+            // Visual indicator on product-level price/stock fields
+            const productPriceWrapper = document.getElementById('product-price-wrapper');
+            const productStockWrapper = document.getElementById('product-stock-wrapper');
+            const productPromoPriceWrapper = document.getElementById('product-promo-price-wrapper');
+            if (productPriceWrapper) {
+                productPriceWrapper.classList.toggle('opacity-50', anyPrice);
+                const notice = productPriceWrapper.querySelector('.option-override-notice');
+                if (notice) notice.style.display = anyPrice ? '' : 'none';
+            }
+            if (productPromoPriceWrapper) {
+                productPromoPriceWrapper.classList.toggle('opacity-50', anyPrice);
+                const promoPriceNotice = productPromoPriceWrapper.querySelector('.option-override-notice');
+                if (promoPriceNotice) promoPriceNotice.style.display = anyPrice ? '' : 'none';
+            }
+            if (productStockWrapper) {
+                productStockWrapper.classList.toggle('opacity-50', anyStock);
+                const notice = productStockWrapper.querySelector('.option-override-notice');
+                if (notice) notice.style.display = anyStock ? '' : 'none';
+            }
+        }
+
+        // Run on page load to reflect saved state
+        syncOptionTypeFlags();
+
         document.getElementById('add-option-type').addEventListener('click', () => {
             const tpl = document.getElementById('option-type-template').innerHTML;
             const html = tpl.replace(/__INDEX__/g, nextTypeIndex);
             container.insertAdjacentHTML('beforeend', html);
             nextTypeIndex++;
+            syncOptionTypeFlags();
         });
 
         container.addEventListener('click', (e) => {
             if (e.target.matches('.remove-option-type')) {
                 e.target.closest('.option-type-block').remove();
+                syncOptionTypeFlags();
                 return;
             }
 
@@ -447,12 +538,29 @@
                 let tpl = document.getElementById('option-template').innerHTML;
                 tpl = tpl.replace(/__INDEX__/g, typeIndex).replace(/__OPT_INDEX__/g, optIndex);
                 optionsList.insertAdjacentHTML('beforeend', tpl);
+                // Show price fields immediately if parent type has have_price
+                const priceCheckbox = typeBlock.querySelector('.have-price-checkbox');
+                if (priceCheckbox && priceCheckbox.checked) {
+                    const newItem = optionsList.lastElementChild;
+                    if (newItem) {
+                        newItem.querySelectorAll('.option-price-fields').forEach(el => {
+                            el.style.display = '';
+                        });
+                    }
+                }
                 return;
             }
 
             if (e.target.matches('.remove-option')) {
                 e.target.closest('.option-item').remove();
                 return;
+            }
+        });
+
+        // Listen for have_stock / have_price toggle changes
+        container.addEventListener('change', (e) => {
+            if (e.target.matches('.have-stock-checkbox') || e.target.matches('.have-price-checkbox')) {
+                syncOptionTypeFlags();
             }
         });
     })();

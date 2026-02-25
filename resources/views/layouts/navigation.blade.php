@@ -206,7 +206,7 @@
 
             <!-- Right side -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-6">
-                @php $cartCount = array_sum(session('cart', [])); @endphp
+                @php $cartCount = array_sum(array_column(session('cart', []), 'quantity')); @endphp
                 <!-- Language Selector -->
                 <div class="flex items-center gap-2">
                     @php
@@ -481,7 +481,7 @@
                     </x-responsive-nav-link>
                 </div>
                 
-                @php $cartCount = array_sum(session('cart', [])); @endphp
+                @php $cartCount = array_sum(array_column(session('cart', []), 'quantity')); @endphp
                 <div x-data="{}" x-show="$store.cart.count > 0 && {{ config('app.store_enabled') ? 'true' : 'false' }}">
                     <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
                         {{ t('nav.cart') ?: 'Cart' }} (<span x-text="$store.cart.count"></span>)

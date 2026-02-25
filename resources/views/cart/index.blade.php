@@ -29,6 +29,16 @@
                                 <div class="font-medium">
                                     {{ optional($item['product']->translation())->name }}
                                 </div>
+
+                                {{-- Selected options --}}
+                                @if (!empty($item['selected_option_labels']))
+                                    <div class="text-xs text-grey-dark mt-0.5 space-x-2">
+                                        @foreach ($item['selected_option_labels'] as $label)
+                                            <span>{{ $label['type_name'] }}: <strong>{{ $label['option_name'] }}</strong></span>
+                                        @endforeach
+                                    </div>
+                                @endif
+
                                 <div class="text-sm text-grey-dark">
                                     €{{ number_format($item['unit_gross'], 2) }} × {{ $item['quantity'] }}
                                 </div>
@@ -44,6 +54,11 @@
                             <div class="flex items-center gap-2">
                                 <form method="POST" action="{{ route('cart.update', $item['product']) }}">
                                     @csrf
+                                    <input type="hidden" name="old_cart_key" value="{{ $item['cart_key'] }}">
+                                    {{-- Preserve selected options through the update form --}}
+                                    @foreach ($item['options'] as $typeId => $optionId)
+                                        <input type="hidden" name="options[{{ $typeId }}]" value="{{ $optionId }}">
+                                    @endforeach
                                     <input type="number"
                                            name="quantity"
                                            value="{{ $item['quantity'] }}"
@@ -54,8 +69,9 @@
                                     </button>
                                 </form>
 
-                                <form method="POST" action="{{ route('cart.remove', $item['product']) }}">
+                                <form method="POST" action="{{ route('cart.remove') }}">
                                     @csrf
+                                    <input type="hidden" name="cart_key" value="{{ $item['cart_key'] }}">
                                     <button class="text-grey-dark text-sm underline">
                                         {{ t('cart.remove') ?: 'Remove' }}
                                     </button>

@@ -148,7 +148,16 @@
 
                 @foreach ($items as $item)
                     <div class="text-sm flex justify-between">
-                        <span>{{ optional($item['product']->translation())->name }} × {{ $item['quantity'] }}</span>
+                        <div>
+                            <span>{{ optional($item['product']->translation())->name }} × {{ $item['quantity'] }}</span>
+                            @if (!empty($item['selected_option_labels']))
+                                <div class="text-xs text-grey-medium mt-0.5">
+                                    @foreach ($item['selected_option_labels'] as $label)
+                                        <span class="block">{{ $label['type_name'] }}: <strong>{{ $label['option_name'] }}</strong></span>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
                         <span>€{{ number_format($item['gross'], 2) }}</span>
                     </div>
                 @endforeach

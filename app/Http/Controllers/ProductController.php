@@ -182,7 +182,10 @@ class ProductController extends Controller
     {
         abort_if(! $product->active, 404);
 
-        $product->load(['translations', 'photos', 'categories', 'materials']);
+        $product->load(['translations', 'photos', 'categories', 'materials',
+            'optionTypes.translations',
+            'optionTypes.options.translations',
+        ]);
 
         // Check if product is in favorites
         $isFavorite = false;

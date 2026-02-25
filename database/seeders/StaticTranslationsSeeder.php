@@ -588,6 +588,18 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'store.product_unavailable', 'locale' => 'pt-PT', 'value' => 'Produto indisponível', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.product_unavailable', 'locale' => 'en-UK', 'value' => 'Product unavailable', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'store.select_option', 'locale' => 'pt-PT', 'value' => 'Selecione uma opção', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.select_option', 'locale' => 'en-UK', 'value' => 'Select an option', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.options_required', 'locale' => 'pt-PT', 'value' => 'Por favor selecione todas as opções antes de adicionar ao carrinho.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.options_required', 'locale' => 'en-UK', 'value' => 'Please select all options before adding to cart.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.select_option_for', 'locale' => 'pt-PT', 'value' => 'Por favor selecione um valor para: :type', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.select_option_for', 'locale' => 'en-UK', 'value' => 'Please select a value for: :type', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'store.invalid_option_for', 'locale' => 'pt-PT', 'value' => 'Seleção inválida para: :type', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'store.invalid_option_for', 'locale' => 'en-UK', 'value' => 'Invalid selection for: :type', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'store.back_to_store', 'locale' => 'pt-PT', 'value' => 'Voltar à loja', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.back_to_store', 'locale' => 'en-UK', 'value' => 'Back to store', 'created_at' => $now, 'updated_at' => $now],
 

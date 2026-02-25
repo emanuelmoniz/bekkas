@@ -110,15 +110,21 @@ class ProductController extends Controller
             // option-types are optional; if present validate structure
             'option_types' => 'sometimes|array',
             'option_types.*.is_active' => 'sometimes|boolean',
+            'option_types.*.have_stock' => 'sometimes|boolean',
+            'option_types.*.have_price' => 'sometimes|boolean',
             'option_types.*.name' => 'sometimes|array',
             'option_types.*.description' => 'sometimes|array',
             'option_types.*.options' => 'sometimes|array',
             'option_types.*.options.*.is_active' => 'sometimes|boolean',
             // stock may legitimately be left empty; treat an empty string as null
             'option_types.*.options.*.stock' => 'sometimes|nullable|integer|min:0',
+            'option_types.*.options.*.price' => 'sometimes|nullable|numeric|min:0',
+            'option_types.*.options.*.promo_price' => 'sometimes|nullable|numeric|min:0',
             'option_types.*.options.*.name' => 'sometimes|array',
             'option_types.*.options.*.description' => 'sometimes|array',
         ]);
+
+        $this->validateOptionTypeFlags($request->input('option_types', []));
 
         $product = Product::create([
             'tax_id' => $request->tax_id,
@@ -194,15 +200,21 @@ class ProductController extends Controller
 
             'option_types' => 'sometimes|array',
             'option_types.*.is_active' => 'sometimes|boolean',
+            'option_types.*.have_stock' => 'sometimes|boolean',
+            'option_types.*.have_price' => 'sometimes|boolean',
             'option_types.*.name' => 'sometimes|array',
             'option_types.*.description' => 'sometimes|array',
             'option_types.*.options' => 'sometimes|array',
             'option_types.*.options.*.is_active' => 'sometimes|boolean',
             // allow blank values here as well; will default to zero when saved
             'option_types.*.options.*.stock' => 'sometimes|nullable|integer|min:0',
+            'option_types.*.options.*.price' => 'sometimes|nullable|numeric|min:0',
+            'option_types.*.options.*.promo_price' => 'sometimes|nullable|numeric|min:0',
             'option_types.*.options.*.name' => 'sometimes|array',
             'option_types.*.options.*.description' => 'sometimes|array',
         ]);
+
+        $this->validateOptionTypeFlags($request->input('option_types', []));
 
         $product->update([
             'tax_id' => $request->tax_id,
@@ -275,18 +287,23 @@ class ProductController extends Controller
      * @param  array    $types
      * @return void
      */
-    protected function saveOptionTypes(Product $product, array $types)
+    protected function saveOptionTypes(Product $product, array $types): void
     {
         foreach ($types as $typeData) {
+            $haveStock = isset($typeData['have_stock']) ? (bool) $typeData['have_stock'] : false;
+            $havePrice = isset($typeData['have_price']) ? (bool) $typeData['have_price'] : false;
+
             $type = $product->optionTypes()->create([
-                'is_active' => isset($typeData['is_active']) ? (bool) $typeData['is_active'] : false,
+                'is_active'  => isset($typeData['is_active']) ? (bool) $typeData['is_active'] : false,
+                'have_stock' => $haveStock,
+                'have_price' => $havePrice,
             ]);
 
             // translations
             foreach (Locale::activeList() as $locale => $label) {
                 $type->translations()->create([
-                    'locale' => $locale,
-                    'name' => $typeData['name'][$locale] ?? null,
+                    'locale'      => $locale,
+                    'name'        => $typeData['name'][$locale] ?? null,
                     'description' => $typeData['description'][$locale] ?? null,
                 ]);
             }
@@ -294,18 +311,58 @@ class ProductController extends Controller
             // options nested within this type
             foreach ($typeData['options'] ?? [] as $optData) {
                 $opt = $type->options()->create([
-                    'is_active' => isset($optData['is_active']) ? (bool) $optData['is_active'] : false,
-                    'stock' => isset($optData['stock']) ? (int) $optData['stock'] : 0,
+                    'is_active'  => isset($optData['is_active']) ? (bool) $optData['is_active'] : false,
+                    'stock'      => isset($optData['stock']) ? (int) $optData['stock'] : 0,
+                    // Only persist price/promo_price when the parent type has have_price
+                    'price'       => $havePrice && isset($optData['price']) ? $optData['price'] : null,
+                    'promo_price' => $havePrice && isset($optData['promo_price']) ? $optData['promo_price'] : null,
                 ]);
 
                 foreach (Locale::activeList() as $locale => $label) {
                     $opt->translations()->create([
-                        'locale' => $locale,
-                        'name' => $optData['name'][$locale] ?? null,
+                        'locale'      => $locale,
+                        'name'        => $optData['name'][$locale] ?? null,
                         'description' => $optData['description'][$locale] ?? null,
                     ]);
                 }
             }
+        }
+    }
+
+    /**
+     * Assert at most one option type per product carries have_stock = true
+     * and at most one carries have_price = true. Throws a ValidationException
+     * on violation so the user receives a proper form error.
+     */
+    protected function validateOptionTypeFlags(array $types): void
+    {
+        $stockCount = 0;
+        $priceCount = 0;
+
+        foreach ($types as $typeData) {
+            if (! empty($typeData['have_stock'])) {
+                $stockCount++;
+            }
+            if (! empty($typeData['have_price'])) {
+                $priceCount++;
+            }
+        }
+
+        $errors = [];
+
+        if ($stockCount > 1) {
+            $errors['option_types'] = ['Only one option type per product may have stock control enabled.'];
+        }
+
+        if ($priceCount > 1) {
+            $errors['option_types'] = array_merge(
+                $errors['option_types'] ?? [],
+                ['Only one option type per product may have price control enabled.']
+            );
+        }
+
+        if (! empty($errors)) {
+            throw \Illuminate\Validation\ValidationException::withMessages($errors);
         }
     }
 }

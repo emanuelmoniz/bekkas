@@ -9,10 +9,12 @@ class ProductOptionType extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_id', 'is_active'];
+    protected $fillable = ['product_id', 'is_active', 'have_stock', 'have_price'];
 
     protected $casts = [
-        'is_active' => 'boolean',
+        'is_active'  => 'boolean',
+        'have_stock' => 'boolean',
+        'have_price' => 'boolean',
     ];
 
     public function product()

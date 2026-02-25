@@ -23,12 +23,32 @@
         @endforeach
     </div>
 
-    <label class="flex items-center gap-2 mt-4">
-        <input type="checkbox" name="option_types[{{ $index }}][is_active]"
-               value="1"
-               @checked(old("option_types.$index.is_active", $data['is_active'] ?? false))>
-        Active
-    </label>
+    <div class="flex flex-wrap items-center gap-6 mt-4">
+        <label class="flex items-center gap-2">
+            <input type="checkbox" name="option_types[{{ $index }}][is_active]"
+                   value="1"
+                   @checked(old("option_types.$index.is_active", $data['is_active'] ?? false))>
+            Active
+        </label>
+
+        <label class="flex items-center gap-2">
+            <input type="checkbox" name="option_types[{{ $index }}][have_stock]"
+                   value="1"
+                   class="have-stock-checkbox"
+                   @checked(old("option_types.$index.have_stock", $data['have_stock'] ?? false))>
+            Controls Stock
+            <span class="text-xs text-grey-medium">(overrides product-level stock)</span>
+        </label>
+
+        <label class="flex items-center gap-2">
+            <input type="checkbox" name="option_types[{{ $index }}][have_price]"
+                   value="1"
+                   class="have-price-checkbox"
+                   @checked(old("option_types.$index.have_price", $data['have_price'] ?? false))>
+            Controls Price
+            <span class="text-xs text-grey-medium">(overrides product-level price)</span>
+        </label>
+    </div>
 
     <div class="options-list mt-4 space-y-2">
         @foreach ($data['options'] ?? [] as $j => $opt)
@@ -69,6 +89,24 @@
                            name="option_types[{{ $index }}][options][{{ $j }}][stock]"
                            value="{{ old("option_types.$index.options.$j.stock", $opt['stock'] ?? 0) }}"
                            class="w-full border rounded px-3 py-2">
+                </div>
+
+                <div class="option-price-fields mt-2 grid grid-cols-1 md:grid-cols-2 gap-4"
+                     style="{{ ($data['have_price'] ?? false) ? '' : 'display:none' }}">
+                    <div>
+                        <label class="block font-medium mb-1">Price (gross)</label>
+                        <input type="number" step="0.01" min="0"
+                               name="option_types[{{ $index }}][options][{{ $j }}][price]"
+                               value="{{ old("option_types.$index.options.$j.price", $opt['price'] ?? '') }}"
+                               class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block font-medium mb-1">Promo Price</label>
+                        <input type="number" step="0.01" min="0"
+                               name="option_types[{{ $index }}][options][{{ $j }}][promo_price]"
+                               value="{{ old("option_types.$index.options.$j.promo_price", $opt['promo_price'] ?? '') }}"
+                               class="w-full border rounded px-3 py-2">
+                    </div>
                 </div>
             </div>
         @endforeach

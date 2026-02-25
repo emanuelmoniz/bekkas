@@ -235,10 +235,17 @@ class Order extends Model
 
             // Restore stock for non-backordered items (mirror admin behaviour)
             try {
-                foreach ($this->items()->with('product')->get() as $item) {
-                    $product = $item->product;
-                    if ($product && ! $item->was_backordered) {
-                        $product->increment('stock', $item->quantity);
+                foreach ($this->items()->with(['product', 'orderItemOptions.productOption.optionType'])->get() as $item) {
+                    if ($item->was_backordered) {
+                        continue;
+                    }
+                    $stockOpt = $item->orderItemOptions
+                        ->filter(fn ($oi) => $oi->productOption && $oi->productOption->optionType?->have_stock)
+                        ->first();
+                    if ($stockOpt && $stockOpt->productOption) {
+                        $stockOpt->productOption->increment('stock', $item->quantity);
+                    } elseif ($item->product) {
+                        $item->product->increment('stock', $item->quantity);
                     }
                 }
             } catch (\Throwable $e) {

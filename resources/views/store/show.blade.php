@@ -1,11 +1,36 @@
 <x-app-layout>
-    
+
+    @php
+        $optionTypesData = $product->optionTypes
+            ->where('is_active', true)
+            ->map(function ($type) {
+                return [
+                    'id'         => $type->id,
+                    'name'       => optional($type->translation())->name ?? '',
+                    'have_stock' => (bool) $type->have_stock,
+                    'have_price' => (bool) $type->have_price,
+                    'options'    => $type->options
+                        ->where('is_active', true)
+                        ->map(fn ($opt) => [
+                            'id'          => $opt->id,
+                            'name'        => optional($opt->translation())->name ?? '',
+                            'stock'       => (int) $opt->stock,
+                            'price'       => $opt->price !== null ? (float) $opt->price : null,
+                            'promo_price' => $opt->promo_price !== null ? (float) $opt->promo_price : null,
+                        ])
+                        ->values()
+                        ->toArray(),
+                ];
+            })
+            ->values()
+            ->toArray();
+    @endphp
+
     <script>
-        // Alpine component for the product page: handles favorites and cart additions
-        // `addUrl` parameter allows the server to generate the correct path (prefix, locale, etc.)
-        function productPage(productId, initialFavorite, addUrl) {
+        // Alpine component for the product page: handles favorites, options and cart additions
+        function productPage(productId, initialFavorite, addUrl, optionTypes, basePrice, basePromoPrice, isPromo) {
             return {
-                // favorite toggle behaviour moved from previous helper
+                // favorite toggle
                 isFavorite: initialFavorite,
                 async toggle() {
                     try {
@@ -19,7 +44,6 @@
                         });
                         const data = await response.json();
                         this.isFavorite = data.isFavorite;
-                        // Update Alpine store
                         if (window.Alpine && window.Alpine.store) {
                             window.Alpine.store('favorites').count = data.favoritesCount;
                         }
@@ -28,7 +52,69 @@
                     }
                 },
 
-                // cart behaviour
+                // option types data (array of {id, name, have_stock, have_price, options[]})
+                optionTypes: optionTypes,
+                // expose isPromo so Alpine template expressions (x-show, x-text) can reference it
+                isPromo: isPromo,
+                // selected options: { [typeId]: optionId }
+                selectedOptions: {},
+
+                // original (non-discounted) price — for strikethrough display when is_promo
+                get originalPrice() {
+                    if (!isPromo) return null;
+                    for (const type of this.optionTypes) {
+                        if (type.have_price) {
+                            const optId = this.selectedOptions[type.id];
+                            if (!optId) return null;
+                            const opt = type.options.find(o => o.id === optId);
+                            if (opt && opt.price !== null) return opt.price;
+                        }
+                    }
+                    return basePrice;
+                },
+
+                // resolved price based on selected options
+                get resolvedPrice() {
+                    for (const type of this.optionTypes) {
+                        if (type.have_price) {
+                            const optId = this.selectedOptions[type.id];
+                            if (!optId) return null; // no selection yet
+                            const opt = type.options.find(o => o.id === optId);
+                            if (opt) {
+                                if (isPromo && opt.promo_price !== null) return opt.promo_price;
+                                if (opt.price !== null) return opt.price;
+                            }
+                        }
+                    }
+                    // No have_price type: use product-level price
+                    if (isPromo && basePromoPrice !== null) return basePromoPrice;
+                    return basePrice;
+                },
+
+                // resolved stock (null means use product-level stock)
+                get resolvedStock() {
+                    for (const type of this.optionTypes) {
+                        if (type.have_stock) {
+                            const optId = this.selectedOptions[type.id];
+                            if (!optId) return null;
+                            const opt = type.options.find(o => o.id === optId);
+                            return opt ? opt.stock : null;
+                        }
+                    }
+                    return null; // use product-level
+                },
+
+                // effective max for the quantity input
+                get effectiveMaxStock() {
+                    const s = this.resolvedStock;
+                    return s !== null ? s : {{ $product->stock }};
+                },
+
+                hasStockControlType() {
+                    return this.optionTypes.some(t => t.have_stock);
+                },
+
+                // cart
                 quantity: 1,
                 adding: false,
                 async addToCart(event) {
@@ -36,6 +122,15 @@
                     if (this.adding) return;
                     this.adding = true;
                     try {
+                        // Strip blank/zero selections so the server sees only real option ids
+                        const filteredOptions = {};
+                        for (const [typeId, optionId] of Object.entries(this.selectedOptions)) {
+                            if (optionId) filteredOptions[typeId] = optionId;
+                        }
+                        const body = {
+                            quantity: this.quantity,
+                            options: filteredOptions,
+                        };
                         const response = await fetch(addUrl, {
                             method: 'POST',
                             headers: {
@@ -43,30 +138,33 @@
                                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                                 'Accept': 'application/json'
                             },
-                            body: JSON.stringify({ quantity: this.quantity })
+                            body: JSON.stringify(body)
                         });
 
-                        // if the server returned a 404 we convert to a friendly message
                         if (response.status === 404) {
                             throw new Error('Product unavailable');
                         }
 
-                        if (! response.ok) throw new Error('Network response was not ok');
+                        const contentType = response.headers.get('content-type') || '';
+                        if (!contentType.includes('application/json')) {
+                            throw new Error('{{ t("store.add_to_cart_failed") ?: 'Unable to add to cart' }}');
+                        }
+
                         const data = await response.json();
 
-                        // flash message
+                        if (!data.success) {
+                            throw new Error(data.message || '{{ t("store.add_to_cart_failed") ?: 'Unable to add to cart' }}');
+                        }
+
                         if (window.Alpine && window.Alpine.store && window.Alpine.store('flash')) {
                             window.Alpine.store('flash').showMessage('{{ t("store.added_to_cart") ?: 'Added to cart' }}');
                         }
-
-                        // update cart count store if available
                         if (window.Alpine && window.Alpine.store && window.Alpine.store('cart')) {
                             window.Alpine.store('cart').count = data.cartCount;
                         }
                     } catch (error) {
                         console.error('Error adding to cart:', error);
                         if (window.Alpine && window.Alpine.store && window.Alpine.store('flash')) {
-                            // display the error message if we have it, otherwise a generic failure
                             const msg = error.message || '{{ t("store.add_to_cart_failed") ?: 'Unable to add to cart' }}';
                             window.Alpine.store('flash').showMessage(msg, 'error');
                         }
@@ -100,17 +198,15 @@
             </div>
 
             {{-- DETAILS --}}
-            <div class="bg-white p-6 rounded shadow space-y-4 anim-item" x-data="productPage({{ $product->id }}, {{ json_encode($isFavorite ?? false) }}, '{{ route('cart.add', $product) }}')">
-
-                {{-- BACK LINK --}}
-                <div>
-                    <a href="{{ $backUrl }}" class="text-sm text-accent-primary hover:underline flex items-center gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                        </svg>
-                        {{ t('store.back_to_store') ?: 'Back to store' }}
-                    </a>
-                </div>
+            <div class="bg-white p-6 rounded shadow space-y-4 anim-item" x-data="productPage(
+                {{ $product->id }},
+                {{ json_encode($isFavorite ?? false) }},
+                '{{ route('cart.add', $product) }}',
+                {{ json_encode($optionTypesData) }},
+                {{ (float) $product->price }},
+                {{ $product->promo_price !== null ? (float) $product->promo_price : 'null' }},
+                {{ $product->is_promo ? 'true' : 'false' }}
+            )">
 
                 {{-- NAME (moved from header) --}}
                 <h2 class="font-semibold text-xl text-grey-dark">
@@ -120,12 +216,18 @@
                 {{-- PRICE & FAVORITE --}}
                 <div class="flex items-center justify-between">
                     <div class="text-xl font-semibold flex items-baseline">
-                        €{{ number_format($product->is_promo ? ($product->promo_price ?? $product->price) : $product->price, 2) }}
-                        @if ($product->is_promo && $product->promo_price)
-                            <span class="text-sm text-grey-medium line-through ml-2">
+                        {{-- Reactive price: uses resolvedPrice when options are selected, falls back to PHP render --}}
+                        <span x-text="resolvedPrice !== null ? '€' + resolvedPrice.toFixed(2) : '{{ number_format($product->is_promo ? ($product->promo_price ?? $product->price) : $product->price, 2) }}'">
+                            €{{ number_format($product->is_promo ? ($product->promo_price ?? $product->price) : $product->price, 2) }}
+                        </span>
+                        <span x-show="isPromo && originalPrice !== null && originalPrice !== resolvedPrice"
+                              x-text="'€' + (originalPrice !== null ? originalPrice.toFixed(2) : '')"
+                              class="text-sm text-grey-medium line-through ml-2"
+                              @if(!($product->is_promo)) style="display:none" @endif>
+                            @if($product->is_promo && $product->price)
                                 €{{ number_format($product->price, 2) }}
-                            </span>
-                        @endif
+                            @endif
+                        </span>
                     </div>
                     <button @click="toggle" class="p-2 hover:bg-grey-light rounded-full transition">
                         <svg xmlns="http://www.w3.org/2000/svg" :fill="isFavorite ? 'currentColor' : 'none'" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6" :class="isFavorite ? 'text-status-error' : 'text-grey-medium'">
@@ -215,27 +317,61 @@
                 @endif
 
                 {{-- STOCK / BACKORDER --}}
-                @if ($product->stock > 0)
+                {{-- If an option type controls stock, show reactive option-level stock; otherwise product-level --}}
+                <template x-if="!hasStockControlType()">
+                    @if ($product->stock > 0)
+                        <div class="text-sm">
+                            {{ t('store.stock') ?: 'Stock' }}:
+                            <span class="text-accent-primary font-medium">{{ t('store.available') ?: 'Available' }}</span>
+                        </div>
+                    @elseif ($product->is_backorder)
+                        <div class="rounded border border-grey-light border-l-4 bg-accent-secondary/10 p-3">
+                            <div class="text-sm font-medium text-accent-primary mb-1">
+                                {{ t('store.backorder_title') ?: 'Made to order' }}
+                            </div>
+                            <div class="text-sm text-accent-primary">
+                                {{ t('store.backorder_message') ?: 'This item does not have stock, but can be printed per request. The production time is' }}
+                                <span class="font-medium">{{ $product->production_time }} {{ t('store.working_days') ?: 'working days' }}</span>.
+                                {{ t('store.backorder_delivery_note') ?: 'The shown delivery date estimation already includes this production time.' }}
+                            </div>
+                        </div>
+                    @else
+                        <div class="text-sm">
+                            {{ t('store.stock') ?: 'Stock' }}:
+                            <span class="text-primary font-medium">{{ t('store.out_of_stock') ?: 'Out of stock' }}</span>
+                        </div>
+                    @endif
+                </template>
+
+                {{-- Option-level stock indicator (only shown when a stock-controlling type is present AND option selected) --}}
+                <template x-if="hasStockControlType() && resolvedStock !== null">
                     <div class="text-sm">
                         {{ t('store.stock') ?: 'Stock' }}:
-                        <span class="text-accent-primary font-medium">{{ t('store.available') ?: 'Available' }}</span>
+                        <span x-show="resolvedStock > 0 || {{ $product->is_backorder ? 'true' : 'false' }}"
+                              class="text-accent-primary font-medium">{{ t('store.available') ?: 'Available' }}</span>
+                        <span x-show="resolvedStock <= 0 && !{{ $product->is_backorder ? 'true' : 'false' }}"
+                              class="text-primary font-medium">{{ t('store.out_of_stock') ?: 'Out of stock' }}</span>
                     </div>
-                @elseif ($product->is_backorder)
-                    <div class="rounded border border-grey-light border-l-4 bg-accent-secondary/10 p-3">
-                        <div class="text-sm font-medium text-accent-primary mb-1">
-                            {{ t('store.backorder_title') ?: 'Made to order' }}
+                </template>
+
+                {{-- Option type selectors --}}
+                @if ($product->optionTypes->where('is_active', true)->isNotEmpty())
+                    <template x-for="type in optionTypes" :key="type.id">
+                        <div>
+                            <label class="block font-medium text-sm text-grey-dark mb-1" x-text="type.name"></label>
+                            <select :name="'options[' + type.id + ']'"
+                                    x-model.number="selectedOptions[type.id]"
+                                    class="w-full border rounded px-3 py-2 text-sm">
+                                <option value="">— {{ t('store.select_option') ?: 'Select an option' }} —</option>
+                                <template x-for="opt in type.options" :key="opt.id">
+                                    <option :value="opt.id"
+                                            :disabled="type.have_stock && opt.stock <= 0 && !{{ $product->is_backorder ? 'true' : 'false' }}"
+                                            x-text="opt.name + (type.have_price && opt.price !== null ? ' — €' + (isPromo && opt.promo_price !== null ? opt.promo_price : opt.price).toFixed(2) : '') + (type.have_stock && opt.stock <= 0 && !{{ $product->is_backorder ? 'true' : 'false' }} ? ' ({{ t('store.out_of_stock') ?: 'Out of stock' }})' : '')">
+                                    </option>
+                                </template>
+                            </select>
                         </div>
-                        <div class="text-sm text-accent-primary">
-                            {{ t('store.backorder_message') ?: 'This item does not have stock, but can be printed per request. The production time is' }}
-                            <span class="font-medium">{{ $product->production_time }} {{ t('store.working_days') ?: 'working days' }}</span>.
-                            {{ t('store.backorder_delivery_note') ?: 'The shown delivery date estimation already includes this production time.' }}
-                        </div>
-                    </div>
-                @else
-                    <div class="text-sm">
-                        {{ t('store.stock') ?: 'Stock' }}:
-                        <span class="text-primary font-medium">{{ t('store.out_of_stock') ?: 'Out of stock' }}</span>
-                    </div>
+                    </template>
                 @endif
 
                 @if ($product->stock > 0 || $product->is_backorder)
@@ -249,12 +385,21 @@
                             x-model.number="quantity"
                             value="1"
                             min="1"
-                            @if(!$product->is_backorder) max="{{ $product->stock }}" @endif
+                            :max="{{ $product->is_backorder ? 'undefined' : 'effectiveMaxStock' }}"
                             class="w-20 border rounded px-2 py-1">
                         <button :disabled="adding"
                                 class="bg-accent-primary text-light px-4 py-2 rounded"
                                 x-text="adding ? '{{ t('store.adding') ?: 'Adding...' }}' : '{{ t('store.add_to_cart') ?: 'Add to cart' }}'">
                         </button>
+                        {{-- BACK LINK --}}
+                        <div class="flex">
+                            <a href="{{ $backUrl }}" class="text-sm text-accent-primary hover:underline flex items-center gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                                </svg>
+                                {{ t('store.back_to_store') ?: 'Back to store' }}
+                            </a>
+                        </div>
                     </form>
                 @endif
 

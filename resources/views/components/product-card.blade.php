@@ -138,9 +138,9 @@
         @endif
 
         <div class="p-4 pt-3">
-            <div class="font-semibold">
+            <h3>
                 {{ optional($product->translation())->name }}
-            </div>
+            </h3>
 
             <div class="text-sm text-grey-dark flex items-baseline">
                 €{{ number_format($product->is_promo ? ($product->promo_price ?? $product->price) : $product->price, 2) }}
