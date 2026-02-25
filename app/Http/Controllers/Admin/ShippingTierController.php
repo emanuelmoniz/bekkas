@@ -25,13 +25,6 @@ class ShippingTierController extends Controller
             });
         }
 
-        // Filter by weight (checks if search weight falls within tier range)
-        if ($request->filled('weight')) {
-            $weight = $request->weight;
-            $query->where('weight_from', '<=', $weight)
-                ->where('weight_to', '>=', $weight);
-        }
-
         // Filter by country
         if ($request->filled('country_id')) {
             $query->whereHas('countries', function ($q) use ($request) {

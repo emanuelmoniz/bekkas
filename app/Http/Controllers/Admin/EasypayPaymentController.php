@@ -38,14 +38,6 @@ class EasypayPaymentController extends Controller
             });
         }
 
-        if ($request->filled('payment_status')) {
-            $query->where('payment_status', $request->payment_status);
-        }
-
-        if ($request->filled('payment_method')) {
-            $query->where('payment_method', $request->payment_method);
-        }
-
         $payments = $query->latest('created_at')->get();
 
         return view('admin.orders.payments.index', compact('payments'));

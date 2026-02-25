@@ -41,10 +41,6 @@ class EasypayCheckoutSessionController extends Controller
             $query->whereDate('created_at', '<=', $request->to_session_date);
         }
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
         $sessions = $query->latest('created_at')->get();
 
         return view('admin.orders.checkouts.index', compact('sessions'));
