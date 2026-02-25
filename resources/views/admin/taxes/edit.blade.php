@@ -12,16 +12,23 @@
             @csrf
             @method('PATCH')
 
+            @foreach ($locales as $localeCode => $localeName)
+            @php
+                $existingName = $tax->translations->where('locale', $localeCode)->first()?->name;
+            @endphp
             <div>
                 <label class="block text-sm font-medium text-grey-dark">
-                    Name
+                    Name ({{ $localeName }})
                 </label>
                 <input type="text"
-                       name="name"
-                       value="{{ $tax->name }}"
-                       required
-                       class="mt-1 block w-full border rounded px-3 py-2">
+                       name="translations[{{ $localeCode }}]"
+                       value="{{ old("translations.{$localeCode}", $existingName) }}"
+                       class="mt-1 block w-full border rounded px-3 py-2 @error("translations.{$localeCode}") border-status-error @enderror">
+                @error("translations.{$localeCode}")
+                    <p class="text-status-error text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
+            @endforeach
 
             <div>
                 <label class="block text-sm font-medium text-grey-dark">
