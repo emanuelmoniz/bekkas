@@ -3,7 +3,7 @@
         <h2 class="font-semibold text-xl text-grey-dark">Create Locale</h2>
     </x-slot>
 
-    <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white shadow rounded p-6">
             <form method="POST" action="{{ route('admin.locales.store') }}" class="space-y-5">
                 @csrf

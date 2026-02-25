@@ -28,7 +28,7 @@
         </div>
     </x-slot>
 
-    <div class="py-6 max-w-4xl mx-auto space-y-6">
+    <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
         {{-- TICKET META --}}
         <div class="bg-white shadow rounded p-6">

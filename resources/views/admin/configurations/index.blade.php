@@ -3,7 +3,7 @@
         <h2 class="font-semibold text-xl text-grey-dark">Application Configuration</h2>
     </x-slot>
 
-    <div class="py-6 max-w-5xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <form method="POST" action="{{ route('admin.configurations.update') }}" class="bg-white p-6 rounded shadow space-y-6">
             @csrf
             @method('PUT')

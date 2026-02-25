@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-6 max-w-6xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4 flex justify-end">
             <a href="{{ route('admin.countries.create') }}"
                class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">

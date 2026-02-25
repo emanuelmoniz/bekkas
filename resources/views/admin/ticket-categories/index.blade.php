@@ -3,7 +3,7 @@
         <h2 class="font-semibold text-xl">Ticket Categories</h2>
     </x-slot>
 
-    <div class="py-6 max-w-5xl mx-auto">
+    <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4 flex justify-end">
             <a href="{{ route('admin.ticket-categories.create') }}"
                class="bg-accent-primary text-light px-4 py-2 rounded">

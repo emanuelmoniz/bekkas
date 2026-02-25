@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
         <div class="mb-4">
             <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">

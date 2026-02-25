@@ -5,8 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-6">
-<div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <form method="POST" action="{{ route('admin.users.store') }}">
                 @csrf
@@ -157,6 +156,5 @@
 
             </form>
 
-        </div>
     </div>
 </x-app-layout>

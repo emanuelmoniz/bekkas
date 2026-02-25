@@ -5,8 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-6">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             {{-- PHOTOS --}}
             <div class="bg-white p-6 rounded shadow mb-6">
@@ -68,6 +67,5 @@
             {{-- PRODUCT FORM --}}
             @include('admin.products._form', ['mode' => 'edit'])
 
-        </div>
     </div>
 </x-app-layout>

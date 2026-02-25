@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-6 max-w-xl mx-auto">
+    <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <form method="POST"
               action="{{ route('admin.tickets.update', $ticket) }}"
               class="bg-white p-6 rounded shadow space-y-4">

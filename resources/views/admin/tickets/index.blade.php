@@ -3,7 +3,7 @@
         <h2 class="font-semibold text-xl">Admin – Tickets</h2>
     </x-slot>
 
-    <div class="py-6 max-w-7xl mx-auto">
+    <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4 flex justify-end">
             <a href="{{ route('admin.tickets.create') }}"
                class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
@@ -11,81 +11,38 @@
             </a>
         </div>
 
-        <div class="bg-white p-6 rounded shadow mb-4">
-            <form method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-3">
-                <input name="ticket_id" placeholder="Ticket ID" class="border rounded px-3 py-2" value="{{ request('ticket_id') }}">
-                <input name="title" placeholder="Title" class="border rounded px-3 py-2" value="{{ request('title') }}">
-                <input name="user" placeholder="User" class="border rounded px-3 py-2" value="{{ request('user') }}">
-                <input name="email" placeholder="Email" class="border rounded px-3 py-2" value="{{ request('email') }}">
+        <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <input name="ticket_id" placeholder="Ticket ID" value="{{ request('ticket_id') }}"
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                <input name="title" placeholder="Title" value="{{ request('title') }}"
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                <input name="user" placeholder="User" value="{{ request('user') }}"
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                <input name="email" placeholder="Email" value="{{ request('email') }}"
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
-                {{-- Category (dropdown + searchable) --}}
-                <div
-                    x-data="{ open: false, search: '', selected: '{{ request('category_id') }}' }"
-                    class="relative"
-                >
-                    <input type="hidden" name="category_id" :value="selected">
+                <select name="category_id"
+                        class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                    <option value="">All categories</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" @selected(request('category_id') == $category->id)>
+                            {{ optional($category->translation())->name ?? '—' }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-                    <button
-                        type="button"
-                        @click="open = !open"
-                        class="w-full border rounded px-3 py-2 text-left bg-white"
-                    >
-                        @if(request('category_id'))
-                            {{
-                                optional(
-                                    $categories->firstWhere('id', request('category_id'))
-                                        ?->translation()
-                                )->name ?? '—'
-                            }}
-                        @else
-                            All categories
-                        @endif
-                    </button>
-
-                    <div
-                        x-show="open"
-                        @click.outside="open = false"
-                        class="absolute z-10 mt-1 w-full bg-white border rounded shadow"
-                    >
-                        <input
-                            type="text"
-                            x-model="search"
-                            placeholder="Search..."
-                            class="w-full px-3 py-2 border-b"
-                        >
-
-                        <ul class="max-h-48 overflow-y-auto">
-                            <li
-                                @click="selected=''; open=false"
-                                class="px-3 py-2 hover:bg-grey-light cursor-pointer"
-                            >
-                                All categories
-                            </li>
-                            @foreach($categories as $category)
-                                @php
-                                    $name = optional($category->translation())->name;
-                                @endphp
-                                <li
-                                    x-show="'{{ strtolower($name) }}'.includes(search.toLowerCase())"
-                                    @click="selected='{{ $category->id }}'; open=false"
-                                    class="px-3 py-2 hover:bg-grey-light cursor-pointer"
-                                >
-                                    {{ $name }}
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="md:col-span-5 text-right flex justify-end gap-2">
-                    <a href="{{ route('admin.tickets.index') }}" 
-                       class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
-                        Reset
-                    </a>
-                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">Filter</button>
-                </div>
-            </form>
-        </div>
+            <div class="mt-4 text-right flex justify-end gap-2">
+                <a href="{{ route('admin.tickets.index') }}"
+                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                    Reset
+                </a>
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-accent-primary rounded-md font-semibold text-xs text-light uppercase tracking-widest hover:bg-accent-primary/90 transition ease-in-out duration-150">
+                    Filter
+                </button>
+            </div>
+        </form>
 
         <div class="bg-white shadow rounded">
             <table class="min-w-full border">
