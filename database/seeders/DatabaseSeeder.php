@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
             ShippingTierSeeder::class,
             ProductSeeder::class,
             ProjectSeeder::class,
+            TicketCategorySeeder::class,
+            TicketCategoryTranslationSeeder::class,
         ]);
     }
 }
