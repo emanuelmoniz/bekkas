@@ -194,10 +194,11 @@ class OrderController extends Controller
                 ],
             ]);
 
-            // Add all other tiers from the region (with cost) - exclude the free tier
+            // Add only tiers that are strictly faster than the free tier (fewer shipping days)
             $otherTiers = $tiers->filter(function ($tier) use ($freeShippingTier) {
-                // Show all tiers except the one being used as free
-                return $tier->id !== $freeShippingTier->id;
+                // Only show tiers with fewer shipping days (faster delivery)
+                return $tier->id !== $freeShippingTier->id
+                    && $tier->shipping_days < $freeShippingTier->shipping_days;
             });
 
             \Log::info('Other tiers filter', [

@@ -16,10 +16,11 @@ class DefaultShippingTierResolver
      */
     public static function resolve(string $postalCode, int $weight = 0): ?ShippingTier
     {
-        // Find region by postal code
+        // Find region by postal code — prefer the most specific (narrowest) range
         $region = Region::where('is_active', true)
             ->where('postal_code_from', '<=', $postalCode)
             ->where('postal_code_to', '>=', $postalCode)
+            ->orderByRaw('(postal_code_to - postal_code_from) ASC')
             ->first();
 
         if ($region) {
