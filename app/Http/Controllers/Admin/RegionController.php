@@ -82,11 +82,16 @@ class RegionController extends Controller
     public function edit(Region $region)
     {
         $countries = Country::where('is_active', true)->orderBy('name_en')->get();
-        $shippingTiers = ShippingTier::where('use_for_default', true)->orderBy('name_en')->get();
 
-        // Get current default shipping tier for this region
-        $defaultShippingTierId = DB::table('region_default_shipping_tiers')
+        // Only tiers already assigned to this region can be set as default
+        $shippingTiers = ShippingTier::whereHas('regions', function ($q) use ($region) {
+            $q->where('regions.id', $region->id);
+        })->orderBy('name_en')->get();
+
+        // Get current default shipping tier from the pivot
+        $defaultShippingTierId = DB::table('region_shipping_tier')
             ->where('region_id', $region->id)
+            ->where('is_default', true)
             ->value('shipping_tier_id');
 
         return view('admin.regions.edit', compact('region', 'countries', 'shippingTiers', 'defaultShippingTierId'));
@@ -99,7 +104,18 @@ class RegionController extends Controller
             'name' => 'required|string|max:255',
             'postal_code_from' => 'required|string|max:20',
             'postal_code_to' => 'required|string|max:20',
-            'default_shipping_tier_id' => 'nullable|exists:shipping_tiers,id',
+            'default_shipping_tier_id' => ['nullable', function ($attribute, $value, $fail) {
+                $region = request()->route('region');
+                if ($value && $region) {
+                    $exists = DB::table('region_shipping_tier')
+                        ->where('region_id', $region->id)
+                        ->where('shipping_tier_id', $value)
+                        ->exists();
+                    if (! $exists) {
+                        $fail('The selected default shipping tier is not assigned to this region.');
+                    }
+                }
+            }],
         ]);
 
         DB::transaction(function () use ($request, $region) {
@@ -111,18 +127,17 @@ class RegionController extends Controller
                 'is_active' => $request->boolean('is_active'),
             ]);
 
-            // Update or remove default shipping tier
-            DB::table('region_default_shipping_tiers')
+            // Clear the current default for this region
+            DB::table('region_shipping_tier')
                 ->where('region_id', $region->id)
-                ->delete();
+                ->update(['is_default' => false]);
 
+            // Set the new default on the pivot row (must already be assigned to this region)
             if ($request->filled('default_shipping_tier_id')) {
-                DB::table('region_default_shipping_tiers')->insert([
-                    'region_id' => $region->id,
-                    'shipping_tier_id' => $request->default_shipping_tier_id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
+                DB::table('region_shipping_tier')
+                    ->where('region_id', $region->id)
+                    ->where('shipping_tier_id', $request->default_shipping_tier_id)
+                    ->update(['is_default' => true]);
             }
         });
 

@@ -26,17 +26,11 @@ class Region extends Model
         return $this->belongsTo(Country::class);
     }
 
-    public function defaultShippingTier()
-    {
-        return $this->belongsTo(ShippingTier::class, 'id', 'region_id')
-            ->join('region_default_shipping_tiers', 'shipping_tiers.id', '=', 'region_default_shipping_tiers.shipping_tier_id')
-            ->where('region_default_shipping_tiers.region_id', $this->id);
-    }
-
     public function getDefaultShippingTier()
     {
-        return ShippingTier::whereHas('defaultForRegions', function ($query) {
-            $query->where('region_id', $this->id);
+        return ShippingTier::whereHas('regions', function ($query) {
+            $query->where('regions.id', $this->id)
+                ->where('region_shipping_tier.is_default', true);
         })->first();
     }
 }

@@ -190,12 +190,6 @@
                 Active
             </label>
 
-            <label class="flex items-center gap-2">
-                <input type="checkbox" name="use_for_default" value="1" @checked(old('use_for_default', false))>
-                Use for Default
-                <span class="text-sm text-grey-dark">(Show in default tier selection for shipping config and regions)</span>
-            </label>
-
             <div class="flex justify-between">
                 <a href="{{ route('admin.shipping-tiers.index') }}"
                    class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">

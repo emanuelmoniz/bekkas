@@ -25,15 +25,14 @@ class DefaultShippingTierResolver
 
         if ($region) {
             // Try to get region-specific default shipping tier (even if inactive - for free shipping)
-            $defaultTier = DB::table('region_default_shipping_tiers')
+            $defaultTierId = DB::table('region_shipping_tier')
                 ->where('region_id', $region->id)
-                ->join('shipping_tiers', 'region_default_shipping_tiers.shipping_tier_id', '=', 'shipping_tiers.id')
-                ->select('shipping_tiers.*')
-                ->first();
+                ->where('is_default', true)
+                ->value('shipping_tier_id');
 
-            if ($defaultTier) {
+            if ($defaultTierId) {
                 // Always respect region configuration, regardless of active status
-                return ShippingTier::find($defaultTier->id);
+                return ShippingTier::find($defaultTierId);
             }
         }
 

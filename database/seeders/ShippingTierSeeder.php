@@ -13,7 +13,6 @@ class ShippingTierSeeder extends Seeder
         DB::table('region_shipping_tier')->truncate();
         DB::table('country_shipping_tier')->truncate();
         DB::table('shipping_tiers')->truncate();
-        DB::table('region_default_shipping_tiers')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         DB::table('shipping_tiers')->insert([
@@ -27,8 +26,6 @@ class ShippingTierSeeder extends Seeder
                 'shipping_days' => 3,
                 'tax_id' => 1,
                 'active' => true,
-                'is_default' => 0,
-                'use_for_default' => true,
                 'created_at' => '2026-02-23 17:38:55',
                 'updated_at' => '2026-02-23 17:38:55',
             ],
@@ -42,8 +39,6 @@ class ShippingTierSeeder extends Seeder
                 'shipping_days' => 5,
                 'tax_id' => 1,
                 'active' => true,
-                'is_default' => 0,
-                'use_for_default' => false,
                 'created_at' => '2026-02-23 17:41:51',
                 'updated_at' => '2026-02-23 17:42:08',
             ],
@@ -57,8 +52,6 @@ class ShippingTierSeeder extends Seeder
                 'shipping_days' => 3,
                 'tax_id' => 1,
                 'active' => true,
-                'is_default' => 0,
-                'use_for_default' => false,
                 'created_at' => '2026-02-23 17:42:53',
                 'updated_at' => '2026-02-23 17:42:53',
             ],
@@ -72,8 +65,6 @@ class ShippingTierSeeder extends Seeder
                 'shipping_days' => 3,
                 'tax_id' => 1,
                 'active' => true,
-                'is_default' => 0,
-                'use_for_default' => false,
                 'created_at' => '2026-02-23 17:43:04',
                 'updated_at' => '2026-02-23 17:44:04',
             ],
@@ -87,8 +78,6 @@ class ShippingTierSeeder extends Seeder
                 'shipping_days' => 3,
                 'tax_id' => 1,
                 'active' => true,
-                'is_default' => 0,
-                'use_for_default' => false,
                 'created_at' => '2026-02-23 17:44:09',
                 'updated_at' => '2026-02-23 17:44:39',
             ],
@@ -102,8 +91,6 @@ class ShippingTierSeeder extends Seeder
                 'shipping_days' => 5,
                 'tax_id' => 1,
                 'active' => true,
-                'is_default' => 0,
-                'use_for_default' => false,
                 'created_at' => '2026-02-23 17:44:45',
                 'updated_at' => '2026-02-23 17:45:01',
             ],
@@ -117,8 +104,6 @@ class ShippingTierSeeder extends Seeder
                 'shipping_days' => 5,
                 'tax_id' => 1,
                 'active' => true,
-                'is_default' => 0,
-                'use_for_default' => false,
                 'created_at' => '2026-02-23 17:45:07',
                 'updated_at' => '2026-02-23 17:45:19',
             ],
@@ -132,8 +117,6 @@ class ShippingTierSeeder extends Seeder
                 'shipping_days' => 5,
                 'tax_id' => 1,
                 'active' => true,
-                'is_default' => 0,
-                'use_for_default' => false,
                 'created_at' => '2026-02-23 17:45:22',
                 'updated_at' => '2026-02-23 17:45:40',
             ],
@@ -151,18 +134,18 @@ class ShippingTierSeeder extends Seeder
         ]);
 
         DB::table('region_shipping_tier')->insert([
-            ['shipping_tier_id' => 1, 'region_id' => 1],
-            ['shipping_tier_id' => 2, 'region_id' => 2],
-            ['shipping_tier_id' => 2, 'region_id' => 3],
-            ['shipping_tier_id' => 3, 'region_id' => 1],
-            ['shipping_tier_id' => 4, 'region_id' => 1],
-            ['shipping_tier_id' => 5, 'region_id' => 1],
-            ['shipping_tier_id' => 6, 'region_id' => 2],
-            ['shipping_tier_id' => 6, 'region_id' => 3],
-            ['shipping_tier_id' => 7, 'region_id' => 2],
-            ['shipping_tier_id' => 7, 'region_id' => 3],
-            ['shipping_tier_id' => 8, 'region_id' => 2],
-            ['shipping_tier_id' => 8, 'region_id' => 3],
+            ['shipping_tier_id' => 1, 'region_id' => 1, 'is_default' => true],
+            ['shipping_tier_id' => 2, 'region_id' => 2, 'is_default' => true],
+            ['shipping_tier_id' => 2, 'region_id' => 3, 'is_default' => true],
+            ['shipping_tier_id' => 3, 'region_id' => 1, 'is_default' => false],
+            ['shipping_tier_id' => 4, 'region_id' => 1, 'is_default' => false],
+            ['shipping_tier_id' => 5, 'region_id' => 1, 'is_default' => false],
+            ['shipping_tier_id' => 6, 'region_id' => 2, 'is_default' => false],
+            ['shipping_tier_id' => 6, 'region_id' => 3, 'is_default' => false],
+            ['shipping_tier_id' => 7, 'region_id' => 2, 'is_default' => false],
+            ['shipping_tier_id' => 7, 'region_id' => 3, 'is_default' => false],
+            ['shipping_tier_id' => 8, 'region_id' => 2, 'is_default' => false],
+            ['shipping_tier_id' => 8, 'region_id' => 3, 'is_default' => false],
         ]);
     }
 }

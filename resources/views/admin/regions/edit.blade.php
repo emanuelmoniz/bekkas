@@ -77,7 +77,7 @@
                     <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
                 <p class="text-sm text-grey-dark mt-1">
-                    Used for delivery date calculations and free shipping for this region
+                    Only tiers assigned to this region are shown. Assign tiers from the Shipping Tiers admin section.
                 </p>
             </div>
 

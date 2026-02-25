@@ -91,7 +91,6 @@ class ShippingTierController extends Controller
             'shipping_days' => $request->shipping_days,
             'tax_id' => $request->tax_id,
             'active' => $request->boolean('active', true),
-            'use_for_default' => $request->boolean('use_for_default', false),
         ]);
 
         $tier->countries()->sync($request->countries);
@@ -144,7 +143,6 @@ class ShippingTierController extends Controller
             'shipping_days' => $request->shipping_days,
             'tax_id' => $request->tax_id,
             'active' => $request->boolean('active'),
-            'use_for_default' => $request->boolean('use_for_default'),
         ]);
 
         $shippingTier->countries()->sync($request->countries);
