@@ -17,9 +17,7 @@
             <table class="min-w-full border">
                 <thead class="bg-grey-light">
                     <tr>
-                        @foreach ($locales as $localeCode => $localeName)
-                            <th class="px-4 py-2 text-left">Name ({{ $localeName }})</th>
-                        @endforeach
+                        <th class="px-4 py-2 text-left">Name</th>
                         <th class="px-4 py-2 text-left">ISO Alpha-2</th>
                         <th class="px-4 py-2 text-left">Country Code</th>
                         <th class="px-4 py-2 text-left">Active</th>
@@ -29,9 +27,9 @@
                 <tbody>
                     @forelse ($countries as $country)
                         <tr class="border-t">
-                            @foreach ($locales as $localeCode => $localeName)
-                                <td class="px-4 py-2">{{ $country->translation($localeCode)?->name }}</td>
-                            @endforeach
+                            <td class="px-4 py-2">
+                                {{ $country->translation('en-UK')?->name ?? '—' }}
+                            </td>
                             <td class="px-4 py-2">{{ $country->iso_alpha2 }}</td>
                             <td class="px-4 py-2">{{ $country->country_code }}</td>
                             <td class="px-4 py-2">
@@ -57,7 +55,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="{{ count($locales) + 4 }}"
+                            <td colspan="5"
                                 class="px-4 py-6 text-center text-grey-medium">
                                 No countries found.
                             </td>

@@ -14,11 +14,10 @@
 
             @foreach ($locales as $localeCode => $localeName)
             <div>
-                <label class="block text-sm font-medium">Name ({{ $localeName }}) *</label>
+                <label class="block text-sm font-medium">Name ({{ $localeName }})</label>
                 <input type="text"
                        name="translations[{{ $localeCode }}]"
-                       value="{{ old("translations.{$localeCode}", $country->translation($localeCode)?->name) }}"
-                       required
+                       value="{{ old("translations.{$localeCode}", $country->translations->firstWhere('locale', $localeCode)?->name) }}"
                        class="w-full border rounded px-3 py-2 @error("translations.{$localeCode}") border-status-error @enderror">
                 @error("translations.{$localeCode}")
                     <p class="text-status-error text-sm mt-1">{{ $message }}</p>

@@ -5,13 +5,15 @@ namespace Database\Seeders;
 use App\Models\Country;
 use App\Models\CountryTranslation;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CountrySeeder extends Seeder
 {
     public function run(): void
     {
         // Each entry: ['iso_alpha2', 'country_code', 'translations' => [locale => name]]
-        // When a new locale is added to config('app.locales'), the seeder falls back to 'en-UK'.
+        // Only the locales explicitly listed here are seeded — no fallback, no auto-fill
+        // for locales added later. Those must be added manually to each entry.
         $countries = [
             ['iso_alpha2' => 'AF', 'country_code' => '+93',    'translations' => ['pt-PT' => 'Afeganistão',                       'en-UK' => 'Afghanistan']],
             ['iso_alpha2' => 'AL', 'country_code' => '+355',   'translations' => ['pt-PT' => 'Albânia',                           'en-UK' => 'Albania']],
@@ -212,30 +214,27 @@ class CountrySeeder extends Seeder
             ['iso_alpha2' => 'ZW', 'country_code' => '+263',   'translations' => ['pt-PT' => 'Zimbabué',                          'en-UK' => 'Zimbabwe']],
         ];
 
-        // Configured locales; any new locale added here will automatically be seeded,
-        // falling back to the 'en-UK' translation when no specific entry is provided.
-        $locales  = array_keys(config('app.locales', ['pt-PT' => 'Português', 'en-UK' => 'English']));
-        $fallback = 'en-UK';
+        // Truncate and re-seed from scratch (disables FK checks temporarily)
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        CountryTranslation::truncate();
+        Country::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
+        // Only seed the locales explicitly listed in each entry's 'translations' key.
+        // Locales not present (e.g. es-ES) are intentionally left untouched.
         foreach ($countries as $data) {
-            $translations = $data['translations'];
+            $country = Country::create([
+                'iso_alpha2'   => $data['iso_alpha2'],
+                'country_code' => $data['country_code'],
+                'is_active'    => true,
+            ]);
 
-            $country = Country::firstOrCreate(
-                ['iso_alpha2' => $data['iso_alpha2']],
-                [
-                    'country_code' => $data['country_code'],
-                    'is_active'    => true,
-                ]
-            );
-
-            foreach ($locales as $locale) {
-                // Use exact locale match, or fall back to English
-                $name = $translations[$locale] ?? $translations[$fallback];
-
-                CountryTranslation::updateOrCreate(
-                    ['country_id' => $country->id, 'locale' => $locale],
-                    ['name' => $name]
-                );
+            foreach ($data['translations'] as $locale => $name) {
+                CountryTranslation::create([
+                    'country_id' => $country->id,
+                    'locale'     => $locale,
+                    'name'       => $name,
+                ]);
             }
         }
     }

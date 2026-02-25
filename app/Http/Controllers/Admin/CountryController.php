@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\CountryTranslation;
+use App\Models\Locale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,29 +14,30 @@ class CountryController extends Controller
     public function index()
     {
         $countries = Country::with('translations')->orderByTranslatedName()->get();
-        $locales   = config('app.locales');
 
-        return view('admin.countries.index', compact('countries', 'locales'));
+        return view('admin.countries.index', compact('countries'));
     }
 
     public function create()
     {
-        $locales = config('app.locales');
+        // Show inputs for every active locale; values will be empty for new locales.
+        $locales = Locale::activeList();
 
         return view('admin.countries.create', compact('locales'));
     }
 
     public function store(Request $request)
     {
-        $locales = array_keys(config('app.locales'));
+        $locales = Locale::activeList();
 
         $rules = [
             'iso_alpha2'   => 'required|string|size:2|unique:countries,iso_alpha2',
             'country_code' => 'required|string|max:10',
         ];
 
-        foreach ($locales as $locale) {
-            $rules["translations.{$locale}"] = 'required|string|max:255';
+        foreach (array_keys($locales) as $locale) {
+            // Nullable — only save if the user actually filled the field.
+            $rules["translations.{$locale}"] = 'nullable|string|max:255';
         }
 
         $request->validate($rules);
@@ -47,12 +49,15 @@ class CountryController extends Controller
                 'is_active'    => $request->boolean('is_active'),
             ]);
 
-            foreach ($locales as $locale) {
-                CountryTranslation::create([
-                    'country_id' => $country->id,
-                    'locale'     => $locale,
-                    'name'       => $request->input("translations.{$locale}"),
-                ]);
+            foreach (array_keys($locales) as $locale) {
+                $name = $request->input("translations.{$locale}");
+                if (filled($name)) {
+                    CountryTranslation::create([
+                        'country_id' => $country->id,
+                        'locale'     => $locale,
+                        'name'       => $name,
+                    ]);
+                }
             }
         });
 
@@ -62,22 +67,24 @@ class CountryController extends Controller
     public function edit(Country $country)
     {
         $country->load('translations');
-        $locales = config('app.locales');
+        // Show inputs for every active locale; pre-fill only what exists in DB.
+        $locales = Locale::activeList();
 
         return view('admin.countries.edit', compact('country', 'locales'));
     }
 
     public function update(Request $request, Country $country)
     {
-        $locales = array_keys(config('app.locales'));
+        $locales = Locale::activeList();
 
         $rules = [
             'iso_alpha2'   => 'required|string|size:2|unique:countries,iso_alpha2,'.$country->id,
             'country_code' => 'required|string|max:10',
         ];
 
-        foreach ($locales as $locale) {
-            $rules["translations.{$locale}"] = 'required|string|max:255';
+        foreach (array_keys($locales) as $locale) {
+            // Nullable — only save if the user actually filled the field.
+            $rules["translations.{$locale}"] = 'nullable|string|max:255';
         }
 
         $request->validate($rules);
@@ -89,11 +96,15 @@ class CountryController extends Controller
                 'is_active'    => $request->boolean('is_active'),
             ]);
 
-            foreach ($locales as $locale) {
-                CountryTranslation::updateOrCreate(
-                    ['country_id' => $country->id, 'locale' => $locale],
-                    ['name' => $request->input("translations.{$locale}")]
-                );
+            foreach (array_keys($locales) as $locale) {
+                $name = $request->input("translations.{$locale}");
+                if (filled($name)) {
+                    CountryTranslation::updateOrCreate(
+                        ['country_id' => $country->id, 'locale' => $locale],
+                        ['name' => $name]
+                    );
+                }
+                // If field was cleared, leave the existing DB row untouched.
             }
         });
 
