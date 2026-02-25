@@ -48,7 +48,7 @@ class EasypayServiceTest extends TestCase
     {
         Config::set('easypay.enabled', true);
 
-        $tier = ShippingTier::factory()->create(["name_en" => 'Express', 'cost_gross' => 4.5]);
+        $tier = ShippingTier::factory()->create(['cost_gross' => 4.5]);
 
         $order = Order::factory()->hasItems(1)->create([
             'shipping_gross' => 4.50,

@@ -13,7 +13,7 @@ class ShippingConfigController extends Controller
     {
         $freeShippingOver = ShippingConfig::get('free_shipping_over', 0);
         $defaultShippingTierId = ShippingConfig::get('default_shipping_tier_id');
-        $shippingTiers = ShippingTier::where('active', true)->orderBy('name_en')->get();
+        $shippingTiers = ShippingTier::where('active', true)->with('translations')->orderBy('shipping_days')->get();
         $trackingStatuses = json_decode(ShippingConfig::get('tracking_statuses', '["shipped","delivered"]'), true);
         $allStatuses = [
             'pending' => 'Pending',

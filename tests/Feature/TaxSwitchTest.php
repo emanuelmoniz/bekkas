@@ -68,8 +68,6 @@ class TaxSwitchTest extends TestCase
         ]);
 
         $tier = ShippingTier::create([
-            'name_en' => 'Standard',
-            'name_pt' => 'Standard',
             'tax_id' => $tax->id,
             'weight_from' => 0,
             'weight_to' => 9999,
@@ -121,8 +119,6 @@ class TaxSwitchTest extends TestCase
         ]);
 
         $tier = ShippingTier::create([
-            'name_en' => 'Standard',
-            'name_pt' => 'Standard',
             'tax_id' => $tax->id,
             'weight_from' => 0,
             'weight_to' => 9999,
@@ -164,8 +160,6 @@ class TaxSwitchTest extends TestCase
         $tax = Tax::create(['name' => 'VAT', 'percentage' => 23, 'is_active' => true]);
 
         $tier = ShippingTier::create([
-            'name_en' => 'Fast',
-            'name_pt' => 'Fast',
             'tax_id' => $tax->id,
             'weight_from' => 0,
             'weight_to' => 9999,
@@ -211,8 +205,6 @@ class TaxSwitchTest extends TestCase
         ]);
 
         $tier = ShippingTier::create([
-            'name_en' => 'Standard',
-            'name_pt' => 'Standard',
             'tax_id' => $tax->id,
             'weight_from' => 0,
             'weight_to' => 9999,

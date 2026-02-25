@@ -33,8 +33,6 @@ class ShippingTest extends TestCase
 
         // Create a paid tier that matches by weight but has no region defined
         $paidTier = ShippingTier::create([
-            'name_en' => 'Weight Only',
-            'name_pt' => 'Weight Only',
             'tax_id' => $tax->id,
             'weight_from' => 0,
             'weight_to' => 9999,
@@ -83,8 +81,6 @@ class ShippingTest extends TestCase
         ]);
 
         $tier = ShippingTier::create([
-            'name_en' => 'Slow',
-            'name_pt' => 'Slow',
             'tax_id' => $tax->id,
             'weight_from' => 0,
             'weight_to' => 9999,

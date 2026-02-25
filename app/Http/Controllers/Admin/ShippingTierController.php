@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Country;
+use App\Models\Locale;
 use App\Models\Region;
 use App\Models\ShippingTier;
+use App\Models\ShippingTierTranslation;
 use App\Models\Tax;
 use Illuminate\Http\Request;
 
@@ -13,14 +15,13 @@ class ShippingTierController extends Controller
 {
     public function index(Request $request)
     {
-        $query = ShippingTier::with(['tax', 'countries', 'regions']);
+        $query = ShippingTier::with(['tax', 'countries', 'regions', 'translations']);
 
-        // Filter by name (search in both PT and EN)
+        // Filter by name (search in translations)
         if ($request->filled('name')) {
             $name = $request->name;
-            $query->where(function ($q) use ($name) {
-                $q->where('name_pt', 'like', '%'.$name.'%')
-                    ->orWhere('name_en', 'like', '%'.$name.'%');
+            $query->whereHas('translations', function ($q) use ($name) {
+                $q->where('name', 'like', '%'.$name.'%');
             });
         }
 
@@ -63,14 +64,19 @@ class ShippingTierController extends Controller
             ->orderBy('name_en')
             ->get();
 
-        return view('admin.shipping-tiers.create', compact('taxes', 'countries'));
+        $locales = Locale::activeList();
+
+        return view('admin.shipping-tiers.create', compact('taxes', 'countries', 'locales'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name_pt' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
+        $nameRules = [];
+        foreach (Locale::activeCodes() as $locale) {
+            $nameRules["name.{$locale}"] = 'required|string|max:255';
+        }
+
+        $request->validate(array_merge($nameRules, [
             'weight_from' => 'required|integer|min:0',
             'weight_to' => 'required|integer|min:1|gt:weight_from',
             'cost_gross' => 'required|numeric|min:0',
@@ -80,11 +86,9 @@ class ShippingTierController extends Controller
             'countries.*' => 'exists:countries,id',
             'regions' => 'required|array|min:1',
             'regions.*' => 'exists:regions,id',
-        ]);
+        ]));
 
         $tier = ShippingTier::create([
-            'name_pt' => $request->name_pt,
-            'name_en' => $request->name_en,
             'weight_from' => $request->weight_from,
             'weight_to' => $request->weight_to,
             'cost_gross' => $request->cost_gross,
@@ -92,6 +96,14 @@ class ShippingTierController extends Controller
             'tax_id' => $request->tax_id,
             'active' => $request->boolean('active', true),
         ]);
+
+        foreach (Locale::activeCodes() as $locale) {
+            ShippingTierTranslation::create([
+                'shipping_tier_id' => $tier->id,
+                'locale' => $locale,
+                'name' => $request->name[$locale],
+            ]);
+        }
 
         $tier->countries()->sync($request->countries);
         $tier->regions()->sync($request->regions);
@@ -101,7 +113,7 @@ class ShippingTierController extends Controller
 
     public function edit(ShippingTier $shippingTier)
     {
-        $shippingTier->load(['countries', 'regions']);
+        $shippingTier->load(['countries', 'regions', 'translations']);
 
         $taxes = Tax::where('is_active', true)
             ->orderBy('percentage')
@@ -111,18 +123,24 @@ class ShippingTierController extends Controller
             ->orderBy('name_en')
             ->get();
 
+        $locales = Locale::activeList();
+
         return view('admin.shipping-tiers.edit', compact(
             'shippingTier',
             'taxes',
-            'countries'
+            'countries',
+            'locales'
         ));
     }
 
     public function update(Request $request, ShippingTier $shippingTier)
     {
-        $request->validate([
-            'name_pt' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
+        $nameRules = [];
+        foreach (Locale::activeCodes() as $locale) {
+            $nameRules["name.{$locale}"] = 'required|string|max:255';
+        }
+
+        $request->validate(array_merge($nameRules, [
             'weight_from' => 'required|integer|min:0',
             'weight_to' => 'required|integer|min:1|gt:weight_from',
             'cost_gross' => 'required|numeric|min:0',
@@ -132,11 +150,9 @@ class ShippingTierController extends Controller
             'countries.*' => 'exists:countries,id',
             'regions' => 'required|array|min:1',
             'regions.*' => 'exists:regions,id',
-        ]);
+        ]));
 
         $shippingTier->update([
-            'name_pt' => $request->name_pt,
-            'name_en' => $request->name_en,
             'weight_from' => $request->weight_from,
             'weight_to' => $request->weight_to,
             'cost_gross' => $request->cost_gross,
@@ -144,6 +160,13 @@ class ShippingTierController extends Controller
             'tax_id' => $request->tax_id,
             'active' => $request->boolean('active'),
         ]);
+
+        foreach (Locale::activeCodes() as $locale) {
+            ShippingTierTranslation::updateOrCreate(
+                ['shipping_tier_id' => $shippingTier->id, 'locale' => $locale],
+                ['name' => $request->name[$locale]]
+            );
+        }
 
         $shippingTier->countries()->sync($request->countries);
         $shippingTier->regions()->sync($request->regions);
@@ -160,9 +183,9 @@ class ShippingTierController extends Controller
 
     public function duplicate(ShippingTier $shippingTier)
     {
+        $shippingTier->load('translations');
+
         $newTier = ShippingTier::create([
-            'name_pt' => $shippingTier->name_pt.' (Copy)',
-            'name_en' => $shippingTier->name_en.' (Copy)',
             'weight_from' => $shippingTier->weight_from,
             'weight_to' => $shippingTier->weight_to,
             'cost_gross' => $shippingTier->cost_gross,
@@ -170,6 +193,14 @@ class ShippingTierController extends Controller
             'tax_id' => $shippingTier->tax_id,
             'active' => $shippingTier->active,
         ]);
+
+        foreach ($shippingTier->translations as $translation) {
+            ShippingTierTranslation::create([
+                'shipping_tier_id' => $newTier->id,
+                'locale' => $translation->locale,
+                'name' => $translation->name.' (Copy)',
+            ]);
+        }
 
         // Copy countries and regions relationships
         $newTier->countries()->sync($shippingTier->countries->pluck('id'));

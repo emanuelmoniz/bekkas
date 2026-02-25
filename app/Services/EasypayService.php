@@ -82,9 +82,9 @@ class EasypayService
 
             // Try to resolve a ShippingTier id by name (best-effort). If not found
             // fall back to a stable string key made from the name.
-            $shippingTier = \App\Models\ShippingTier::where('name_en', $shippingDescription)
-                ->orWhere('name_pt', $shippingDescription)
-                ->first();
+            $shippingTier = \App\Models\ShippingTier::whereHas('translations', function ($q) use ($shippingDescription) {
+                    $q->where('name', $shippingDescription);
+                })->first();
 
             $shippingKey = $shippingTier ? (string) $shippingTier->id : ('shipping:'.\Illuminate\Support\Str::slug($shippingDescription ?? 'shipping'));
 

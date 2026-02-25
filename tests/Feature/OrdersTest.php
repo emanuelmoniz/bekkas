@@ -88,8 +88,6 @@ class OrdersTest extends TestCase
         ]);
 
         $tier = ShippingTier::create([
-            'name_en' => 'Standard',
-            'name_pt' => 'Standard',
             'tax_id' => $tax->id,
             'weight_from' => 0,
             'weight_to' => 9999,

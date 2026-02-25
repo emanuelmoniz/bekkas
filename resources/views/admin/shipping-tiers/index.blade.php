@@ -81,7 +81,7 @@
                     @forelse ($tiers as $tier)
                         <tr class="border-t">
                             <td class="px-4 py-2">
-                                {{ app()->getLocale() === 'pt' ? $tier->name_pt : $tier->name_en }}
+                                {{ $tier->translation()?->name }}
                             </td>
                             <td class="px-4 py-2">{{ $tier->weight_from }}</td>
                             <td class="px-4 py-2">{{ $tier->weight_to }}</td>

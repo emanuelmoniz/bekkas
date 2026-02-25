@@ -12,14 +12,13 @@ class ShippingTierSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('region_shipping_tier')->truncate();
         DB::table('country_shipping_tier')->truncate();
+        DB::table('shipping_tier_translations')->truncate();
         DB::table('shipping_tiers')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         DB::table('shipping_tiers')->insert([
             [
                 'id' => 1,
-                'name_pt' => 'CTT-GRATUITO',
-                'name_en' => 'CTT-FREE',
                 'weight_from' => 0,
                 'weight_to' => 2000,
                 'cost_gross' => '0.00',
@@ -31,8 +30,6 @@ class ShippingTierSeeder extends Seeder
             ],
             [
                 'id' => 2,
-                'name_pt' => 'CTT-GRATUITO',
-                'name_en' => 'CTT-FREE',
                 'weight_from' => 0,
                 'weight_to' => 2000,
                 'cost_gross' => '0.00',
@@ -44,8 +41,6 @@ class ShippingTierSeeder extends Seeder
             ],
             [
                 'id' => 3,
-                'name_pt' => 'CTT',
-                'name_en' => 'CTT',
                 'weight_from' => 0,
                 'weight_to' => 200,
                 'cost_gross' => '3.00',
@@ -57,8 +52,6 @@ class ShippingTierSeeder extends Seeder
             ],
             [
                 'id' => 4,
-                'name_pt' => 'CTT',
-                'name_en' => 'CTT',
                 'weight_from' => 201,
                 'weight_to' => 1000,
                 'cost_gross' => '5.00',
@@ -70,8 +63,6 @@ class ShippingTierSeeder extends Seeder
             ],
             [
                 'id' => 5,
-                'name_pt' => 'CTT',
-                'name_en' => 'CTT',
                 'weight_from' => 1001,
                 'weight_to' => 2000,
                 'cost_gross' => '7.00',
@@ -83,8 +74,6 @@ class ShippingTierSeeder extends Seeder
             ],
             [
                 'id' => 6,
-                'name_pt' => 'CTT',
-                'name_en' => 'CTT',
                 'weight_from' => 0,
                 'weight_to' => 200,
                 'cost_gross' => '3.00',
@@ -96,8 +85,6 @@ class ShippingTierSeeder extends Seeder
             ],
             [
                 'id' => 7,
-                'name_pt' => 'CTT',
-                'name_en' => 'CTT',
                 'weight_from' => 201,
                 'weight_to' => 1000,
                 'cost_gross' => '5.00',
@@ -109,8 +96,6 @@ class ShippingTierSeeder extends Seeder
             ],
             [
                 'id' => 8,
-                'name_pt' => 'CTT',
-                'name_en' => 'CTT',
                 'weight_from' => 1001,
                 'weight_to' => 2000,
                 'cost_gross' => '7.00',
@@ -120,6 +105,25 @@ class ShippingTierSeeder extends Seeder
                 'created_at' => '2026-02-23 17:45:22',
                 'updated_at' => '2026-02-23 17:45:40',
             ],
+        ]);
+
+        DB::table('shipping_tier_translations')->insert([
+            ['shipping_tier_id' => 1, 'locale' => 'pt-PT', 'name' => 'CTT-GRATUITO'],
+            ['shipping_tier_id' => 1, 'locale' => 'en-UK', 'name' => 'CTT-FREE'],
+            ['shipping_tier_id' => 2, 'locale' => 'pt-PT', 'name' => 'CTT-GRATUITO'],
+            ['shipping_tier_id' => 2, 'locale' => 'en-UK', 'name' => 'CTT-FREE'],
+            ['shipping_tier_id' => 3, 'locale' => 'pt-PT', 'name' => 'CTT'],
+            ['shipping_tier_id' => 3, 'locale' => 'en-UK', 'name' => 'CTT'],
+            ['shipping_tier_id' => 4, 'locale' => 'pt-PT', 'name' => 'CTT'],
+            ['shipping_tier_id' => 4, 'locale' => 'en-UK', 'name' => 'CTT'],
+            ['shipping_tier_id' => 5, 'locale' => 'pt-PT', 'name' => 'CTT'],
+            ['shipping_tier_id' => 5, 'locale' => 'en-UK', 'name' => 'CTT'],
+            ['shipping_tier_id' => 6, 'locale' => 'pt-PT', 'name' => 'CTT'],
+            ['shipping_tier_id' => 6, 'locale' => 'en-UK', 'name' => 'CTT'],
+            ['shipping_tier_id' => 7, 'locale' => 'pt-PT', 'name' => 'CTT'],
+            ['shipping_tier_id' => 7, 'locale' => 'en-UK', 'name' => 'CTT'],
+            ['shipping_tier_id' => 8, 'locale' => 'pt-PT', 'name' => 'CTT'],
+            ['shipping_tier_id' => 8, 'locale' => 'en-UK', 'name' => 'CTT'],
         ]);
 
         DB::table('country_shipping_tier')->insert([

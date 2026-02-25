@@ -39,29 +39,19 @@
             @csrf
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                @foreach ($locales as $locale => $label)
                 <div>
-                    <label class="block text-sm font-medium">Name PT *</label>
+                    <label class="block text-sm font-medium">Name ({{ $label }}) *</label>
                     <input type="text"
-                           name="name_pt"
-                           value="{{ old('name_pt') }}"
+                           name="name[{{ $locale }}]"
+                           value="{{ old('name.'.$locale) }}"
                            required
-                           class="w-full border rounded px-3 py-2 @error('name_pt') border-status-error @enderror">
-                    @error('name_pt')
+                           class="w-full border rounded px-3 py-2 @error('name.'.$locale) border-status-error @enderror">
+                    @error('name.'.$locale)
                         <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-
-                <div>
-                    <label class="block text-sm font-medium">Name EN *</label>
-                    <input type="text"
-                           name="name_en"
-                           value="{{ old('name_en') }}"
-                           required
-                           class="w-full border rounded px-3 py-2 @error('name_en') border-status-error @enderror">
-                    @error('name_en')
-                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+                @endforeach
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

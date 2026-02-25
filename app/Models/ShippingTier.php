@@ -10,8 +10,6 @@ class ShippingTier extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name_pt',
-        'name_en',
         'weight_from',
         'weight_to',
         'cost_gross',
@@ -23,6 +21,23 @@ class ShippingTier extends Model
     protected $casts = [
         'active' => 'boolean',
     ];
+
+    public function translations()
+    {
+        return $this->hasMany(ShippingTierTranslation::class);
+    }
+
+    public function translation(?string $locale = null)
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        return $this->translations
+            ->where('locale', $locale)
+            ->first()
+            ?? $this->translations
+                ->where('locale', config('app.fallback_locale'))
+                ->first();
+    }
 
     public function tax()
     {
@@ -38,6 +53,4 @@ class ShippingTier extends Model
     {
         return $this->belongsToMany(Region::class, 'region_shipping_tier');
     }
-
-
 }

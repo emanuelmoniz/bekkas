@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\ShippingTier;
+use App\Models\ShippingTierTranslation;
 use App\Models\Tax;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -13,8 +14,6 @@ class ShippingTierFactory extends Factory
     public function definition()
     {
         return [
-            'name_en' => 'Standard',
-            'name_pt' => 'Standard',
             'tax_id' => Tax::factory(),
             'weight_from' => 0,
             'weight_to' => 9999,
@@ -22,5 +21,15 @@ class ShippingTierFactory extends Factory
             'shipping_days' => 3,
             'active' => true,
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (ShippingTier $tier) {
+            ShippingTierTranslation::insert([
+                ['shipping_tier_id' => $tier->id, 'locale' => 'pt-PT', 'name' => 'Standard'],
+                ['shipping_tier_id' => $tier->id, 'locale' => 'en-UK', 'name' => 'Standard'],
+            ]);
+        });
     }
 }

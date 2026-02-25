@@ -137,6 +137,7 @@ class OrderController extends Controller
 
         // Get shipping tiers by postal code
         $tiers = ShippingTier::where('active', true)
+            ->with('translations')
             ->where('weight_from', '<=', $totalWeight)
             ->where('weight_to', '>=', $totalWeight)
             ->whereHas('regions', function ($query) use ($postalCode, $countryId) {
@@ -165,6 +166,7 @@ class OrderController extends Controller
         // Fallback to weight-only tiers
         if ($tiers->isEmpty()) {
             $tiers = ShippingTier::where('active', true)
+                ->with('translations')
                 ->where('weight_from', '<=', $totalWeight)
                 ->where('weight_to', '>=', $totalWeight)
                 ->orderBy('shipping_days', 'asc')
@@ -183,7 +185,7 @@ class OrderController extends Controller
         if ($qualifiesForFreeShipping && $freeShippingTier) {
             $tiersData->push([
                 'id' => $freeShippingTier->id,
-                'name' => $freeShippingTier->name_pt ?? $freeShippingTier->name_en,
+                'name' => $freeShippingTier->translation()?->name,
                 'cost_gross' => 0,
                 'shipping_days' => $freeShippingTier->shipping_days,
                 'is_free' => true,
@@ -207,7 +209,7 @@ class OrderController extends Controller
                 'all_tiers_count' => $tiers->count(),
                 'other_tiers_count' => $otherTiers->count(),
                 'other_tier_ids' => $otherTiers->pluck('id')->toArray(),
-                'other_tier_names' => $otherTiers->pluck('name_en')->toArray(),
+                'other_tier_names' => $otherTiers->map(fn ($t) => $t->translation()?->name)->toArray(),
             ]);
 
             foreach ($otherTiers as $tier) {
@@ -218,7 +220,7 @@ class OrderController extends Controller
 
                 $tiersData->push([
                     'id' => $tier->id,
-                    'name' => $tier->name_pt ?? $tier->name_en,
+                    'name' => $tier->translation()?->name,
                     'cost_gross' => round($gross, 2),
                     'shipping_days' => $tier->shipping_days,
                     'is_free' => false,
@@ -245,7 +247,7 @@ class OrderController extends Controller
 
                 return [
                     'id' => $tier->id,
-                    'name' => $tier->name_pt ?? $tier->name_en,
+                    'name' => $tier->translation()?->name,
                     'cost_gross' => round($gross, 2),
                     'shipping_days' => $tier->shipping_days,
                     'is_free' => false,
@@ -419,6 +421,7 @@ class OrderController extends Controller
         if ($defaultAddress && $defaultAddress->postal_code) {
             // Get active shipping tiers matching the default address postal code
             $availableShippingTiers = ShippingTier::where('active', true)
+                ->with('translations')
                 ->where('weight_from', '<=', $totalWeight)
                 ->where('weight_to', '>=', $totalWeight)
                 ->whereHas('regions', function ($query) use ($defaultAddress) {
@@ -431,6 +434,7 @@ class OrderController extends Controller
             // If no tiers match postal code, get all active tiers matching weight
             if ($availableShippingTiers->isEmpty()) {
                 $availableShippingTiers = ShippingTier::where('active', true)
+                    ->with('translations')
                     ->where('weight_from', '<=', $totalWeight)
                     ->where('weight_to', '>=', $totalWeight)
                     ->orderBy('shipping_days', 'asc')
@@ -473,7 +477,7 @@ class OrderController extends Controller
 
             return [
                 'id' => $t->id,
-                'name' => $t->name_pt ?? $t->name_en,
+                'name' => $t->translation()?->name,
                 'cost_gross' => $gross,
                 'shipping_days' => $t->shipping_days,
                 'is_free' => $isFree,
@@ -692,8 +696,8 @@ class OrderController extends Controller
                 $shippingTierName = null;
 
                 if ($shippingTierId) {
-                    $shippingTier = ShippingTier::find($shippingTierId);
-                    $shippingTierName = $shippingTier ? ($shippingTier->name_en ?? $shippingTier->name_pt) : null;
+                    $shippingTier = ShippingTier::with('translations')->find($shippingTierId);
+                    $shippingTierName = $shippingTier?->translation()?->name;
                 }
 
                 // Calculate shipping cost
@@ -737,8 +741,8 @@ class OrderController extends Controller
 
                 // Get tier name if not set
                 if (! $shippingTierName && $qualifiesForFreeShipping && ! $shippingTier) {
-                    $shippingTier = ShippingTier::find($defaultTierId);
-                    $shippingTierName = $shippingTier ? ($shippingTier->name_en ?? $shippingTier->name_pt) : null;
+                    $shippingTier = ShippingTier::with('translations')->find($defaultTierId);
+                    $shippingTierName = $shippingTier?->translation()?->name;
                 }
 
                 // Calculate expected delivery date
