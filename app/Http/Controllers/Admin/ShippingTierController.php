@@ -49,7 +49,7 @@ class ShippingTierController extends Controller
         }
 
         $tiers = $query->orderBy('weight_from')->paginate(15)->withQueryString();
-        $countries = Country::where('is_active', true)->orderBy('name_en')->get();
+        $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();
 
         return view('admin.shipping-tiers.index', compact('tiers', 'countries'));
     }
@@ -60,8 +60,8 @@ class ShippingTierController extends Controller
             ->orderBy('percentage')
             ->get();
 
-        $countries = Country::where('is_active', true)
-            ->orderBy('name_en')
+        $countries = Country::with('translations')->where('is_active', true)
+            ->orderByTranslatedName()
             ->get();
 
         $locales = Locale::activeList();
@@ -119,8 +119,8 @@ class ShippingTierController extends Controller
             ->orderBy('percentage')
             ->get();
 
-        $countries = Country::where('is_active', true)
-            ->orderBy('name_en')
+        $countries = Country::with('translations')->where('is_active', true)
+            ->orderByTranslatedName()
             ->get();
 
         $locales = Locale::activeList();

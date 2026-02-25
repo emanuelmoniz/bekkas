@@ -50,7 +50,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $countries = Country::where('is_active', true)->orderBy('name_pt')->get();
+        $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();
 
         return view('admin.users.create', compact('countries'));
     }
@@ -101,7 +101,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $user->load('addresses.country');
-        $countries = Country::where('is_active', true)->orderBy('name_pt')->get();
+        $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();
 
         return view('admin.users.edit', compact('user', 'countries'));
     }

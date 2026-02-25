@@ -35,25 +35,25 @@
         </section>
 
         <!-- FEATURES SECTION -->
-        <section class="py-16 md:py-24 bg-white px-6">
+        <section class="py-16 md:py-24 bg-light px-6">
             <div class="max-w-7xl mx-auto">
                 <h2 class="text-4xl font-bold mb-12 text-center text-dark">{{ t('custom.features.title') ?: 'Our Services' }}</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <!-- Feature 1 -->
-                    <div class="bg-white p-8 rounded-lg">
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
                         <h3 class="text-xl font-bold mb-4 text-dark">{{ t('custom.features.modeling') ?: '3D Modeling' }}</h3>
                         <p class="text-grey-dark">{{ t('custom.features.modeling_desc') ?: 'Professional 3D model preparation and optimization for printing.' }}</p>
                     </div>
 
                     <!-- Feature 2 -->
-                    <div class="bg-white p-8 rounded-lg">
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
                         <h3 class="text-xl font-bold mb-4 text-dark">{{ t('custom.features.materials') ?: 'Multiple Materials' }}</h3>
                         <p class="text-grey-dark">{{ t('custom.features.materials_desc') ?: 'Choose from various materials and finishes to suit your project needs.' }}</p>
                     </div>
 
                     <!-- Feature 3 -->
-                    <div class="bg-white p-8 rounded-lg">
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
                         <h3 class="text-xl font-bold mb-4 text-dark">{{ t('custom.features.support') ?: 'Expert Support' }}</h3>
                         <p class="text-grey-dark">{{ t('custom.features.support_desc') ?: 'Dedicated support from design consultation to final delivery.' }}</p>
                     </div>

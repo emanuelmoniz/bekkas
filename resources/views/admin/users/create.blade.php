@@ -174,7 +174,7 @@
                             <select name="country_id" required class="border rounded px-3 py-2 w-full @error('country_id') border-status-error @enderror">
                                 @foreach ($countries as $country)
                                     <option value="{{ $country->id }}" @selected(old('country_id') == $country->id)>
-                                        {{ app()->getLocale() === 'pt' ? $country->name_pt : $country->name_en }}
+                                        {{ $country->name }}
                                     </option>
                                 @endforeach
                             </select>

@@ -53,7 +53,7 @@
                             <p>{{ $address->address_line_2 }}</p>
                         @endif
                         <p>{{ $address->postal_code }}, {{ $address->city }}</p>
-                        <p>{{ $address->country->name_en ?? '-' }}</p>
+                        <p>{{ $address->country?->name ?? '-' }}</p>
                         @if($address->nif)
                             <p class="text-sm text-grey-dark">NIF: {{ $address->nif }}</p>
                         @endif

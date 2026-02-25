@@ -22,9 +22,9 @@
                         <input name="postal_code" value="{{ $address->postal_code }}" placeholder="{{ t('profile.address_postal_code') ?: 'Postal code' }}" class="border rounded px-2 py-1" required>
                         <input name="city" value="{{ $address->city }}" class="border rounded px-2 py-1" required>
                         <select name="country_id" class="border rounded px-2 py-1" required>
-                            @foreach(\App\Models\Country::where('is_active', true)->orderBy('name_pt')->get() as $country)
+                            @foreach(\App\Models\Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get() as $country)
                                 <option value="{{ $country->id }}" @selected($address->country_id == $country->id)>
-                                    {{ $country->name_pt }}
+                                    {{ $country->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -76,9 +76,9 @@
             <input name="city" placeholder="{{ t('profile.address_city') ?: 'City' }}" class="border rounded px-2 py-1" required>
             <select name="country_id" class="border rounded px-2 py-1" required>
                 <option value="">{{ t('profile.address_country') ?: 'Country' }}</option>
-                @foreach(\App\Models\Country::where('is_active', true)->orderBy('name_pt')->get() as $country)
+                @foreach(\App\Models\Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get() as $country)
                     <option value="{{ $country->id }}" @selected(old('country_id') == $country->id)>
-                        {{ $country->name_pt }}
+                        {{ $country->name }}
                     </option>
                 @endforeach
             </select>

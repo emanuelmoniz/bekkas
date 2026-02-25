@@ -29,7 +29,7 @@
                     <option value="">All Countries</option>
                     @foreach ($countries as $country)
                         <option value="{{ $country->id }}" @selected(request('country_id') == $country->id)>
-                            {{ app()->getLocale() === 'pt' ? $country->name_pt : $country->name_en }}
+                            {{ $country->name }}
                         </option>
                     @endforeach
                 </select>
@@ -79,7 +79,7 @@
                         <tr class="border-t">
                             <td class="px-4 py-2">{{ $region->name }}</td>
                             <td class="px-4 py-2">
-                                {{ app()->getLocale() === 'pt' ? $region->country->name_pt : $region->country->name_en }}
+                                {{ $region->country?->name }}
                             </td>
                             <td class="px-4 py-2">{{ $region->postal_code_from }}</td>
                             <td class="px-4 py-2">{{ $region->postal_code_to }}</td>

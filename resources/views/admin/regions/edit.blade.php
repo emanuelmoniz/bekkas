@@ -17,7 +17,7 @@
                 <select name="country_id" required class="w-full border rounded px-3 py-2">
                     @foreach ($countries as $country)
                         <option value="{{ $country->id }}" @selected(old('country_id', $region->country_id) == $country->id)>
-                            {{ app()->getLocale() === 'pt' ? $country->name_pt : $country->name_en }}
+                            {{ $country->name }}
                         </option>
                     @endforeach
                 </select>

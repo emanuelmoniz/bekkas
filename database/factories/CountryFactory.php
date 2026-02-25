@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Country;
+use App\Models\CountryTranslation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CountryFactory extends Factory
@@ -12,11 +13,21 @@ class CountryFactory extends Factory
     public function definition()
     {
         return [
-            'name_pt' => 'Portugal',
-            'name_en' => 'Portugal',
-            'iso_alpha2' => 'PT',
-            'country_code' => '351',
-            'is_active' => true,
+            'iso_alpha2'   => 'PT',
+            'country_code' => '+351',
+            'is_active'    => true,
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Country $country) {
+            foreach (array_keys(config('app.locales', ['pt-PT' => 'Português', 'en-UK' => 'English'])) as $locale) {
+                CountryTranslation::firstOrCreate(
+                    ['country_id' => $country->id, 'locale' => $locale],
+                    ['name' => 'Portugal']
+                );
+            }
+        });
     }
 }

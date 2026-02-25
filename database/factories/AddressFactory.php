@@ -21,14 +21,19 @@ class AddressFactory extends Factory
             'postal_code' => $this->faker->postcode,
             'city' => $this->faker->city,
             'country_id' => function () {
-                return \App\Models\Country::firstOrCreate([
-                    'iso_alpha2' => 'PT',
-                ], [
-                    'name_pt' => 'Portugal',
-                    'name_en' => 'Portugal',
-                    'country_code' => '351',
-                    'is_active' => true,
-                ])->id;
+                $country = \App\Models\Country::firstOrCreate(
+                    ['iso_alpha2' => 'PT'],
+                    ['country_code' => '+351', 'is_active' => true]
+                );
+
+                foreach (array_keys(config('app.locales', ['pt-PT' => 'Português', 'en-UK' => 'English'])) as $locale) {
+                    \App\Models\CountryTranslation::firstOrCreate(
+                        ['country_id' => $country->id, 'locale' => $locale],
+                        ['name' => 'Portugal']
+                    );
+                }
+
+                return $country->id;
             },
             'is_default' => false,
             'user_id' => User::factory(),

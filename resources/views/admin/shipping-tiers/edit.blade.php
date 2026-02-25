@@ -136,7 +136,7 @@
                                    x-model="selectedCountries"
                                    @checked(in_array($country->id, old('countries', $shippingTier->countries->pluck('id')->toArray())))
                                    class="rounded">
-                            <span>{{ app()->getLocale() === 'pt' ? $country->name_pt : $country->name_en }}</span>
+                            <span>{{ $country->name }}</span>
                         </label>
                     @endforeach
                 </div>

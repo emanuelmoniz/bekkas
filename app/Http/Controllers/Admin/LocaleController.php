@@ -17,7 +17,7 @@ class LocaleController extends Controller
 
     public function create()
     {
-        $countries = Country::where('is_active', true)->orderBy('name_en')->get();
+        $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();
         return view('admin.locales.create', compact('countries'));
     }
 
@@ -47,7 +47,7 @@ class LocaleController extends Controller
 
     public function edit(Locale $locale)
     {
-        $countries = Country::where('is_active', true)->orderBy('name_en')->get();
+        $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();
         return view('admin.locales.edit', compact('locale', 'countries'));
     }
 

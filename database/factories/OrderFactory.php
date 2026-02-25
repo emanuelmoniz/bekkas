@@ -68,7 +68,7 @@ class OrderFactory extends Factory
                     'address_line_2' => $address->address_line_2 ?? null,
                     'address_postal_code' => $address->postal_code ?? '0000-000',
                     'address_city' => $address->city ?? 'City',
-                    'address_country' => optional($address->country)->name_pt ?? 'Portugal',
+                    'address_country' => optional($address->country)->name ?? 'Portugal',
                 ]);
             } else {
                 $order->update([

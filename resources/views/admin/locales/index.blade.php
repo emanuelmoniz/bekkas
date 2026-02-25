@@ -31,7 +31,7 @@
                             <td class="px-4 py-2 font-mono text-sm">{{ $loc->code }}</td>
                             <td class="px-4 py-2">{{ $loc->name }}</td>
                             <td class="px-4 py-2 text-xl">{{ $loc->flag_emoji }}</td>
-                            <td class="px-4 py-2">{{ optional($loc->country)->name_en }}</td>
+                            <td class="px-4 py-2">{{ optional($loc->country)->name }}</td>
                             <td class="px-4 py-2">
                                 @if ($loc->is_active)
                                     <span class="text-status-success font-semibold">Yes</span>

@@ -159,7 +159,7 @@
                 @scroll.debounce.50ms="update()"
                 class="overflow-x-auto overflow-y-hidden scroll-smooth snap-x snap-mandatory no-scrollbar"
             >
-                <div class="flex gap-4 animate-sequence pb-2">
+                <div class="flex gap-4 animate-sequence pb-3">
                     @foreach ($relatedProducts as $relatedProduct)
                         <x-product-card
                             class="flex-none w-[calc(50%-8px)] sm:w-[calc(25%-12px)] snap-start"

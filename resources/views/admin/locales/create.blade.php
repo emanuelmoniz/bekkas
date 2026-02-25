@@ -45,7 +45,7 @@
                         @foreach ($countries as $country)
                             <option value="{{ $country->id }}"
                                 {{ old('country_id') == $country->id ? 'selected' : '' }}>
-                                {{ $country->name_en }}
+                                {{ $country->name }}
                             </option>
                         @endforeach
                     </select>

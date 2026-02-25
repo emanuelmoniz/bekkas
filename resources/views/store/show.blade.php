@@ -397,7 +397,7 @@
     </div>
 
     {{-- RELATED PRODUCTS --}}
-    <div class="animate-sequence">
+    <div class="animate-sequence bg-secondary">
         <x-related-products 
             class="anim-item"
             :categories="$product->categories"

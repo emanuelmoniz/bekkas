@@ -4,63 +4,98 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Country;
+use App\Models\CountryTranslation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CountryController extends Controller
 {
     public function index()
     {
-        $countries = Country::orderBy('name_pt')->get();
+        $countries = Country::with('translations')->orderByTranslatedName()->get();
+        $locales   = config('app.locales');
 
-        return view('admin.countries.index', compact('countries'));
+        return view('admin.countries.index', compact('countries', 'locales'));
     }
 
     public function create()
     {
-        return view('admin.countries.create');
+        $locales = config('app.locales');
+
+        return view('admin.countries.create', compact('locales'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name_pt' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
-            'iso_alpha2' => 'required|string|size:2|unique:countries,iso_alpha2',
-            'country_code' => 'required|string|max:10',
-        ]);
+        $locales = array_keys(config('app.locales'));
 
-        Country::create([
-            'name_pt' => $request->name_pt,
-            'name_en' => $request->name_en,
-            'iso_alpha2' => strtoupper($request->iso_alpha2),
-            'country_code' => $request->country_code,
-            'is_active' => $request->boolean('is_active'),
-        ]);
+        $rules = [
+            'iso_alpha2'   => 'required|string|size:2|unique:countries,iso_alpha2',
+            'country_code' => 'required|string|max:10',
+        ];
+
+        foreach ($locales as $locale) {
+            $rules["translations.{$locale}"] = 'required|string|max:255';
+        }
+
+        $request->validate($rules);
+
+        DB::transaction(function () use ($request, $locales) {
+            $country = Country::create([
+                'iso_alpha2'   => strtoupper($request->iso_alpha2),
+                'country_code' => $request->country_code,
+                'is_active'    => $request->boolean('is_active'),
+            ]);
+
+            foreach ($locales as $locale) {
+                CountryTranslation::create([
+                    'country_id' => $country->id,
+                    'locale'     => $locale,
+                    'name'       => $request->input("translations.{$locale}"),
+                ]);
+            }
+        });
 
         return redirect()->route('admin.countries.index');
     }
 
     public function edit(Country $country)
     {
-        return view('admin.countries.edit', compact('country'));
+        $country->load('translations');
+        $locales = config('app.locales');
+
+        return view('admin.countries.edit', compact('country', 'locales'));
     }
 
     public function update(Request $request, Country $country)
     {
-        $request->validate([
-            'name_pt' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
-            'iso_alpha2' => 'required|string|size:2|unique:countries,iso_alpha2,'.$country->id,
-            'country_code' => 'required|string|max:10',
-        ]);
+        $locales = array_keys(config('app.locales'));
 
-        $country->update([
-            'name_pt' => $request->name_pt,
-            'name_en' => $request->name_en,
-            'iso_alpha2' => strtoupper($request->iso_alpha2),
-            'country_code' => $request->country_code,
-            'is_active' => $request->boolean('is_active'),
-        ]);
+        $rules = [
+            'iso_alpha2'   => 'required|string|size:2|unique:countries,iso_alpha2,'.$country->id,
+            'country_code' => 'required|string|max:10',
+        ];
+
+        foreach ($locales as $locale) {
+            $rules["translations.{$locale}"] = 'required|string|max:255';
+        }
+
+        $request->validate($rules);
+
+        DB::transaction(function () use ($request, $country, $locales) {
+            $country->update([
+                'iso_alpha2'   => strtoupper($request->iso_alpha2),
+                'country_code' => $request->country_code,
+                'is_active'    => $request->boolean('is_active'),
+            ]);
+
+            foreach ($locales as $locale) {
+                CountryTranslation::updateOrCreate(
+                    ['country_id' => $country->id, 'locale' => $locale],
+                    ['name' => $request->input("translations.{$locale}")]
+                );
+            }
+        });
 
         return redirect()->route('admin.countries.index');
     }

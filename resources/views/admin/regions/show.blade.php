@@ -10,7 +10,7 @@
             <div>
                 <strong class="text-grey-dark">Country:</strong>
                 <p class="text-dark">
-                    {{ app()->getLocale() === 'pt' ? $region->country->name_pt : $region->country->name_en }}
+                    {{ $region->country?->name }}
                 </p>
             </div>
 

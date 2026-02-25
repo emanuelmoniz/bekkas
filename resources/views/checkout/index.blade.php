@@ -81,9 +81,9 @@
                     <input name="city" placeholder="{{ t('checkout.city') ?: 'City' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
                     <select name="country_id" x-model="newCountryId" @change="updateShippingTiersForNewAddress()" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
                         <option value="">{{ t('checkout.country') ?: 'Country' }}</option>
-                        @foreach(\App\Models\Country::where('is_active', true)->orderBy('name_pt')->get() as $country)
+                        @foreach(\App\Models\Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get() as $country)
                             <option value="{{ $country->id }}">
-                                {{ $country->name_pt }}
+                                {{ $country->name }}
                             </option>
                         @endforeach
                     </select>

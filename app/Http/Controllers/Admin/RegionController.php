@@ -43,7 +43,7 @@ class RegionController extends Controller
         }
 
         $regions = $query->orderBy('id')->paginate(15)->withQueryString();
-        $countries = Country::where('is_active', true)->orderBy('name_en')->get();
+        $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();
         $locales = config('app.locales');
 
         return view('admin.regions.index', compact('regions', 'countries', 'locales'));
@@ -51,7 +51,7 @@ class RegionController extends Controller
 
     public function create()
     {
-        $countries = Country::where('is_active', true)->orderBy('name_en')->get();
+        $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();
         $locales = config('app.locales');
 
         return view('admin.regions.create', compact('countries', 'locales'));
@@ -104,7 +104,7 @@ class RegionController extends Controller
     public function edit(Region $region)
     {
         $region->load('translations');
-        $countries = Country::where('is_active', true)->orderBy('name_en')->get();
+        $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();
         $locales = config('app.locales');
 
         // Only tiers already assigned to this region can be set as default
