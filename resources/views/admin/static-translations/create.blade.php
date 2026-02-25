@@ -1,34 +1,71 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-grey-dark">Create Static Translation</h2>
+        <h2 class="font-semibold text-xl text-grey-dark">New Translation Key</h2>
     </x-slot>
 
-    <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8">
-        <form method="POST" action="{{ route('admin.static-translations.store') }}" class="bg-light p-6 rounded shadow">
+    <div class="py-6 max-w-3xl mx-auto sm:px-6 lg:px-8">
+        <form method="POST"
+              action="{{ route('admin.static-translations.store') }}"
+              class="bg-light p-6 rounded shadow space-y-5">
             @csrf
 
-            <div class="mb-4">
-                <label class="block mb-1">Key</label>
-                <input name="key" value="{{ old('key') }}" class="w-full border rounded px-3 py-2">
+            @if ($errors->any())
+                <div class="p-3 bg-red-50 text-red-700 rounded text-sm">
+                    <ul class="list-disc list-inside space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            {{-- Key --}}
+            <div>
+                <label class="block font-semibold mb-1 text-sm" for="key">Key</label>
+                <input id="key"
+                       name="key"
+                       value="{{ old('key') }}"
+                       placeholder="e.g. nav.shop or checkout.pay.button"
+                       class="w-full border rounded px-3 py-2 font-mono text-sm @error('key') border-red-400 @enderror">
+                @error('key')
+                    <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
-            <div class="mb-4">
-                <label class="block mb-1">Locale</label>
-                <select name="locale" class="w-full border rounded px-3 py-2">
-                    @foreach (config('app.locales') as $locale => $label)
-                        <option value="{{ $locale }}">{{ $label }} ({{ $locale }})</option>
-                    @endforeach
-                </select>
+            {{-- Context --}}
+            <div>
+                <label class="block font-semibold mb-1 text-sm" for="context">Context</label>
+                <input id="context"
+                       name="context"
+                       value="{{ old('context') }}"
+                       placeholder="e.g. nav, checkout, footer…"
+                       class="w-full border rounded px-3 py-2 text-sm">
+                <p class="text-xs text-grey-dark mt-1">Optional — groups keys for the audit command.</p>
             </div>
 
-            <div class="mb-4">
-                <label class="block mb-1">Value</label>
-                <textarea name="value" class="w-full border rounded px-3 py-2" rows="6">{{ old('value') }}</textarea>
-            </div>
+            <hr>
 
-            <div class="flex justify-end gap-2">
-                <a href="{{ route('admin.static-translations.index') }}" class="px-4 py-2 border rounded">Cancel</a>
-                <button class="px-4 py-2 bg-accent-primary text-light rounded">Save</button>
+            {{-- Per-locale values --}}
+            @foreach ($locales as $locale => $label)
+                <div>
+                    <label class="block font-semibold mb-1 text-sm" for="value_{{ $locale }}">
+                        {{ $label }}
+                        <span class="font-normal text-grey-dark">({{ $locale }})</span>
+                    </label>
+                    <textarea id="value_{{ $locale }}"
+                              name="values[{{ $locale }}]"
+                              rows="3"
+                              class="w-full border rounded px-3 py-2 text-sm"
+                              placeholder="Leave empty to skip this locale">{{ old('values.'.$locale) }}</textarea>
+                </div>
+            @endforeach
+
+            <div class="flex justify-between items-center pt-2">
+                <a href="{{ route('admin.static-translations.index') }}"
+                   class="px-4 py-2 border rounded text-sm">← Back</a>
+                <button class="px-6 py-2 bg-accent-primary hover:bg-accent-primary/90 text-light rounded text-sm font-medium">
+                    Create
+                </button>
             </div>
         </form>
     </div>

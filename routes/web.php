@@ -453,8 +453,22 @@ Route::middleware(['auth', 'is_admin'])
 
         Route::resource('ticket-categories', TicketCategoryController::class);
 
-        // Static translations (DB-driven)
-        Route::resource('static-translations', \App\Http\Controllers\Admin\StaticTranslationController::class)->except(['show']);
+        // Static translations — key-grouped admin (Pillar 2)
+        Route::get('static-translations', [\App\Http\Controllers\Admin\StaticTranslationController::class, 'index'])
+            ->name('static-translations.index');
+        Route::get('static-translations/create', [\App\Http\Controllers\Admin\StaticTranslationController::class, 'create'])
+            ->name('static-translations.create');
+        Route::post('static-translations', [\App\Http\Controllers\Admin\StaticTranslationController::class, 'store'])
+            ->name('static-translations.store');
+        Route::get('static-translations/{encodedKey}/edit', [\App\Http\Controllers\Admin\StaticTranslationController::class, 'edit'])
+            ->name('static-translations.edit')
+            ->where('encodedKey', '[A-Za-z0-9_-]+');
+        Route::put('static-translations/{encodedKey}', [\App\Http\Controllers\Admin\StaticTranslationController::class, 'update'])
+            ->name('static-translations.update')
+            ->where('encodedKey', '[A-Za-z0-9_-]+');
+        Route::delete('static-translations/{encodedKey}', [\App\Http\Controllers\Admin\StaticTranslationController::class, 'destroy'])
+            ->name('static-translations.destroy')
+            ->where('encodedKey', '[A-Za-z0-9_-]+');
 
         Route::get('tickets/create', [TicketAdminController::class, 'create'])
             ->name('tickets.create');

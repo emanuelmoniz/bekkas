@@ -6,70 +6,153 @@ use App\Http\Controllers\Controller;
 use App\Models\StaticTranslation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class StaticTranslationController extends Controller
 {
+    // ── URL-safe base64 helpers ───────────────────────────────────────────────
+
+    public static function encodeKey(string $key): string
+    {
+        return rtrim(strtr(base64_encode($key), '+/', '-_'), '=');
+    }
+
+    private static function decodeKey(string $encoded): string
+    {
+        return base64_decode(strtr($encoded, '-_', '+/'));
+    }
+
+    // ── Actions ───────────────────────────────────────────────────────────────
+
     public function index(Request $request)
     {
-        $query = StaticTranslation::query();
+        $keyRows = StaticTranslation::select(DB::raw('`key`, MIN(`context`) as context'))
+            ->when($request->filled('search'), fn ($q) => $q->where('key', 'like', '%'.$request->search.'%'))
+            ->when($request->filled('ctx'),    fn ($q) => $q->where('context', 'like', '%'.$request->ctx.'%'))
+            ->groupBy('key')
+            ->orderBy('key')
+            ->paginate(50)
+            ->withQueryString();
 
-        if ($request->filled('key')) {
-            $query->where('key', 'like', '%'.$request->key.'%');
-        }
+        $allTranslations = StaticTranslation::whereIn('key', $keyRows->pluck('key'))
+            ->get()
+            ->groupBy('key')
+            ->map(fn ($rows) => $rows->keyBy('locale'));
 
-        if ($request->filled('locale')) {
-            $query->where('locale', $request->locale);
-        }
+        $locales = config('app.locales');
 
-        $items = $query->orderBy('key')->paginate(50);
-
-        return view('admin.static-translations.index', compact('items'));
+        return view('admin.static-translations.index', compact('keyRows', 'allTranslations', 'locales'));
     }
 
     public function create()
     {
-        return view('admin.static-translations.create');
+        $locales = config('app.locales');
+
+        return view('admin.static-translations.create', compact('locales'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'key' => 'required|string|max:255',
-            'locale' => 'required|string|max:5',
-            'value' => 'required|string',
+            'key'      => [
+                'required', 'string', 'max:255',
+                function ($attribute, $value, $fail) {
+                    if (StaticTranslation::where('key', $value)->exists()) {
+                        $fail('This key already exists — use Edit to modify it.');
+                    }
+                },
+            ],
+            'context'  => ['nullable', 'string', 'max:255'],
+            'values'   => ['required', 'array'],
+            'values.*' => ['nullable', 'string'],
         ]);
 
-        StaticTranslation::create($request->only(['key', 'locale', 'value']));
+        $key     = $request->input('key');
+        $context = $request->input('context');
+        $now     = now();
+        $rows    = [];
 
-        // Invalidate cache
+        foreach ($request->input('values', []) as $locale => $value) {
+            if (filled($value)) {
+                $rows[] = [
+                    'key'        => $key,
+                    'locale'     => $locale,
+                    'context'    => $context,
+                    'value'      => $value,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            }
+        }
+
+        if (! empty($rows)) {
+            StaticTranslation::insert($rows);
+        }
+
         Cache::forget('static_translations_all');
 
-        return redirect()->route('admin.static-translations.index')->with('success', 'Translation added.');
+        return redirect()
+            ->route('admin.static-translations.index')
+            ->with('success', 'Translation key created.');
     }
 
-    public function edit(StaticTranslation $static_translation)
+    public function edit(string $encodedKey)
     {
-        return view('admin.static-translations.edit', ['item' => $static_translation]);
+        $key  = self::decodeKey($encodedKey);
+        $rows = StaticTranslation::where('key', $key)->get()->keyBy('locale');
+
+        if ($rows->isEmpty()) {
+            abort(404);
+        }
+
+        $context = $rows->first()->context ?? '';
+        $locales = config('app.locales');
+
+        return view('admin.static-translations.edit',
+            compact('key', 'encodedKey', 'rows', 'context', 'locales'));
     }
 
-    public function update(Request $request, StaticTranslation $static_translation)
+    public function update(Request $request, string $encodedKey)
     {
+        $key = self::decodeKey($encodedKey);
+
         $request->validate([
-            'value' => 'required|string',
+            'context'  => ['nullable', 'string', 'max:255'],
+            'values'   => ['required', 'array'],
+            'values.*' => ['nullable', 'string'],
         ]);
 
-        $static_translation->update($request->only(['value']));
+        $context = $request->input('context');
+
+        foreach ($request->input('values', []) as $locale => $value) {
+            if (filled($value)) {
+                StaticTranslation::updateOrCreate(
+                    ['key' => $key, 'locale' => $locale],
+                    ['context' => $context, 'value' => $value]
+                );
+            } else {
+                // Empty value → remove that locale row
+                StaticTranslation::where('key', $key)->where('locale', $locale)->delete();
+            }
+        }
 
         Cache::forget('static_translations_all');
 
-        return redirect()->route('admin.static-translations.index')->with('success', 'Translation updated.');
+        return redirect()
+            ->route('admin.static-translations.index')
+            ->with('success', 'Translation updated.');
     }
 
-    public function destroy(StaticTranslation $static_translation)
+    public function destroy(string $encodedKey)
     {
-        $static_translation->delete();
+        $key = self::decodeKey($encodedKey);
+
+        StaticTranslation::where('key', $key)->delete();
+
         Cache::forget('static_translations_all');
 
-        return redirect()->route('admin.static-translations.index')->with('success', 'Translation removed.');
+        return redirect()
+            ->route('admin.static-translations.index')
+            ->with('success', 'Translation key deleted.');
     }
 }
