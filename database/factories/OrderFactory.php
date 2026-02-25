@@ -42,7 +42,6 @@ class OrderFactory extends Factory
 
             'status' => 'PROCESSING',
             'is_paid' => false,
-            'is_canceled' => false,
             'is_refunded' => false,
             'products_total_net' => 10.00,
             'products_total_tax' => 2.30,

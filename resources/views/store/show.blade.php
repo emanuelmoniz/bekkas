@@ -65,7 +65,13 @@
                     for (const type of this.optionTypes) {
                         if (type.have_price) {
                             const optId = this.selectedOptions[type.id];
-                            if (!optId) return null;
+                            if (!optId) {
+                                // No option selected: show lowest base price for strikethrough
+                                const prices = type.options
+                                    .map(o => o.price)
+                                    .filter(p => p !== null);
+                                return prices.length ? Math.min(...prices) : null;
+                            }
                             const opt = type.options.find(o => o.id === optId);
                             if (opt && opt.price !== null) return opt.price;
                         }
@@ -78,7 +84,13 @@
                     for (const type of this.optionTypes) {
                         if (type.have_price) {
                             const optId = this.selectedOptions[type.id];
-                            if (!optId) return null; // no selection yet
+                            if (!optId) {
+                                // No option selected yet: show lowest available price
+                                const prices = type.options
+                                    .map(o => isPromo && o.promo_price !== null ? o.promo_price : (o.price !== null ? o.price : null))
+                                    .filter(p => p !== null);
+                                return prices.length ? Math.min(...prices) : null;
+                            }
                             const opt = type.options.find(o => o.id === optId);
                             if (opt) {
                                 if (isPromo && opt.promo_price !== null) return opt.promo_price;

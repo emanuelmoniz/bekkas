@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Order extends Model
@@ -16,7 +17,6 @@ class Order extends Model
         'order_number',
         'status',
         'is_paid',
-        'is_canceled',
         'is_refunded',
         'tracking_number',
         'tracking_url',
@@ -48,7 +48,6 @@ class Order extends Model
 
     protected $casts = [
         'is_paid' => 'boolean',
-        'is_canceled' => 'boolean',
         'is_refunded' => 'boolean',
         'products_total_net' => 'decimal:2',
         'products_total_tax' => 'decimal:2',
@@ -227,14 +226,17 @@ class Order extends Model
 
         $prevStatus = $this->status;
 
-        // If currently PROCESSING, transition to CANCELED and set the cancellation flag.
-        // Otherwise keep the current status unchanged (per requirements).
-        if ($prevStatus === 'PROCESSING') {
-            $this->status = 'CANCELED';
-            $this->is_canceled = true;
+        // Wrap the status transition, stock restore, and order save in a single
+        // transaction so that if save() fails for any reason, all stock increments
+        // are rolled back atomically. This prevents double-restore when the payment
+        // provider re-delivers the webhook after a previously failed attempt.
+        DB::transaction(function () use ($prevStatus) {
+            // If currently PROCESSING, transition to CANCELED.
+            // Otherwise keep the current status unchanged (per requirements).
+            if ($prevStatus === 'PROCESSING') {
+                $this->status = 'CANCELED';
 
-            // Restore stock for non-backordered items (mirror admin behaviour)
-            try {
+                // Restore stock for non-backordered items (mirror admin behaviour)
                 foreach ($this->items()->with(['product', 'orderItemOptions.productOption.optionType'])->get() as $item) {
                     if ($item->was_backordered) {
                         continue;
@@ -248,14 +250,11 @@ class Order extends Model
                         $item->product->increment('stock', $item->quantity);
                     }
                 }
-            } catch (\Throwable $e) {
-                // Non-fatal: do not prevent refund marking if stock restore fails
-                \Log::warning('order.refund_stock_restore_failed', ['order_id' => $this->id, 'err' => $e->getMessage()]);
             }
-        }
 
-        $this->is_refunded = true;
-        $this->save();
+            $this->is_refunded = true;
+            $this->save();
+        });
 
         try {
             \Log::info('order.marked_refunded', array_merge(['order_id' => $this->id, 'source' => $source, 'prev_status' => $prevStatus, 'status' => $this->status], $meta));

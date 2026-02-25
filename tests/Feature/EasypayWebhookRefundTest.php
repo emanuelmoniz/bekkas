@@ -78,7 +78,6 @@ class EasypayWebhookRefundTest extends TestCase
         $order->refresh();
         $this->assertTrue($order->is_refunded);
         $this->assertEquals('CANCELED', $order->status);
-        $this->assertTrue($order->is_canceled);
 
         \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, function ($mail) use ($order) {
             $expected = new \App\Mail\OrderNotification($order, 'orders.email.event.refunded', $order->user->name, (t('orders.refunded') ?: 'Refunded'), ['status' => (t('orders.refunded') ?: 'Refunded')]);
@@ -181,7 +180,6 @@ class EasypayWebhookRefundTest extends TestCase
         $order->refresh();
         $this->assertTrue($order->is_refunded);
         $this->assertEquals('SHIPPED', $order->status);
-        $this->assertFalse($order->is_canceled);
 
         \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class);
     }
