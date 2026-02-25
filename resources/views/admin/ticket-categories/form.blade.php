@@ -7,23 +7,15 @@
             @method($method)
         @endif
 
+        @foreach (\App\Models\Locale::activeList() as $locale => $label)
         <div>
-            <label class="block font-semibold mb-1">Name (PT-PT) *</label>
+            <label class="block font-semibold mb-1">Name ({{ $label }}) *</label>
             <input type="text"
-                   name="name[pt-PT]"
+                   name="name[{{ $locale }}]"
                    class="w-full border rounded px-3 py-2"
-                   value="{{ $category?->translations->where('locale','pt-PT')->first()?->name }}"
-                   required>
+                   value="{{ $category?->translations->where('locale', $locale)->first()?->name }}">
         </div>
-
-        <div>
-            <label class="block font-semibold mb-1">Name (EN-UK) *</label>
-            <input type="text"
-                   name="name[en-UK]"
-                   class="w-full border rounded px-3 py-2"
-                   value="{{ $category?->translations->where('locale','en-UK')->first()?->name }}"
-                   required>
-        </div>
+        @endforeach
 
         <div>
             <label class="inline-flex items-center">

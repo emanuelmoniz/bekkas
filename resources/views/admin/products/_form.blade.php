@@ -23,7 +23,7 @@
 
     {{-- TRANSLATIONS --}}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        @foreach (['pt-PT', 'en-UK'] as $locale)
+        @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
                 <label class="block font-medium mb-1">
                     Name ({{ $locale }})
@@ -42,7 +42,7 @@
 
     {{-- DESCRIPTION --}}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        @foreach (['pt-PT', 'en-UK'] as $locale)
+        @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
                 <label class="block font-medium mb-1">
                     Description ({{ $locale }})
@@ -59,7 +59,7 @@
 
     {{-- TECHNICAL INFORMATION --}}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        @foreach (['pt-PT', 'en-UK'] as $locale)
+        @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
                 <label class="block font-medium mb-1">
                     Technical Info ({{ $locale }})
@@ -183,7 +183,7 @@
                         'options' => [],
                     ];
 
-                    foreach (config('app.locales') as $locale => $label) {
+                    foreach (\App\Models\Locale::activeList() as $locale => $label) {
                         $trans = $typeModel->translations->firstWhere('locale', $locale);
                         $type['name'][$locale] = $trans?->name;
                         $type['description'][$locale] = $trans?->description;
@@ -196,7 +196,7 @@
                             'name' => [],
                             'description' => [],
                         ];
-                        foreach (config('app.locales') as $loc => $lbl) {
+                        foreach (\App\Models\Locale::activeList() as $loc => $lbl) {
                             $oTrans = $opt->translations->firstWhere('locale', $loc);
                             $optArr['name'][$loc] = $oTrans?->name;
                             $optArr['description'][$loc] = $oTrans?->description;
@@ -345,7 +345,7 @@
     <div class="option-type-block border p-4 relative" data-index="__INDEX__">
         <button type="button" class="absolute top-2 right-2 text-red-600 remove-option-type">&times;</button>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            @foreach (['pt-PT', 'en-UK'] as $locale)
+            @foreach (\App\Models\Locale::activeCodes() as $locale)
                 <div>
                     <label class="block font-medium mb-1">Name ({{ $locale }})</label>
                     <input type="text"
@@ -355,7 +355,7 @@
             @endforeach
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            @foreach (['pt-PT', 'en-UK'] as $locale)
+            @foreach (\App\Models\Locale::activeCodes() as $locale)
                 <div>
                     <label class="block font-medium mb-1">Description ({{ $locale }})</label>
                     <textarea name="option_types[__INDEX__][description][{{ $locale }}]" class="w-full border rounded px-3 py-2"></textarea>
@@ -377,7 +377,7 @@
     <div class="option-item border p-3 relative" data-index="__OPT_INDEX__">
         <button type="button" class="absolute top-2 right-2 text-red-600 remove-option">&times;</button>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            @foreach (['pt-PT', 'en-UK'] as $locale)
+            @foreach (\App\Models\Locale::activeCodes() as $locale)
                 <div>
                     <label class="block font-medium mb-1">Option Name ({{ $locale }})</label>
                     <input type="text" name="option_types[__INDEX__][options][__OPT_INDEX__][name][{{ $locale }}]" class="w-full border rounded px-3 py-2">
@@ -385,7 +385,7 @@
             @endforeach
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-            @foreach (['pt-PT', 'en-UK'] as $locale)
+            @foreach (\App\Models\Locale::activeCodes() as $locale)
                 <div>
                     <label class="block font-medium mb-1">Description ({{ $locale }})</label>
                     <textarea name="option_types[__INDEX__][options][__OPT_INDEX__][description][{{ $locale }}]" class="w-full border rounded px-3 py-2"></textarea>

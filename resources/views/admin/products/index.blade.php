@@ -115,6 +115,7 @@
                             <tr class="border-t">
                                 <td class="px-4 py-2">
                                     {{ optional($product->translation())->name }}
+                                    <x-missing-locale-badge :model="$product" />
                                 </td>
                                 <td class="px-4 py-2">
                                     {{ number_format($product->price, 2) }}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Locale;
 use App\Models\Material;
 use App\Models\Project;
 use App\Models\ProjectTranslation;
@@ -77,7 +78,7 @@ class ProjectController extends Controller
             'is_featured' => $request->boolean('is_featured'),
         ]);
 
-        foreach (config('app.locales') as $locale => $name) {
+        foreach (Locale::activeList() as $locale => $name) {
             ProjectTranslation::create([
                 'project_id' => $project->id,
                 'locale' => $locale,
@@ -121,7 +122,7 @@ class ProjectController extends Controller
             'is_featured' => $request->boolean('is_featured'),
         ]);
 
-        foreach (config('app.locales') as $locale => $name) {
+        foreach (Locale::activeList() as $locale => $name) {
             $project->translations()
                 ->updateOrCreate(
                     ['locale' => $locale],

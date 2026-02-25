@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Locale;
 use App\Models\Material;
 use App\Models\MaterialTranslation;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ class MaterialController extends Controller
     {
         $material = Material::create();
 
-        foreach (['pt-PT', 'en-UK'] as $locale) {
+        foreach (Locale::activeCodes() as $locale) {
             MaterialTranslation::create([
                 'material_id' => $material->id,
                 'locale' => $locale,
@@ -45,7 +46,7 @@ class MaterialController extends Controller
 
     public function update(Request $request, Material $material)
     {
-        foreach (['pt-PT', 'en-UK'] as $locale) {
+        foreach (Locale::activeCodes() as $locale) {
             $material->translations()
                 ->updateOrCreate(
                     ['locale' => $locale],

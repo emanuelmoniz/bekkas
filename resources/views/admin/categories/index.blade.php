@@ -31,6 +31,7 @@
                             <tr class="border-t">
                                 <td class="px-4 py-2">
                                     {{ optional($category->translation())->name }}
+                                    <x-missing-locale-badge :model="$category" />
                                 </td>
 
                                 <td class="px-4 py-2 text-sm text-grey-dark">

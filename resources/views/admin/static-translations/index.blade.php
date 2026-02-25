@@ -26,6 +26,12 @@
                         value="{{ request('ctx') }}"
                         class="border rounded px-2 py-1 text-sm w-40"
                     >
+                    <input
+                        name="text"
+                        placeholder="Search text…"
+                        value="{{ request('text') }}"
+                        class="border rounded px-2 py-1 text-sm w-48"
+                    >
                     <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-1 rounded text-sm">Filter</button>
                     <a href="{{ route('admin.static-translations.index') }}"
                        class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-1 rounded text-sm">Reset</a>
@@ -42,11 +48,9 @@
                 <table class="w-full text-left text-sm">
                     <thead class="bg-grey-light">
                         <tr>
-                            <th class="px-3 py-2 font-semibold w-1/4">Key</th>
-                            <th class="px-3 py-2 font-semibold w-24">Context</th>
-                            @foreach ($locales as $locale => $label)
-                                <th class="px-3 py-2 font-semibold">{{ $label }}<span class="text-grey-dark font-normal text-xs ml-1">({{ $locale }})</span></th>
-                            @endforeach
+                            <th class="px-3 py-2 font-semibold w-1/5">Key</th>
+                            <th class="px-3 py-2 font-semibold w-auto">Context</th>
+                            <th class="px-3 py-2 font-semibold w-1/3">Text</th>
                             <th class="px-3 py-2 font-semibold text-right">Actions</th>
                         </tr>
                     </thead>
@@ -65,15 +69,18 @@
                                         <span class="text-grey-dark text-xs">—</span>
                                     @endif
                                 </td>
-                                @foreach ($locales as $locale => $label)
-                                    <td class="px-3 py-2 text-grey-dark">
-                                        @if ($trans->has($locale))
-                                            {{ \Illuminate\Support\Str::limit($trans[$locale]->value, 60) }}
-                                        @else
-                                            <span class="text-red-400 text-xs">missing</span>
-                                        @endif
-                                    </td>
-                                @endforeach
+                                <td class="px-3 py-2">
+                                    @foreach ($locales as $locale => $label)
+                                        <div class="flex gap-1.5 leading-snug py-0.5">
+                                            <span class="text-grey-dark font-mono text-xs shrink-0 w-14">{{ $locale }}:</span>
+                                            @if ($trans->has($locale))
+                                                <span class="text-grey-dark truncate max-w-xs">{{ \Illuminate\Support\Str::limit($trans[$locale]->value, 70) }}</span>
+                                            @else
+                                                <span class="text-red-400 text-xs italic">missing</span>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </td>
                                 <td class="px-3 py-2 text-right whitespace-nowrap">
                                     <a href="{{ route('admin.static-translations.edit', $encodedKey) }}"
                                        class="text-accent-secondary text-sm hover:underline">Edit</a>
@@ -89,7 +96,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="{{ 3 + count($locales) }}" class="px-3 py-6 text-center text-grey-dark">No translations found.</td>
+                                <td colspan="4" class="px-3 py-6 text-center text-grey-dark">No translations found.</td>
                             </tr>
                         @endforelse
                     </tbody>

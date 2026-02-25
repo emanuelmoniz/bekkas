@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Locale;
 use App\Models\TicketCategory;
 use App\Models\TicketCategoryTranslation;
 use Illuminate\Http\Request;
@@ -46,7 +47,7 @@ class TicketCategoryController extends Controller
             'active' => true,
         ]);
 
-        foreach (['pt-PT', 'en-UK'] as $locale) {
+        foreach (Locale::activeCodes() as $locale) {
             TicketCategoryTranslation::create([
                 'ticket_category_id' => $category->id,
                 'locale' => $locale,
@@ -80,7 +81,7 @@ class TicketCategoryController extends Controller
             'active' => (bool) $request->active,
         ]);
 
-        foreach (['pt-PT', 'en-UK'] as $locale) {
+        foreach (Locale::activeCodes() as $locale) {
             TicketCategoryTranslation::updateOrCreate(
                 [
                     'ticket_category_id' => $ticketCategory->id,

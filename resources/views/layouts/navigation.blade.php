@@ -141,6 +141,7 @@
                                     <a href="{{ route('admin.regions.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Regions</a>
                                     <a href="{{ route('admin.taxes.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Taxes</a>
                                     <a href="{{ route('admin.static-translations.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Translations</a>
+                                    <a href="{{ route('admin.locales.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Locales</a>
                                 </div>
                             </div>
                         </div>
@@ -433,6 +434,9 @@
                         </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('admin.static-translations.index')" :active="request()->is('admin/static-translations*')">
                             Translations
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('admin.locales.index')" :active="request()->is('admin/locales*')">
+                            Locales
                         </x-responsive-nav-link>
                     </div>
                 </div>

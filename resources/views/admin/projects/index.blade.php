@@ -104,6 +104,7 @@
                             <tr class="border-t">
                                 <td class="px-4 py-2">
                                     {{ optional($project->translation())->name }}
+                                    <x-missing-locale-badge :model="$project" />
                                 </td>
                                 <td class="px-4 py-2">
                                     {{ $project->production_date ? $project->production_date->format('Y-m-d') : '-' }}

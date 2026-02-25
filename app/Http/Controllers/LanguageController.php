@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Locale;
+
 class LanguageController extends Controller
 {
     public function switch($locale)
     {
-        // Validate the locale is supported
-        if (! array_key_exists($locale, config('app.locales'))) {
+        // Validate the locale is supported and active in the database
+        $exists = Locale::where('code', $locale)->where('is_active', true)->exists();
+        if (! $exists) {
             abort(404);
         }
 

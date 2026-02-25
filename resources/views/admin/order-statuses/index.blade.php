@@ -28,6 +28,7 @@
                             <td class="px-4 py-2">{{ $status->code }}</td>
                             <td class="px-4 py-2">
                                 {{ optional($status->translations->firstWhere('locale', 'pt-PT'))->name }}
+                                <x-missing-locale-badge :model="$status" />
                             </td>
                             <td class="px-4 py-2">
                                 {{ optional($status->translations->firstWhere('locale', 'en-UK'))->name }}

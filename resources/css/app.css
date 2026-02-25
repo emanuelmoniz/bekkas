@@ -141,7 +141,7 @@
      in `rgb(var(--color‑name) / <alpha-value>)` expressions. */
 :root{
   --color-primary: 193 48 39;
-  --color-secondary: 222 67 68;
+  --color-secondary: 236 230 221;
   --color-accent-primary: 92 136 160;
   --color-accent-secondary: 255 177 51;
   --color-grey-dark: 91 91 91;
@@ -151,7 +151,7 @@
   --color-error: 233 65 85;
   --color-warning: 248 154 70;
   --color-info: 77 114 152;
-  --color-light: 244 238 228;
+  --color-light: 246 241 234;
   --color-dark: 33 22 20;
   --color-white: 255 255 255;
 }

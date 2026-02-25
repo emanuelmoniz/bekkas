@@ -30,6 +30,7 @@
                             <tr class="border-t">
                                 <td class="px-4 py-2">
                                     {{ optional($material->translation())->name }}
+                                    <x-missing-locale-badge :model="$material" />
                                 </td>
 
                                 <td class="px-4 py-2 text-right space-x-2">

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             MaterialSeeder::class,
             CountrySeeder::class,
             RegionSeeder::class,
+            LocaleSeeder::class,
             ShippingTierSeeder::class,
             ProductSeeder::class,
             ProjectSeeder::class,

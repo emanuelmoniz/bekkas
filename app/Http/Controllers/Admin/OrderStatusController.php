@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Locale;
 use App\Models\OrderStatus;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class OrderStatusController extends Controller
 
     public function create()
     {
-        $locales = config('app.locales');
+        $locales = Locale::activeList();
 
         return view('admin.order-statuses.create', compact('locales'));
     }
@@ -50,7 +51,7 @@ class OrderStatusController extends Controller
     public function edit(OrderStatus $orderStatus)
     {
         $orderStatus->load('translations');
-        $locales = config('app.locales');
+        $locales = Locale::activeList();
 
         return view('admin.order-statuses.edit', compact('orderStatus', 'locales'));
     }

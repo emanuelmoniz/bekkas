@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Material;
+use App\Models\Locale;
 use App\Models\Product;
 use App\Models\ProductTranslation;
 use App\Models\Tax;
@@ -140,7 +141,7 @@ class ProductController extends Controller
         // persist any option types that were submitted along with their options
         $this->saveOptionTypes($product, $request->input('option_types', []));
 
-        foreach (config('app.locales') as $locale => $name) {
+        foreach (Locale::activeList() as $locale => $name) {
             ProductTranslation::create([
                 'product_id' => $product->id,
                 'locale' => $locale,
@@ -231,7 +232,7 @@ class ProductController extends Controller
 
         $this->saveOptionTypes($product, $request->input('option_types', []));
 
-        foreach (config('app.locales') as $locale => $name) {
+        foreach (Locale::activeList() as $locale => $name) {
             $product->translations()
                 ->updateOrCreate(
                     ['locale' => $locale],
@@ -282,7 +283,7 @@ class ProductController extends Controller
             ]);
 
             // translations
-            foreach (config('app.locales') as $locale => $label) {
+            foreach (Locale::activeList() as $locale => $label) {
                 $type->translations()->create([
                     'locale' => $locale,
                     'name' => $typeData['name'][$locale] ?? null,
@@ -297,7 +298,7 @@ class ProductController extends Controller
                     'stock' => isset($optData['stock']) ? (int) $optData['stock'] : 0,
                 ]);
 
-                foreach (config('app.locales') as $locale => $label) {
+                foreach (Locale::activeList() as $locale => $label) {
                     $opt->translations()->create([
                         'locale' => $locale,
                         'name' => $optData['name'][$locale] ?? null,

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\CategoryTranslation;
+use App\Models\Locale;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -29,7 +30,7 @@ class CategoryController extends Controller
             'parent_id' => $request->parent_id,
         ]);
 
-        foreach (['pt-PT', 'en-UK'] as $locale) {
+        foreach (Locale::activeCodes() as $locale) {
             CategoryTranslation::create([
                 'category_id' => $category->id,
                 'locale' => $locale,
@@ -56,7 +57,7 @@ class CategoryController extends Controller
             'parent_id' => $request->parent_id,
         ]);
 
-        foreach (['pt-PT', 'en-UK'] as $locale) {
+        foreach (Locale::activeCodes() as $locale) {
             $category->translations()
                 ->updateOrCreate(
                     ['locale' => $locale],

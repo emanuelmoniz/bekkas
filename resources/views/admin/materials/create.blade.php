@@ -15,7 +15,7 @@
                 <div class="bg-light p-6 rounded shadow mb-6">
                     <h3 class="font-semibold mb-4">Translations</h3>
 
-                    @foreach (['pt-PT' => 'Português', 'en-UK' => 'English'] as $locale => $label)
+                    @foreach (\App\Models\Locale::activeList() as $locale => $label)
                         <div class="border p-4 mb-4">
                             <h4 class="font-medium mb-2">{{ $label }}</h4>
 

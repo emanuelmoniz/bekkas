@@ -16,7 +16,7 @@
                 <div class="bg-light p-6 rounded shadow mb-6">
                     <h3 class="font-semibold mb-4">Translations</h3>
 
-                    @foreach (['pt-PT' => 'Português', 'en-UK' => 'English'] as $locale => $label)
+                    @foreach (\App\Models\Locale::activeList() as $locale => $label)
                         @php
                             $translation = $category->translations->firstWhere('locale', $locale);
                         @endphp

@@ -11,7 +11,7 @@
 
     {{-- TRANSLATIONS --}}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        @foreach (['pt-PT', 'en-UK'] as $locale)
+        @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
                 <label class="block font-medium mb-1">
                     Name ({{ $locale }})
@@ -29,7 +29,7 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        @foreach (['pt-PT', 'en-UK'] as $locale)
+        @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
                 <label class="block font-medium mb-1">
                     Description ({{ $locale }})

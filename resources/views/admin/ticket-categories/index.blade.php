@@ -26,6 +26,7 @@
                         <tr class="border-t">
                             <td class="px-4 py-2">
                                 {{ optional($cat->translations->where('locale','pt-PT')->first())->name }}
+                                <x-missing-locale-badge :model="$cat" />
                             </td>
                             <td class="px-4 py-2">
                                 {{ optional($cat->translations->where('locale','en-UK')->first())->name }}

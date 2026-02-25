@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Locale;
 use App\Models\StaticTranslation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -29,6 +30,12 @@ class StaticTranslationController extends Controller
         $keyRows = StaticTranslation::select(DB::raw('`key`, MIN(`context`) as context'))
             ->when($request->filled('search'), fn ($q) => $q->where('key', 'like', '%'.$request->search.'%'))
             ->when($request->filled('ctx'),    fn ($q) => $q->where('context', 'like', '%'.$request->ctx.'%'))
+            ->when($request->filled('text'),   fn ($q) => $q->whereExists(function ($sq) use ($request) {
+                $sq->select(DB::raw(1))
+                   ->from('static_translations as st2')
+                   ->whereColumn('st2.key', 'static_translations.key')
+                   ->where('st2.value', 'like', '%'.$request->text.'%');
+            }))
             ->groupBy('key')
             ->orderBy('key')
             ->paginate(50)
@@ -39,14 +46,14 @@ class StaticTranslationController extends Controller
             ->groupBy('key')
             ->map(fn ($rows) => $rows->keyBy('locale'));
 
-        $locales = config('app.locales');
+        $locales = Locale::activeList();
 
         return view('admin.static-translations.index', compact('keyRows', 'allTranslations', 'locales'));
     }
 
     public function create()
     {
-        $locales = config('app.locales');
+        $locales = Locale::activeList();
 
         return view('admin.static-translations.create', compact('locales'));
     }
@@ -106,7 +113,7 @@ class StaticTranslationController extends Controller
         }
 
         $context = $rows->first()->context ?? '';
-        $locales = config('app.locales');
+        $locales = Locale::activeList();
 
         return view('admin.static-translations.edit',
             compact('key', 'encodedKey', 'rows', 'context', 'locales'));

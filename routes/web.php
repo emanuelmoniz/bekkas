@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ShippingTierController;
 use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\TicketAdminController;
 use App\Http\Controllers\Admin\TicketCategoryController;
+use App\Http\Controllers\Admin\LocaleController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\ConfigurationController;
 use App\Http\Controllers\CartController;
@@ -452,6 +453,11 @@ Route::middleware(['auth', 'is_admin'])
         */
 
         Route::resource('ticket-categories', TicketCategoryController::class);
+
+        /*
+        | Locales (Pillar 4)
+        */
+        Route::resource('locales', LocaleController::class)->except(['show']);
 
         // Static translations — key-grouped admin (Pillar 2)
         Route::get('static-translations', [\App\Http\Controllers\Admin\StaticTranslationController::class, 'index'])
