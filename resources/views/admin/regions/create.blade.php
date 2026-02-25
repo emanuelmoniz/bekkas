@@ -26,17 +26,19 @@
                 @enderror
             </div>
 
+            @foreach ($locales as $localeCode => $localeName)
             <div>
-                <label class="block text-sm font-medium">Name *</label>
+                <label class="block text-sm font-medium">Name ({{ $localeName }}) *</label>
                 <input type="text"
-                       name="name"
-                       value="{{ old('name') }}"
+                       name="translations[{{ $localeCode }}]"
+                       value="{{ old("translations.{$localeCode}") }}"
                        required
-                       class="w-full border rounded px-3 py-2 @error('name') border-status-error @enderror">
-                @error('name')
+                       class="w-full border rounded px-3 py-2 @error("translations.{$localeCode}") border-status-error @enderror">
+                @error("translations.{$localeCode}")
                     <p class="text-status-error text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
+            @endforeach
 
             <div>
                 <label class="block text-sm font-medium">Postal Code From *</label>

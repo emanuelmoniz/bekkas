@@ -11,7 +11,6 @@ class Region extends Model
 
     protected $fillable = [
         'country_id',
-        'name',
         'postal_code_from',
         'postal_code_to',
         'is_active',
@@ -24,6 +23,29 @@ class Region extends Model
     public function country()
     {
         return $this->belongsTo(Country::class);
+    }
+
+    public function translations()
+    {
+        return $this->hasMany(RegionTranslation::class);
+    }
+
+    public function translation(?string $locale = null): ?RegionTranslation
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        return $this->translations
+            ->where('locale', $locale)
+            ->first()
+            ?? $this->translations
+                ->where('locale', config('app.fallback_locale'))
+                ->first();
+    }
+
+    /** Convenience accessor: $region->name returns the current-locale name. */
+    public function getNameAttribute(): ?string
+    {
+        return $this->translation()?->name;
     }
 
     public function getDefaultShippingTier()

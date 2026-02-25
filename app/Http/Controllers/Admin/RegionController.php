@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\Region;
+use App\Models\RegionTranslation;
 use App\Models\ShippingTier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,11 +14,13 @@ class RegionController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Region::with('country');
+        $query = Region::with(['country', 'translations']);
 
-        // Filter by name
+        // Filter by name (search across translations)
         if ($request->filled('name')) {
-            $query->where('name', 'like', '%'.$request->name.'%');
+            $query->whereHas('translations', function ($q) use ($request) {
+                $q->where('name', 'like', '%'.$request->name.'%');
+            });
         }
 
         // Filter by country
@@ -39,54 +42,76 @@ class RegionController extends Controller
             $query->where('is_active', $request->is_active);
         }
 
-        $regions = $query->orderBy('name')->paginate(15)->withQueryString();
+        $regions = $query->orderBy('id')->paginate(15)->withQueryString();
         $countries = Country::where('is_active', true)->orderBy('name_en')->get();
+        $locales = config('app.locales');
 
-        return view('admin.regions.index', compact('regions', 'countries'));
+        return view('admin.regions.index', compact('regions', 'countries', 'locales'));
     }
 
     public function create()
     {
         $countries = Country::where('is_active', true)->orderBy('name_en')->get();
+        $locales = config('app.locales');
 
-        return view('admin.regions.create', compact('countries'));
+        return view('admin.regions.create', compact('countries', 'locales'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'country_id' => 'required|exists:countries,id',
-            'name' => 'required|string|max:255',
-            'postal_code_from' => 'required|string|max:20',
-            'postal_code_to' => 'required|string|max:20',
-        ]);
+        $locales = array_keys(config('app.locales'));
 
-        Region::create([
-            'country_id' => $request->country_id,
-            'name' => $request->name,
-            'postal_code_from' => $request->postal_code_from,
-            'postal_code_to' => $request->postal_code_to,
-            'is_active' => $request->boolean('is_active', true),
-        ]);
+        $rules = [
+            'country_id'       => 'required|exists:countries,id',
+            'postal_code_from' => 'required|string|max:20',
+            'postal_code_to'   => 'required|string|max:20',
+        ];
+
+        foreach ($locales as $locale) {
+            $rules["translations.{$locale}"] = 'required|string|max:255';
+        }
+
+        $request->validate($rules);
+
+        DB::transaction(function () use ($request, $locales) {
+            $region = Region::create([
+                'country_id'       => $request->country_id,
+                'postal_code_from' => $request->postal_code_from,
+                'postal_code_to'   => $request->postal_code_to,
+                'is_active'        => $request->boolean('is_active', true),
+            ]);
+
+            foreach ($locales as $locale) {
+                RegionTranslation::create([
+                    'region_id' => $region->id,
+                    'locale'    => $locale,
+                    'name'      => $request->input("translations.{$locale}"),
+                ]);
+            }
+        });
 
         return redirect()->route('admin.regions.index');
     }
 
     public function show(Region $region)
     {
-        $region->load('country');
+        $region->load(['country', 'translations']);
+        $locales = config('app.locales');
 
-        return view('admin.regions.show', compact('region'));
+        return view('admin.regions.show', compact('region', 'locales'));
     }
 
     public function edit(Region $region)
     {
+        $region->load('translations');
         $countries = Country::where('is_active', true)->orderBy('name_en')->get();
+        $locales = config('app.locales');
 
         // Only tiers already assigned to this region can be set as default
-        $shippingTiers = ShippingTier::whereHas('regions', function ($q) use ($region) {
-            $q->where('regions.id', $region->id);
-        })->orderBy('name_en')->get();
+        $shippingTiers = ShippingTier::with('translations')
+            ->whereHas('regions', function ($q) use ($region) {
+                $q->where('regions.id', $region->id);
+            })->get();
 
         // Get current default shipping tier from the pivot
         $defaultShippingTierId = DB::table('region_shipping_tier')
@@ -94,19 +119,19 @@ class RegionController extends Controller
             ->where('is_default', true)
             ->value('shipping_tier_id');
 
-        return view('admin.regions.edit', compact('region', 'countries', 'shippingTiers', 'defaultShippingTierId'));
+        return view('admin.regions.edit', compact('region', 'countries', 'locales', 'shippingTiers', 'defaultShippingTierId'));
     }
 
     public function update(Request $request, Region $region)
     {
-        $request->validate([
-            'country_id' => 'required|exists:countries,id',
-            'name' => 'required|string|max:255',
+        $locales = array_keys(config('app.locales'));
+
+        $rules = [
+            'country_id'       => 'required|exists:countries,id',
             'postal_code_from' => 'required|string|max:20',
-            'postal_code_to' => 'required|string|max:20',
-            'default_shipping_tier_id' => ['nullable', function ($attribute, $value, $fail) {
-                $region = request()->route('region');
-                if ($value && $region) {
+            'postal_code_to'   => 'required|string|max:20',
+            'default_shipping_tier_id' => ['nullable', function ($attribute, $value, $fail) use ($region) {
+                if ($value) {
                     $exists = DB::table('region_shipping_tier')
                         ->where('region_id', $region->id)
                         ->where('shipping_tier_id', $value)
@@ -116,16 +141,28 @@ class RegionController extends Controller
                     }
                 }
             }],
-        ]);
+        ];
 
-        DB::transaction(function () use ($request, $region) {
+        foreach ($locales as $locale) {
+            $rules["translations.{$locale}"] = 'required|string|max:255';
+        }
+
+        $request->validate($rules);
+
+        DB::transaction(function () use ($request, $region, $locales) {
             $region->update([
-                'country_id' => $request->country_id,
-                'name' => $request->name,
+                'country_id'       => $request->country_id,
                 'postal_code_from' => $request->postal_code_from,
-                'postal_code_to' => $request->postal_code_to,
-                'is_active' => $request->boolean('is_active'),
+                'postal_code_to'   => $request->postal_code_to,
+                'is_active'        => $request->boolean('is_active'),
             ]);
+
+            foreach ($locales as $locale) {
+                RegionTranslation::updateOrCreate(
+                    ['region_id' => $region->id, 'locale' => $locale],
+                    ['name' => $request->input("translations.{$locale}")]
+                );
+            }
 
             // Clear the current default for this region
             DB::table('region_shipping_tier')

@@ -16,7 +16,13 @@
 
             <div>
                 <strong class="text-grey-dark">Name:</strong>
-                <p class="text-dark">{{ $region->name }}</p>
+                @foreach ($locales as $localeCode => $localeName)
+                    @php $t = $region->translations->where('locale', $localeCode)->first(); @endphp
+                    <p class="text-dark text-sm">
+                        <span class="text-grey-dark font-medium">{{ $localeName }}:</span>
+                        {{ $t?->name ?? '—' }}
+                    </p>
+                @endforeach
             </div>
 
             <div class="grid grid-cols-2 gap-4">
