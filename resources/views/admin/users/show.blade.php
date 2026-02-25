@@ -5,55 +5,56 @@
         </h2>
     </x-slot>
 
-    <div class="py-6">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8">
 
             {{-- USER INFO --}}
-            <div class="bg-white p-6 rounded shadow mb-6 space-y-4">
-                <h3 class="text-lg font-semibold border-b pb-2">User Information</h3>
+            <div class="bg-white shadow rounded p-6 mb-6">
+                <h3 class="text-xs text-grey-dark font-medium uppercase tracking-widest mb-4">User Information</h3>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <strong class="text-grey-dark">Name:</strong>
-                        <p class="text-dark">{{ $user->name }}</p>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Name</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $user->name }}</p>
                     </div>
 
                     <div>
-                        <strong class="text-grey-dark">Email:</strong>
-                        <p class="text-dark">{{ $user->email }}</p>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Email</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $user->email }}</p>
                     </div>
 
                     <div>
-                        <strong class="text-grey-dark">Phone:</strong>
-                        <p class="text-dark">{{ $user->phone ?? '-' }}</p>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Phone</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $user->phone ?? '-' }}</p>
                     </div>
 
                     <div>
-                        <strong class="text-grey-dark">Active:</strong>
-                        <p class="text-dark">
-                            <span class="px-2 py-1 rounded text-xs {{ $user->is_active ? 'bg-status-success text-status-success' : 'bg-status-error/10 text-status-error' }}">
-                                {{ $user->is_active ? 'Yes' : 'No' }}
-                            </span>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Active</p>
+                        <p class="text-sm text-grey-dark mt-1">
+                            @if($user->is_active)
+                                <span class="text-status-success font-bold">&#10003;</span>
+                            @else
+                                <span class="text-status-error font-bold">&#10007;</span>
+                            @endif
                         </p>
                     </div>
-                </div>
+                </dl>
             </div>
 
             {{-- ADDRESSES --}}
-            <div class="bg-white p-6 rounded shadow mb-6">
-                <h3 class="text-lg font-semibold border-b pb-2 mb-4">Addresses</h3>
+            <div class="bg-white shadow rounded p-6 mb-6">
+                <h3 class="text-xs text-grey-dark font-medium uppercase tracking-widest mb-4">Addresses</h3>
 
                 @forelse ($user->addresses as $address)
-                    <div class="border rounded p-4 mb-3">
+                    <div class="border border-grey-medium rounded p-4 mb-3">
                         @if($address->title)
-                            <p class="font-semibold text-lg mb-2">{{ $address->title }}</p>
+                            <p class="font-semibold text-sm mb-2">{{ $address->title }}</p>
                         @endif
-                        <p>{{ $address->address_line_1 }}</p>
+                        <p class="text-sm text-grey-dark">{{ $address->address_line_1 }}</p>
                         @if($address->address_line_2)
-                            <p>{{ $address->address_line_2 }}</p>
+                            <p class="text-sm text-grey-dark">{{ $address->address_line_2 }}</p>
                         @endif
-                        <p>{{ $address->postal_code }}, {{ $address->city }}</p>
-                        <p>{{ $address->country?->name ?? '-' }}</p>
+                        <p class="text-sm text-grey-dark">{{ $address->postal_code }}, {{ $address->city }}</p>
+                        <p class="text-sm text-grey-dark">{{ $address->country?->name ?? '-' }}</p>
                         @if($address->nif)
                             <p class="text-sm text-grey-dark">NIF: {{ $address->nif }}</p>
                         @endif
@@ -61,27 +62,26 @@
                             <p class="text-sm text-grey-dark">Phone: {{ $address->phone }}</p>
                         @endif
                         @if($address->is_default)
-                            <span class="inline-block mt-2 px-2 py-1 bg-blue-100 text-accent-primary text-xs rounded">Default</span>
+                            <span class="inline-block mt-2 px-2 py-1 bg-grey-light text-grey-dark text-xs rounded">Default</span>
                         @endif
                     </div>
                 @empty
-                    <p class="text-grey-medium">No addresses registered.</p>
+                    <p class="text-sm text-grey-medium">No addresses registered.</p>
                 @endforelse
             </div>
 
             {{-- ACTIONS --}}
-            <div class="flex justify-between">
+            <div class="flex justify-between mt-6">
                 <a href="{{ route('admin.users.index') }}"
-                   class="bg-grey-medium hover:bg-grey-dark text-light px-6 py-3 rounded">
+                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     Back
                 </a>
 
                 <a href="{{ route('admin.users.edit', $user) }}"
-                   class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-3 rounded">
+                   class="inline-flex items-center px-4 py-2 bg-accent-primary border border-transparent rounded-md font-semibold text-xs text-light uppercase tracking-widest hover:bg-accent-primary/90 transition ease-in-out duration-150">
                     Edit User
                 </a>
             </div>
 
-        </div>
     </div>
 </x-app-layout>

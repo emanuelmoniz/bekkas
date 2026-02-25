@@ -13,34 +13,48 @@
             </nav>
         </div>
 
-        <div class="bg-white shadow rounded p-4 space-y-4">
-
+        <div class="bg-white shadow rounded p-6 space-y-6">
 
             <div class="flex justify-between items-start gap-4">
-                <div>
-                    <p><strong>Session ID:</strong> {{ $session->id }}</p>
-                    <p><strong>Order:</strong>
-                        @if($session->order)
-                            <a class="text-accent-secondary hover:underline" href="{{ route('admin.orders.show', $session->order) }}">{{ $session->order->order_number }}</a>
-                        @else
-                            <span class="text-sm text-grey-medium">No order</span>
-                        @endif
-                    </p>
-
-                    <p><strong>Payload:</strong>
-                        @if($session->payload)
-                            <a class="text-accent-primary hover:underline" href="{{ route('admin.orders.payloads.show', $session->payload) }}">Payload #{{ $session->payload->id }}</a>
-                        @else
-                            <span class="text-sm text-grey-medium">—</span>
-                        @endif
-                    </p>
-
-                    <p><strong>Created:</strong> {{ $session->created_at->format('d/m/Y H:i') }}</p>
-                    <p><strong>Status:</strong> {{ $session->status ?? '-' }}</p>
-                    <p><strong>Checkout ID:</strong>
-                        <span class="block mt-1 text-sm font-mono" style="overflow-wrap:anywhere;word-break:break-word;max-width:100%;">{{ $session->checkout_id ?? '-' }}</span>
-                    </p>
-                    <p><strong>Session token:</strong>
+                <dl class="grid grid-cols-1 gap-4">
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Session ID</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $session->id }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Order</p>
+                        <p class="text-sm text-grey-dark mt-1">
+                            @if($session->order)
+                                <a class="text-accent-secondary hover:underline" href="{{ route('admin.orders.show', $session->order) }}">{{ $session->order->order_number }}</a>
+                            @else
+                                <span class="text-grey-medium">No order</span>
+                            @endif
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Payload</p>
+                        <p class="text-sm text-grey-dark mt-1">
+                            @if($session->payload)
+                                <a class="text-accent-primary hover:underline" href="{{ route('admin.orders.payloads.show', $session->payload) }}">Payload #{{ $session->payload->id }}</a>
+                            @else
+                                <span class="text-grey-medium">—</span>
+                            @endif
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Created</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $session->created_at->format('d/m/Y H:i') }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Status</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $session->status ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Checkout ID</p>
+                        <p class="text-sm text-grey-dark mt-1 font-mono break-all">{{ $session->checkout_id ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Session token</p>
                         @php
                             $token = $session->session_id ?? null;
                             $display = '-';
@@ -50,10 +64,13 @@
                                     : $token;
                             }
                         @endphp
-                        <span title="{{ $token ?? '' }}" class="block mt-1 text-sm font-mono" style="overflow-wrap:anywhere;word-break:break-word;max-width:100%;">{{ $display }}</span>
-                    </p>
-                    <p><strong>Error code:</strong> {{ $session->error_code ?? '-' }}</p>
-                </div>
+                        <p class="text-sm text-grey-dark mt-1 font-mono" title="{{ $token ?? '' }}">{{ $display }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Error code</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $session->error_code ?? '-' }}</p>
+                    </div>
+                </dl>
 
                 <div class="flex flex-col items-end gap-2">
                     <div class="w-full flex flex-wrap justify-end items-center gap-2 text-right">
@@ -77,14 +94,14 @@
                             <button class="bg-status-error/10 border-status-error text-status-error border px-4 py-2 rounded text-sm" title="Cancel checkout">Cancel</button>
                         </form>
 
-                        <a href="{{ route('admin.orders.checkouts.index') }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">Back</a>
+                        <a href="{{ route('admin.orders.checkouts.index') }}" class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150 ms-2">Back</a>
                     </div>
                 </div>
 
             </div>
 
             <div>
-                <h3 class="font-semibold mb-2">Gateway response / message</h3>
+                <h3 class="text-xs text-grey-dark font-medium uppercase tracking-widest mb-2">Gateway response / message</h3>
                 <pre class="whitespace-pre-wrap bg-white border rounded p-4 text-sm overflow-auto" style="max-height:48vh;overflow-wrap:anywhere;word-break:break-word;">{{ json_encode(json_decode($session->message ?: '{}'), JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) }}</pre>
             </div>
         </div>

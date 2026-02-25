@@ -5,56 +5,56 @@
         </h2>
     </x-slot>
 
-    <div class="py-6 max-w-3xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white shadow rounded p-6 space-y-4">
-            <div>
-                <strong class="text-grey-dark">Country:</strong>
-                <p class="text-dark">
-                    {{ $region->country?->name }}
-                </p>
-            </div>
+    <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white shadow rounded p-6">
+            <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Country</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ $region->country?->name }}</p>
+                </div>
 
-            <div>
-                <strong class="text-grey-dark">Name:</strong>
-                @foreach ($locales as $localeCode => $localeName)
-                    @php $t = $region->translations->where('locale', $localeCode)->first(); @endphp
-                    <p class="text-dark text-sm">
-                        <span class="text-grey-dark font-medium">{{ $localeName }}:</span>
-                        {{ $t?->name ?? '—' }}
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Postal Code From</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ $region->postal_code_from }}</p>
+                </div>
+
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Postal Code To</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ $region->postal_code_to }}</p>
+                </div>
+
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Active</p>
+                    <p class="text-sm text-grey-dark mt-1">
+                        @if($region->is_active)
+                            <span class="text-status-success font-bold">&#10003;</span>
+                        @else
+                            <span class="text-status-error font-bold">&#10007;</span>
+                        @endif
                     </p>
-                @endforeach
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <strong class="text-grey-dark">Postal Code From:</strong>
-                    <p class="text-dark">{{ $region->postal_code_from }}</p>
                 </div>
 
-                <div>
-                    <strong class="text-grey-dark">Postal Code To:</strong>
-                    <p class="text-dark">{{ $region->postal_code_to }}</p>
+                <div class="md:col-span-2">
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Name</p>
+                    @foreach ($locales as $localeCode => $localeName)
+                        @php $t = $region->translations->where('locale', $localeCode)->first(); @endphp
+                        <p class="text-sm text-grey-dark mt-1">
+                            <span class="font-medium">{{ $localeName }}:</span>
+                            {{ $t?->name ?? '—' }}
+                        </p>
+                    @endforeach
                 </div>
-            </div>
-
-            <div>
-                <strong class="text-grey-dark">Active:</strong>
-                <p class="text-dark">
-                    <span class="px-2 py-1 rounded text-xs {{ $region->is_active ? 'bg-status-success text-status-success' : 'bg-status-error/10 text-status-error' }}">
-                        {{ $region->is_active ? 'Yes' : 'No' }}
-                    </span>
-                </p>
-            </div>
+            </dl>
         </div>
 
         <div class="mt-6 flex justify-between">
             <a href="{{ route('admin.regions.index') }}"
-               class="bg-grey-medium hover:bg-grey-dark text-light px-6 py-3 rounded">
+               class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                 Back
             </a>
 
             <a href="{{ route('admin.regions.edit', $region) }}"
-               class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-3 rounded">
+               class="inline-flex items-center px-4 py-2 bg-accent-primary border border-transparent rounded-md font-semibold text-xs text-light uppercase tracking-widest hover:bg-accent-primary/90 transition ease-in-out duration-150">
                 Edit Region
             </a>
         </div>

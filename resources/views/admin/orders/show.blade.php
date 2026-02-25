@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-6 max-w-6xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="py-6 max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
         <div class="mb-4">
             <nav class="flex gap-2 text-sm" aria-label="Admin orders subnav">
@@ -17,74 +17,135 @@
         </div>
 
         {{-- =======================
-             ORDER STATUS (READ)
+             ORDER INFO (READ)
         ======================= --}}
-        <div class="bg-white shadow rounded p-4 grid md:grid-cols-2 gap-4">
-            <div>
-                <p><strong>Date:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
-                <p><strong>{{ t('orders.status') ?: 'Status' }}:</strong> 
-                    @php
-                        $currentStatus = $statuses->firstWhere('code', $order->status);
-                    @endphp
-                    {{ optional($currentStatus?->translation())->name ?? $order->status }}
-                </p>
-                <p><strong>{{ t('orders.paid') ?: 'Paid' }}:</strong> {{ $order->is_paid ? 'Yes' : 'No' }}</p>
-                <p><strong>{{ t('orders.refunded') ?: 'Refunded' }}:</strong> {{ $order->is_refunded ? 'Yes' : 'No' }}</p>
+        <div class="bg-white shadow rounded p-6">
+            <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Date</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ $order->created_at->format('d/m/Y H:i') }}</p>
+                </div>
+
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">{{ t('orders.status') ?: 'Status' }}</p>
+                    <p class="text-sm text-grey-dark mt-1">
+                        @php $currentStatus = $statuses->firstWhere('code', $order->status); @endphp
+                        {{ optional($currentStatus?->translation())->name ?? $order->status }}
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">{{ t('orders.paid') ?: 'Paid' }}</p>
+                    <p class="text-sm text-grey-dark mt-1">
+                        @if($order->is_paid)
+                            <span class="text-status-success font-bold">&#10003;</span>
+                        @else
+                            <span class="text-status-error font-bold">&#10007;</span>
+                        @endif
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">{{ t('orders.refunded') ?: 'Refunded' }}</p>
+                    <p class="text-sm text-grey-dark mt-1">
+                        @if($order->is_refunded)
+                            <span class="text-status-success font-bold">&#10003;</span>
+                        @else
+                            <span class="text-status-error font-bold">&#10007;</span>
+                        @endif
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">User</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ $order->user->name }}</p>
+                </div>
+
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Email</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ $order->user->email }}</p>
+                </div>
+
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">NIF</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ $order->address_nif }}</p>
+                </div>
+
                 @if($order->shipping_tier_name)
-                    <p><strong>Shipping Tier:</strong> {{ $order->shipping_tier_name }}</p>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Shipping Tier</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $order->shipping_tier_name }}</p>
+                    </div>
                 @endif
+
                 @if($order->expected_delivery_date)
-                    <p><strong>Expected Delivery:</strong> {{ $order->expected_delivery_date->format('d/m/Y') }}</p>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Expected Delivery</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $order->expected_delivery_date->format('d/m/Y') }}</p>
+                    </div>
                 @endif
-            </div>
 
-            <div>
-                <p><strong>User:</strong> {{ $order->user->name }}</p>
-                <p><strong>Email:</strong> {{ $order->user->email }}</p>
-                <p><strong>NIF:</strong> {{ $order->address_nif }}</p>
                 @if ($order->tracking_number)
-                    <p><strong>Tracking:</strong> {{ $order->tracking_number }}</p>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Tracking</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $order->tracking_number }}</p>
+                    </div>
                 @endif
-                @if($order->easypayPayload)
-                    <div class="mt-3">
-                        <a href="{{ route('admin.orders.payloads.show', $order->easypayPayload) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm">Payload</a>
+            </dl>
 
-                        <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Checkouts</a>
-
-                        <a href="{{ route('admin.orders.payments.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Payments</a>
-                    </div>
-                @else
-                    <div class="mt-3">
-                        <form method="POST" action="{{ route('admin.orders.payloads.store', $order) }}" onsubmit="return confirm('Create Easypay payload for this order?');" class="inline-block">
-                            @csrf
-                            <button class="bg-status-success border-green-200 text-status-success border px-4 py-2 rounded text-sm">Create payload</button>
-                        </form>
-                    </div>
-                @endif            
-            </div>
+            @if($order->easypayPayload)
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <a href="{{ route('admin.orders.payloads.show', $order->easypayPayload) }}" class="inline-block bg-white border border-grey-medium px-4 py-2 rounded text-sm">Payload</a>
+                    <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border border-grey-medium px-4 py-2 rounded text-sm">Checkouts</a>
+                    <a href="{{ route('admin.orders.payments.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border border-grey-medium px-4 py-2 rounded text-sm">Payments</a>
+                </div>
+            @else
+                <div class="mt-4">
+                    <form method="POST" action="{{ route('admin.orders.payloads.store', $order) }}" onsubmit="return confirm('Create Easypay payload for this order?');" class="inline-block">
+                        @csrf
+                        <button class="bg-status-success border-green-200 text-status-success border px-4 py-2 rounded text-sm">Create payload</button>
+                    </form>
+                </div>
+            @endif
         </div>
 
         {{-- =======================
              SHIPPING ADDRESS
         ======================= --}}
-        <div class="bg-white shadow rounded p-4">
-            <h3 class="font-semibold mb-2">Shipping Address</h3>
-
-            <p>{{ $order->address_title }}</p>
-            <p>{{ $order->address_line_1 }}</p>
-            @if($order->address_line_2)
-                <p>{{ $order->address_line_2 }}</p>
-            @endif
-            <p>{{ $order->address_postal_code }} {{ $order->address_city }}</p>
-            <p>{{ $order->address_country }}</p>
-            <p><strong>NIF:</strong> {{ $order->address_nif }}</p>
+        <div class="bg-white shadow rounded p-6">
+            <h3 class="text-xs text-grey-dark font-medium uppercase tracking-widest mb-4">Shipping Address</h3>
+            <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2">
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Name</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ $order->address_title }}</p>
+                </div>
+                <div class="md:col-span-2">
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Address</p>
+                    <p class="text-sm text-grey-dark mt-1">
+                        {{ $order->address_line_1 }}
+                        @if($order->address_line_2)<br>{{ $order->address_line_2 }}@endif
+                    </p>
+                </div>
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Postal Code / City</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ $order->address_postal_code }} {{ $order->address_city }}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Country</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ $order->address_country }}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">NIF</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ $order->address_nif }}</p>
+                </div>
+            </dl>
         </div>
 
         {{-- =======================
              PRODUCTS
         ======================= --}}
-        <div class="bg-white shadow rounded p-4">
-            <h3 class="font-semibold mb-2">Products</h3>
+        <div class="bg-white shadow rounded p-6">
+            <h3 class="text-xs text-grey-dark font-medium uppercase tracking-widest mb-4">Products</h3>
 
             <table class="min-w-full border">
                 <thead class="bg-grey-light">
@@ -100,19 +161,15 @@
                             <td class="px-3 py-2">
                                 {{ optional($item->product->translation())->name }}
                                 @if($item->orderItemOptions->count())
-                                    <div class="text-xs text-gray-500 mt-0.5 space-y-0.5">
+                                    <div class="text-xs text-grey-medium mt-0.5 space-y-0.5">
                                         @foreach($item->orderItemOptions as $opt)
                                             <span class="block">{{ $opt->option_type_name }}: {{ $opt->option_name }}</span>
                                         @endforeach
                                     </div>
                                 @endif
                             </td>
-                            <td class="px-3 py-2 text-center">
-                                {{ $item->quantity }}
-                            </td>
-                            <td class="px-3 py-2 text-right">
-                                {{ number_format($item->total_gross, 2) }} €
-                            </td>
+                            <td class="px-3 py-2 text-center">{{ $item->quantity }}</td>
+                            <td class="px-3 py-2 text-right">{{ number_format($item->total_gross, 2) }} €</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -122,20 +179,20 @@
         {{-- =======================
              TOTALS
         ======================= --}}
-        <div class="bg-white shadow rounded p-4 text-right space-y-1">
-            <p>Products (net): {{ number_format($order->products_total_net, 2) }} €</p>
+        <div class="bg-white shadow rounded p-6 text-right space-y-1">
+            <p class="text-sm text-grey-dark">Products (net): {{ number_format($order->products_total_net, 2) }} €</p>
 
             @if($order->tax_enabled)
-                <p>Products tax: {{ number_format($order->products_total_tax, 2) }} €</p>
-                <p>Shipping (gross): {{ number_format($order->shipping_gross, 2) }} €</p>
-                <p>Shipping tax: {{ number_format($order->shipping_tax, 2) }} €</p>
+                <p class="text-sm text-grey-dark">Products tax: {{ number_format($order->products_total_tax, 2) }} €</p>
+                <p class="text-sm text-grey-dark">Shipping (gross): {{ number_format($order->shipping_gross, 2) }} €</p>
+                <p class="text-sm text-grey-dark">Shipping tax: {{ number_format($order->shipping_tax, 2) }} €</p>
             @else
-                <p>{{ t('tax.included_in_price') ?: 'All taxes are included in the price' }}</p>
-                <p>Shipping (gross): {{ number_format($order->shipping_gross, 2) }} €</p>
+                <p class="text-sm text-grey-dark">{{ t('tax.included_in_price') ?: 'All taxes are included in the price' }}</p>
+                <p class="text-sm text-grey-dark">Shipping (gross): {{ number_format($order->shipping_gross, 2) }} €</p>
             @endif
 
-            <hr>
-            <p class="font-semibold">
+            <hr class="border-grey-medium">
+            <p class="text-sm font-semibold text-grey-dark">
                 Total: {{ number_format($order->total_gross, 2) }} €
             </p>
         </div>
@@ -145,15 +202,15 @@
         ======================= --}}
         <form method="POST"
               action="{{ route('admin.orders.update', $order) }}"
-              class="bg-white shadow rounded p-4 space-y-4">
+              class="bg-white shadow rounded p-6 space-y-4">
             @csrf
             @method('PATCH')
 
-            <h3 class="font-semibold">Admin Actions</h3>
+            <h3 class="text-xs text-grey-dark font-medium uppercase tracking-widest">Admin Actions</h3>
 
             <div>
-                <label class="block font-medium mb-1">Status</label>
-                <select name="status" class="border rounded px-3 py-2 w-full">
+                <x-input-label for="status" value="Status" />
+                <select name="status" id="status" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm w-full mt-1">
                     @foreach ($statuses as $status)
                         <option value="{{ $status->code }}"
                             @selected($order->status === $status->code)>
@@ -164,38 +221,42 @@
             </div>
 
             <div>
-                <label class="block font-medium mb-1">Tracking number</label>
-                <input name="tracking_number"
-                       value="{{ $order->tracking_number }}"
-                       class="border rounded px-3 py-2 w-full">
+                <x-input-label for="tracking_number" value="Tracking number" />
+                <x-text-input name="tracking_number" id="tracking_number"
+                              value="{{ $order->tracking_number }}"
+                              class="w-full mt-1" />
             </div>
-            
+
             <div>
-                <label class="block font-medium mb-1">Tracking URL</label>
-                <input name="tracking_url"
-                       value="{{ $order->tracking_url }}"
-                       type="url"
-                       placeholder="https://track.carrier.com/..."
-                       class="border rounded px-3 py-2 w-full">
+                <x-input-label for="tracking_url" value="Tracking URL" />
+                <x-text-input name="tracking_url" id="tracking_url"
+                              value="{{ $order->tracking_url }}"
+                              type="url"
+                              placeholder="https://track.carrier.com/..."
+                              class="w-full mt-1" />
                 <p class="text-sm text-grey-medium mt-1">Full URL to tracking page (optional)</p>
             </div>
 
             <div class="flex gap-6">
-                <label class="flex items-center gap-2">
+                <label class="flex items-center gap-2 text-sm text-grey-dark">
                     <input type="checkbox" name="is_paid" value="1" @checked($order->is_paid)>
                     Paid
                 </label>
 
-                <label class="flex items-center gap-2">
+                <label class="flex items-center gap-2 text-sm text-grey-dark">
                     <input type="checkbox" name="is_refunded" value="1" @checked($order->is_refunded)>
                     Refunded
                 </label>
             </div>
 
-            <div class="pt-2">
-                <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-3 rounded">
+            <div class="pt-2 flex justify-between">
+                <a href="{{ route('admin.orders.index') }}"
+                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                    Back
+                </a>
+                <x-primary-button>
                     Save changes
-                </button>
+                </x-primary-button>
             </div>
         </form>
 

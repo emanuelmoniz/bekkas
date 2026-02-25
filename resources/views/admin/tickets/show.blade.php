@@ -7,7 +7,7 @@
 
             <div class="flex gap-2">
                 <a href="{{ route('admin.tickets.index') }}"
-                   class="bg-grey-medium px-4 py-2 rounded text-sm">
+                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     Back to tickets
                 </a>
 
@@ -21,55 +21,57 @@
                 </form>
 
                 <a href="{{ route('admin.tickets.edit', $ticket) }}"
-                   class="bg-accent-primary text-light px-4 py-2 rounded text-sm">
+                   class="inline-flex items-center px-4 py-2 bg-accent-primary border border-transparent rounded-md font-semibold text-xs text-light uppercase tracking-widest hover:bg-accent-primary/90 transition ease-in-out duration-150">
                     Admin Edit
                 </a>
             </div>
         </div>
     </x-slot>
 
-    <div class="py-6 max-w-5xl mx-auto space-y-6">
+    <div class="py-6 max-w-4xl mx-auto space-y-6">
 
         {{-- TICKET META --}}
-        <div class="bg-white p-6 rounded shadow space-y-2">
-            <div>
-                <strong>Ticket ID:</strong>
-                <span class="font-mono text-sm">{{ $ticket->ticket_number ?? $ticket->uuid }}</span>
-            </div>
-
-            <div>
-                <strong>User:</strong>
-                {{ $ticket->owner?->name ?? '—' }}
-            </div>
-
-            <div>
-                <strong>Category:</strong>
-                {{ optional($ticket->category?->translation())->name ?? '—' }}
-            </div>
-
-            @if ($ticket->due_date)
+        <div class="bg-white shadow rounded p-6">
+            <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <strong>Due Date:</strong>
-                    {{ $ticket->due_date->format('Y-m-d') }}
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Ticket ID</p>
+                    <p class="text-sm text-grey-dark mt-1 font-mono">{{ $ticket->ticket_number ?? $ticket->uuid }}</p>
                 </div>
-            @endif
 
-            <div>
-                <strong>Status:</strong>
-                {{ ucfirst($ticket->status) }}
-            </div>
-
-            <div>
-                <strong>Opened:</strong>
-                {{ $ticket->opened_at }}
-            </div>
-
-            @if ($ticket->closed_at)
                 <div>
-                    <strong>Closed:</strong>
-                    {{ $ticket->closed_at }}
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">User</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ $ticket->owner?->name ?? '—' }}</p>
                 </div>
-            @endif
+
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Category</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ optional($ticket->category?->translation())->name ?? '—' }}</p>
+                </div>
+
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Status</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ ucfirst($ticket->status) }}</p>
+                </div>
+
+                <div>
+                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Opened</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ $ticket->opened_at }}</p>
+                </div>
+
+                @if ($ticket->due_date)
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Due Date</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $ticket->due_date->format('Y-m-d') }}</p>
+                    </div>
+                @endif
+
+                @if ($ticket->closed_at)
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Closed</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $ticket->closed_at }}</p>
+                    </div>
+                @endif
+            </dl>
         </div>
 
         {{-- CLOSE / REOPEN --}}
@@ -79,7 +81,7 @@
                     @csrf
                     <label class="block font-semibold mb-1">Close reason *</label>
                     <textarea name="reason"
-                              class="w-full border rounded px-3 py-2 mb-3"
+                              class="w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm mb-3"
                               required></textarea>
                     <button class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-4 py-2 rounded">
                         Close Ticket
@@ -90,7 +92,7 @@
                     @csrf
                     <label class="block font-semibold mb-1">Reopen reason *</label>
                     <textarea name="reason"
-                              class="w-full border rounded px-3 py-2 mb-3"
+                              class="w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm mb-3"
                               required></textarea>
                     <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
                         Reopen Ticket
@@ -138,7 +140,7 @@
 
                 <textarea name="message"
                           rows="4"
-                          class="w-full border rounded px-3 py-2"
+                          class="w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm"
                           required></textarea>
 
                 <input type="file" name="files[]" multiple>

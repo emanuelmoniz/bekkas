@@ -13,37 +13,70 @@
             </nav>
         </div>
 
-        <div class="bg-white shadow rounded p-4 space-y-4">
-            <div class="grid md:grid-cols-2 gap-4 items-start">
-                <div>
-                    <p><strong>Payment ID:</strong> {{ $payment->payment_id ?? $payment->id }}</p>
-                    <p><strong>Order:</strong>
-                        @if($payment->order)
-                            <a class="text-accent-secondary hover:underline" href="{{ route('admin.orders.show', $payment->order) }}">{{ $payment->order->order_number }}</a>
-                        @else
-                            <span class="text-sm text-grey-medium">No order</span>
-                        @endif
-                    </p>
-
-                    <p><strong>Checkout session:</strong>
-                        @if($payment->checkoutSession)
-                            <a class="text-accent-primary hover:underline" href="{{ route('admin.orders.checkouts.show', $payment->checkoutSession) }}">Session #{{ $payment->checkoutSession->id }}</a>
-                        @else
-                            <span class="text-sm text-grey-medium">—</span>
-                        @endif
-                    </p>
-
-                    <p><strong>Created:</strong> {{ $payment->created_at->format('d/m/Y H:i') }}</p>
-                    <p><strong>Paid at:</strong> {{ $payment->paid_at?->format('d/m/Y H:i') ?? '-' }}</p>
-                    <p><strong>Status:</strong> {{ $payment->payment_status ?? '-' }}</p>
-                    <p><strong>Method:</strong> {{ $payment->payment_method ?? '-' }}</p>
-
-                    <p><strong>Card last digits:</strong> {{ $payment->card_last_digits ?? '-' }}</p>
-                    <p><strong>MB entity / reference:</strong> {{ $payment->mb_entity ?? '-' }} / {{ $payment->mb_reference ?? '-' }}</p>
-                    <p><strong>IBAN:</strong> {{ $payment->iban ?? '-' }}</p>
-                    <p><strong>Capture:</strong> {{ $payment->capture_id ?? '-' }}</p>
-                    <p><strong>Refund request ID:</strong> {{ $payment->refund_id ?? '-' }}</p>
-                </div>
+        <div class="bg-white shadow rounded p-6 space-y-6">
+            <div class="flex justify-between items-start gap-4">
+                <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Payment ID</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $payment->payment_id ?? $payment->id }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Order</p>
+                        <p class="text-sm text-grey-dark mt-1">
+                            @if($payment->order)
+                                <a class="text-accent-secondary hover:underline" href="{{ route('admin.orders.show', $payment->order) }}">{{ $payment->order->order_number }}</a>
+                            @else
+                                <span class="text-grey-medium">No order</span>
+                            @endif
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Checkout session</p>
+                        <p class="text-sm text-grey-dark mt-1">
+                            @if($payment->checkoutSession)
+                                <a class="text-accent-primary hover:underline" href="{{ route('admin.orders.checkouts.show', $payment->checkoutSession) }}">Session #{{ $payment->checkoutSession->id }}</a>
+                            @else
+                                <span class="text-grey-medium">—</span>
+                            @endif
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Created</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $payment->created_at->format('d/m/Y H:i') }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Paid at</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $payment->paid_at?->format('d/m/Y H:i') ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Status</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $payment->payment_status ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Method</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $payment->payment_method ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Card last digits</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $payment->card_last_digits ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">MB entity / reference</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $payment->mb_entity ?? '-' }} / {{ $payment->mb_reference ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">IBAN</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $payment->iban ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Capture</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $payment->capture_id ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Refund request ID</p>
+                        <p class="text-sm text-grey-dark mt-1">{{ $payment->refund_id ?? '-' }}</p>
+                    </div>
+                </dl>
 
                 <div class="flex flex-col items-end gap-2">
                     <div class="w-full flex flex-wrap justify-end items-center gap-2 text-right">
@@ -72,7 +105,7 @@
                         @if(strtolower((string) $payment->payment_status) === 'paid' && optional($payment->order)->is_paid)
                             <form method="POST" action="{{ route('admin.orders.payments.refund', $payment) }}" onsubmit="return confirm('Confirm refund request?');" class="inline-block ms-2">
                                 @csrf
-                                <button type="submit" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm text-grey-dark hover:bg-white">Refund</button>
+                                <button type="submit" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm text-grey-dark hover:bg-grey-light">Refund</button>
                             </form>
 
                             @if(! empty($payment->refund_id))
@@ -83,13 +116,13 @@
                             @endif
                         @endif
 
-                        <a href="{{ route('admin.orders.payments.index') }}" class="inline-flex items-center bg-white border px-4 py-2 rounded text-sm ms-2">Back</a>
+                        <a href="{{ route('admin.orders.payments.index') }}" class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150 ms-2">Back</a>
                     </div>
                 </div>
             </div>
 
             <div>
-                <h3 class="font-semibold mb-2">Gateway raw response</h3>
+                <h3 class="text-xs text-grey-dark font-medium uppercase tracking-widest mb-2">Gateway raw response</h3>
                 <pre class="whitespace-pre-wrap bg-white border rounded p-4 text-sm overflow-auto" style="max-height:48vh;overflow-wrap:anywhere;word-break:break-word;">{{ json_encode($payment->raw_response ?: [], JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) }}</pre>
             </div>
         </div>
