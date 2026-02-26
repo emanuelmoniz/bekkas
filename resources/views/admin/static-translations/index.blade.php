@@ -12,38 +12,38 @@
             </a>
         </div>
 
-        <div class="bg-white p-4 rounded shadow">
-
-            {{-- Filter bar --}}
-            <div class="mb-4">
-                <form method="GET" class="flex flex-wrap gap-2">
-                    <input
-                        name="search"
-                        placeholder="Search key…"
-                        value="{{ request('search') }}"
-                        class="border rounded px-2 py-1 text-sm w-56"
-                    >
-                    <input
-                        name="ctx"
-                        placeholder="Context…"
-                        value="{{ request('ctx') }}"
-                        class="border rounded px-2 py-1 text-sm w-40"
-                    >
-                    <input
-                        name="text"
-                        placeholder="Search text…"
-                        value="{{ request('text') }}"
-                        class="border rounded px-2 py-1 text-sm w-48"
-                    >
-                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-sm">Filter</button>
-                    <a href="{{ route('admin.static-translations.index') }}"
-                       class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase text-sm">Reset</a>
-                </form>
+        {{-- FILTERS --}}
+        <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
+            <div class="flex flex-wrap gap-2">
+                <input
+                    name="search"
+                    placeholder="Search key…"
+                    value="{{ request('search') }}"
+                    class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm px-2 py-1 text-sm w-56"
+                >
+                <input
+                    name="ctx"
+                    placeholder="Context…"
+                    value="{{ request('ctx') }}"
+                    class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm px-2 py-1 text-sm w-40"
+                >
+                <input
+                    name="text"
+                    placeholder="Search text…"
+                    value="{{ request('text') }}"
+                    class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm px-2 py-1 text-sm w-48"
+                >
+                <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-sm">Filter</button>
+                <a href="{{ route('admin.static-translations.index') }}"
+                   class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase text-sm">Reset</a>
             </div>
+        </form>
+
+        <div class="bg-white shadow rounded">
 
             {{-- Table --}}
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm">
+                <table class="min-w-full border text-left text-sm">
                     <thead class="bg-grey-light">
                         <tr>
                             <th class="px-3 py-2 font-semibold w-1/5">Key</th>
@@ -98,10 +98,11 @@
                 </table>
             </div>
 
-            {{-- Pagination --}}
-            <div class="mt-4">
-                {{ $keyRows->links() }}
-            </div>
+        </div>
+
+        {{-- Pagination --}}
+        <div class="mt-6">
+            {{ $keyRows->links() }}
         </div>
     </div>
 </x-app-layout>
