@@ -10,9 +10,18 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::with(['translations', 'parent.translations'])->get();
+        $query = Category::with(['translations', 'parent.translations']);
+
+        if ($request->filled('name')) {
+            $name = $request->name;
+            $query->whereHas('translations', function ($q) use ($name) {
+                $q->where('name', 'like', '%'.$name.'%');
+            });
+        }
+
+        $categories = $query->get();
 
         return view('admin.categories.index', compact('categories'));
     }

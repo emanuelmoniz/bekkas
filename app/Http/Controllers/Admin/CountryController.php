@@ -11,9 +11,26 @@ use Illuminate\Support\Facades\DB;
 
 class CountryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $countries = Country::with('translations')->orderByTranslatedName()->get();
+        $query = Country::with('translations');
+
+        if ($request->filled('name')) {
+            $name = $request->name;
+            $query->whereHas('translations', function ($q) use ($name) {
+                $q->where('name', 'like', '%'.$name.'%');
+            });
+        }
+
+        if ($request->filled('iso_alpha_2')) {
+            $query->where('iso_alpha2', 'like', '%'.$request->iso_alpha_2.'%');
+        }
+
+        if ($request->filled('active')) {
+            $query->where('is_active', $request->active);
+        }
+
+        $countries = $query->orderByTranslatedName()->get();
 
         return view('admin.countries.index', compact('countries'));
     }

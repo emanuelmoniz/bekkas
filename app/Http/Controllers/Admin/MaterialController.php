@@ -10,9 +10,18 @@ use Illuminate\Http\Request;
 
 class MaterialController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $materials = Material::with('translations')->get();
+        $query = Material::with('translations');
+
+        if ($request->filled('name')) {
+            $name = $request->name;
+            $query->whereHas('translations', function ($q) use ($name) {
+                $q->where('name', 'like', '%'.$name.'%');
+            });
+        }
+
+        $materials = $query->get();
 
         return view('admin.materials.index', compact('materials'));
     }

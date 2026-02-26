@@ -9,9 +9,23 @@ use Illuminate\Http\Request;
 
 class LocaleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $locales = Locale::with('country')->orderBy('code')->get();
+        $query = Locale::with('country')->orderBy('code');
+
+        if ($request->filled('code')) {
+            $query->where('code', 'like', '%'.$request->code.'%');
+        }
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%'.$request->name.'%');
+        }
+
+        if ($request->filled('active')) {
+            $query->where('is_active', $request->active);
+        }
+
+        $locales = $query->get();
         return view('admin.locales.index', compact('locales'));
     }
 

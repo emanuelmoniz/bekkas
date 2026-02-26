@@ -41,10 +41,18 @@ class ShippingTierController extends Controller
             });
         }
 
+        // Filter by region
+        if ($request->filled('region_id')) {
+            $query->whereHas('regions', function ($q) use ($request) {
+                $q->where('regions.id', $request->region_id);
+            });
+        }
+
         $tiers = $query->orderBy('weight_from')->paginate(15)->withQueryString();
         $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();
+        $regions = Region::with('translations')->orderBy('id')->get();
 
-        return view('admin.shipping-tiers.index', compact('tiers', 'countries'));
+        return view('admin.shipping-tiers.index', compact('tiers', 'countries', 'regions'));
     }
 
     public function create()

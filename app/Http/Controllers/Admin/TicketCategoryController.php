@@ -18,11 +18,20 @@ class TicketCategoryController extends Controller
         }
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $this->ensureAdmin();
 
-        $categories = TicketCategory::with('translations')->get();
+        $query = TicketCategory::with('translations');
+
+        if ($request->filled('name')) {
+            $name = $request->name;
+            $query->whereHas('translations', function ($q) use ($name) {
+                $q->where('name', 'like', '%'.$name.'%');
+            });
+        }
+
+        $categories = $query->get();
 
         return view('admin.ticket-categories.index', compact('categories'));
     }

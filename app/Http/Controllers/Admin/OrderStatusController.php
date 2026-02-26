@@ -9,9 +9,22 @@ use Illuminate\Http\Request;
 
 class OrderStatusController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $statuses = OrderStatus::with('translations')->orderBy('sort_order')->get();
+        $query = OrderStatus::with('translations')->orderBy('sort_order');
+
+        if ($request->filled('name')) {
+            $name = $request->name;
+            $query->whereHas('translations', function ($q) use ($name) {
+                $q->where('name', 'like', '%'.$name.'%');
+            });
+        }
+
+        if ($request->filled('code')) {
+            $query->where('code', 'like', '%'.$request->code.'%');
+        }
+
+        $statuses = $query->get();
 
         return view('admin.order-statuses.index', compact('statuses'));
     }

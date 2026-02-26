@@ -15,17 +15,27 @@
 
         {{-- FILTERS --}}
         <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 
                 {{-- NAME --}}
                 <input type="text"
                        name="name"
                        value="{{ request('name') }}"
                        placeholder="Name"
-                       class="border rounded px-3 py-2">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+
+                {{-- REGION --}}
+                <select name="region_id" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                    <option value="">All Regions</option>
+                    @foreach ($regions as $region)
+                        <option value="{{ $region->id }}" @selected(request('region_id') == $region->id)>
+                            {{ $region->name }}
+                        </option>
+                    @endforeach
+                </select>
 
                 {{-- COUNTRY --}}
-                <select name="country_id" class="border rounded px-3 py-2">
+                <select name="country_id" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                     <option value="">All Countries</option>
                     @foreach ($countries as $country)
                         <option value="{{ $country->id }}" @selected(request('country_id') == $country->id)>
@@ -39,7 +49,7 @@
                        name="postal_code"
                        value="{{ request('postal_code') }}"
                        placeholder="Postal Code"
-                       class="border rounded px-3 py-2">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                 {{-- ACTIONS --}}
                 <div class="flex gap-2">

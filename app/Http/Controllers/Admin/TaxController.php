@@ -11,9 +11,22 @@ use Illuminate\Support\Facades\DB;
 
 class TaxController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $taxes = Tax::with('translations')->orderBy('percentage')->get();
+        $query = Tax::with('translations')->orderBy('percentage');
+
+        if ($request->filled('name')) {
+            $name = $request->name;
+            $query->whereHas('translations', function ($q) use ($name) {
+                $q->where('name', 'like', '%'.$name.'%');
+            });
+        }
+
+        if ($request->filled('active')) {
+            $query->where('is_active', $request->active);
+        }
+
+        $taxes = $query->get();
 
         return view('admin.taxes.index', compact('taxes'));
     }
