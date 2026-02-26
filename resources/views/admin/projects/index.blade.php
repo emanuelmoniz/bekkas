@@ -39,25 +39,13 @@
                            class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                     {{-- MATERIAL --}}
-                    <div x-data="{ open:false, search:'', selected:'{{ request('material_id') }}' }" class="relative">
-                        <input type="hidden" name="material_id" :value="selected">
-                        <button type="button" @click="open=!open"
-                                class="w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm text-left">
-                            {{ optional($materials->firstWhere('id', request('material_id'))?->translation())->name ?? 'Material' }}
-                        </button>
-                        <div x-show="open" @click.outside="open=false"
-                             class="absolute z-10 w-full bg-white border rounded shadow mt-1">
-                            <input x-model="search" class="w-full px-3 py-2 border-b" placeholder="Search...">
-                            @foreach($materials as $material)
-                                @php $name = optional($material->translation())->name; @endphp
-                                <div x-show="'{{ strtolower($name) }}'.includes(search.toLowerCase())"
-                                     @click="selected='{{ $material->id }}'; open=false"
-                                     class="px-3 py-2 hover:bg-grey-light cursor-pointer">
-                                    {{ $name }}
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
+                    <select name="material_id" class="border-grey-medium rounded-md shadow-sm">
+                        <option value="">Material</option>
+                        @foreach($materials as $material)
+                            @php $name = optional($material->translation())->name; @endphp
+                            <option value="{{ $material->id }}" @selected(request('material_id') == $material->id)>{{ $name }}</option>
+                        @endforeach
+                    </select>
 
                     {{-- ACTIVE FLAG --}}
                     <select name="is_active" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
