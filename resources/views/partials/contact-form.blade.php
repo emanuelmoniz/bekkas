@@ -1,13 +1,13 @@
 @include('partials.flash')
 
-<form id="contact-form" method="POST" action="{{ route('contact.store') }}" class="space-y-6"
+<form id="contact-form" method="POST" action="{{ route('contact.store') }}"
       data-msg-name-required="{{ t('validation.name_required') ?: 'Please enter your name.' }}"
       data-msg-email-invalid="{{ t('validation.email_invalid') ?: 'Please enter a valid email address.' }}"
       data-msg-message-required="{{ t('validation.message_required') ?: 'Please enter your message.' }}"
       data-msg-validation-failed="{{ t('contact.validation_failed') ?: 'Please correct the errors below and try again.' }}">
     @csrf
 
-    <div>
+    <div class="mb-6">
         <label for="name" class="block text-sm font-medium text-grey-dark mb-2">
             {{ t('contact.name') ?: 'Name' }}
         </label>
@@ -19,7 +19,7 @@
         @enderror
     </div>
 
-    <div>
+    <div class="mb-6">
         <label for="email" class="block text-sm font-medium text-grey-dark mb-2">
             {{ t('contact.email') ?: 'Email' }}
         </label>
@@ -31,7 +31,7 @@
         @enderror
     </div>
 
-    <div>
+    <div class="mb-6">
         <label for="message" class="block text-sm font-medium text-grey-dark mb-2">
             {{ t('contact.message') ?: 'Message' }}
         </label>
@@ -42,7 +42,7 @@
         @enderror
     </div>
 
-    <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+    <div class="mb-6 g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
     @error('g-recaptcha-response')
         <p class="text-primary text-sm mt-1">{{ $message }}</p>
     @enderror

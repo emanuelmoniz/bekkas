@@ -86,10 +86,10 @@
                                         'per_item' => 1,
                                     ],
                                 ]" />
-                                <div class="p-6 flex flex-col flex-grow">
+                                <div class="p-6 pb-8 flex flex-col flex-grow items-center text-center">
                                     <h3 class="text-2xl font-bold mb-3 text-dark">{{ t('home.services.store.title') ?: 'STORE' }}</h3>
                                     <p class="text-grey-dark mb-6 flex-grow">{{ t('home.services.store.description') ?: 'Day to day life objects, gifts, souvenires' }}</p>
-                                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-2 rounded font-medium transition-colors">
+                                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-8 py-3 rounded-full font-medium transition-colors">
                                         {{ t('home.services.store.button') ?: 'Store' }}
                                     </button>
                                 </div>
@@ -110,10 +110,10 @@
                                     'per_item' => 1,
                                 ],
                             ]" />
-                            <div class="p-6 flex flex-col flex-grow">
+                            <div class="p-6 pb-8 flex flex-col flex-grow items-center text-center">
                                 <h3 class="text-2xl font-bold mb-3 text-dark">{{ t('home.services.custom.title') ?: 'CUSTOM' }}</h3>
                                 <p class="text-grey-dark mb-6 flex-grow">{{ t('home.services.custom.description') ?: 'Printing service for architects and architecture students including modeling and file preparation.' }}</p>
-                                <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-2 rounded font-medium transition-colors">
+                                <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-8 py-3 rounded-full font-medium transition-colors">
                                     {{ t('home.services.custom.button') ?: 'More info' }}
                                 </button>
                             </div>
@@ -127,12 +127,14 @@
         <!-- CONTACT SECTION -->
         <section id="contact" class="py-16 md:py-24 bg-secondary px-6">
             <div class="max-w-7xl mx-auto">
-                <h2 class="text-4xl font-bold mb-12 text-center text-dark">{{ t('home.contact.title') ?: 'Get in Touch' }}</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12 animate-sequence">
                     
                     <!-- Contact Info -->
                     <div class="space-y-8 anim-item" data-index="0">
+
+                        <h2 class="text-4xl font-bold mb-12 uppercase text-dark">{{ t('home.contact.title') ?: 'Get in Touch' }}</h2>
+
                         <div>
                             <h3 class="text-lg font-semibold text-dark mb-2">{{ t('home.contact.location') ?: 'Location' }}</h3>
                             <p class="text-grey-dark">Lisbon, Portugal</p>
