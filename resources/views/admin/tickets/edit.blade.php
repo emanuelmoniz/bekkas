@@ -61,11 +61,11 @@
 
             <div class="flex justify-between">
                 <a href="{{ route('admin.tickets.index') }}"
-                   class="bg-grey-medium px-4 py-2 rounded">
+                   class="bg-grey-medium px-8 py-3 rounded-full uppercase">
                     Cancel
                 </a>
 
-                <button class="bg-accent-primary text-light px-6 py-2 rounded">
+                <button class="bg-primary text-white px-8 py-3 rounded-full uppercase">
                     Save Changes
                 </button>
             </div>

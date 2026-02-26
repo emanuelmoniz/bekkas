@@ -46,7 +46,7 @@
                            name="name[{{ $locale }}]"
                            value="{{ old('name.'.$locale) }}"
                            @if($locale === $defaultLocale) required @endif
-                           class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                           class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                     <x-input-error :messages="$errors->get('name.'.$locale)" class="mt-2" />
                 </div>
                 @endforeach
@@ -85,7 +85,7 @@
                     <x-input-label for="tax_id">Tax <span class="text-status-error">*</span></x-input-label>
                     <select id="tax_id" name="tax_id"
                             required
-                            class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                            class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                         <option value="">— Select tax —</option>
                         @foreach ($taxes as $tax)
                             <option value="{{ $tax->id }}"
@@ -150,7 +150,7 @@
 
             <div class="flex justify-between">
                 <a href="{{ route('admin.shipping-tiers.index') }}"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     Cancel
                 </a>
                 <x-primary-button>Save</x-primary-button>

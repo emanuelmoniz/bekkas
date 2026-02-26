@@ -32,14 +32,14 @@
                     <textarea id="value_{{ $locale }}"
                               name="values[{{ $locale }}]"
                               rows="3"
-                              class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm text-sm"
+                              class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm text-sm"
                               placeholder="Leave empty to skip this locale">{{ old('values.'.$locale) }}</textarea>
                 </div>
             @endforeach
 
             <div class="flex justify-between items-center pt-2">
                 <a href="{{ route('admin.static-translations.index') }}"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     ← Back
                 </a>
                 <x-primary-button>Create</x-primary-button>

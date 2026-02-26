@@ -10,7 +10,7 @@
         {{-- ACTION BAR --}}
         <div class="mb-4 flex justify-end">
             <a href="{{ route('admin.projects.create') }}"
-               class="inline-flex items-center bg-accent-primary hover:bg-accent-primary/90 text-light font-semibold px-4 py-2 rounded">
+               class="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 rounded-full uppercase">
                 New Project
             </a>
         </div>
@@ -24,19 +24,19 @@
                        name="name"
                        value="{{ request('name') }}"
                        placeholder="Name"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 {{-- PRODUCTION DATE START --}}
                 <input type="date"
                        name="production_date_start"
                        value="{{ request('production_date_start') }}"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 {{-- PRODUCTION DATE END --}}
                 <input type="date"
                        name="production_date_end"
                        value="{{ request('production_date_end') }}"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 {{-- MATERIAL --}}
                 <select name="material_id" class="border-grey-medium rounded-md shadow-sm">
@@ -48,14 +48,14 @@
                 </select>
 
                 {{-- ACTIVE FLAG --}}
-                <select name="is_active" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                <select name="is_active" class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                     <option value="">Active</option>
                     <option value="1" @selected(request('is_active')==='1')>Yes</option>
                     <option value="0" @selected(request('is_active')==='0')>No</option>
                 </select>
 
                 {{-- FEATURED FLAG --}}
-                <select name="is_featured" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                <select name="is_featured" class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                     <option value="">Featured</option>
                     <option value="1" @selected(request('is_featured')==='1')>Yes</option>
                     <option value="0" @selected(request('is_featured')==='0')>No</option>
@@ -64,10 +64,10 @@
                 {{-- ACTIONS --}}
                 <div class="flex gap-2">
                     <a href="{{ route('admin.projects.index') }}"
-                       class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
+                       class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
                         Reset
                     </a>
-                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
+                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
                         Filter
                     </button>
                 </div>
@@ -110,7 +110,7 @@
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
                                 <a href="{{ route('admin.projects.edit', $project) }}"
-                                   class="inline-flex bg-accent-primary text-light px-3 py-1 rounded text-sm">
+                                   class="inline-flex bg-primary text-white px-8 py-3 rounded-full uppercase text-sm">
                                     Edit
                                 </a>
                                 <form method="POST"
@@ -119,7 +119,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button onclick="return confirm('Delete this project?')"
-                                            class="bg-grey-light text-grey-dark px-3 py-1 rounded text-sm">
+                                            class="bg-grey-light text-grey-dark px-8 py-3 rounded-full uppercase text-sm">
                                         Delete
                                     </button>
                                 </form>

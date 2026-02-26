@@ -10,7 +10,7 @@
         {{-- Actions --}}
         <div class="mb-4 flex justify-end">
             <a href="{{ route('tickets.create') }}"
-               class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
+               class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
                 {{ t('tickets.new') ?: 'New Ticket' }}
             </a>
         </div>
@@ -53,7 +53,7 @@
                     <button
                         type="button"
                         @click="open = !open"
-                        class="w-full border rounded px-3 py-2 text-left bg-white"
+                        class="w-full border rounded-full uppercase px-8 py-3 text-left bg-white"
                     >
                         @if(request('category_id'))
                             {{
@@ -99,12 +99,12 @@
                 {{-- Actions --}}
                 <div class="flex items-end gap-2">
                     <a href="{{ route('tickets.index') }}"
-                       class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
+                       class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
                         {{ t('tickets.reset') ?: 'Reset' }}
                     </a>
                     <button
                         type="submit"
-                        class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded"
+                        class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase"
                     >
                         {{ t('tickets.filter') ?: 'Filter' }}
                     </button>

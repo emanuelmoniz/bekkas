@@ -21,7 +21,7 @@
                        step="0.01"
                        min="0"
                        value="{{ old('free_shipping_over', $freeShippingOver) }}"
-                       class="w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm"
+                       class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm"
                        required>
                 @error('free_shipping_over')
                     <p class="text-status-error text-sm mt-1">{{ $message }}</p>
@@ -37,7 +37,7 @@
                 </label>
                 <select id="default_shipping_tier_id" 
                         name="default_shipping_tier_id" 
-                        class="w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                        class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                     <option value="">— Select Default Tier —</option>
                     @foreach($shippingTiers as $tier)
                         <option value="{{ $tier->id }}" 
@@ -80,11 +80,11 @@
 
             <div class="flex justify-end gap-3">
                 <a href="{{ route('admin.orders.index') }}" 
-                   class="bg-grey-medium hover:bg-grey-medium px-6 py-2 rounded">
+                   class="bg-grey-medium hover:bg-grey-medium px-8 py-3 rounded-full uppercase">
                     Cancel
                 </a>
                 <button type="submit" 
-                        class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-2 rounded">
+                        class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
                     Save Changes
                 </button>
             </div>

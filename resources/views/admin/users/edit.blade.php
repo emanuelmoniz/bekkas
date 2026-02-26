@@ -64,7 +64,7 @@
 
                 <div class="flex justify-between">
                     <a href="{{ route('admin.users.index') }}"
-                       class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                       class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                         Cancel
                     </a>
                     <x-primary-button>Update User</x-primary-button>
@@ -121,7 +121,7 @@
                         {{-- COUNTRY --}}
                         <div class="md:col-span-2">
                             <x-input-label>Country <span class="text-status-error">*</span></x-input-label>
-                            <select name="country_id" required class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                            <select name="country_id" required class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                                 @foreach ($countries as $country)
                                     <option value="{{ $country->id }}" @selected(old('country_id', $address->country_id) == $country->id)>
                                         {{ $country->name }}
@@ -202,7 +202,7 @@
                     {{-- COUNTRY --}}
                     <div class="md:col-span-2">
                         <x-input-label>Country <span class="text-status-error">*</span></x-input-label>
-                        <select name="country_id" required class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                        <select name="country_id" required class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                             @foreach ($countries as $country)
                                 <option value="{{ $country->id }}">
                                     {{ $country->name }}
@@ -239,7 +239,7 @@
         {{-- BACK BUTTON --}}
         <div class="flex justify-start">
             <a href="{{ route('admin.users.index') }}"
-               class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+               class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                 Back to Users
             </a>
         </div>

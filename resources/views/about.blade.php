@@ -25,7 +25,7 @@
             </div>
             
             <!-- Content -->
-            <div class="relative z-10 text-center text-light px-6">
+            <div class="relative z-10 text-center text-white px-6">
                 <h1 class="text-5xl md:text-7xl font-bold mb-6">{{ t('about.banner.title') ?: 'About BEKKAS' }}</h1>
                 <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">{{ t('about.banner.subtitle') ?: 'Making 3D printing accessible to everyone' }}</p>
             </div>
@@ -90,19 +90,19 @@
         </section>
 
         <!-- CTA SECTION -->
-        <section class="py-16 md:py-24 bg-accent-primary px-6 animate-sequence">
-            <div class="max-w-4xl mx-auto text-center text-light anim-item" data-index="0">
+        <section class="py-16 md:py-24 bg-primary px-6 animate-sequence">
+            <div class="max-w-4xl mx-auto text-center text-white anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-6">{{ t('about.cta.title') ?: 'Ready to Start Your Project?' }}</h2>
                 <p class="text-xl mb-8">
                     {{ t('about.cta.description') ?: 'Join hundreds of satisfied customers who have brought their ideas to life with BEKKAS.' }}
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center animate-sequence">
                     @if(config('app.store_enabled'))
-                        <a href="{{ route('store.index') }}" class="inline-block bg-white text-accent-primary hover:bg-grey-light px-8 py-3 rounded font-semibold transition-colors anim-item" data-index="0">
+                        <a href="{{ route('store.index') }}" class="inline-block bg-white text-accent-primary hover:bg-grey-light px-8 py-3 rounded-full uppercase font-semibold transition-colors anim-item" data-index="0">
                             {{ t('about.cta.shop') ?: 'Browse Products' }}
                         </a>
                     @endif
-                    <a href="{{ route('tickets.create') }}" class="inline-block bg-accent-primary/90 hover:bg-accent-primary/95 text-light px-8 py-3 rounded font-semibold transition-colors anim-item" data-index="1">
+                    <a href="{{ route('tickets.create') }}" class="inline-block bg-primary/90 hover:bg-primary/95 text-white px-8 py-3 rounded-full uppercase font-semibold transition-colors anim-item" data-index="1">
                         {{ t('about.cta.contact') ?: 'Start a Project' }}
                     </a>
                 </div>

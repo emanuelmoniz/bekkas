@@ -7,7 +7,7 @@
 
             <div class="flex gap-2">
                 <a href="{{ route('tickets.index') }}"
-                   class="bg-grey-medium px-4 py-2 rounded text-sm">
+                   class="bg-grey-medium px-8 py-3 rounded-full uppercase text-sm">
                     {{ t('tickets.back_to_tickets') ?: 'Back to tickets' }}
                 </a>
 
@@ -15,7 +15,7 @@
                       action="{{ route('tickets.mark-unread', $ticket) }}">
                     @csrf
                     <button type="submit"
-                            class="bg-accent-secondary hover:bg-accent-secondary/90 text-light px-4 py-2 rounded text-sm">
+                            class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-sm">
                         {{ t('tickets.mark_as_unread') ?: 'Mark as unread' }}
                     </button>
                 </form>
@@ -76,7 +76,7 @@
                     <textarea name="reason"
                               class="w-full border rounded px-3 py-2 mb-3"
                               required></textarea>
-                    <button class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-4 py-2 rounded">
+                    <button class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-8 py-3 rounded-full uppercase">
                         {{ t('tickets.close_ticket') ?: 'Close Ticket' }}
                     </button>
                 </form>
@@ -87,7 +87,7 @@
                     <textarea name="reason"
                               class="w-full border rounded px-3 py-2 mb-3"
                               required></textarea>
-                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
+                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
                         {{ t('tickets.reopen_ticket') ?: 'Reopen Ticket' }}
                     </button>
                 </form>
@@ -152,7 +152,7 @@
                 @include('partials.recaptcha-loader')
 
                 <div class="flex justify-end">
-                    <button class="bg-accent-primary text-light px-6 py-2 rounded">
+                    <button class="bg-primary text-white px-8 py-3 rounded-full uppercase">
                         {{ t('tickets.send') ?: 'Send' }}
                     </button>
                 </div>

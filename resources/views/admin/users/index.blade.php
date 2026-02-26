@@ -10,7 +10,7 @@
         {{-- ACTION BAR --}}
         <div class="mb-4 flex justify-end">
             <a href="{{ route('admin.users.create') }}"
-               class="inline-flex items-center bg-accent-primary hover:bg-accent-primary/90 text-light font-semibold px-4 py-2 rounded">
+               class="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 rounded-full uppercase">
                 New User
             </a>
         </div>
@@ -24,24 +24,24 @@
                        name="name"
                        value="{{ request('name') }}"
                        placeholder="Name"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 {{-- EMAIL --}}
                 <input type="text"
                        name="email"
                        value="{{ request('email') }}"
                        placeholder="Email"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 {{-- PHONE --}}
                 <input type="text"
                        name="phone"
                        value="{{ request('phone') }}"
                        placeholder="Phone"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 {{-- IS_ACTIVE --}}
-                <select name="is_active" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                <select name="is_active" class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                     <option value="">Active</option>
                     <option value="1" @selected(request('is_active')==='1')>Yes</option>
                     <option value="0" @selected(request('is_active')==='0')>No</option>
@@ -50,10 +50,10 @@
                 {{-- ACTIONS --}}
                 <div class="flex gap-2">
                     <a href="{{ route('admin.users.index') }}"
-                       class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
+                       class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
                         Reset
                     </a>
-                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
+                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
                         Filter
                     </button>
                 </div>
@@ -93,7 +93,7 @@
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
                                 <a href="{{ route('admin.users.edit', $user) }}"
-                                   class="inline-flex bg-accent-primary text-light px-3 py-1 rounded text-sm">
+                                   class="inline-flex bg-primary text-white px-8 py-3 rounded-full uppercase text-sm">
                                     Edit
                                 </a>
                             </td>

@@ -8,29 +8,29 @@
             <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
                 <input name="order_number" placeholder="Order Number"
                        value="{{ request('order_number') }}"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 <input type="date" name="from_order_date" placeholder="Order from date"
                        value="{{ request('from_order_date') }}"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 <input type="date" name="to_order_date" placeholder="Order to date"
                        value="{{ request('to_order_date') }}"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 <input type="date" name="from_session_date" placeholder="Session from date"
                        value="{{ request('from_session_date') }}"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 <input type="date" name="to_session_date" placeholder="Session to date"
                        value="{{ request('to_session_date') }}"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 <div class="text-right flex justify-end gap-2">
                     <a href="{{ route('admin.orders.checkouts.index') }}" 
-                    class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
+                    class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
                         Reset
                     </a>
-                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
+                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
                         Filter
                     </button>
                 </div>

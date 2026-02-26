@@ -69,10 +69,10 @@
 
             <div class="flex justify-end gap-3">
                 <a href="{{ route('admin.tickets.index') }}"
-                   class="bg-grey-medium px-6 py-2 rounded">
+                   class="bg-grey-medium px-8 py-3 rounded-full uppercase">
                     Cancel
                 </a>
-                <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-2 rounded">
+                <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
                     Open Ticket
                 </button>
             </div>

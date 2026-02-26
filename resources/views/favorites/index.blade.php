@@ -35,7 +35,7 @@
                                 
                                 <form method="POST" action="{{ route('favorites.remove', $product) }}" class="mt-3">
                                     @csrf
-                                    <button type="submit" class="w-full bg-status-error/10 hover:bg-status-error/20 text-status-error px-4 py-2 rounded text-sm">
+                                    <button type="submit" class="w-full bg-status-error/10 hover:bg-status-error/20 text-status-error px-8 py-3 rounded-full uppercase text-sm">
                                         {{ t('favorites.remove') ?: 'Remove from Favorites' }}
                                     </button>
                                 </form>
@@ -56,7 +56,7 @@
                     @if(config('app.store_enabled'))
                         <div class="mt-4">
                             <a href="{{ route('store.index') }}"
-                               class="inline-block bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-3 rounded text-center font-medium">
+                               class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-center font-medium">
                                 {{ t('favorites.browse_products') ?: 'Browse Products' }}
                             </a>
                         </div>

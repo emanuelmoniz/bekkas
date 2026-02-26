@@ -29,15 +29,15 @@
 
                 <div class="text-right flex flex-wrap justify-end items-center gap-2">
                     @if($payload->order)
-                        <a href="{{ route('admin.orders.show', $payload->order) }}" class="inline-block bg-grey-light border px-4 py-2 rounded text-sm">Order</a>
+                        <a href="{{ route('admin.orders.show', $payload->order) }}" class="inline-block bg-grey-light border px-8 py-3 rounded-full uppercase text-sm">Order</a>
 
-                        <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $payload->order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Checkouts</a>
+                        <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $payload->order->order_number]) }}" class="inline-block bg-white border px-8 py-3 rounded-full uppercase text-sm ms-2">Checkouts</a>
 
-                        <a href="{{ route('admin.orders.payments.index', ['order_number' => $payload->order->order_number]) }}" class="inline-block bg-white border px-4 py-2 rounded text-sm ms-2">Payments</a>
+                        <a href="{{ route('admin.orders.payments.index', ['order_number' => $payload->order->order_number]) }}" class="inline-block bg-white border px-8 py-3 rounded-full uppercase text-sm ms-2">Payments</a>
 
                         <form method="POST" action="{{ route('admin.orders.checkouts.store', $payload->order) }}" class="inline-block ms-2">
                             @csrf
-                            <button class="bg-status-success/10 border-green-200 text-status-success border px-4 py-2 rounded text-sm">Create checkout</button>
+                            <button class="bg-status-success/10 border-green-200 text-status-success border px-8 py-3 rounded-full uppercase text-sm">Create checkout</button>
                         </form>
 
                     @endif
@@ -45,10 +45,10 @@
                     <form method="POST" action="{{ route('admin.orders.payloads.destroy', $payload) }}" class="inline-block ms-2" onsubmit="return confirm('Delete this payload? This cannot be undone.');">
                         @csrf
                         @method('DELETE')
-                        <button class="bg-status-error/10 border-status-error text-status-error border px-4 py-2 rounded text-sm">Delete</button>
+                        <button class="bg-status-error/10 border-status-error text-status-error border px-8 py-3 rounded-full uppercase text-sm">Delete</button>
                     </form>
 
-                    <a href="{{ route('admin.orders.payloads.index') }}" class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150 ms-2">Back</a>
+                    <a href="{{ route('admin.orders.payloads.index') }}" class="inline-flex items-center px-8 py-3 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150 ms-2">Back</a>
                 </div>
             </div>
 

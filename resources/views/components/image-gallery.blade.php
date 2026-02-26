@@ -91,7 +91,7 @@ $imageData = collect($images)
 
         {{-- Zoom hint icon (bottom-right) --}}
         <div class="pointer-events-none absolute bottom-2 right-2 opacity-0 group-hover:opacity-70 transition-opacity">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-light drop-shadow">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-white drop-shadow">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803M10.5 7.5v3m0 0v3m0-3h3m-3 0H7.5"/>
             </svg>
         </div>
@@ -107,7 +107,7 @@ $imageData = collect($images)
                 <template x-for="(img, i) in visibleThumbs" :key="thumbOffset + i">
                     <button
                         @click="selectImage(thumbOffset + i)"
-                        class="aspect-square overflow-hidden rounded transition focus:outline-none focus:ring-2 focus:ring-accent-primary"
+                        class="aspect-square overflow-hidden rounded transition focus:outline-none focus:ring-2 focus:ring-primary"
                         :class="selectedIndex === thumbOffset + i
                             ? 'ring-2 ring-accent-primary opacity-100'
                             : 'opacity-60 hover:opacity-100'"
@@ -128,7 +128,7 @@ $imageData = collect($images)
             <button
                 @click="thumbPrev()"
                 :disabled="!canThumbPrev"
-                class="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-grey-light text-grey-dark shadow transition opacity-0 group-hover:opacity-100 disabled:group-hover:opacity-30 disabled:cursor-not-allowed z-10"
+                class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 hover:bg-white text-grey-dark shadow transition opacity-0 group-hover:opacity-100 disabled:group-hover:opacity-30 disabled:cursor-not-allowed z-10"
                 aria-label="{{ t('gallery.prev_thumbnails') ?: 'Previous thumbnails' }}"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
@@ -140,7 +140,7 @@ $imageData = collect($images)
             <button
                 @click="thumbNext()"
                 :disabled="!canThumbNext"
-                class="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-grey-light text-grey-dark shadow transition opacity-0 group-hover:opacity-100 disabled:group-hover:opacity-30 disabled:cursor-not-allowed z-10"
+                class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 hover:bg-white text-grey-dark shadow transition opacity-0 group-hover:opacity-100 disabled:group-hover:opacity-30 disabled:cursor-not-allowed z-10"
                 aria-label="{{ t('gallery.next_thumbnails') ?: 'Next thumbnails' }}"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">

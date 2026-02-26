@@ -5,14 +5,14 @@
     <!-- Social login -->
     <div class="mb-4 text-center space-y-2">
         @if(config('services.google.enabled') && \Illuminate\Support\Facades\Route::has('login.provider'))
-            <a href="{{ route('login.provider', 'google') }}" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-white hover:bg-white">
+            <a href="{{ route('login.provider', 'google') }}" class="inline-flex items-center justify-center w-full border rounded-full uppercase px-8 py-3 bg-white hover:bg-white">
                 <img src="/images/google-logo.svg" alt="Google" class="me-2 h-5 w-5">
                 {{ t('auth.continue_with_google') ?: 'Continue with Google' }}
             </a>
         @endif
 
         @if(config('services.microsoft.enabled') && \Illuminate\Support\Facades\Route::has('login.provider'))
-            <a href="{{ route('login.provider', 'microsoft') }}" class="inline-flex items-center justify-center w-full border rounded px-3 py-2 bg-white hover:bg-white">
+            <a href="{{ route('login.provider', 'microsoft') }}" class="inline-flex items-center justify-center w-full border rounded-full uppercase px-8 py-3 bg-white hover:bg-white">
                 <img src="/images/microsoft-logo.svg" alt="Microsoft" class="me-2 h-5 w-5">
                 {{ t('auth.continue_with_microsoft') ?: 'Continue with Microsoft' }}
             </a>
@@ -66,14 +66,14 @@
         <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-grey-medium text-accent-primary shadow-sm focus:ring-accent-primary" name="remember">
+                <input id="remember_me" type="checkbox" class="rounded border-grey-medium text-accent-primary shadow-sm focus:ring-primary" name="remember">
                 <span class="ms-2 text-sm text-grey-dark">{{ t('auth.remember_me') ?: 'Remember me' }}</span>
             </label>
         </div>
 
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-grey-dark hover:text-dark rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-primary" href="{{ route('password.request') }}">
+                <a class="underline text-sm text-grey-dark hover:text-dark rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" href="{{ route('password.request') }}">
                     {{ t('auth.forgot_password') ?: 'Forgot your password?' }}
                 </a>
             @endif
@@ -85,7 +85,7 @@
 
         <div class="mt-4 text-center">
             <span class="text-sm text-grey-dark">{{ t('auth.not_a_user') ?: 'Not a user?' }}</span>
-            <a class="underline text-sm text-grey-dark hover:text-dark rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-primary" href="{{ route('register') }}">
+            <a class="underline text-sm text-grey-dark hover:text-dark rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" href="{{ route('register') }}">
                 {{ t('auth.please_register') ?: 'Please register' }}
             </a>
         </div>

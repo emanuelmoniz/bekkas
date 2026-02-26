@@ -86,10 +86,10 @@
                                         'per_item' => 1,
                                     ],
                                 ]" />
-                                <div class="p-6 pb-8 flex flex-col flex-grow items-center text-center">
-                                    <h3 class="text-2xl font-bold mb-3 text-dark">{{ t('home.services.store.title') ?: 'STORE' }}</h3>
+                                <div class="p-6 py-8 flex flex-col flex-grow items-center text-center">
+                                    <h3 class="text-2xl font-bold mb-4 text-dark">{{ t('home.services.store.title') ?: 'STORE' }}</h3>
                                     <p class="text-grey-dark mb-6 flex-grow">{{ t('home.services.store.description') ?: 'Day to day life objects, gifts, souvenires' }}</p>
-                                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-8 py-3 rounded-full font-medium transition-colors">
+                                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-medium transition-colors">
                                         {{ t('home.services.store.button') ?: 'Store' }}
                                     </button>
                                 </div>
@@ -110,10 +110,10 @@
                                     'per_item' => 1,
                                 ],
                             ]" />
-                            <div class="p-6 pb-8 flex flex-col flex-grow items-center text-center">
-                                <h3 class="text-2xl font-bold mb-3 text-dark">{{ t('home.services.custom.title') ?: 'CUSTOM' }}</h3>
+                            <div class="p-6 py-8 flex flex-col flex-grow items-center text-center">
+                                <h3 class="text-2xl font-bold mb-4 text-dark">{{ t('home.services.custom.title') ?: 'CUSTOM' }}</h3>
                                 <p class="text-grey-dark mb-6 flex-grow">{{ t('home.services.custom.description') ?: 'Printing service for architects and architecture students including modeling and file preparation.' }}</p>
-                                <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-8 py-3 rounded-full font-medium transition-colors">
+                                <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-medium transition-colors">
                                     {{ t('home.services.custom.button') ?: 'More info' }}
                                 </button>
                             </div>
@@ -155,11 +155,13 @@
                         </div>
 
                         <div>
-                            <h3 class="text-lg font-semibold text-dark mb-4">{{ t('home.contact.social') ?: 'Follow Us' }}</h3>
-                            <div class="flex gap-4">
+                            <h3 class="text-lg font-semibold text-dark mb-2">{{ t('home.contact.social') ?: 'Follow Us' }}</h3>
+                            <div class="mb-2">
                                 <a href="https://instagram.com/bekkas_pt" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium">
                                     Instagram
                                 </a>
+                            </div>
+                            <div>
                                 <a href="https://www.makerworld.com/en/makers/bekkas" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium">
                                     Makerworld
                                 </a>

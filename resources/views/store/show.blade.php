@@ -311,14 +311,14 @@
                     @if ($product->stock > 0)
                         <div class="text-sm">
                             {{ t('store.stock') ?: 'Stock' }}:
-                            <span class="text-accent-primary font-medium">{{ t('store.available') ?: 'Available' }}</span>
+                            <span class="text-accent-secondary font-medium">{{ t('store.available') ?: 'Available' }}</span>
                         </div>
                     @elseif ($product->is_backorder)
                         <div class="rounded border border-grey-light border-l-4 bg-accent-secondary/10 p-3">
-                            <div class="text-sm font-medium text-accent-primary mb-1">
+                            <div class="text-sm font-medium text-accent-secondary mb-1">
                                 {{ t('store.backorder_title') ?: 'Made to order' }}
                             </div>
-                            <div class="text-sm text-accent-primary">
+                            <div class="text-sm text-accent-secondary">
                                 {{ t('store.backorder_message') ?: 'This item does not have stock, but can be printed per request. The production time is' }}
                                 <span class="font-medium">{{ $product->production_time }} {{ t('store.working_days') ?: 'working days' }}</span>.
                                 {{ t('store.backorder_delivery_note') ?: 'The shown delivery date estimation already includes this production time.' }}
@@ -377,7 +377,7 @@
                             :max="{{ $product->is_backorder ? 'undefined' : 'effectiveMaxStock' }}"
                             class="w-20 border rounded px-2 py-1">
                         <button :disabled="adding"
-                                class="bg-accent-primary text-light px-4 py-2 rounded"
+                                class="bg-primary text-white px-8 py-3 rounded-full uppercase"
                                 x-text="adding ? '{{ t('store.adding') ?: 'Adding...' }}' : '{{ t('store.add_to_cart') ?: 'Add to cart' }}'">
                         </button>
                         {{-- BACK LINK --}}

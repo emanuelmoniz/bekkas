@@ -8,7 +8,7 @@
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4 flex justify-end">
             <a href="{{ route('admin.regions.create') }}"
-               class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
+               class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
                 New Region
             </a>
         </div>
@@ -22,10 +22,10 @@
                        name="name"
                        value="{{ request('name') }}"
                        placeholder="Name"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 {{-- COUNTRY --}}
-                <select name="country_id" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                <select name="country_id" class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                     <option value="">All Countries</option>
                     @foreach ($countries as $country)
                         <option value="{{ $country->id }}" @selected(request('country_id') == $country->id)>
@@ -39,10 +39,10 @@
                        name="postal_code"
                        value="{{ request('postal_code') }}"
                        placeholder="Postal Code"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 {{-- IS_ACTIVE --}}
-                <select name="is_active" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                <select name="is_active" class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                     <option value="">Active</option>
                     <option value="1" @selected(request('is_active')==='1')>Yes</option>
                     <option value="0" @selected(request('is_active')==='0')>No</option>
@@ -51,10 +51,10 @@
                 {{-- ACTIONS --}}
                 <div class="flex gap-2">
                     <a href="{{ route('admin.regions.index') }}"
-                       class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
+                       class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
                         Reset
                     </a>
-                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
+                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
                         Filter
                     </button>
                 </div>
@@ -97,7 +97,7 @@
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
                                 <a href="{{ route('admin.regions.edit', $region) }}"
-                                   class="inline-flex items-center px-3 py-1 rounded bg-accent-primary text-light text-sm">
+                                   class="inline-flex items-center px-3 py-1 rounded bg-primary text-white text-sm">
                                     Edit
                                 </a>
 
@@ -107,7 +107,7 @@
                                       onsubmit="return confirm('Delete this region?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="inline-flex items-center px-3 py-1 rounded bg-status-error/10 text-status-error text-sm">
+                                    <button class="inline-flex items-center px-8 py-3 rounded-full uppercase bg-status-error/10 text-status-error text-sm">
                                         Delete
                                     </button>
                                 </form>

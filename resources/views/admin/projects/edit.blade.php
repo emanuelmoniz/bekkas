@@ -24,7 +24,7 @@
                        class="border rounded px-3 py-2">
 
                 <button type="submit"
-                        class="bg-accent-primary hover:bg-accent-primary/90 text-light font-semibold px-4 py-2 rounded">
+                        class="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 rounded-full uppercase">
                     Upload Photos
                 </button>
             </form>

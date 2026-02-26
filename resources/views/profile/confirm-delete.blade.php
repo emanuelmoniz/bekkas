@@ -14,9 +14,9 @@
                     @csrf
 
                     <div class="flex justify-end">
-                        <a href="{{ route('profile.edit') }}" class="inline-flex items-center px-4 py-2 bg-grey-light border border-transparent rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest hover:bg-grey-medium">{{ t('profile.cancel') ?: 'Cancel' }}</a>
+                        <a href="{{ route('profile.edit') }}" class="inline-flex items-center px-8 py-3 bg-grey-light border border-transparent rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest hover:bg-grey-medium">{{ t('profile.cancel') ?: 'Cancel' }}</a>
 
-                        <button type="submit" class="ms-3 inline-flex items-center px-4 py-2 bg-grey-light border border-transparent rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest hover:bg-grey-light/90">{{ t('profile.delete_by_email_action') ?: 'Delete my account' }}</button>
+                        <button type="submit" class="ms-3 inline-flex items-center px-8 py-3 bg-grey-light border border-transparent rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest hover:bg-grey-light/90">{{ t('profile.delete_by_email_action') ?: 'Delete my account' }}</button>
                     </div>
                 </form>
             </div>

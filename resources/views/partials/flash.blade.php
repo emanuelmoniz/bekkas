@@ -80,7 +80,7 @@
         <button @click="Alpine.store('flash').hide(); localShow = false"
                 x-bind:tabindex="(Alpine.store('flash').show || localShow) ? 0 : -1"
                 x-bind:aria-hidden="!(Alpine.store('flash').show || localShow)"
-                class="absolute inset-y-0 right-0 flex items-center px-4"
+                class="absolute inset-y-0 right-0 flex items-center px-8"
                 aria-label="Close flash message">
             <svg class="fill-current h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true">
                 <title>Close</title>

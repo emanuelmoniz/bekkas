@@ -3,7 +3,7 @@
     {{-- ORDER --}}
     <select name="order"
             onchange="this.form.submit()"
-            class="w-full border border-grey-light rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent-primary">
+            class="w-full border border-grey-light rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary">
         <option value="">{{ t('store.order.default') ?: 'Sort' }}</option>
         <option value="name_az" @selected(request('order') === 'name_az')>{{ t('store.order.name_az') ?: 'Name A-Z' }}</option>
         <option value="name_za" @selected(request('order') === 'name_za')>{{ t('store.order.name_za') ?: 'Name Z-A' }}</option>
@@ -18,28 +18,28 @@
            name="name"
            value="{{ request('name') }}"
            placeholder="{{ t('store.filter.name') ?: 'Name' }}"
-           class="w-full border border-grey-light rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent-primary">
+           class="w-full border border-grey-light rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary">
 
     {{-- BOOLEAN FILTERS --}}
     <div class="space-y-2">
         <label class="flex items-center gap-2 cursor-pointer select-none">
             <input type="checkbox" name="available" value="1"
                    @checked(request()->boolean('available'))
-                   class="rounded border-grey-medium text-accent-primary focus:ring-accent-primary">
+                   class="rounded border-grey-medium text-accent-primary focus:ring-primary">
             <span class="text-sm">{{ t('store.filter.in_stock') ?: 'In Stock' }}</span>
         </label>
 
         <label class="flex items-center gap-2 cursor-pointer select-none">
             <input type="checkbox" name="is_promo" value="1"
                    @checked(request()->boolean('is_promo'))
-                   class="rounded border-grey-medium text-accent-primary focus:ring-accent-primary">
+                   class="rounded border-grey-medium text-accent-primary focus:ring-primary">
             <span class="text-sm">{{ t('store.filter.in_promotion') ?: 'In Promotion' }}</span>
         </label>
 
         <label class="flex items-center gap-2 cursor-pointer select-none">
             <input type="checkbox" name="is_featured" value="1"
                    @checked(request()->boolean('is_featured'))
-                   class="rounded border-grey-medium text-accent-primary focus:ring-accent-primary">
+                   class="rounded border-grey-medium text-accent-primary focus:ring-primary">
             <span class="text-sm">{{ t('store.filter.featured') ?: 'Featured' }}</span>
         </label>
     </div>
@@ -81,7 +81,7 @@
             {{-- Background rail --}}
             <div class="w-full h-1.5 bg-grey-light rounded-full"></div>
             {{-- Active fill --}}
-            <div class="absolute h-1.5 bg-accent-primary rounded-full pointer-events-none"
+            <div class="absolute h-1.5 bg-primary rounded-full pointer-events-none"
                  :style="`left: ${pct(minVal)}%; width: ${pct(maxVal) - pct(minVal)}%`"></div>
             {{-- Min thumb --}}
             <div class="absolute w-4 h-4 bg-white border-2 border-accent-primary rounded-full cursor-grab active:cursor-grabbing shadow touch-none z-10"
@@ -104,7 +104,7 @@
                        @change="minVal = Math.max(floor, Math.min(Number($event.target.value), maxVal))"
                        min="{{ $priceFloor }}"
                        max="{{ $priceCeiling }}"
-                       class="w-full border border-grey-light rounded pl-5 pr-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-accent-primary">
+                       class="w-full border border-grey-light rounded pl-5 pr-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary">
             </div>
             <span class="text-grey-medium text-xs shrink-0">—</span>
             <div class="relative flex-1">
@@ -116,7 +116,7 @@
                        @change="maxVal = Math.min(ceiling, Math.max(Number($event.target.value), minVal))"
                        min="{{ $priceFloor }}"
                        max="{{ $priceCeiling }}"
-                       class="w-full border border-grey-light rounded pl-5 pr-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-accent-primary">
+                       class="w-full border border-grey-light rounded pl-5 pr-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary">
             </div>
         </div>
     </div>
@@ -139,7 +139,7 @@
                            name="category_ids[]"
                            value="{{ $category->id }}"
                            @checked($checked)
-                           class="rounded border-grey-medium text-accent-primary focus:ring-accent-primary">
+                           class="rounded border-grey-medium text-accent-primary focus:ring-primary">
                     <span class="text-sm">{{ $catName }} ({{ $catCount }})</span>
                 </label>
             @endforeach
@@ -163,7 +163,7 @@
                            name="material_ids[]"
                            value="{{ $material->id }}"
                            @checked($checked)
-                           class="rounded border-grey-medium text-accent-primary focus:ring-accent-primary">
+                           class="rounded border-grey-medium text-accent-primary focus:ring-primary">
                     <span class="text-sm">{{ $matName }} ({{ $matCount }})</span>
                 </label>
             @endforeach
@@ -171,15 +171,16 @@
     @endif
 
     {{-- ACTIONS --}}
-    <div class="flex gap-2 pt-1">
+    <div class="pt-1">
         <button type="submit"
-                class="flex-1 bg-accent-primary hover:bg-accent-primary/90 text-light text-sm font-semibold px-4 py-2 rounded transition">
+                class="w-full bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-8 py-3 rounded-full uppercase transition">
             {{ t('store.filter.apply') ?: 'Filter' }}
         </button>
-        <a href="{{ route($resetRoute) }}"
-           class="flex-1 text-center bg-grey-medium hover:bg-grey-dark text-light text-sm font-semibold px-4 py-2 rounded transition">
+        <button type="button"
+                onclick="window.location='{{ route($resetRoute) }}'"
+                class="mt-2 w-full bg-grey-medium hover:bg-grey-dark text-white text-sm font-semibold px-8 py-3 rounded-full uppercase transition">
             {{ t('store.filter.reset') ?: 'Reset' }}
-        </a>
+        </button>
     </div>
 
 </form>

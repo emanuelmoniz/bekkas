@@ -15,7 +15,7 @@
                     @if(config('app.store_enabled'))
                         <div class="mt-4">
                             <a href="{{ route('store.index') }}"
-                               class="inline-block bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-3 rounded text-center font-medium">
+                               class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-center font-medium">
                                 {{ t('cart.start_shopping') ?: 'Start Shopping' }}
                             </a>
                         </div>
@@ -103,13 +103,13 @@
                         <span>€{{ number_format($productsGross, 2) }}</span>
                     </div>
 
-                    <div class="bg-accent-primary/10 border border-accent-primary/20 rounded p-3 text-sm text-accent-primary">
+                    <div class="bg-primary/10 border border-accent-primary/20 rounded p-3 text-sm text-accent-primary">
                         {{ t('cart.shipping_at_checkout') ?: 'The shipping cost will be calculated at checkout.' }}
                     </div>
 
                     <div class="pt-4">
                         <a href="{{ route('checkout.index') }}"
-                           class="w-full bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-3 rounded text-center font-medium block">
+                           class="w-full bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-center font-medium block">
                             {{ t('cart.checkout') ?: 'Proceed to Checkout' }}
                         </a>
                     </div>
@@ -117,7 +117,7 @@
                     @if(config('app.store_enabled'))
                         <div class="pt-2">
                             <a href="{{ route('store.index') }}"
-                               class="w-full bg-grey-light hover:bg-grey-light text-grey-dark px-6 py-3 rounded text-center font-medium block">
+                               class="w-full bg-grey-light hover:bg-grey-light text-grey-dark px-8 py-3 rounded-full uppercase text-center font-medium block">
                                 {{ t('cart.continue_shopping') ?: 'Continue Shopping' }}
                             </a>
                         </div>

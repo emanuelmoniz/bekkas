@@ -8,7 +8,7 @@
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4 flex justify-end">
             <a href="{{ route('admin.shipping-tiers.create') }}"
-               class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
+               class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
                 New Shipping Tier
             </a>
         </div>
@@ -22,10 +22,10 @@
                        name="name"
                        value="{{ request('name') }}"
                        placeholder="Name"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 {{-- REGION --}}
-                <select name="region_id" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                <select name="region_id" class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                     <option value="">All Regions</option>
                     @foreach ($regions as $region)
                         <option value="{{ $region->id }}" @selected(request('region_id') == $region->id)>
@@ -35,7 +35,7 @@
                 </select>
 
                 {{-- COUNTRY --}}
-                <select name="country_id" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                <select name="country_id" class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                     <option value="">All Countries</option>
                     @foreach ($countries as $country)
                         <option value="{{ $country->id }}" @selected(request('country_id') == $country->id)>
@@ -49,15 +49,15 @@
                        name="postal_code"
                        value="{{ request('postal_code') }}"
                        placeholder="Postal Code"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 {{-- ACTIONS --}}
                 <div class="flex gap-2">
                     <a href="{{ route('admin.shipping-tiers.index') }}"
-                       class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
+                       class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
                         Reset
                     </a>
-                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
+                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
                         Filter
                     </button>
                 </div>
@@ -108,7 +108,7 @@
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
                                 <a href="{{ route('admin.shipping-tiers.edit', $tier) }}"
-                                   class="inline-flex items-center px-3 py-1 rounded bg-accent-primary text-light text-sm">
+                                   class="inline-flex items-center px-3 py-1 rounded bg-primary text-white text-sm">
                                     Edit
                                 </a>
 
@@ -116,7 +116,7 @@
                                       action="{{ route('admin.shipping-tiers.duplicate', $tier) }}"
                                       class="inline">
                                     @csrf
-                                    <button class="inline-flex items-center px-3 py-1 rounded bg-grey-light text-grey-dark text-sm">
+                                    <button class="inline-flex items-center px-8 py-3 rounded-full uppercase bg-grey-light text-grey-dark text-sm">
                                         Duplicate
                                     </button>
                                 </form>
@@ -127,7 +127,7 @@
                                       onsubmit="return confirm('Delete this tier?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="inline-flex items-center px-3 py-1 rounded bg-status-error/10 text-status-error text-sm">
+                                    <button class="inline-flex items-center px-8 py-3 rounded-full uppercase bg-status-error/10 text-status-error text-sm">
                                         Delete
                                     </button>
                                 </form>

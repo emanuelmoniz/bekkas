@@ -18,9 +18,9 @@
                     <!-- each slide has rounded corners and hides overflow -->
                     <div class="bg-cover bg-center min-h-[50vh] md:min-h-[75vh] rounded-2xl overflow-hidden"
                          :style="`background-image: url('${slide.image}')`">
-                        <div class="min-h-[50vh] md:min-h-[75vh] flex flex-col items-center justify-end text-center text-light px-6 pb-20 bg-dark/40">
+                        <div class="min-h-[50vh] md:min-h-[75vh] flex flex-col items-center justify-end text-center text-white px-6 pb-20 bg-dark/40">
                             <h1 class="text-4xl md:text-6xl font-bold mb-4" x-text="slide.tagline"></h1>
-                            <a :href="slide.buttonUrl" class="inline-block bg-accent-primary hover:bg-accent-primary/90 text-light px-8 py-3 rounded font-semibold transition-colors" x-text="slide.buttonText"></a>
+                            <a :href="slide.buttonUrl" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-semibold transition-colors" x-text="slide.buttonText"></a>
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
     <div class="absolute bottom-3 left-0 w-full flex justify-center gap-4">
         <template x-for="(slide,index) in slides" :key="index">
             <div class="w-12 h-2 bg-white overflow-hidden rounded-full cursor-pointer" @click="goTo(index)">
-                <div class="h-full bg-gray-800 transition-width duration-200" :style="current === index ? `width: ${progress*100}%` : 'width:0'" ></div>
+                <div class="h-full bg-primary transition-width duration-200" :style="current === index ? `width: ${progress*100}%` : 'width:0'" ></div>
             </div>
         </template>
     </div>

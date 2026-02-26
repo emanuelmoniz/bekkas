@@ -23,7 +23,7 @@
                                 ? optional($product->translations->where('locale', $locale)->first())->name
                                 : '') }}"
                        @if($locale === $defaultLocale) required @endif
-                       class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 <x-input-error :messages="$errors->get('name.'.$locale)" class="mt-2" />
             </div>
         @endforeach
@@ -36,7 +36,7 @@
                 <x-input-label>Description ({{ $locale }})</x-input-label>
                 <textarea name="description[{{ $locale }}]"
                           rows="3"
-                          class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">{{ old("description.$locale",
+                          class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">{{ old("description.$locale",
                             $mode === 'edit'
                                 ? optional($product->translations->where('locale', $locale)->first())->description
                                 : '') }}</textarea>
@@ -51,7 +51,7 @@
                 <x-input-label>Technical Info ({{ $locale }})</x-input-label>
                 <textarea name="technical_info[{{ $locale }}]"
                           rows="3"
-                          class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">{{ old("technical_info.$locale",
+                          class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">{{ old("technical_info.$locale",
                             $mode === 'edit'
                                 ? optional($product->translations->where('locale', $locale)->first())->technical_info
                                 : '') }}</textarea>
@@ -68,7 +68,7 @@
                    name="price"
                    value="{{ old('price', $product->price ?? '') }}"
                    required
-                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
             <p class="option-override-notice text-xs text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type price</p>
             <x-input-error :messages="$errors->get('price')" class="mt-2" />
         </div>
@@ -79,7 +79,7 @@
                    step="0.01"
                    name="promo_price"
                    value="{{ old('promo_price', $product->promo_price ?? '') }}"
-                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
             <p class="option-override-notice text-xs text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type price</p>
         </div>
 
@@ -88,7 +88,7 @@
             <x-input-label for="tax_id">Tax</x-input-label>
             <select name="tax_id"
                     required
-                    class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                    class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 <option value="">— Select tax —</option>
                 @foreach ($taxes as $tax)
                     <option value="{{ $tax->id }}"
@@ -108,7 +108,7 @@
     <x-input-label>Categories</x-input-label>
     <select name="categories[]"
             multiple
-            class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+            class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
         @foreach ($categories as $category)
             <option value="{{ $category->id }}"
                 @selected(
@@ -126,7 +126,7 @@
     <x-input-label>Materials</x-input-label>
     <select name="materials[]"
             multiple
-            class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+            class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
         @foreach ($materials as $material)
             <option value="{{ $material->id }}"
                 @selected(
@@ -199,7 +199,7 @@
     </div>
 
     <button type="button" id="add-option-type"
-            class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-3 py-1 rounded">
+            class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-8 py-3 rounded-full uppercase">
         + Add option type
     </button>
 </div>
@@ -216,7 +216,7 @@
                value="{{ old('stock', $product->stock ?? 0) }}"
                min="0"
                required
-               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
         <p class="option-override-notice text-xs text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type stock</p>
         <x-input-error :messages="$errors->get('stock')" class="mt-2" />
         </div>
@@ -229,7 +229,7 @@
                value="{{ old('production_time', $product->production_time ?? 0) }}"
                min="0"
                required
-               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
         <x-input-error :messages="$errors->get('production_time')" class="mt-2" />
     </div>
 
@@ -240,7 +240,7 @@
                min="0"
                value="{{ old('weight', $product->weight ?? '') }}"
                required
-               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
         <x-input-error :messages="$errors->get('weight')" class="mt-2" />
     </div>
 
@@ -250,7 +250,7 @@
                step="0.01"
                name="width"
                value="{{ old('width', $product->width ?? '') }}"
-               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
         <x-input-error :messages="$errors->get('width')" class="mt-2" />
     </div>
 
@@ -260,7 +260,7 @@
                step="0.01"
                name="length"
                value="{{ old('length', $product->length ?? '') }}"
-               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
         <x-input-error :messages="$errors->get('length')" class="mt-2" />
     </div>
 
@@ -270,7 +270,7 @@
                step="0.01"
                name="height"
                value="{{ old('height', $product->height ?? '') }}"
-               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+               class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
         <x-input-error :messages="$errors->get('height')" class="mt-2" />
     </div>
 </div>
@@ -311,7 +311,7 @@
     {{-- SUBMIT --}}
     <div class="pt-4 flex justify-between">
         <a href="{{ route('admin.products.index') }}"
-           class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+           class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
             Cancel
         </a>
         <x-primary-button>{{ $mode === 'edit' ? 'Update Product' : 'Create Product' }}</x-primary-button>
@@ -357,7 +357,7 @@
             </label>
         </div>
         <div class="options-list mt-4 space-y-2"></div>
-        <button type="button" class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-3 py-1 rounded add-option">
+        <button type="button" class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-8 py-3 rounded-full uppercase add-option">
             + Add option
         </button>
     </div>

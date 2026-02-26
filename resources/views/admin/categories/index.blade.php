@@ -10,7 +10,7 @@
         {{-- ACTION BAR --}}
         <div class="mb-4 flex justify-end">
             <a href="{{ route('admin.categories.create') }}"
-               class="inline-flex items-center bg-accent-primary hover:bg-accent-primary/90 text-light font-semibold px-4 py-2 rounded">
+               class="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 rounded-full uppercase">
                 New Category
             </a>
         </div>
@@ -19,11 +19,11 @@
         <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
             <div class="flex flex-wrap gap-4">
                 <input type="text" name="name" value="{{ request('name') }}" placeholder="Name"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 <div class="flex gap-2 ml-auto">
                     <a href="{{ route('admin.categories.index') }}"
-                       class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">Reset</a>
-                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">Filter</button>
+                       class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">Reset</a>
+                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">Filter</button>
                 </div>
             </div>
         </form>
@@ -52,7 +52,7 @@
 
                             <td class="px-4 py-2 text-right space-x-2">
                                 <a href="{{ route('admin.categories.edit', $category) }}"
-                                   class="inline-flex bg-accent-primary hover:bg-accent-primary/90 text-light px-3 py-1 rounded text-sm">
+                                   class="inline-flex bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-sm">
                                     Edit
                                 </a>
 
@@ -64,7 +64,7 @@
 
                                     <button type="submit"
                                             onclick="return confirm('Delete this category?')"
-                                            class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-3 py-1 rounded text-sm">
+                                            class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-8 py-3 rounded-full uppercase text-sm">
                                         Delete
                                     </button>
                                 </form>

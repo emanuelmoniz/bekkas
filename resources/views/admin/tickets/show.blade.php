@@ -7,7 +7,7 @@
 
             <div class="flex gap-2">
                 <a href="{{ route('admin.tickets.index') }}"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     Back to tickets
                 </a>
 
@@ -15,13 +15,13 @@
                       action="{{ route('admin.tickets.mark-unread', $ticket) }}">
                     @csrf
                     <button type="submit"
-                            class="bg-accent-secondary hover:bg-accent-secondary/90 text-light px-4 py-2 rounded text-sm">
+                            class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-sm">
                         Mark as unread
                     </button>
                 </form>
 
                 <a href="{{ route('admin.tickets.edit', $ticket) }}"
-                   class="inline-flex items-center px-4 py-2 bg-accent-primary border border-transparent rounded-md font-semibold text-xs text-light uppercase tracking-widest hover:bg-accent-primary/90 transition ease-in-out duration-150">
+                   class="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary/90 transition ease-in-out duration-150">
                     Admin Edit
                 </a>
             </div>
@@ -81,9 +81,9 @@
                     @csrf
                     <label class="block font-semibold mb-1">Close reason *</label>
                     <textarea name="reason"
-                              class="w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm mb-3"
+                              class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm mb-3"
                               required></textarea>
-                    <button class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-4 py-2 rounded">
+                    <button class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-8 py-3 rounded-full uppercase">
                         Close Ticket
                     </button>
                 </form>
@@ -92,9 +92,9 @@
                     @csrf
                     <label class="block font-semibold mb-1">Reopen reason *</label>
                     <textarea name="reason"
-                              class="w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm mb-3"
+                              class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm mb-3"
                               required></textarea>
-                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
+                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
                         Reopen Ticket
                     </button>
                 </form>
@@ -140,13 +140,13 @@
 
                 <textarea name="message"
                           rows="4"
-                          class="w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm"
+                          class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm"
                           required></textarea>
 
                 <input type="file" name="files[]" multiple>
 
                 <div class="flex justify-end">
-                    <button class="bg-accent-primary text-light px-6 py-2 rounded">
+                    <button class="bg-primary text-white px-8 py-3 rounded-full uppercase">
                         Send
                     </button>
                 </div>

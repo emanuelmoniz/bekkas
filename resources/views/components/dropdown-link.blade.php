@@ -1,1 +1,1 @@
-<a {{ $attributes->merge(['class' => 'block w-full px-4 py-2 text-start text-sm leading-5 text-grey-dark hover:bg-grey-light focus:outline-none focus:bg-grey-light transition duration-150 ease-in-out']) }}>{{ $slot }}</a>
+<a {{ $attributes->merge(['class' => 'block w-full px-8 py-3 text-start text-sm leading-5 text-grey-dark hover:bg-grey-light focus:outline-none focus:bg-grey-light transition duration-150 ease-in-out']) }}>{{ $slot }}</a>

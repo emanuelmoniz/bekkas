@@ -19,7 +19,7 @@
                 <input type="text"
                        name="translations[{{ $localeCode }}]"
                        value="{{ old("translations.{$localeCode}") }}"
-                       class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                       class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 <x-input-error :messages="$errors->get('translations.'.$localeCode)" class="mt-2" />
             </div>
             @endforeach
@@ -36,7 +36,7 @@
 
             <div class="flex justify-between">
                 <a href="{{ route('admin.taxes.index') }}"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     Cancel
                 </a>
                 <x-primary-button>Save</x-primary-button>

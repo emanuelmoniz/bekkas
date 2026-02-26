@@ -86,15 +86,15 @@
 
             @if($order->easypayPayload)
                 <div class="mt-4 flex flex-wrap gap-2">
-                    <a href="{{ route('admin.orders.payloads.show', $order->easypayPayload) }}" class="inline-block bg-white border border-grey-medium px-4 py-2 rounded text-sm">Payload</a>
-                    <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border border-grey-medium px-4 py-2 rounded text-sm">Checkouts</a>
-                    <a href="{{ route('admin.orders.payments.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border border-grey-medium px-4 py-2 rounded text-sm">Payments</a>
+                    <a href="{{ route('admin.orders.payloads.show', $order->easypayPayload) }}" class="inline-block bg-white border border-grey-medium px-8 py-3 rounded-full uppercase text-sm">Payload</a>
+                    <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border border-grey-medium px-8 py-3 rounded-full uppercase text-sm">Checkouts</a>
+                    <a href="{{ route('admin.orders.payments.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border border-grey-medium px-8 py-3 rounded-full uppercase text-sm">Payments</a>
                 </div>
             @else
                 <div class="mt-4">
                     <form method="POST" action="{{ route('admin.orders.payloads.store', $order) }}" onsubmit="return confirm('Create Easypay payload for this order?');" class="inline-block">
                         @csrf
-                        <button class="bg-status-success/10 border-green-200 text-status-success border px-4 py-2 rounded text-sm">Create payload</button>
+                        <button class="bg-status-success/10 border-green-200 text-status-success border px-8 py-3 rounded-full uppercase text-sm">Create payload</button>
                     </form>
                 </div>
             @endif
@@ -201,7 +201,7 @@
 
             <div>
                 <x-input-label for="status" value="Status" />
-                <select name="status" id="status" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm w-full mt-1">
+                <select name="status" id="status" class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm w-full mt-1">
                     @foreach ($statuses as $status)
                         <option value="{{ $status->code }}"
                             @selected($order->status === $status->code)>
@@ -242,7 +242,7 @@
 
             <div class="pt-2 flex justify-between">
                 <a href="{{ route('admin.orders.index') }}"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     Back
                 </a>
                 <x-primary-button>

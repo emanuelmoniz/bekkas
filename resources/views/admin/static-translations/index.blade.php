@@ -7,7 +7,7 @@
 
         <div class="mb-4 flex justify-end">
             <a href="{{ route('admin.static-translations.create') }}"
-               class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded text-sm font-medium">
+               class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-sm font-medium">
                 + New key
             </a>
         </div>
@@ -35,9 +35,9 @@
                         value="{{ request('text') }}"
                         class="border rounded px-2 py-1 text-sm w-48"
                     >
-                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-1 rounded text-sm">Filter</button>
+                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-sm">Filter</button>
                     <a href="{{ route('admin.static-translations.index') }}"
-                       class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-1 rounded text-sm">Reset</a>
+                       class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase text-sm">Reset</a>
                 </form>
             </div>
 
@@ -78,14 +78,14 @@
                                 </td>
                                 <td class="px-3 py-2 text-right whitespace-nowrap">
                                     <a href="{{ route('admin.static-translations.edit', $encodedKey) }}"
-                                       class="inline-flex items-center px-3 py-1 rounded bg-accent-primary text-light text-sm">Edit</a>
+                                       class="inline-flex items-center px-3 py-1 rounded bg-primary text-white text-sm">Edit</a>
                                     <form method="POST"
                                           action="{{ route('admin.static-translations.destroy', $encodedKey) }}"
                                           class="inline-block ms-3"
                                           onsubmit="return confirm('Delete ALL locale rows for key &laquo;{{ addslashes($keyRow->key) }}&raquo;?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="inline-flex items-center px-3 py-1 rounded bg-status-error/10 text-status-error text-sm">Delete</button>
+                                        <button class="inline-flex items-center px-8 py-3 rounded-full uppercase bg-status-error/10 text-status-error text-sm">Delete</button>
                                     </form>
                                 </td>
                             </tr>

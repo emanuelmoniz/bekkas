@@ -25,10 +25,10 @@
             </div>
             
             <!-- Content -->
-            <div class="relative z-10 text-center text-light px-6">
+            <div class="relative z-10 text-center text-white px-6">
                 <h1 class="text-5xl md:text-7xl font-bold mb-6">{{ t('custom.banner.title') ?: 'Custom Services' }}</h1>
                 <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">{{ t('custom.banner.subtitle') ?: 'Professional 3D printing solutions for architects and designers' }}</p>
-                <a href="#request" class="inline-block bg-accent-primary hover:bg-accent-primary/90 text-light px-8 py-3 rounded font-semibold transition-colors">
+                <a href="#request" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-semibold transition-colors">
                     {{ t('custom.banner.button') ?: 'Request Service' }}
                 </a>
             </div>
@@ -70,7 +70,7 @@
                 </p>
 
                 <div class="p-8 text-center">
-                    <a href="{{ route('tickets.create') }}" class="inline-flex items-center justify-center gap-2 bg-accent-primary hover:bg-accent-primary/90 text-light px-6 py-3 rounded-lg font-semibold transition-colors">
+                    <a href="{{ route('tickets.create') }}" class="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-semibold transition-colors">
                         {{ t('custom.request.ticket_button') ?: 'Create new ticket' }}
                     </a>
                 </div>

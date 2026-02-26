@@ -32,8 +32,8 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.products.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Products</a>
-                                    <a href="{{ route('admin.projects.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Projects</a>
+                                    <a href="{{ route('admin.products.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Products</a>
+                                    <a href="{{ route('admin.projects.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Projects</a>
                                 </div>
                             </div>
                         </div>
@@ -53,10 +53,10 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.orders.payloads.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Payloads</a>
-                                    <a href="{{ route('admin.orders.checkouts.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Checkouts</a>
-                                    <a href="{{ route('admin.orders.payments.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Payments</a>
-                                    <a href="{{ route('admin.order-statuses.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Order Statuses</a>
+                                    <a href="{{ route('admin.orders.payloads.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Payloads</a>
+                                    <a href="{{ route('admin.orders.checkouts.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Checkouts</a>
+                                    <a href="{{ route('admin.orders.payments.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Payments</a>
+                                    <a href="{{ route('admin.order-statuses.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Order Statuses</a>
                                 </div>
                             </div>
                         </div>
@@ -76,8 +76,8 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.tickets.create') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Create Ticket</a>
-                                    <a href="{{ route('admin.ticket-categories.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Categories</a>
+                                    <a href="{{ route('admin.tickets.create') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Create Ticket</a>
+                                    <a href="{{ route('admin.ticket-categories.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Categories</a>
                                 </div>
                             </div>
                         </div>
@@ -97,7 +97,7 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.users.create') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Create User</a>
+                                    <a href="{{ route('admin.users.create') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Create User</a>
                                 </div>
                             </div>
                         </div>
@@ -117,15 +117,15 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Categories</a>
-                                    <a href="{{ route('admin.materials.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Materials</a>
-                                    <a href="{{ route('admin.shipping-config.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Shipping</a>
-                                    <a href="{{ route('admin.shipping-tiers.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Shipping Tiers</a>
-                                    <a href="{{ route('admin.countries.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Countries</a>
-                                    <a href="{{ route('admin.regions.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Regions</a>
-                                    <a href="{{ route('admin.taxes.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">TAXES</a>
-                                    <a href="{{ route('admin.static-translations.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Translations</a>
-                                    <a href="{{ route('admin.locales.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">Site Locales</a>
+                                    <a href="{{ route('admin.categories.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Categories</a>
+                                    <a href="{{ route('admin.materials.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Materials</a>
+                                    <a href="{{ route('admin.shipping-config.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Shipping</a>
+                                    <a href="{{ route('admin.shipping-tiers.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Shipping Tiers</a>
+                                    <a href="{{ route('admin.countries.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Countries</a>
+                                    <a href="{{ route('admin.regions.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Regions</a>
+                                    <a href="{{ route('admin.taxes.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">TAXES</a>
+                                    <a href="{{ route('admin.static-translations.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Translations</a>
+                                    <a href="{{ route('admin.locales.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Site Locales</a>
                                 </div>
                             </div>
                         </div>
@@ -149,13 +149,13 @@
                                      class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                      style="display: none;">
                                     <div class="py-1">
-                                        <a href="{{ route('store.index') }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">
+                                        <a href="{{ route('store.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">
                                             {{ t('nav.store.all_products') ?: 'All Products' }}
                                         </a>
-                                        <a href="{{ route('store.index', ['is_featured' => 1]) }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">
+                                        <a href="{{ route('store.index', ['is_featured' => 1]) }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">
                                             {{ t('nav.store.featured') ?: 'Featured' }}
                                         </a>
-                                        <a href="{{ route('store.index', ['is_promo' => 1]) }}" class="block px-4 py-2 text-sm text-grey-dark hover:bg-grey-light">
+                                        <a href="{{ route('store.index', ['is_promo' => 1]) }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">
                                             {{ t('nav.store.promotion') ?: 'Promotion' }}
                                         </a>
                                     </div>
@@ -210,7 +210,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" stroke="none">
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                         </svg>
-                        <span class="absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-status-error text-light text-xs px-1.5 py-0.5 min-w-[1.25rem]" x-text="$store.favorites.count"></span>
+                        <span class="absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-status-error text-white text-xs px-1.5 py-0.5 min-w-[1.25rem]" x-text="$store.favorites.count"></span>
                     </a>
                 </div>
 
@@ -221,7 +221,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25h11.118c.51 0 .955-.343 1.087-.835l1.518-5.688a1.125 1.125 0 00-1.087-1.415H5.106" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25L5.106 4.272M7.5 14.25l-2.25 3m0 0h13.5m-13.5 0a1.5 1.5 0 103 0m10.5 0a1.5 1.5 0 103 0" />
                         </svg>
-                        <span class="absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-status-error text-light text-xs px-1.5 py-0.5 min-w-[1.25rem]" x-text="$store.cart.count"></span>
+                        <span class="absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-status-error text-white text-xs px-1.5 py-0.5 min-w-[1.25rem]" x-text="$store.cart.count"></span>
                     </a>
                 </div>
 
@@ -229,7 +229,7 @@
                     <div class="h-full flex items-center">
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
-                                <button class="h-full inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-grey-medium bg-white hover:text-grey-dark focus:outline-none transition">
+                                <button class="h-full inline-flex items-center px-8 py-3 border border-transparent text-sm leading-4 font-medium rounded-full uppercase text-grey-medium bg-white hover:text-grey-dark focus:outline-none transition">
                                     <div>{{ Auth::user()->name }}</div>
                                     <div class="ms-1">
                                         <svg class="fill-current h-4 w-4" viewBox="0 0 20 20">
@@ -283,7 +283,7 @@
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-grey-medium hover:text-grey-medium hover:bg-grey-light focus:outline-none transition">
+                        class="inline-flex items-center justify-center p-2 rounded-full text-grey-medium hover:text-grey-medium hover:bg-grey-light focus:outline-none transition">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': ! open }"
                               class="inline-flex"
@@ -311,7 +311,7 @@
 
                 {{-- CONTENT --}}
                 <div x-data="{ open: false }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-grey-dark hover:bg-grey-light">
+                    <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium text-grey-dark hover:bg-grey-light">
                         <span>CONTENT</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -329,7 +329,7 @@
 
                 {{-- ORDERS --}}
                 <div x-data="{ open: false }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-grey-dark hover:bg-grey-light">
+                    <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium text-grey-dark hover:bg-grey-light">
                         <span>ORDERS</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -356,7 +356,7 @@
 
                 {{-- TICKETS --}}
                 <div x-data="{ open: false }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-grey-dark hover:bg-grey-light">
+                    <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium text-grey-dark hover:bg-grey-light">
                         <span>TICKETS</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -420,7 +420,7 @@
                 {{-- PUBLIC MENU MOBILE --}}
                 @if(config('app.store_enabled'))
                     <div x-data="{ open: false }">
-                        <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-grey-dark hover:bg-grey-light">
+                        <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium text-grey-dark hover:bg-grey-light">
                             <span>{{ t('nav.store') ?: 'Store' }}</span>
                             <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>

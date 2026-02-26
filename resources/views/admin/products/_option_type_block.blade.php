@@ -112,7 +112,7 @@
         @endforeach
     </div>
 
-    <button type="button" class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-3 py-1 rounded add-option">
+    <button type="button" class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-8 py-3 rounded-full uppercase add-option">
         + Add option
     </button>
 </div>

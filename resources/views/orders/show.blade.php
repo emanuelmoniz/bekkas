@@ -11,7 +11,7 @@
         <div class="bg-white shadow rounded p-4">
 
             @if(! empty($paymentStatusMessage))
-                <div class="my-3 p-3 rounded border border-grey-light border-l-4 bg-accent-primary/10 text-accent-primary text-sm">
+                <div class="my-3 p-3 rounded border border-grey-light border-l-4 bg-primary/10 text-accent-primary text-sm">
                     {{ $paymentStatusMessage }}
                 </div>
             @endif
@@ -72,7 +72,7 @@
                             </div>
 
                             <div class="mt-4 text-right">
-                                <a href="{{ route('orders.pay', $order->uuid) }}" class="inline-block bg-accent-secondary hover:bg-accent-secondary/90 text-light px-4 py-2 rounded-lg font-semibold">{{ t('orders.change_payment') ?: 'Change payment' }}</a>
+                                <a href="{{ route('orders.pay', $order->uuid) }}" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-semibold">{{ t('orders.change_payment') ?: 'Change payment' }}</a>
                             </div>
                         </div>
 
@@ -80,9 +80,9 @@
                     @else
                         @unless(in_array($ps, ['pending','authorised'], true))
                             @if(config('easypay.enabled'))
-                                <a href="{{ route('orders.pay', $order->uuid) }}" class="inline-block bg-accent-secondary hover:bg-accent-secondary/90 text-light px-4 py-2 rounded-lg font-semibold">{{ t('orders.pay_now') ?: 'Pay now' }}</a>
+                                <a href="{{ route('orders.pay', $order->uuid) }}" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-semibold">{{ t('orders.pay_now') ?: 'Pay now' }}</a>
                             @else
-                                <div class="p-3 rounded bg-accent-secondary/10 border border-yellow-100 text-sm text-yellow-800">
+                                <div class="p-3 rounded bg-primary/10 border border-yellow-100 text-sm text-yellow-800">
                                     {{ t('checkout.gateways.disabled') ?: (t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.') }}
                                 </div>
                             @endif

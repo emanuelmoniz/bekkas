@@ -39,7 +39,7 @@
                         {{ t('profile.default_address') ?: 'Default address' }}
                     </label>
 
-                    <button class="bg-accent-primary text-light px-3 py-1 rounded">
+                    <button class="bg-primary text-white px-8 py-3 rounded-full uppercase">
                         {{ t('profile.save') ?: 'Save' }}
                     </button>
                 </form>
@@ -89,7 +89,7 @@
             {{ t('profile.default_address') ?: 'Default address' }}
         </label>
 
-        <button class="bg-accent-primary text-light px-4 py-2 rounded mt-2">
+        <button class="bg-primary text-white px-8 py-3 rounded-full uppercase mt-2">
             {{ t('profile.add_address') ?: 'Add Address' }}
         </button>
     </form>

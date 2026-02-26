@@ -73,11 +73,11 @@
 
             <div class="flex justify-between">
                 <a href="{{ route('admin.regions.index') }}"
-                   class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
+                   class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
                     Cancel
                 </a>
                 <button type="submit"
-                        class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
+                        class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
                     Save
                 </button>
             </div>

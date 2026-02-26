@@ -95,7 +95,7 @@
                 </div>
 
                 {{-- SHIPPING TIER SELECTION --}}
-                <div x-show="addressMode === 'new' && availableTiers.length === 0 && !qualifiesForFreeShipping" x-cloak class="px-4 py-3 rounded border border-grey-light border-l-4 bg-accent-secondary/10 text-accent-secondary mt-6">
+                <div x-show="addressMode === 'new' && availableTiers.length === 0 && !qualifiesForFreeShipping" x-cloak class="px-4 py-3 rounded border border-grey-light border-l-4 bg-primary/10 text-accent-secondary mt-6">
                     <p class="text-sm text-accent-secondary">
                         {{ t('checkout.address_required_for_shipping') ?: 'Please fill the address form so we can show the available shipping options.' }}
                     </p>
@@ -104,7 +104,7 @@
                 <div x-show="availableTiers.length > 0" x-cloak class="mt-6">
                     <h3 class="font-semibold mb-3">{{ t('checkout.select_shipping_method') ?: 'Select Shipping Method' }}</h3>
                     
-                    <div x-show="qualifiesForFreeShipping" class="px-3 py-2 rounded border border-grey-light border-l-4 bg-accent-primary/10 text-accent-primary mb-3">
+                    <div x-show="qualifiesForFreeShipping" class="px-3 py-2 rounded border border-grey-light border-l-4 bg-primary/10 text-accent-primary mb-3">
                         <p class="text-sm text-accent-primary">
                             {{ t('checkout.free_shipping_message') ?: 'Your order total exceeds' }} €<span x-text="freeShippingOver.toFixed(2)"></span>. 
                             {{ t('checkout.free_shipping_qualified') ?: 'You qualify for free shipping! You can also choose a faster shipping method below (additional cost applies).' }}
@@ -112,7 +112,7 @@
                     </div>
                     
                     <template x-for="tier in availableTiers" :key="tier.id">
-                        <label class="block border p-3 rounded cursor-pointer mb-2 hover:bg-white" :class="{ 'border-accent-primary bg-accent-primary/10 text-accent-primary': tier.is_free }">
+                        <label class="block border p-3 rounded cursor-pointer mb-2 hover:bg-white" :class="{ 'border-accent-primary bg-primary/10 text-accent-primary': tier.is_free }">
                             <input type="radio"
                                    name="shipping_tier_id"
                                    :value="tier.id"
@@ -131,13 +131,13 @@
                     </template>
                 </div>
 
-                <div x-show="!qualifiesForFreeShipping && addressMode === 'existing' && availableTiers.length === 0" x-cloak class="px-4 py-3 rounded border border-grey-light border-l-4 bg-accent-secondary/10 text-accent-secondary mt-6">
+                <div x-show="!qualifiesForFreeShipping && addressMode === 'existing' && availableTiers.length === 0" x-cloak class="px-4 py-3 rounded border border-grey-light border-l-4 bg-primary/10 text-accent-secondary mt-6">
                     <p class="text-sm text-accent-secondary">
                         {{ t('checkout.no_shipping_available') ?: 'No shipping options available for your address. Please contact us.' }}
                     </p>
                 </div>
 
-                <button class="bg-accent-primary text-light px-6 py-3 rounded mt-6">
+                <button class="bg-primary text-white px-8 py-3 rounded-full uppercase mt-6">
                     {{ t('checkout.place_order') ?: 'Place Order' }}
                 </button>
             </form>
