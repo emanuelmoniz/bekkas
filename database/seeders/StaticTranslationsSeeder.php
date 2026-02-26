@@ -969,8 +969,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'home.services.custom.button', 'locale' => 'pt-PT', 'value' => 'Mais Informações', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.services.custom.button', 'locale' => 'en-UK', 'value' => 'More Info', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.contact.title', 'locale' => 'pt-PT', 'value' => 'Contacte-nos', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.contact.title', 'locale' => 'en-UK', 'value' => 'Contact Us', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.contact.title', 'locale' => 'pt-PT', 'value' => 'Contactos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.contact.title', 'locale' => 'en-UK', 'value' => 'Contacts', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.contact.location', 'locale' => 'pt-PT', 'value' => 'Localização', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.contact.location', 'locale' => 'en-UK', 'value' => 'Location', 'created_at' => $now, 'updated_at' => $now],
@@ -978,8 +978,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'home.contact.phone', 'locale' => 'pt-PT', 'value' => 'Telefone', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.contact.phone', 'locale' => 'en-UK', 'value' => 'Phone', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.contact.email', 'locale' => 'pt-PT', 'value' => 'Email', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.contact.email', 'locale' => 'en-UK', 'value' => 'Email', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.contact.email', 'locale' => 'pt-PT', 'value' => 'E-mail', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.contact.email', 'locale' => 'en-UK', 'value' => 'E-mail', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.contact.social', 'locale' => 'pt-PT', 'value' => 'Siga-nos', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.contact.social', 'locale' => 'en-UK', 'value' => 'Follow Us', 'created_at' => $now, 'updated_at' => $now],

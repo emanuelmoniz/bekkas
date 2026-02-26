@@ -87,7 +87,7 @@
                                     ],
                                 ]" />
                                 <div class="p-6 py-8 flex flex-col flex-grow items-center text-center">
-                                    <h3 class="text-2xl font-bold mb-4 text-dark">{{ t('home.services.store.title') ?: 'STORE' }}</h3>
+                                    <h3 class="uppercase text-2xl font-bold mb-4 text-dark">{{ t('home.services.store.title') ?: 'STORE' }}</h3>
                                     <p class="text-grey-dark mb-6 flex-grow">{{ t('home.services.store.description') ?: 'Day to day life objects, gifts, souvenires' }}</p>
                                     <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-medium transition-colors">
                                         {{ t('home.services.store.button') ?: 'Store' }}
@@ -111,7 +111,7 @@
                                 ],
                             ]" />
                             <div class="p-6 py-8 flex flex-col flex-grow items-center text-center">
-                                <h3 class="text-2xl font-bold mb-4 text-dark">{{ t('home.services.custom.title') ?: 'CUSTOM' }}</h3>
+                                <h3 class="uppercase text-2xl font-bold mb-4 text-dark">{{ t('home.services.custom.title') ?: 'CUSTOM' }}</h3>
                                 <p class="text-grey-dark mb-6 flex-grow">{{ t('home.services.custom.description') ?: 'Printing service for architects and architecture students including modeling and file preparation.' }}</p>
                                 <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-medium transition-colors">
                                     {{ t('home.services.custom.button') ?: 'More info' }}
