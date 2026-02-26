@@ -229,7 +229,7 @@
                     <div class="h-full flex items-center">
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
-                                <button class="h-full inline-flex items-center px-8 py-3 border border-transparent text-sm leading-4 font-medium rounded-full uppercase text-grey-medium bg-white hover:text-grey-dark focus:outline-none transition">
+                                <button class="h-full inline-flex items-center px-8 py-3 border border-transparent text-sm leading-4 font-medium rounded-full text-grey-medium bg-white hover:text-grey-dark focus:outline-none transition">
                                     <div>{{ Auth::user()->name }}</div>
                                     <div class="ms-1">
                                         <svg class="fill-current h-4 w-4" viewBox="0 0 20 20">

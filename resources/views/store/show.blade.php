@@ -166,7 +166,18 @@
         }
     </script>
 
-    <div class="py-6">
+    <div class="py-4">
+
+        {{-- BACK LINK --}}
+        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 pb-4 flex">
+            <a href="{{ $backUrl }}" class="text-sm text-accent-primary hover:underline flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                {{ t('store.back_to_store') ?: 'Back to store' }}
+            </a>
+        </div>
+
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-6 animate-sequence">
 
             {{-- GALLERY --}}
@@ -184,7 +195,9 @@
             @endphp
 
             <div class="anim-item">
+
                 <x-image-gallery :images="$galleryImages"/>
+
             </div>
 
             {{-- DETAILS --}}
@@ -380,15 +393,6 @@
                                 class="bg-primary text-white px-8 py-3 rounded-full uppercase"
                                 x-text="adding ? '{{ t('store.adding') ?: 'Adding...' }}' : '{{ t('store.add_to_cart') ?: 'Add to cart' }}'">
                         </button>
-                        {{-- BACK LINK --}}
-                        <div class="flex">
-                            <a href="{{ $backUrl }}" class="text-sm text-accent-primary hover:underline flex items-center gap-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                                </svg>
-                                {{ t('store.back_to_store') ?: 'Back to store' }}
-                            </a>
-                        </div>
                     </form>
                 @endif
 
