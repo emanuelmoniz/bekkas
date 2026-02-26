@@ -164,6 +164,13 @@ class ProductController extends Controller
         return redirect()->route('admin.products.edit', $product);
     }
 
+    public function show(Product $product)
+    {
+        $product->load(['translations', 'categories.translations', 'materials.translations', 'photos', 'tax']);
+
+        return view('admin.products.show', compact('product'));
+    }
+
     public function edit(Product $product)
     {
         $product->load([

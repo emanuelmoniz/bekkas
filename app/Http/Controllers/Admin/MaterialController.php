@@ -46,6 +46,13 @@ class MaterialController extends Controller
         return redirect()->route('admin.materials.index');
     }
 
+    public function show(Material $material)
+    {
+        $material->load('translations');
+
+        return view('admin.materials.show', compact('material'));
+    }
+
     public function edit(Material $material)
     {
         $material->load('translations');

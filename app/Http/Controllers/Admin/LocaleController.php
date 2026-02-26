@@ -59,6 +59,13 @@ class LocaleController extends Controller
                          ->with('success', 'Locale created.');
     }
 
+    public function show(Locale $locale)
+    {
+        $locale->load('country');
+
+        return view('admin.locales.show', compact('locale'));
+    }
+
     public function edit(Locale $locale)
     {
         $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();

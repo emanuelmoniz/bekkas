@@ -112,6 +112,13 @@ class ShippingTierController extends Controller
         return redirect()->route('admin.shipping-tiers.index');
     }
 
+    public function show(ShippingTier $shippingTier)
+    {
+        $shippingTier->load(['translations', 'tax', 'countries.translations', 'regions']);
+
+        return view('admin.shipping-tiers.show', ['tier' => $shippingTier]);
+    }
+
     public function edit(ShippingTier $shippingTier)
     {
         $shippingTier->load(['countries', 'regions', 'translations']);

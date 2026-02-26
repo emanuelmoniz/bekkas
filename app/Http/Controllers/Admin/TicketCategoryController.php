@@ -73,6 +73,15 @@ class TicketCategoryController extends Controller
         return redirect()->route('admin.ticket-categories.index');
     }
 
+    public function show(TicketCategory $ticketCategory)
+    {
+        $this->ensureAdmin();
+
+        $ticketCategory->load('translations');
+
+        return view('admin.ticket-categories.show', ['category' => $ticketCategory]);
+    }
+
     public function edit(TicketCategory $ticketCategory)
     {
         $this->ensureAdmin();

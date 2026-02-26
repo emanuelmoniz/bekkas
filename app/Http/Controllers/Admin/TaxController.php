@@ -74,6 +74,13 @@ class TaxController extends Controller
         return redirect()->route('admin.taxes.index');
     }
 
+    public function show(Tax $tax)
+    {
+        $tax->load('translations');
+
+        return view('admin.taxes.show', compact('tax'));
+    }
+
     public function edit(Tax $tax)
     {
         $tax->load('translations');

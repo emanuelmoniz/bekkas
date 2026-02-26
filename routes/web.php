@@ -406,13 +406,13 @@ Route::middleware(['auth', 'is_admin'])
         | Taxes
         */
 
-        Route::resource('taxes', TaxController::class)->except(['show']);
+        Route::resource('taxes', TaxController::class);
 
         /*
         | Countries
         */
 
-        Route::resource('countries', CountryController::class)->except(['show']);
+        Route::resource('countries', CountryController::class);
 
         /*Regions
         */
@@ -457,7 +457,7 @@ Route::middleware(['auth', 'is_admin'])
         /*
         | Locales (Pillar 4)
         */
-        Route::resource('locales', LocaleController::class)->except(['show']);
+        Route::resource('locales', LocaleController::class);
 
         // Static translations — key-grouped admin (Pillar 2)
         Route::get('static-translations', [\App\Http\Controllers\Admin\StaticTranslationController::class, 'index'])

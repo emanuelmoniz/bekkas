@@ -81,6 +81,13 @@ class CountryController extends Controller
         return redirect()->route('admin.countries.index');
     }
 
+    public function show(Country $country)
+    {
+        $country->load('translations');
+
+        return view('admin.countries.show', compact('country'));
+    }
+
     public function edit(Country $country)
     {
         $country->load('translations');
