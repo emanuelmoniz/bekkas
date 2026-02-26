@@ -1408,8 +1408,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'contact.message', 'locale' => 'pt-PT', 'value' => 'Mensagem', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'contact.message', 'locale' => 'en-UK', 'value' => 'Message', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'contact.send', 'locale' => 'pt-PT', 'value' => 'Enviar Mensagem', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'contact.send', 'locale' => 'en-UK', 'value' => 'Send Message', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'contact.send', 'locale' => 'pt-PT', 'value' => 'Enviar', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'contact.send', 'locale' => 'en-UK', 'value' => 'Send', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'contact.success_message', 'locale' => 'pt-PT', 'value' => 'Obrigado pela sua mensagem! Entraremos em contacto em breve.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'contact.success_message', 'locale' => 'en-UK', 'value' => 'Thank you for your message! We will get back to you soon.', 'created_at' => $now, 'updated_at' => $now],
