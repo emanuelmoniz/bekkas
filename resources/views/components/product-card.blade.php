@@ -57,7 +57,7 @@
     {{-- Badges: featured / promo --}}
     <div class="absolute top-2 left-2 flex flex-col items-start gap-2 z-10">
         @if($product->is_featured)
-            <span class="inline-block w-auto bg-primary text-white text-xs font-semibold uppercase px-2 py-1 rounded">
+            <span class="inline-block w-auto bg-accent-secondary text-white text-xs font-semibold uppercase px-2 py-1 rounded">
                 {{ t('store.badge.featured') ?: 'FEATURED' }}
             </span>
         @endif
