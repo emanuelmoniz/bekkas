@@ -32,19 +32,27 @@ class OrderStatusController extends Controller
     public function create()
     {
         $locales = Locale::activeList();
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
 
-        return view('admin.order-statuses.create', compact('locales'));
+        return view('admin.order-statuses.create', compact('locales', 'defaultLocale'));
     }
 
     public function store(Request $request)
     {
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
+
         $request->validate([
             'code' => 'required|string|max:255|unique:order_statuses,code',
             'sort_order' => 'required|integer',
             'translations' => 'required|array',
             'translations.*.locale' => 'required|string',
-            'translations.*.name' => 'required|string|max:255',
+            'translations.*.name' => 'nullable|string|max:255',
         ]);
+
+        $defaultEntry = collect($request->translations)->firstWhere('locale', $defaultLocale);
+        if (empty($defaultEntry['name'])) {
+            return back()->withErrors(['translations' => "Name for the default locale ({$defaultLocale}) is required."])->withInput();
+        }
 
         $status = OrderStatus::create([
             'code' => $request->code,
@@ -52,10 +60,12 @@ class OrderStatusController extends Controller
         ]);
 
         foreach ($request->translations as $translation) {
-            $status->translations()->create([
-                'locale' => $translation['locale'],
-                'name' => $translation['name'],
-            ]);
+            if (!empty($translation['name'])) {
+                $status->translations()->create([
+                    'locale' => $translation['locale'],
+                    'name' => $translation['name'],
+                ]);
+            }
         }
 
         return redirect()->route('admin.order-statuses.index')->with('success', 'Order status created successfully!');
@@ -65,19 +75,27 @@ class OrderStatusController extends Controller
     {
         $orderStatus->load('translations');
         $locales = Locale::activeList();
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
 
-        return view('admin.order-statuses.edit', compact('orderStatus', 'locales'));
+        return view('admin.order-statuses.edit', compact('orderStatus', 'locales', 'defaultLocale'));
     }
 
     public function update(Request $request, OrderStatus $orderStatus)
     {
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
+
         $request->validate([
             'code' => 'required|string|max:255|unique:order_statuses,code,'.$orderStatus->id,
             'sort_order' => 'required|integer',
             'translations' => 'required|array',
             'translations.*.locale' => 'required|string',
-            'translations.*.name' => 'required|string|max:255',
+            'translations.*.name' => 'nullable|string|max:255',
         ]);
+
+        $defaultEntry = collect($request->translations)->firstWhere('locale', $defaultLocale);
+        if (empty($defaultEntry['name'])) {
+            return back()->withErrors(['translations' => "Name for the default locale ({$defaultLocale}) is required."])->withInput();
+        }
 
         $orderStatus->update([
             'code' => $request->code,
@@ -85,10 +103,12 @@ class OrderStatusController extends Controller
         ]);
 
         foreach ($request->translations as $translation) {
-            $orderStatus->translations()->updateOrCreate(
-                ['locale' => $translation['locale']],
-                ['name' => $translation['name']]
-            );
+            if (!empty($translation['name'])) {
+                $orderStatus->translations()->updateOrCreate(
+                    ['locale' => $translation['locale']],
+                    ['name' => $translation['name']]
+                );
+            }
         }
 
         return redirect()->route('admin.order-statuses.index')->with('success', 'Order status updated successfully!');

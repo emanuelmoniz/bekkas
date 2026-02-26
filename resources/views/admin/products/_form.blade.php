@@ -11,17 +11,18 @@
     @endif
 
     {{-- TRANSLATIONS --}}
+    @php $defaultLocale = \App\Models\Locale::defaultLocale()?->code ?? 'en-UK'; @endphp
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
-                <x-input-label>Name ({{ $locale }})</x-input-label>
+                <x-input-label>Name ({{ $locale }}) @if($locale === $defaultLocale)<span class="text-status-error">*</span>@endif</x-input-label>
                 <input type="text"
                        name="name[{{ $locale }}]"
                        value="{{ old("name.$locale",
                             $mode === 'edit'
                                 ? optional($product->translations->where('locale', $locale)->first())->name
                                 : '') }}"
-                       required
+                       @if($locale === $defaultLocale) required @endif
                        class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                 <x-input-error :messages="$errors->get('name.'.$locale)" class="mt-2" />
             </div>

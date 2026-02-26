@@ -28,11 +28,11 @@
 
             @foreach ($locales as $localeCode => $localeName)
             <div>
-                <label class="block text-sm font-medium">Name ({{ $localeName }}) *</label>
+                <label class="block text-sm font-medium">Name ({{ $localeName }}) @if($localeCode === $defaultLocale)*@endif</label>
                 <input type="text"
                        name="translations[{{ $localeCode }}]"
                        value="{{ old("translations.{$localeCode}") }}"
-                       required
+                       @if($localeCode === $defaultLocale) required @endif
                        class="w-full border rounded px-3 py-2 @error("translations.{$localeCode}") border-status-error @enderror">
                 @error("translations.{$localeCode}")
                     <p class="text-status-error text-sm mt-1">{{ $message }}</p>

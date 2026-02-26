@@ -35,16 +35,26 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
+        $nameRules = ['parent_id' => 'nullable|exists:categories,id'];
+        foreach (Locale::activeCodes() as $locale) {
+            $nameRules["name.$locale"] = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
+        }
+        $request->validate($nameRules);
+
         $category = Category::create([
             'parent_id' => $request->parent_id,
         ]);
 
         foreach (Locale::activeCodes() as $locale) {
-            CategoryTranslation::create([
-                'category_id' => $category->id,
-                'locale' => $locale,
-                'name' => $request->input("name.$locale"),
-            ]);
+            $value = $request->input("name.$locale");
+            if (!empty($value)) {
+                CategoryTranslation::create([
+                    'category_id' => $category->id,
+                    'locale' => $locale,
+                    'name' => $value,
+                ]);
+            }
         }
 
         return redirect()->route('admin.categories.index');
@@ -69,16 +79,26 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
+        $nameRules = ['parent_id' => 'nullable|exists:categories,id'];
+        foreach (Locale::activeCodes() as $locale) {
+            $nameRules["name.$locale"] = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
+        }
+        $request->validate($nameRules);
+
         $category->update([
             'parent_id' => $request->parent_id,
         ]);
 
         foreach (Locale::activeCodes() as $locale) {
-            $category->translations()
-                ->updateOrCreate(
-                    ['locale' => $locale],
-                    ['name' => $request->input("name.$locale")]
-                );
+            $value = $request->input("name.$locale");
+            if (!empty($value)) {
+                $category->translations()
+                    ->updateOrCreate(
+                        ['locale' => $locale],
+                        ['name' => $value]
+                    );
+            }
         }
 
         return redirect()->route('admin.categories.index');

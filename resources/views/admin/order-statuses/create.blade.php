@@ -24,11 +24,11 @@
                     <h3 class="font-semibold mb-4">Translations</h3>
                     @foreach ($locales as $locale => $label)
                         <div class="mb-4">
-                            <x-input-label>{{ $label }} ({{ $locale }})</x-input-label>
+                            <x-input-label>{{ $label }} ({{ $locale }}) @if($locale === $defaultLocale)<span class="text-status-error">*</span>@endif</x-input-label>
                             <input type="hidden" name="translations[{{ $loop->index }}][locale]" value="{{ $locale }}">
                             <input name="translations[{{ $loop->index }}][name]"
                                    value="{{ old('translations.'.$loop->index.'.name') }}"
-                                   required
+                                   @if($locale === $defaultLocale) required @endif
                                    class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                             <x-input-error :messages="$errors->get('translations.'.$loop->index.'.name')" class="mt-2" />
                         </div>

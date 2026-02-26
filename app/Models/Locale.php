@@ -49,6 +49,12 @@ class Locale extends Model
         return self::active()->pluck('code');
     }
 
+    /** Returns the default locale model instance, or null if none is set. */
+    public static function defaultLocale(): ?self
+    {
+        return self::where('is_default', true)->first();
+    }
+
     /*************************************************************************
      * Relationships
      *************************************************************************/

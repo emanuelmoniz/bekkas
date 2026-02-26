@@ -67,6 +67,13 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
+        $nameRules = [];
+        foreach (Locale::activeCodes() as $locale) {
+            $nameRules["name.$locale"] = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
+        }
+        $request->validate($nameRules);
+
         $project = Project::create([
             'production_date' => $request->production_date,
             'execution_time' => $request->execution_time,
@@ -78,13 +85,16 @@ class ProjectController extends Controller
             'is_featured' => $request->boolean('is_featured'),
         ]);
 
-        foreach (Locale::activeList() as $locale => $name) {
-            ProjectTranslation::create([
-                'project_id' => $project->id,
-                'locale' => $locale,
-                'name' => $request->input("name.$locale"),
-                'description' => $request->input("description.$locale"),
-            ]);
+        foreach (Locale::activeList() as $locale => $locLabel) {
+            $nameValue = $request->input("name.$locale");
+            if (!empty($nameValue)) {
+                ProjectTranslation::create([
+                    'project_id' => $project->id,
+                    'locale' => $locale,
+                    'name' => $nameValue,
+                    'description' => $request->input("description.$locale"),
+                ]);
+            }
         }
 
         $project->materials()->sync($request->materials ?? []);
@@ -111,6 +121,13 @@ class ProjectController extends Controller
 
     public function update(Request $request, Project $project)
     {
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
+        $nameRules = [];
+        foreach (Locale::activeCodes() as $locale) {
+            $nameRules["name.$locale"] = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
+        }
+        $request->validate($nameRules);
+
         $project->update([
             'production_date' => $request->production_date,
             'execution_time' => $request->execution_time,
@@ -122,15 +139,18 @@ class ProjectController extends Controller
             'is_featured' => $request->boolean('is_featured'),
         ]);
 
-        foreach (Locale::activeList() as $locale => $name) {
-            $project->translations()
-                ->updateOrCreate(
-                    ['locale' => $locale],
-                    [
-                        'name' => $request->input("name.$locale"),
-                        'description' => $request->input("description.$locale"),
-                    ]
-                );
+        foreach (Locale::activeList() as $locale => $locLabel) {
+            $nameValue = $request->input("name.$locale");
+            if (!empty($nameValue)) {
+                $project->translations()
+                    ->updateOrCreate(
+                        ['locale' => $locale],
+                        [
+                            'name' => $nameValue,
+                            'description' => $request->input("description.$locale"),
+                        ]
+                    );
+            }
         }
 
         $project->materials()->sync($request->materials ?? []);

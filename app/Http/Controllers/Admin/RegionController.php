@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Country;
+use App\Models\Locale;
 use App\Models\Region;
 use App\Models\RegionTranslation;
 use App\Models\ShippingTier;
@@ -44,7 +45,7 @@ class RegionController extends Controller
 
         $regions = $query->orderBy('id')->paginate(15)->withQueryString();
         $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();
-        $locales = config('app.locales');
+        $locales = Locale::activeList();
 
         return view('admin.regions.index', compact('regions', 'countries', 'locales'));
     }
@@ -52,14 +53,16 @@ class RegionController extends Controller
     public function create()
     {
         $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();
-        $locales = config('app.locales');
+        $locales = Locale::activeList();
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
 
-        return view('admin.regions.create', compact('countries', 'locales'));
+        return view('admin.regions.create', compact('countries', 'locales', 'defaultLocale'));
     }
 
     public function store(Request $request)
     {
-        $locales = array_keys(config('app.locales'));
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
+        $locales = Locale::activeCodes()->all();
 
         $rules = [
             'country_id'       => 'required|exists:countries,id',
@@ -68,7 +71,7 @@ class RegionController extends Controller
         ];
 
         foreach ($locales as $locale) {
-            $rules["translations.{$locale}"] = 'required|string|max:255';
+            $rules["translations.{$locale}"] = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
         }
 
         $request->validate($rules);
@@ -82,11 +85,14 @@ class RegionController extends Controller
             ]);
 
             foreach ($locales as $locale) {
-                RegionTranslation::create([
-                    'region_id' => $region->id,
-                    'locale'    => $locale,
-                    'name'      => $request->input("translations.{$locale}"),
-                ]);
+                $value = $request->input("translations.{$locale}");
+                if (!empty($value)) {
+                    RegionTranslation::create([
+                        'region_id' => $region->id,
+                        'locale'    => $locale,
+                        'name'      => $value,
+                    ]);
+                }
             }
         });
 
@@ -96,7 +102,7 @@ class RegionController extends Controller
     public function show(Region $region)
     {
         $region->load(['country', 'translations']);
-        $locales = config('app.locales');
+        $locales = Locale::activeList();
 
         return view('admin.regions.show', compact('region', 'locales'));
     }
@@ -105,7 +111,8 @@ class RegionController extends Controller
     {
         $region->load('translations');
         $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();
-        $locales = config('app.locales');
+        $locales = Locale::activeList();
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
 
         // Only tiers already assigned to this region can be set as default
         $shippingTiers = ShippingTier::with('translations')
@@ -119,12 +126,13 @@ class RegionController extends Controller
             ->where('is_default', true)
             ->value('shipping_tier_id');
 
-        return view('admin.regions.edit', compact('region', 'countries', 'locales', 'shippingTiers', 'defaultShippingTierId'));
+        return view('admin.regions.edit', compact('region', 'countries', 'locales', 'defaultLocale', 'shippingTiers', 'defaultShippingTierId'));
     }
 
     public function update(Request $request, Region $region)
     {
-        $locales = array_keys(config('app.locales'));
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
+        $locales = Locale::activeCodes()->all();
 
         $rules = [
             'country_id'       => 'required|exists:countries,id',
@@ -144,7 +152,7 @@ class RegionController extends Controller
         ];
 
         foreach ($locales as $locale) {
-            $rules["translations.{$locale}"] = 'required|string|max:255';
+            $rules["translations.{$locale}"] = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
         }
 
         $request->validate($rules);
@@ -158,10 +166,13 @@ class RegionController extends Controller
             ]);
 
             foreach ($locales as $locale) {
-                RegionTranslation::updateOrCreate(
-                    ['region_id' => $region->id, 'locale' => $locale],
-                    ['name' => $request->input("translations.{$locale}")]
-                );
+                $value = $request->input("translations.{$locale}");
+                if (!empty($value)) {
+                    RegionTranslation::updateOrCreate(
+                        ['region_id' => $region->id, 'locale' => $locale],
+                        ['name' => $value]
+                    );
+                }
             }
 
             // Clear the current default for this region

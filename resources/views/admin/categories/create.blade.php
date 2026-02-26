@@ -14,14 +14,15 @@
                 <div class="bg-white p-6 rounded shadow mb-6">
                     <h3 class="font-semibold mb-4">Translations</h3>
 
+                    @php $defaultLocale = \App\Models\Locale::defaultLocale()?->code ?? 'en-UK'; @endphp
                     @foreach (\App\Models\Locale::activeList() as $locale => $label)
                         <div class="mb-4">
-                            <x-input-label>{{ $label }}</x-input-label>
+                            <x-input-label>{{ $label }} @if($locale === $defaultLocale)<span class="text-status-error">*</span>@endif</x-input-label>
                             <input type="text"
                                    name="name[{{ $locale }}]"
                                    placeholder="Category name"
                                    class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm"
-                                   required>
+                                   @if($locale === $defaultLocale) required @endif>
                             <x-input-error :messages="$errors->get('name.'.$locale)" class="mt-2" />
                         </div>
                     @endforeach

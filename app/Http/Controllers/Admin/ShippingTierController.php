@@ -66,15 +66,17 @@ class ShippingTierController extends Controller
             ->get();
 
         $locales = Locale::activeList();
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
 
-        return view('admin.shipping-tiers.create', compact('taxes', 'countries', 'locales'));
+        return view('admin.shipping-tiers.create', compact('taxes', 'countries', 'locales', 'defaultLocale'));
     }
 
     public function store(Request $request)
     {
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
         $nameRules = [];
         foreach (Locale::activeCodes() as $locale) {
-            $nameRules["name.{$locale}"] = 'required|string|max:255';
+            $nameRules["name.{$locale}"] = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
         }
 
         $request->validate(array_merge($nameRules, [
@@ -99,11 +101,14 @@ class ShippingTierController extends Controller
         ]);
 
         foreach (Locale::activeCodes() as $locale) {
-            ShippingTierTranslation::create([
-                'shipping_tier_id' => $tier->id,
-                'locale' => $locale,
-                'name' => $request->name[$locale],
-            ]);
+            $value = $request->input("name.$locale");
+            if (!empty($value)) {
+                ShippingTierTranslation::create([
+                    'shipping_tier_id' => $tier->id,
+                    'locale' => $locale,
+                    'name' => $value,
+                ]);
+            }
         }
 
         $tier->countries()->sync($request->countries);
@@ -132,20 +137,23 @@ class ShippingTierController extends Controller
             ->get();
 
         $locales = Locale::activeList();
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
 
         return view('admin.shipping-tiers.edit', compact(
             'shippingTier',
             'taxes',
             'countries',
-            'locales'
+            'locales',
+            'defaultLocale'
         ));
     }
 
     public function update(Request $request, ShippingTier $shippingTier)
     {
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
         $nameRules = [];
         foreach (Locale::activeCodes() as $locale) {
-            $nameRules["name.{$locale}"] = 'required|string|max:255';
+            $nameRules["name.{$locale}"] = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
         }
 
         $request->validate(array_merge($nameRules, [
@@ -170,10 +178,13 @@ class ShippingTierController extends Controller
         ]);
 
         foreach (Locale::activeCodes() as $locale) {
-            ShippingTierTranslation::updateOrCreate(
-                ['shipping_tier_id' => $shippingTier->id, 'locale' => $locale],
-                ['name' => $request->name[$locale]]
-            );
+            $value = $request->input("name.$locale");
+            if (!empty($value)) {
+                ShippingTierTranslation::updateOrCreate(
+                    ['shipping_tier_id' => $shippingTier->id, 'locale' => $locale],
+                    ['name' => $value]
+                );
+            }
         }
 
         $shippingTier->countries()->sync($request->countries);

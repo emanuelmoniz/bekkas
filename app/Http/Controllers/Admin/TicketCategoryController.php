@@ -40,7 +40,9 @@ class TicketCategoryController extends Controller
     {
         $this->ensureAdmin();
 
-        return view('admin.ticket-categories.create');
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
+
+        return view('admin.ticket-categories.create', compact('defaultLocale'));
     }
 
     public function store(Request $request)
@@ -52,9 +54,10 @@ class TicketCategoryController extends Controller
             'name_array' => $request->input('name'),
         ]);
 
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
         $rules = [];
         foreach (Locale::activeCodes() as $locale) {
-            $rules["name.$locale"] = 'required|string|max:255';
+            $rules["name.$locale"] = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
         }
         $request->validate($rules);
 
@@ -63,11 +66,14 @@ class TicketCategoryController extends Controller
         ]);
 
         foreach (Locale::activeCodes() as $locale) {
-            TicketCategoryTranslation::create([
-                'ticket_category_id' => $category->id,
-                'locale' => $locale,
-                'name' => $request->name[$locale],
-            ]);
+            $value = $request->input("name.$locale");
+            if (!empty($value)) {
+                TicketCategoryTranslation::create([
+                    'ticket_category_id' => $category->id,
+                    'locale' => $locale,
+                    'name' => $value,
+                ]);
+            }
         }
 
         return redirect()->route('admin.ticket-categories.index');
@@ -86,8 +92,11 @@ class TicketCategoryController extends Controller
     {
         $this->ensureAdmin();
 
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
+
         return view('admin.ticket-categories.edit', [
             'category' => $ticketCategory->load('translations'),
+            'defaultLocale' => $defaultLocale,
         ]);
     }
 
@@ -95,9 +104,10 @@ class TicketCategoryController extends Controller
     {
         $this->ensureAdmin();
 
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
         $rules = ['active' => 'nullable|boolean'];
         foreach (Locale::activeCodes() as $locale) {
-            $rules["name.$locale"] = 'required|string|max:255';
+            $rules["name.$locale"] = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
         }
         $request->validate($rules);
 
@@ -106,15 +116,18 @@ class TicketCategoryController extends Controller
         ]);
 
         foreach (Locale::activeCodes() as $locale) {
-            TicketCategoryTranslation::updateOrCreate(
-                [
-                    'ticket_category_id' => $ticketCategory->id,
-                    'locale' => $locale,
-                ],
-                [
-                    'name' => $request->name[$locale],
-                ]
-            );
+            $value = $request->input("name.$locale");
+            if (!empty($value)) {
+                TicketCategoryTranslation::updateOrCreate(
+                    [
+                        'ticket_category_id' => $ticketCategory->id,
+                        'locale' => $locale,
+                    ],
+                    [
+                        'name' => $value,
+                    ]
+                );
+            }
         }
 
         return redirect()->route('admin.ticket-categories.index');

@@ -93,6 +93,15 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
+        $nameRules = ["name.{$defaultLocale}" => 'required|string|max:255'];
+        foreach (Locale::activeCodes() as $locale) {
+            if ($locale !== $defaultLocale) {
+                $nameRules["name.{$locale}"] = 'nullable|string|max:255';
+            }
+        }
+        $request->validate($nameRules);
+
         $request->validate([
             'tax_id' => 'required|exists:taxes,id',
             'price' => 'required|numeric|min:0',
@@ -147,14 +156,17 @@ class ProductController extends Controller
         // persist any option types that were submitted along with their options
         $this->saveOptionTypes($product, $request->input('option_types', []));
 
-        foreach (Locale::activeList() as $locale => $name) {
-            ProductTranslation::create([
-                'product_id' => $product->id,
-                'locale' => $locale,
-                'name' => $request->input("name.$locale"),
-                'description' => $request->input("description.$locale"),
-                'technical_info' => $request->input("technical_info.$locale"),
-            ]);
+        foreach (Locale::activeList() as $locale => $locLabel) {
+            $nameValue = $request->input("name.$locale");
+            if (!empty($nameValue)) {
+                ProductTranslation::create([
+                    'product_id' => $product->id,
+                    'locale' => $locale,
+                    'name' => $nameValue,
+                    'description' => $request->input("description.$locale"),
+                    'technical_info' => $request->input("technical_info.$locale"),
+                ]);
+            }
         }
 
         $product->categories()->sync($request->categories ?? []);
@@ -195,6 +207,15 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
+        $nameRules = ["name.{$defaultLocale}" => 'required|string|max:255'];
+        foreach (Locale::activeCodes() as $locale) {
+            if ($locale !== $defaultLocale) {
+                $nameRules["name.{$locale}"] = 'nullable|string|max:255';
+            }
+        }
+        $request->validate($nameRules);
+
         $request->validate([
             'tax_id' => 'required|exists:taxes,id',
             'price' => 'required|numeric|min:0',
@@ -251,16 +272,19 @@ class ProductController extends Controller
 
         $this->saveOptionTypes($product, $request->input('option_types', []));
 
-        foreach (Locale::activeList() as $locale => $name) {
-            $product->translations()
-                ->updateOrCreate(
-                    ['locale' => $locale],
-                    [
-                        'name' => $request->input("name.$locale"),
-                        'description' => $request->input("description.$locale"),
-                        'technical_info' => $request->input("technical_info.$locale"),
-                    ]
-                );
+        foreach (Locale::activeList() as $locale => $locLabel) {
+            $nameValue = $request->input("name.$locale");
+            if (!empty($nameValue)) {
+                $product->translations()
+                    ->updateOrCreate(
+                        ['locale' => $locale],
+                        [
+                            'name' => $nameValue,
+                            'description' => $request->input("description.$locale"),
+                            'technical_info' => $request->input("technical_info.$locale"),
+                        ]
+                    );
+            }
         }
 
         $product->categories()->sync($request->categories ?? []);

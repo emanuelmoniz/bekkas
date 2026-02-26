@@ -33,14 +33,24 @@ class MaterialController extends Controller
 
     public function store(Request $request)
     {
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
+        $nameRules = [];
+        foreach (Locale::activeCodes() as $locale) {
+            $nameRules["name.$locale"] = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
+        }
+        $request->validate($nameRules);
+
         $material = Material::create();
 
         foreach (Locale::activeCodes() as $locale) {
-            MaterialTranslation::create([
-                'material_id' => $material->id,
-                'locale' => $locale,
-                'name' => $request->input("name.$locale"),
-            ]);
+            $value = $request->input("name.$locale");
+            if (!empty($value)) {
+                MaterialTranslation::create([
+                    'material_id' => $material->id,
+                    'locale' => $locale,
+                    'name' => $value,
+                ]);
+            }
         }
 
         return redirect()->route('admin.materials.index');
@@ -62,12 +72,22 @@ class MaterialController extends Controller
 
     public function update(Request $request, Material $material)
     {
+        $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
+        $nameRules = [];
         foreach (Locale::activeCodes() as $locale) {
-            $material->translations()
-                ->updateOrCreate(
-                    ['locale' => $locale],
-                    ['name' => $request->input("name.$locale")]
-                );
+            $nameRules["name.$locale"] = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
+        }
+        $request->validate($nameRules);
+
+        foreach (Locale::activeCodes() as $locale) {
+            $value = $request->input("name.$locale");
+            if (!empty($value)) {
+                $material->translations()
+                    ->updateOrCreate(
+                        ['locale' => $locale],
+                        ['name' => $value]
+                    );
+            }
         }
 
         return redirect()->route('admin.materials.index');
