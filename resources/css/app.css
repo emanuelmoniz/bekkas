@@ -102,35 +102,6 @@
     src: url('../fonts/figtree/Figtree-BlackItalic.ttf') format('truetype');
 }
 
-@font-face {
-    font-family: 'Signika';
-    font-style: normal;
-    font-weight: 300;
-    font-display: swap;
-    src: url('../fonts/signika/Signika-Light.otf') format('opentype');
-}
-@font-face {
-    font-family: 'Signika';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url('../fonts/signika/Signika-Regular.otf') format('opentype');
-}
-@font-face {
-    font-family: 'Signika';
-    font-style: normal;
-    font-weight: 600;
-    font-display: swap;
-    src: url('../fonts/signika/Signika-Semibold.otf') format('opentype');
-}
-@font-face {
-    font-family: 'Signika';
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-    src: url('../fonts/signika/Signika-Bold.otf') format('opentype');
-}
-
 /* default-to-figtree for body text; headings override below */
 
 @tailwind base;
@@ -163,9 +134,9 @@
     @apply text-accent-primary;
   }
 
-  /* headings should use the Signika family */
+  /* headings use the Figtree family */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Signika', sans-serif;
+    font-family: 'Figtree', sans-serif;
   }
 
   /* Keep prose links matching the same visual style */
