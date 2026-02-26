@@ -89,7 +89,7 @@
                         @forelse ($products as $product)
                             <tr class="border-t">
                                 <td class="px-4 py-2">
-                                    {{ optional($product->translation())->name }}
+                                    <a href="{{ route('admin.products.show', $product) }}" class="text-accent-secondary hover:underline font-medium">{{ optional($product->translation())->name }}</a>
                                     <x-missing-locale-badge :model="$product" />
                                 </td>
                                 <td class="px-4 py-2">

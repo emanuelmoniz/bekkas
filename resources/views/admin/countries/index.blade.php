@@ -47,7 +47,7 @@
                     @forelse ($countries as $country)
                         <tr class="border-t">
                             <td class="px-4 py-2">
-                                {{ $country->translation('en-UK')?->name ?? '—' }}
+                                <a href="{{ route('admin.countries.show', $country) }}" class="text-accent-secondary hover:underline font-medium">{{ $country->translation('en-UK')?->name ?? '—' }}</a>
                                 <x-missing-locale-badge :model="$country" />
                             </td>
                             <td class="px-4 py-2">{{ $country->iso_alpha2 }}</td>

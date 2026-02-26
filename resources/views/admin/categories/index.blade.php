@@ -42,7 +42,7 @@
                         @forelse ($categories as $category)
                             <tr class="border-t">
                                 <td class="px-4 py-2">
-                                    {{ optional($category->translation())->name }}
+                                    <a href="{{ route('admin.categories.show', $category) }}" class="text-accent-secondary hover:underline font-medium">{{ optional($category->translation())->name }}</a>
                                     <x-missing-locale-badge :model="$category" />
                                 </td>
 

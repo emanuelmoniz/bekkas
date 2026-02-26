@@ -25,16 +25,15 @@
                 <input type="date" name="to_session_date" placeholder="Session to date"
                        value="{{ request('to_session_date') }}"
                        class="border rounded px-3 py-2">
-            </div>
-
-            <div class="mt-4 text-right flex justify-end gap-2">
-                <a href="{{ route('admin.orders.checkouts.index') }}" 
-                   class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
-                    Reset
-                </a>
-                <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
-                    Filter
-                </button>
+                <div class="text-right flex justify-end gap-2">
+                    <a href="{{ route('admin.orders.checkouts.index') }}" 
+                    class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
+                        Reset
+                    </a>
+                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
+                        Filter
+                    </button>
+                </div>
             </div>
         </form>
 

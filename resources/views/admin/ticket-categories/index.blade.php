@@ -36,7 +36,7 @@
                     @foreach ($categories as $cat)
                         <tr class="border-t">
                             <td class="px-4 py-2">
-                                {{ optional($cat->translations->where('locale','en-UK')->first())->name }}
+                                <a href="{{ route('admin.ticket-categories.show', $cat) }}" class="text-accent-secondary hover:underline font-medium">{{ optional($cat->translations->where('locale','en-UK')->first())->name }}</a>
                                 <x-missing-locale-badge :model="$cat" />
                             </td>
                             <td class="px-4 py-2">

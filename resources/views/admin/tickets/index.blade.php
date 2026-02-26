@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl">Admin – Tickets</h2>
+        <h2 class="font-semibold text-xl">Tickets</h2>
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -31,16 +31,15 @@
                         </option>
                     @endforeach
                 </select>
-            </div>
-
-            <div class="mt-4 text-right flex justify-end gap-2">
-                <a href="{{ route('admin.tickets.index') }}"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
-                    Reset
-                </a>
-                <button type="submit" class="inline-flex items-center px-4 py-2 bg-accent-primary rounded-md font-semibold text-xs text-light uppercase tracking-widest hover:bg-accent-primary/90 transition ease-in-out duration-150">
-                    Filter
-                </button>
+                <div class="text-right flex justify-end gap-2">
+                    <a href="{{ route('admin.tickets.index') }}"
+                    class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                        Reset
+                    </a>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-accent-primary rounded-md font-semibold text-xs text-light uppercase tracking-widest hover:bg-accent-primary/90 transition ease-in-out duration-150">
+                        Filter
+                    </button>
+                </div>
             </div>
         </form>
 

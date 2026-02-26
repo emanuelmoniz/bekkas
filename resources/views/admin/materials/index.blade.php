@@ -41,7 +41,7 @@
                         @forelse ($materials as $material)
                             <tr class="border-t">
                                 <td class="px-4 py-2">
-                                    {{ optional($material->translation())->name }}
+                                    <a href="{{ route('admin.materials.show', $material) }}" class="text-accent-secondary hover:underline font-medium">{{ optional($material->translation())->name }}</a>
                                     <x-missing-locale-badge :model="$material" />
                                 </td>
 

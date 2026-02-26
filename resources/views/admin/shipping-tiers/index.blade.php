@@ -84,7 +84,7 @@
                     @forelse ($tiers as $tier)
                         <tr class="border-t">
                             <td class="px-4 py-2">
-                                {{ $tier->translation()?->name }}
+                                <a href="{{ route('admin.shipping-tiers.show', $tier) }}" class="text-accent-secondary hover:underline font-medium">{{ $tier->translation()?->name }}</a>
                                 <x-missing-locale-badge :model="$tier" />
                             </td>
                             <td class="px-4 py-2">{{ $tier->weight_from }}</td>

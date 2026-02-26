@@ -42,7 +42,7 @@
                     @foreach ($taxes as $tax)
                         <tr class="border-t">
                             <td class="px-4 py-2">
-                                {{ $tax->name }}
+                                <a href="{{ route('admin.taxes.show', $tax) }}" class="text-accent-secondary hover:underline font-medium">{{ $tax->name }}</a>
                                 <x-missing-locale-badge :model="$tax" />
                             </td>
                             <td class="px-4 py-2">{{ $tax->percentage }}</td>

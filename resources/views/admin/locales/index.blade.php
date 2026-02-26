@@ -48,7 +48,7 @@
                     @foreach ($locales as $loc)
                         <tr class="border-t">
                             <td class="px-4 py-2 font-mono text-sm">{{ $loc->code }}</td>
-                            <td class="px-4 py-2">{{ $loc->name }}</td>
+                            <td class="px-4 py-2"><a href="{{ route('admin.locales.show', $loc) }}" class="text-accent-secondary hover:underline font-medium">{{ $loc->name }}</a></td>
                             <td class="px-4 py-2 text-xl">{{ $loc->flag_emoji }}</td>
                             <td class="px-4 py-2">{{ optional($loc->country)->name }}</td>
                             <td class="px-4 py-2">
