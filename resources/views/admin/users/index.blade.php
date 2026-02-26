@@ -24,24 +24,24 @@
                            name="name"
                            value="{{ request('name') }}"
                            placeholder="Name"
-                           class="border rounded px-3 py-2">
+                           class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                     {{-- EMAIL --}}
                     <input type="text"
                            name="email"
                            value="{{ request('email') }}"
                            placeholder="Email"
-                           class="border rounded px-3 py-2">
+                           class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                     {{-- PHONE --}}
                     <input type="text"
                            name="phone"
                            value="{{ request('phone') }}"
                            placeholder="Phone"
-                           class="border rounded px-3 py-2">
+                           class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                     {{-- IS_ACTIVE --}}
-                    <select name="is_active" class="border rounded px-3 py-2">
+                    <select name="is_active" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                         <option value="">Active</option>
                         <option value="1" @selected(request('is_active')==='1')>Yes</option>
                         <option value="0" @selected(request('is_active')==='0')>No</option>

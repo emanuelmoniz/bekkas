@@ -8,15 +8,15 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <input name="order_number" placeholder="Order Number"
                        value="{{ request('order_number') }}"
-                       class="border rounded px-3 py-2">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                 <input type="date" name="from_paid_date" placeholder="Paid from date"
                        value="{{ request('from_paid_date') }}"
-                       class="border rounded px-3 py-2">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                 <input type="date" name="to_paid_date" placeholder="Paid to date"
                        value="{{ request('to_paid_date') }}"
-                       class="border rounded px-3 py-2">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                 <div class="text-right flex justify-end gap-2">
                     <a href="{{ route('admin.orders.payments.index') }}" 
                     class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">

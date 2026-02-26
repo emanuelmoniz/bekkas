@@ -22,10 +22,10 @@
                        name="name"
                        value="{{ request('name') }}"
                        placeholder="Name"
-                       class="border rounded px-3 py-2">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                 {{-- COUNTRY --}}
-                <select name="country_id" class="border rounded px-3 py-2">
+                <select name="country_id" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                     <option value="">All Countries</option>
                     @foreach ($countries as $country)
                         <option value="{{ $country->id }}" @selected(request('country_id') == $country->id)>
@@ -39,10 +39,10 @@
                        name="postal_code"
                        value="{{ request('postal_code') }}"
                        placeholder="Postal Code"
-                       class="border rounded px-3 py-2">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                 {{-- IS_ACTIVE --}}
-                <select name="is_active" class="border rounded px-3 py-2">
+                <select name="is_active" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                     <option value="">Active</option>
                     <option value="1" @selected(request('is_active')==='1')>Yes</option>
                     <option value="0" @selected(request('is_active')==='0')>No</option>

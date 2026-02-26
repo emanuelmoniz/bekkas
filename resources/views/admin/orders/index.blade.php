@@ -9,21 +9,21 @@
             <div class="grid grid-cols-1 md:grid-cols-9 gap-4">
                 <input name="order_number" placeholder="Order Number"
                        value="{{ request('order_number') }}"
-                       class="border rounded px-3 py-2">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                 <input name="user" placeholder="User"
                        value="{{ request('user') }}"
-                       class="border rounded px-3 py-2">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                 <input name="email" placeholder="Email"
                        value="{{ request('email') }}"
-                       class="border rounded px-3 py-2">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                 <input name="nif" placeholder="NIF"
                        value="{{ request('nif') }}"
-                       class="border rounded px-3 py-2">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
-                <select name="status" class="border rounded px-3 py-2">
+                <select name="status" class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                     <option value="">All statuses</option>
                     @php
                         $statuses = \App\Models\OrderStatus::with('translations')->orderBy('sort_order')->get();
@@ -44,21 +44,21 @@
 
                 <input type="date" name="from_date" placeholder="From Date"
                        value="{{ request('from_date') }}"
-                       class="border rounded px-3 py-2">
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                 <input type="date" name="to_date" placeholder="To Date"
                        value="{{ request('to_date') }}"
-                       class="border rounded px-3 py-2">
-            </div>
-
-            <div class="mt-4 text-right flex justify-end gap-2">
-                <a href="{{ route('admin.orders.index') }}" 
-                   class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
-                    Reset
-                </a>
-                <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
-                    Filter
-                </button>
+                       class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+            
+                <div class="text-right flex justify-end gap-2">
+                    <a href="{{ route('admin.orders.index') }}" 
+                    class="bg-grey-medium hover:bg-grey-dark text-light px-4 py-2 rounded">
+                        Reset
+                    </a>
+                    <button class="bg-accent-primary hover:bg-accent-primary/90 text-light px-4 py-2 rounded">
+                        Filter
+                    </button>
+                </div>       
             </div>
         </form>
 

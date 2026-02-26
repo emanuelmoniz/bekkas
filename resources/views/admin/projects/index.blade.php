@@ -24,25 +24,25 @@
                            name="name"
                            value="{{ request('name') }}"
                            placeholder="Name"
-                           class="border rounded px-3 py-2">
+                           class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                     {{-- PRODUCTION DATE START --}}
                     <input type="date"
                            name="production_date_start"
                            value="{{ request('production_date_start') }}"
-                           class="border rounded px-3 py-2">
+                           class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                     {{-- PRODUCTION DATE END --}}
                     <input type="date"
                            name="production_date_end"
                            value="{{ request('production_date_end') }}"
-                           class="border rounded px-3 py-2">
+                           class="border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
 
                     {{-- MATERIAL --}}
                     <div x-data="{ open:false, search:'', selected:'{{ request('material_id') }}' }" class="relative">
                         <input type="hidden" name="material_id" :value="selected">
                         <button type="button" @click="open=!open"
-                                class="w-full border rounded px-3 py-2 text-left">
+                                class="w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm text-left">
                             {{ optional($materials->firstWhere('id', request('material_id'))?->translation())->name ?? 'Material' }}
                         </button>
                         <div x-show="open" @click.outside="open=false"
