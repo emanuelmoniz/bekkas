@@ -34,6 +34,8 @@
                                 <div class="py-1">
                                     <a href="{{ route('admin.products.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Products</a>
                                     <a href="{{ route('admin.projects.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Projects</a>
+                                    <a href="{{ route('admin.categories.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Categories</a>
+                                    <a href="{{ route('admin.materials.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Materials</a>
                                 </div>
                             </div>
                         </div>
@@ -57,6 +59,7 @@
                                     <a href="{{ route('admin.orders.checkouts.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Checkouts</a>
                                     <a href="{{ route('admin.orders.payments.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Payments</a>
                                     <a href="{{ route('admin.order-statuses.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Order Statuses</a>
+                                    <a href="{{ route('admin.shipping-config.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Shipping</a>
                                 </div>
                             </div>
                         </div>
@@ -117,9 +120,6 @@
                                  class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.categories.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Categories</a>
-                                    <a href="{{ route('admin.materials.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Materials</a>
-                                    <a href="{{ route('admin.shipping-config.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Shipping</a>
                                     <a href="{{ route('admin.shipping-tiers.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Shipping Tiers</a>
                                     <a href="{{ route('admin.countries.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Countries</a>
                                     <a href="{{ route('admin.regions.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">Regions</a>
@@ -324,6 +324,12 @@
                         <x-responsive-nav-link :href="route('admin.projects.index')" :active="request()->is('admin/projects*')">
                             Projects
                         </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->is('admin/categories*')">
+                            Categories
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('admin.materials.index')" :active="request()->is('admin/materials*')">
+                            Materials
+                        </x-responsive-nav-link>
                     </div>
                 </div>
 
@@ -350,6 +356,9 @@
                         </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('admin.order-statuses.index')" :active="request()->is('admin/order-statuses*')">
                             Order Statuses
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('admin.shipping-config.index')" :active="request()->is('admin/shipping-config*')">
+                            Shipping
                         </x-responsive-nav-link>
                     </div>
                 </div>
@@ -386,15 +395,6 @@
                         </button>
                     </div>
                     <div x-show="open" class="pl-4 space-y-1">
-                        <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->is('admin/categories*')">
-                            Categories
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('admin.materials.index')" :active="request()->is('admin/materials*')">
-                            Materials
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('admin.shipping-config.index')" :active="request()->is('admin/shipping-config*')">
-                            Shipping
-                        </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('admin.shipping-tiers.index')" :active="request()->is('admin/shipping-tiers*')">
                             Shipping Tiers
                         </x-responsive-nav-link>
