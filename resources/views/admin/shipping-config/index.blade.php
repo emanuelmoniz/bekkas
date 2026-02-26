@@ -12,7 +12,7 @@
             @method('PUT')
 
             <div>
-                <label for="free_shipping_over" class="block font-semibold mb-2">
+                <label for="free_shipping_over" class="block mb-2">
                     Free Shipping Over (€)
                 </label>
                 <input type="number" 
@@ -32,7 +32,7 @@
             </div>
 
             <div>
-                <label for="default_shipping_tier_id" class="block font-semibold mb-2">
+                <label for="default_shipping_tier_id" class="block mb-2">
                     Global Default Shipping Tier (Fallback)
                 </label>
                 <select id="default_shipping_tier_id" 
@@ -56,7 +56,7 @@
             </div>
 
             <div>
-                <label for="tracking_statuses" class="block font-semibold mb-2">
+                <label for="tracking_statuses" class="block mb-2">
                     Order Statuses for Tracking URL
                 </label>
                     @php
@@ -79,12 +79,12 @@
             </div>
 
             <div class="flex justify-end gap-3">
-                <a href="{{ route('admin.orders.index') }}" 
-                   class="bg-grey-medium hover:bg-grey-medium px-8 py-3 rounded-full uppercase">
+                <button type="button" onclick="window.location.href='{{ route('admin.orders.index') }}'"
+        class="bg-grey-medium hover:bg-grey-medium px-2 py-2 rounded uppercase text-sm">
                     Cancel
-                </a>
+                </button>
                 <button type="submit" 
-                        class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
+                        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                     Save Changes
                 </button>
             </div>

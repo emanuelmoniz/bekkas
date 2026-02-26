@@ -12,11 +12,11 @@
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block font-semibold mb-2">App Name</label>
+                    <label class="block mb-2">App Name</label>
                     <input name="app_name" value="{{ old('app_name', $c->app_name ?? config('app.name')) }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Default Language</label>
+                    <label class="block mb-2">Default Language</label>
                     <select name="default_locale" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                         @foreach(config('app.locales', []) as $code => $label)
                             <option value="{{ $code }}" @selected(old('default_locale', $c->default_locale ?? config('app.locale')) === $code)>{{ $label }} ({{ $code }})</option>
@@ -53,38 +53,38 @@
             <h3 class="font-semibold">Email</h3>
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block font-semibold mb-2">Admin e‑mail</label>
+                    <label class="block mb-2">Admin e‑mail</label>
                     <input name="mail_admin" value="{{ old('mail_admin', $c->mail_admin ?? config('mail.admin_address')) }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Contact e‑mail</label>
+                    <label class="block mb-2">Contact e‑mail</label>
                     <input name="mail_contact" value="{{ old('mail_contact', $c->mail_contact ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4 mt-4">
                 <div>
-                    <label class="block font-semibold mb-2">SMTP host</label>
+                    <label class="block mb-2">SMTP host</label>
                     <input name="smtp_server_host" value="{{ old('smtp_server_host', $c->smtp_server_host ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">SMTP port</label>
+                    <label class="block mb-2">SMTP port</label>
                     <input name="smtp_server_port" value="{{ old('smtp_server_port', $c->smtp_server_port ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">SMTP username</label>
+                    <label class="block mb-2">SMTP username</label>
                     <input name="smtp_username" value="{{ old('smtp_username', $c->smtp_username ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">SMTP password</label>
+                    <label class="block mb-2">SMTP password</label>
                     <input name="smtp_password" value="{{ old('smtp_password', $c->smtp_password ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">SMTP encryption</label>
+                    <label class="block mb-2">SMTP encryption</label>
                     <input name="smtp_encryptation" value="{{ old('smtp_encryptation', $c->smtp_encryptation ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">SMTP mail from</label>
+                    <label class="block mb-2">SMTP mail from</label>
                     <input name="smtp_mail_from" value="{{ old('smtp_mail_from', $c->smtp_mail_from ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
             </div>
@@ -94,11 +94,11 @@
             <h3 class="font-semibold mt-6">Google recaptcha</h3>
             <div class="grid grid-cols-2 gap-4 mt-2">
                 <div>
-                    <label class="block font-semibold mb-2">Recaptcha site key</label>
+                    <label class="block mb-2">Recaptcha site key</label>
                     <input name="google_recaptcha_site_key" value="{{ old('google_recaptcha_site_key', $c->google_recaptcha_site_key ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Recaptcha secret key</label>
+                    <label class="block mb-2">Recaptcha secret key</label>
                     <input name="google_recaptcha_secret_key" value="{{ old('google_recaptcha_secret_key', $c->google_recaptcha_secret_key ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
             </div>
@@ -117,15 +117,15 @@
                 </label>
 
                 <div>
-                    <label class="block font-semibold mb-2">Client ID</label>
+                    <label class="block mb-2">Client ID</label>
                     <input name="google_client_id" value="{{ old('google_client_id', $c->google_client_id ?? config('services.google.client_id')) }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Client secret</label>
+                    <label class="block mb-2">Client secret</label>
                     <input name="google_client_secret" value="{{ old('google_client_secret', $c->google_client_secret ?? config('services.google.client_secret')) }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div class="col-span-2">
-                    <label class="block font-semibold mb-2">Redirect URL</label>
+                    <label class="block mb-2">Redirect URL</label>
                     <input name="google_redirect" value="{{ old('google_redirect', $c->google_redirect ?? config('services.google.redirect')) }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
 
@@ -137,19 +137,19 @@
                 </label>
 
                 <div>
-                    <label class="block font-semibold mb-2">Client ID</label>
+                    <label class="block mb-2">Client ID</label>
                     <input name="microsoft_client_id" value="{{ old('microsoft_client_id', $c->microsoft_client_id ?? config('services.microsoft.client_id')) }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Client secret</label>
+                    <label class="block mb-2">Client secret</label>
                     <input name="microsoft_client_secret" value="{{ old('microsoft_client_secret', $c->microsoft_client_secret ?? config('services.microsoft.client_secret')) }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Redirect URL</label>
+                    <label class="block mb-2">Redirect URL</label>
                     <input name="microsoft_redirect" value="{{ old('microsoft_redirect', $c->microsoft_redirect ?? config('services.microsoft.redirect')) }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Tenant</label>
+                    <label class="block mb-2">Tenant</label>
                     <input name="microsoft_tenant" value="{{ old('microsoft_tenant', $c->microsoft_tenant ?? config('services.microsoft.tenant')) }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
             </div>
@@ -159,47 +159,47 @@
             <h3 class="font-semibold">Easypay</h3>
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block font-semibold mb-2">Easypay API key</label>
+                    <label class="block mb-2">Easypay API key</label>
                     <input name="easypay_api_key" value="{{ old('easypay_api_key', $c->easypay_api_key ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Easypay ID</label>
+                    <label class="block mb-2">Easypay ID</label>
                     <input name="easypay_id" value="{{ old('easypay_id', $c->easypay_id ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Webhook secret</label>
+                    <label class="block mb-2">Webhook secret</label>
                     <input name="easypay_webhook_secret" value="{{ old('easypay_webhook_secret', $c->easypay_webhook_secret ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Webhook header</label>
+                    <label class="block mb-2">Webhook header</label>
                     <input name="easypay_webhook_header" value="{{ old('easypay_webhook_header', $c->easypay_webhook_header ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Webhook user</label>
+                    <label class="block mb-2">Webhook user</label>
                     <input name="easypay_webhook_user" value="{{ old('easypay_webhook_user', $c->easypay_webhook_user ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Webhook pass</label>
+                    <label class="block mb-2">Webhook pass</label>
                     <input name="easypay_webhook_pass" value="{{ old('easypay_webhook_pass', $c->easypay_webhook_pass ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Easypay URL</label>
+                    <label class="block mb-2">Easypay URL</label>
                     <input name="easypay_url_url" value="{{ old('easypay_url_url', $c->easypay_url_url ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Easypay SDK URL</label>
+                    <label class="block mb-2">Easypay SDK URL</label>
                     <input name="easypay_sdk_url" value="{{ old('easypay_sdk_url', $c->easypay_sdk_url ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div class="col-span-2">
-                    <label class="block font-semibold mb-2">Payment methods (comma separated)</label>
+                    <label class="block mb-2">Payment methods (comma separated)</label>
                     <input name="easypay_payment_methods" value="{{ old('easypay_payment_methods', $c->easypay_payment_methods ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Session TTL (seconds)</label>
+                    <label class="block mb-2">Session TTL (seconds)</label>
                     <input name="easypay_session_ttl" value="{{ old('easypay_session_ttl', $c->easypay_session_ttl ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm" type="number">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">MB TTL (seconds)</label>
+                    <label class="block mb-2">MB TTL (seconds)</label>
                     <input name="easypay_mb_ttl" value="{{ old('easypay_mb_ttl', $c->easypay_mb_ttl ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm" type="number">
                 </div>
             </div>
@@ -213,8 +213,8 @@
             @endif
 
             <div class="flex justify-end gap-3">
-                <a href="{{ route('admin.dashboard') }}" class="bg-grey-medium hover:bg-grey-medium px-8 py-3 rounded-full uppercase">Cancel</a>
-                <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">Save Changes</button>
+                <button type="button" onclick="window.location.href='{{ route('admin.dashboard') }}'" class="bg-grey-medium hover:bg-grey-medium px-2 py-2 rounded uppercase text-sm">Cancel</button>
+                <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">Save Changes</button>
             </div>
         </form>
     </div>

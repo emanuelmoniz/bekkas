@@ -51,10 +51,11 @@
 
             {{-- ACTIONS --}}
             <div class="bg-white p-6 rounded shadow flex justify-between">
-                <a href="{{ route('admin.categories.index') }}"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                <button type="button"
+                   onclick="window.location.href='{{ route('admin.categories.index') }}'"
+                   class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     Cancel
-                </a>
+                </button>
                 <x-primary-button>Update Category</x-primary-button>
             </div>
 

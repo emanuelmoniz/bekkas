@@ -5,10 +5,10 @@
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4 flex justify-end">
-            <a href="{{ route('admin.order-statuses.create') }}"
-               class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
+            <button type="submit" type="button" onclick="window.location.href='{{ route('admin.order-statuses.create') }}'"
+        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                 Create Order Status
-            </a>
+            </button>
         </div>
 
         <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
@@ -17,10 +17,10 @@
                        class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 <input type="text" name="code" value="{{ request('code') }}" placeholder="Code"
                        class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
-                <div class="flex gap-2">
-                    <a href="{{ route('admin.order-statuses.index') }}"
-                       class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">Reset</a>
-                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">Filter</button>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="window.location.href='{{ route('admin.order-statuses.index') }}'"
+        class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">Reset</button>
+                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">Filter</button>
                 </div>
             </div>
         </form>
@@ -45,17 +45,18 @@
                             </td>
                             <td class="px-4 py-2">{{ $status->sort_order }}</td>
                             <td class="px-4 py-2 text-right space-x-2">
-                                <a href="{{ route('admin.order-statuses.edit', $status) }}"
-                                   class="inline-flex items-center px-3 py-1 rounded bg-primary text-white text-sm">
+                                <button type="button"
+                                   onclick="window.location.href='{{ route('admin.order-statuses.edit', $status) }}'"
+                                   class="inline-flex items-center px-2 py-2 rounded bg-primary text-white text-sm uppercase">
                                     Edit
-                                </a>
+                                </button>
                                 <form action="{{ route('admin.order-statuses.destroy', $status) }}"
                                       method="POST"
                                       class="inline"
                                       onsubmit="return confirm('Are you sure?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="inline-flex items-center px-8 py-3 rounded-full uppercase bg-status-error/10 text-status-error text-sm">
+                                    <button type="submit" class="inline-flex items-center px-2 py-2 rounded uppercase bg-status-error/10 text-status-error text-sm">
                                         Delete
                                     </button>
                                 </form>

@@ -7,10 +7,10 @@
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4 flex justify-end">
-            <a href="{{ route('admin.shipping-tiers.create') }}"
-               class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
+            <button type="submit" type="button" onclick="window.location.href='{{ route('admin.shipping-tiers.create') }}'"
+        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                 New Shipping Tier
-            </a>
+            </button>
         </div>
 
         {{-- FILTERS --}}
@@ -52,12 +52,12 @@
                        class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
 
                 {{-- ACTIONS --}}
-                <div class="flex gap-2">
-                    <a href="{{ route('admin.shipping-tiers.index') }}"
-                       class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="window.location.href='{{ route('admin.shipping-tiers.index') }}'"
+        class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
                         Reset
-                    </a>
-                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
+                    </button>
+                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                         Filter
                     </button>
                 </div>
@@ -70,10 +70,9 @@
                 <thead class="bg-grey-light">
                     <tr>
                         <th class="px-4 py-2 text-left">Name</th>
-                        <th class="px-4 py-2 text-left">Weight From (g)</th>
-                        <th class="px-4 py-2 text-left">Weight To (g)</th>
+                        <th class="px-4 py-2 text-left">Weight (g)</th>
                         <th class="px-4 py-2 text-left">Cost (gross)</th>
-                        <th class="px-4 py-2 text-left">Shipping Days</th>
+                        <th class="px-4 py-2 text-left">Days</th>
                         <th class="px-4 py-2 text-left">Countries</th>
                         <th class="px-4 py-2 text-left">Regions</th>
                         <th class="px-4 py-2 text-left">Active</th>
@@ -87,8 +86,7 @@
                                 <a href="{{ route('admin.shipping-tiers.show', $tier) }}" class="text-accent-secondary hover:underline font-medium">{{ $tier->translation()?->name }}</a>
                                 <x-missing-locale-badge :model="$tier" />
                             </td>
-                            <td class="px-4 py-2">{{ $tier->weight_from }}</td>
-                            <td class="px-4 py-2">{{ $tier->weight_to }}</td>
+                            <td class="px-4 py-2">{{ $tier->weight_from }}-{{ $tier->weight_to }}</td>
                             <td class="px-4 py-2">
                                 {{ number_format($tier->cost_gross, 2) }} €
                             </td>
@@ -107,16 +105,17 @@
                                 @endif
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
-                                <a href="{{ route('admin.shipping-tiers.edit', $tier) }}"
-                                   class="inline-flex items-center px-3 py-1 rounded bg-primary text-white text-sm">
+                                <button type="button"
+                                   onclick="window.location.href='{{ route('admin.shipping-tiers.edit', $tier) }}'"
+                                   class="inline-flex items-center px-2 py-2 rounded bg-primary text-white text-sm uppercase">
                                     Edit
-                                </a>
+                                </button>
 
                                 <form method="POST"
                                       action="{{ route('admin.shipping-tiers.duplicate', $tier) }}"
                                       class="inline">
                                     @csrf
-                                    <button class="inline-flex items-center px-8 py-3 rounded-full uppercase bg-grey-light text-grey-dark text-sm">
+                                    <button class="inline-flex items-center px-2 py-2 rounded uppercase bg-grey-light text-grey-dark text-sm">
                                         Duplicate
                                     </button>
                                 </form>
@@ -127,7 +126,7 @@
                                       onsubmit="return confirm('Delete this tier?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="inline-flex items-center px-8 py-3 rounded-full uppercase bg-status-error/10 text-status-error text-sm">
+                                    <button class="inline-flex items-center px-2 py-2 rounded uppercase bg-status-error/10 text-status-error text-sm">
                                         Delete
                                     </button>
                                 </form>
@@ -135,7 +134,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9"
+                            <td colspan="8"
                                 class="px-4 py-6 text-center text-grey-medium">
                                 No shipping tiers found.
                             </td>

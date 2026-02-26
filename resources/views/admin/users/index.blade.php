@@ -9,10 +9,10 @@
 
         {{-- ACTION BAR --}}
         <div class="mb-4 flex justify-end">
-            <a href="{{ route('admin.users.create') }}"
-               class="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 rounded-full uppercase">
+            <button type="button" onclick="window.location.href='{{ route('admin.users.create') }}'"
+        class="inline-flex items-center bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                 New User
-            </a>
+            </button>
         </div>
 
         {{-- FILTERS --}}
@@ -48,12 +48,12 @@
                 </select>
 
                 {{-- ACTIONS --}}
-                <div class="flex gap-2">
-                    <a href="{{ route('admin.users.index') }}"
-                       class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="window.location.href='{{ route('admin.users.index') }}'"
+        class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
                         Reset
-                    </a>
-                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
+                    </button>
+                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                         Filter
                     </button>
                 </div>
@@ -92,10 +92,10 @@
                                 @endif
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
-                                <a href="{{ route('admin.users.edit', $user) }}"
-                                   class="inline-flex bg-primary text-white px-8 py-3 rounded-full uppercase text-sm">
+                                <button type="button" onclick="window.location.href='{{ route('admin.users.edit', $user) }}'"
+        class="inline-flex bg-primary text-white px-2 py-2 rounded uppercase text-sm">
                                     Edit
-                                </a>
+                                </button>
                             </td>
                         </tr>
                     @empty

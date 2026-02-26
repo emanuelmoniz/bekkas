@@ -33,7 +33,7 @@
                     <x-input-label for="value_{{ $locale }}">
                         {{ $label }} <span class="font-normal text-grey-dark">({{ $locale }})</span>
                         @if (! $rows->has($locale))
-                            <span class="ml-1 text-xs text-status-error font-normal">missing</span>
+                            <span class="ml-1 text-sm text-status-error font-normal">missing</span>
                         @endif
                     </x-input-label>
                     <textarea id="value_{{ $locale }}"
@@ -45,10 +45,11 @@
             @endforeach
 
             <div class="flex justify-between items-center pt-2">
-                <a href="{{ route('admin.static-translations.index') }}"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                <button type="button"
+                   onclick="window.location.href='{{ route('admin.static-translations.index') }}'"
+                   class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     ← Back
-                </a>
+                </button>
                 <x-primary-button>Save</x-primary-button>
             </div>
         </form>

@@ -5,10 +5,10 @@
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4 flex justify-end">
-            <a href="{{ route('admin.tickets.create') }}"
-               class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
+            <button type="submit" type="button" onclick="window.location.href='{{ route('admin.tickets.create') }}'"
+        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                 New Ticket
-            </a>
+            </button>
         </div>
 
         <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
@@ -31,12 +31,13 @@
                         </option>
                     @endforeach
                 </select>
-                <div class="text-right flex justify-end gap-2">
-                    <a href="{{ route('admin.tickets.index') }}"
-                    class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                <div class="flex justify-end gap-2">
+                    <button type="button"
+                    onclick="window.location.href='{{ route('admin.tickets.index') }}'"
+                    class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
                         Reset
-                    </a>
-                    <button type="submit" class="inline-flex items-center px-8 py-3 bg-primary rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary/90 transition ease-in-out duration-150">
+                    </button>
+                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                         Filter
                     </button>
                 </div>

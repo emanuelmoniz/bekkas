@@ -24,7 +24,7 @@
                        class="border rounded px-3 py-2">
 
                 <button type="submit"
-                        class="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 rounded-full uppercase">
+                        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                     Upload Photos
                 </button>
             </form>
@@ -36,7 +36,7 @@
                              class="h-32 w-full object-cover rounded mb-2">
 
                         @if ($photo->is_primary)
-                            <div class="text-status-success font-semibold text-sm mb-1">
+                            <div class="text-status-success text-sm mb-1">
                                 Primary
                             </div>
                         @else

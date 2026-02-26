@@ -15,7 +15,7 @@
             <div class="bg-white p-6 rounded shadow mb-6 space-y-4">
 
                 <div>
-                    <label class="block font-semibold mb-1">User *</label>
+                    <label class="block mb-1">User *</label>
                     <select name="user_id" class="w-full border rounded px-3 py-2" required>
                         <option value="">Select a user</option>
                         @foreach ($users as $u)
@@ -25,7 +25,7 @@
                 </div>
 
                 <div>
-                    <label class="block font-semibold mb-1">Category *</label>
+                    <label class="block mb-1">Category *</label>
                     <select name="ticket_category_id" class="w-full border rounded px-3 py-2" required>
                         <option value="">Select a category</option>
                         @foreach ($categories as $category)
@@ -37,7 +37,7 @@
                 </div>
 
                 <div>
-                    <label class="block font-semibold mb-1">Title *</label>
+                    <label class="block mb-1">Title *</label>
                     <input type="text"
                            name="title"
                            class="w-full border rounded px-3 py-2"
@@ -45,7 +45,7 @@
                 </div>
 
                 <div>
-                    <label class="block font-semibold mb-1">Message *</label>
+                    <label class="block mb-1">Message *</label>
                     <textarea name="message"
                               rows="5"
                               class="w-full border rounded px-3 py-2"
@@ -53,14 +53,14 @@
                 </div>
 
                 <div>
-                    <label class="block font-semibold mb-1">Due Date</label>
+                    <label class="block mb-1">Due Date</label>
                     <input type="date"
                            name="due_date"
                            class="border rounded px-3 py-2">
                 </div>
 
                 <div>
-                    <label class="block font-semibold mb-1">Files</label>
+                    <label class="block mb-1">Files</label>
                     <input type="file"
                            name="files[]"
                            multiple>
@@ -68,11 +68,11 @@
             </div>
 
             <div class="flex justify-end gap-3">
-                <a href="{{ route('admin.tickets.index') }}"
-                   class="bg-grey-medium px-8 py-3 rounded-full uppercase">
+                <button type="button" onclick="window.location.href='{{ route('admin.tickets.index') }}'"
+        class="bg-grey-medium px-2 py-2 rounded uppercase text-sm">
                     Cancel
-                </a>
-                <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
+                </button>
+                <button class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                     Open Ticket
                 </button>
             </div>

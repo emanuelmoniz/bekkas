@@ -9,22 +9,22 @@
         <div class="bg-white shadow rounded p-6">
             <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Country</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Country</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $region->country?->name }}</p>
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Postal Code From</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Postal Code From</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $region->postal_code_from }}</p>
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Postal Code To</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Postal Code To</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $region->postal_code_to }}</p>
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Active</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Active</p>
                     <p class="text-sm text-grey-dark mt-1">
                         @if($region->is_active)
                             <span class="text-status-success font-bold">&#10003;</span>
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="md:col-span-2">
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Name</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Name</p>
                     @foreach ($locales as $localeCode => $localeName)
                         @php $t = $region->translations->where('locale', $localeCode)->first(); @endphp
                         <p class="text-sm text-grey-dark mt-1">
@@ -48,15 +48,17 @@
         </div>
 
         <div class="mt-6 flex justify-between">
-            <a href="{{ route('admin.regions.index') }}"
-               class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+            <button type="button"
+               onclick="window.location.href='{{ route('admin.regions.index') }}'"
+               class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                 Back
-            </a>
+            </button>
 
-            <a href="{{ route('admin.regions.edit', $region) }}"
-               class="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary/90 transition ease-in-out duration-150">
+            <button type="button"
+               onclick="window.location.href='{{ route('admin.regions.edit', $region) }}'"
+               class="inline-flex items-center px-2 py-2 bg-primary border border-transparent rounded text-sm text-white uppercase hover:bg-primary/90 transition ease-in-out duration-150">
                 Edit Region
-            </a>
+            </button>
         </div>
     </div>
 </x-app-layout>

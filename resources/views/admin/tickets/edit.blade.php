@@ -15,7 +15,7 @@
             {{-- OWNER --}}
             @if ($canChangeOwner)
                 <div>
-                    <label class="block font-semibold mb-1">User *</label>
+                    <label class="block mb-1">User *</label>
                     <select name="user_id"
                             class="w-full border rounded px-3 py-2">
                         @foreach ($users as $user)
@@ -28,7 +28,7 @@
                 </div>
             @else
                 <div>
-                    <label class="block font-semibold mb-1">User</label>
+                    <label class="block mb-1">User</label>
                     <input type="text"
                            class="w-full border rounded px-3 py-2 bg-grey-light"
                            value="{{ $ticket->owner?->name }}"
@@ -38,7 +38,7 @@
 
             {{-- CATEGORY --}}
             <div>
-                <label class="block font-semibold mb-1">Category *</label>
+                <label class="block mb-1">Category *</label>
                 <select name="ticket_category_id"
                         class="w-full border rounded px-3 py-2">
                     @foreach ($categories as $cat)
@@ -52,7 +52,7 @@
 
             {{-- DUE DATE --}}
             <div>
-                <label class="block font-semibold mb-1">Due Date</label>
+                <label class="block mb-1">Due Date</label>
                 <input type="date"
                        name="due_date"
                        value="{{ optional($ticket->due_date)->format('Y-m-d') }}"
@@ -60,12 +60,12 @@
             </div>
 
             <div class="flex justify-between">
-                <a href="{{ route('admin.tickets.index') }}"
-                   class="bg-grey-medium px-8 py-3 rounded-full uppercase">
+                <button type="button" onclick="window.location.href='{{ route('admin.tickets.index') }}'"
+        class="bg-grey-medium px-2 py-2 rounded uppercase text-sm">
                     Cancel
-                </a>
+                </button>
 
-                <button class="bg-primary text-white px-8 py-3 rounded-full uppercase">
+                <button class="bg-primary text-white px-2 py-2 rounded uppercase text-sm">
                     Save Changes
                 </button>
             </div>

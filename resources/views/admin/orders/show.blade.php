@@ -13,12 +13,12 @@
         <div class="bg-white shadow rounded p-6">
             <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Date</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Date</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $order->created_at->format('d/m/Y H:i') }}</p>
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">{{ t('orders.status') ?: 'Status' }}</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">{{ t('orders.status') ?: 'Status' }}</p>
                     <p class="text-sm text-grey-dark mt-1">
                         @php $currentStatus = $statuses->firstWhere('code', $order->status); @endphp
                         {{ optional($currentStatus?->translation())->name ?? $order->status }}
@@ -26,7 +26,7 @@
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">{{ t('orders.paid') ?: 'Paid' }}</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">{{ t('orders.paid') ?: 'Paid' }}</p>
                     <p class="text-sm text-grey-dark mt-1">
                         @if($order->is_paid)
                             <span class="text-status-success font-bold">&#10003;</span>
@@ -37,7 +37,7 @@
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">{{ t('orders.refunded') ?: 'Refunded' }}</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">{{ t('orders.refunded') ?: 'Refunded' }}</p>
                     <p class="text-sm text-grey-dark mt-1">
                         @if($order->is_refunded)
                             <span class="text-status-success font-bold">&#10003;</span>
@@ -48,37 +48,37 @@
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">User</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">User</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $order->user->name }}</p>
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Email</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Email</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $order->user->email }}</p>
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">NIF</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">NIF</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $order->address_nif }}</p>
                 </div>
 
                 @if($order->shipping_tier_name)
                     <div>
-                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Shipping Tier</p>
+                        <p class="text-xs text-grey-dark uppercase tracking-widest">Shipping Tier</p>
                         <p class="text-sm text-grey-dark mt-1">{{ $order->shipping_tier_name }}</p>
                     </div>
                 @endif
 
                 @if($order->expected_delivery_date)
                     <div>
-                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Expected Delivery</p>
+                        <p class="text-xs text-grey-dark uppercase tracking-widest">Expected Delivery</p>
                         <p class="text-sm text-grey-dark mt-1">{{ $order->expected_delivery_date->format('d/m/Y') }}</p>
                     </div>
                 @endif
 
                 @if ($order->tracking_number)
                     <div>
-                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Tracking</p>
+                        <p class="text-xs text-grey-dark uppercase tracking-widest">Tracking</p>
                         <p class="text-sm text-grey-dark mt-1">{{ $order->tracking_number }}</p>
                     </div>
                 @endif
@@ -86,15 +86,15 @@
 
             @if($order->easypayPayload)
                 <div class="mt-4 flex flex-wrap gap-2">
-                    <a href="{{ route('admin.orders.payloads.show', $order->easypayPayload) }}" class="inline-block bg-white border border-grey-medium px-8 py-3 rounded-full uppercase text-sm">Payload</a>
-                    <a href="{{ route('admin.orders.checkouts.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border border-grey-medium px-8 py-3 rounded-full uppercase text-sm">Checkouts</a>
-                    <a href="{{ route('admin.orders.payments.index', ['order_number' => $order->order_number]) }}" class="inline-block bg-white border border-grey-medium px-8 py-3 rounded-full uppercase text-sm">Payments</a>
+                    <button type="button" onclick="window.location.href='{{ route('admin.orders.payloads.show', $order->easypayPayload) }}'" class="inline-block bg-white border border-grey-medium px-2 py-2 rounded uppercase text-sm">Payload</button>
+                    <button type="button" onclick="window.location.href='{{ route('admin.orders.checkouts.index', ['order_number' => $order->order_number]) }}'" class="inline-block bg-white border border-grey-medium px-2 py-2 rounded uppercase text-sm">Checkouts</button>
+                    <button type="button" onclick="window.location.href='{{ route('admin.orders.payments.index', ['order_number' => $order->order_number]) }}'" class="inline-block bg-white border border-grey-medium px-2 py-2 rounded uppercase text-sm">Payments</button>
                 </div>
             @else
                 <div class="mt-4">
                     <form method="POST" action="{{ route('admin.orders.payloads.store', $order) }}" onsubmit="return confirm('Create Easypay payload for this order?');" class="inline-block">
                         @csrf
-                        <button class="bg-status-success/10 border-green-200 text-status-success border px-8 py-3 rounded-full uppercase text-sm">Create payload</button>
+                        <button class="bg-status-success/10 border-green-200 text-status-success border px-2 py-2 rounded uppercase text-sm">Create payload</button>
                     </form>
                 </div>
             @endif
@@ -104,29 +104,29 @@
              SHIPPING ADDRESS
         ======================= --}}
         <div class="bg-white shadow rounded p-6">
-            <h3 class="text-xs text-grey-dark font-medium uppercase tracking-widest mb-4">Shipping Address</h3>
+            <h3 class="text-xs text-grey-dark uppercase mb-4">Shipping Address</h3>
             <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="md:col-span-2">
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Name</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Name</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $order->address_title }}</p>
                 </div>
                 <div class="md:col-span-2">
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Address</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Address</p>
                     <p class="text-sm text-grey-dark mt-1">
                         {{ $order->address_line_1 }}
                         @if($order->address_line_2)<br>{{ $order->address_line_2 }}@endif
                     </p>
                 </div>
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Postal Code / City</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Postal Code / City</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $order->address_postal_code }} {{ $order->address_city }}</p>
                 </div>
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Country</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Country</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $order->address_country }}</p>
                 </div>
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">NIF</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">NIF</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $order->address_nif }}</p>
                 </div>
             </dl>
@@ -136,7 +136,7 @@
              PRODUCTS
         ======================= --}}
         <div class="bg-white shadow rounded p-6">
-            <h3 class="text-xs text-grey-dark font-medium uppercase tracking-widest mb-4">Products</h3>
+            <h3 class="text-xs text-grey-dark uppercase mb-4">Products</h3>
 
             <table class="min-w-full border">
                 <thead class="bg-grey-light">
@@ -183,7 +183,7 @@
             @endif
 
             <hr class="border-grey-medium">
-            <p class="text-sm font-semibold text-grey-dark">
+            <p class="text-sm text-grey-dark">
                 Total: {{ number_format($order->total_gross, 2) }} €
             </p>
         </div>
@@ -197,7 +197,7 @@
             @csrf
             @method('PATCH')
 
-            <h3 class="text-xs text-grey-dark font-medium uppercase tracking-widest">Admin Actions</h3>
+            <h3 class="text-xs text-grey-dark uppercase tracking-widest">Admin Actions</h3>
 
             <div>
                 <x-input-label for="status" value="Status" />
@@ -241,10 +241,11 @@
             </div>
 
             <div class="pt-2 flex justify-between">
-                <a href="{{ route('admin.orders.index') }}"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                <button type="button"
+                   onclick="window.location.href='{{ route('admin.orders.index') }}'"
+                   class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     Back
-                </a>
+                </button>
                 <x-primary-button>
                     Save changes
                 </x-primary-button>

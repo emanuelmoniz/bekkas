@@ -13,7 +13,7 @@
             @method('PATCH')
 
             <div class="bg-white p-6 rounded shadow space-y-4">
-                <h3 class="text-lg font-semibold border-b pb-2">User Information</h3>
+                <h3 class="text-lg border-b pb-2">User Information</h3>
 
                 {{-- NAME --}}
                 <div>
@@ -63,10 +63,11 @@
                 </div>
 
                 <div class="flex justify-between">
-                    <a href="{{ route('admin.users.index') }}"
-                       class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                    <button type="button"
+                       onclick="window.location.href='{{ route('admin.users.index') }}'"
+                       class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                         Cancel
-                    </a>
+                    </button>
                     <x-primary-button>Update User</x-primary-button>
                 </div>
             </div>
@@ -74,7 +75,7 @@
 
         {{-- ADDRESSES --}}
         <div class="bg-white p-6 rounded shadow mb-6">
-            <h3 class="text-lg font-semibold border-b pb-2 mb-4">Addresses</h3>
+            <h3 class="text-lg border-b pb-2 mb-4">Addresses</h3>
 
             @foreach ($user->addresses as $address)
                 <form method="POST" action="{{ route('admin.users.addresses.update', [$user, $address]) }}" class="border rounded p-4 mb-4">
@@ -238,10 +239,11 @@
 
         {{-- BACK BUTTON --}}
         <div class="flex justify-start">
-            <a href="{{ route('admin.users.index') }}"
-               class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+            <button type="button"
+               onclick="window.location.href='{{ route('admin.users.index') }}'"
+               class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                 Back to Users
-            </a>
+            </button>
         </div>
 
     </div>

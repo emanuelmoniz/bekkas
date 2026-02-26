@@ -69,7 +69,7 @@
                    value="{{ old('price', $product->price ?? '') }}"
                    required
                    class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
-            <p class="option-override-notice text-xs text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type price</p>
+            <p class="option-override-notice text-sm text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type price</p>
             <x-input-error :messages="$errors->get('price')" class="mt-2" />
         </div>
 
@@ -80,7 +80,7 @@
                    name="promo_price"
                    value="{{ old('promo_price', $product->promo_price ?? '') }}"
                    class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
-            <p class="option-override-notice text-xs text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type price</p>
+            <p class="option-override-notice text-sm text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type price</p>
         </div>
 
         {{-- ✅ TAX SELECTOR --}}
@@ -199,7 +199,7 @@
     </div>
 
     <button type="button" id="add-option-type"
-            class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-8 py-3 rounded-full uppercase">
+            class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
         + Add option type
     </button>
 </div>
@@ -217,7 +217,7 @@
                min="0"
                required
                class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
-        <p class="option-override-notice text-xs text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type stock</p>
+        <p class="option-override-notice text-sm text-amber-600 mt-1" style="display:none">&#9888; Overridden by option type stock</p>
         <x-input-error :messages="$errors->get('stock')" class="mt-2" />
         </div>
     </div>
@@ -310,10 +310,11 @@
 
     {{-- SUBMIT --}}
     <div class="pt-4 flex justify-between">
-        <a href="{{ route('admin.products.index') }}"
-           class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+        <button type="button"
+           onclick="window.location.href='{{ route('admin.products.index') }}'"
+           class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
             Cancel
-        </a>
+        </button>
         <x-primary-button>{{ $mode === 'edit' ? 'Update Product' : 'Create Product' }}</x-primary-button>
     </div>
 </form>
@@ -325,7 +326,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             @foreach (\App\Models\Locale::activeCodes() as $locale)
                 <div>
-                    <label class="block font-medium mb-1">Name ({{ $locale }})</label>
+                    <label class="block mb-1">Name ({{ $locale }})</label>
                     <input type="text"
                            name="option_types[__INDEX__][name][{{ $locale }}]"
                            class="w-full border rounded px-3 py-2">
@@ -335,7 +336,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             @foreach (\App\Models\Locale::activeCodes() as $locale)
                 <div>
-                    <label class="block font-medium mb-1">Description ({{ $locale }})</label>
+                    <label class="block mb-1">Description ({{ $locale }})</label>
                     <textarea name="option_types[__INDEX__][description][{{ $locale }}]" class="w-full border rounded px-3 py-2"></textarea>
                 </div>
             @endforeach
@@ -357,7 +358,7 @@
             </label>
         </div>
         <div class="options-list mt-4 space-y-2"></div>
-        <button type="button" class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-8 py-3 rounded-full uppercase add-option">
+        <button type="button" class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm add-option">
             + Add option
         </button>
     </div>
@@ -369,7 +370,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             @foreach (\App\Models\Locale::activeCodes() as $locale)
                 <div>
-                    <label class="block font-medium mb-1">Option Name ({{ $locale }})</label>
+                    <label class="block mb-1">Option Name ({{ $locale }})</label>
                     <input type="text" name="option_types[__INDEX__][options][__OPT_INDEX__][name][{{ $locale }}]" class="w-full border rounded px-3 py-2">
                 </div>
             @endforeach
@@ -377,7 +378,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
             @foreach (\App\Models\Locale::activeCodes() as $locale)
                 <div>
-                    <label class="block font-medium mb-1">Description ({{ $locale }})</label>
+                    <label class="block mb-1">Description ({{ $locale }})</label>
                     <textarea name="option_types[__INDEX__][options][__OPT_INDEX__][description][{{ $locale }}]" class="w-full border rounded px-3 py-2"></textarea>
                 </div>
             @endforeach
@@ -387,20 +388,20 @@
             Active
         </label>
         <div class="mt-2">
-            <label class="block font-medium mb-1">Stock</label>
+            <label class="block mb-1">Stock</label>
             <input type="number" min="0" name="option_types[__INDEX__][options][__OPT_INDEX__][stock]"
                    value="0" placeholder="0"
                    class="w-full border rounded px-3 py-2">
         </div>
         <div class="option-price-fields mt-2 grid grid-cols-1 md:grid-cols-2 gap-4" style="display:none">
             <div>
-                <label class="block font-medium mb-1">Price (gross)</label>
+                <label class="block mb-1">Price (gross)</label>
                 <input type="number" step="0.01" min="0"
                        name="option_types[__INDEX__][options][__OPT_INDEX__][price]"
                        class="w-full border rounded px-3 py-2">
             </div>
             <div>
-                <label class="block font-medium mb-1">Promo Price</label>
+                <label class="block mb-1">Promo Price</label>
                 <input type="number" step="0.01" min="0"
                        name="option_types[__INDEX__][options][__OPT_INDEX__][promo_price]"
                        class="w-full border rounded px-3 py-2">

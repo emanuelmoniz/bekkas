@@ -6,24 +6,26 @@
             </h2>
 
             <div class="flex gap-2">
-                <a href="{{ route('admin.tickets.index') }}"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                <button type="button"
+                   onclick="window.location.href='{{ route('admin.tickets.index') }}'"
+                   class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     Back to tickets
-                </a>
+                </button>
 
                 <form method="POST"
                       action="{{ route('admin.tickets.mark-unread', $ticket) }}">
                     @csrf
                     <button type="submit"
-                            class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-sm">
+                            class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                         Mark as unread
                     </button>
                 </form>
 
-                <a href="{{ route('admin.tickets.edit', $ticket) }}"
-                   class="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary/90 transition ease-in-out duration-150">
+                <button type="button"
+                   onclick="window.location.href='{{ route('admin.tickets.edit', $ticket) }}'"
+                   class="inline-flex items-center px-2 py-2 bg-primary border border-transparent rounded text-sm text-white uppercase hover:bg-primary/90 transition ease-in-out duration-150">
                     Admin Edit
-                </a>
+                </button>
             </div>
         </div>
     </x-slot>
@@ -34,40 +36,40 @@
         <div class="bg-white shadow rounded p-6">
             <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Ticket ID</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Ticket ID</p>
                     <p class="text-sm text-grey-dark mt-1 font-mono">{{ $ticket->ticket_number ?? $ticket->uuid }}</p>
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">User</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">User</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $ticket->owner?->name ?? '—' }}</p>
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Category</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Category</p>
                     <p class="text-sm text-grey-dark mt-1">{{ optional($ticket->category?->translation())->name ?? '—' }}</p>
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Status</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Status</p>
                     <p class="text-sm text-grey-dark mt-1">{{ ucfirst($ticket->status) }}</p>
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Opened</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Opened</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $ticket->opened_at }}</p>
                 </div>
 
                 @if ($ticket->due_date)
                     <div>
-                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Due Date</p>
+                        <p class="text-xs text-grey-dark uppercase tracking-widest">Due Date</p>
                         <p class="text-sm text-grey-dark mt-1">{{ $ticket->due_date->format('Y-m-d') }}</p>
                     </div>
                 @endif
 
                 @if ($ticket->closed_at)
                     <div>
-                        <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Closed</p>
+                        <p class="text-xs text-grey-dark uppercase tracking-widest">Closed</p>
                         <p class="text-sm text-grey-dark mt-1">{{ $ticket->closed_at }}</p>
                     </div>
                 @endif
@@ -79,22 +81,22 @@
             @if ($ticket->status === 'open')
                 <form method="POST" action="{{ route('tickets.close', $ticket) }}">
                     @csrf
-                    <label class="block font-semibold mb-1">Close reason *</label>
+                    <label class="block mb-1">Close reason *</label>
                     <textarea name="reason"
                               class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm mb-3"
                               required></textarea>
-                    <button class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-8 py-3 rounded-full uppercase">
+                    <button class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-2 py-2 rounded uppercase text-sm">
                         Close Ticket
                     </button>
                 </form>
             @else
                 <form method="POST" action="{{ route('tickets.reopen', $ticket) }}">
                     @csrf
-                    <label class="block font-semibold mb-1">Reopen reason *</label>
+                    <label class="block mb-1">Reopen reason *</label>
                     <textarea name="reason"
                               class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm mb-3"
                               required></textarea>
-                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
+                    <button class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                         Reopen Ticket
                     </button>
                 </form>
@@ -146,7 +148,7 @@
                 <input type="file" name="files[]" multiple>
 
                 <div class="flex justify-end">
-                    <button class="bg-primary text-white px-8 py-3 rounded-full uppercase">
+                    <button class="bg-primary text-white px-2 py-2 rounded uppercase text-sm">
                         Send
                     </button>
                 </div>

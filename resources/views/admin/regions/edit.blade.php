@@ -66,7 +66,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-2">Default Shipping Tier</label>
+                <label class="block text-sm mb-2">Default Shipping Tier</label>
                 <select name="default_shipping_tier_id" class="w-full border rounded px-3 py-2">
                     <option value="">— No Default (use global) —</option>
                     @foreach($shippingTiers as $tier)
@@ -90,12 +90,12 @@
             </label>
 
             <div class="flex justify-between">
-                <a href="{{ route('admin.regions.index') }}"
-                   class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
+                <button type="button" onclick="window.location.href='{{ route('admin.regions.index') }}'"
+        class="bg-grey-medium hover:bg-grey-dark text-white px-2 py-2 rounded uppercase text-sm">
                     Cancel
-                </a>
+                </button>
                 <button type="submit"
-                        class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
+                        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                     Update
                 </button>
             </div>

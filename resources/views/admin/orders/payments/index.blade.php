@@ -17,12 +17,12 @@
                 <input type="date" name="to_paid_date" placeholder="Paid to date"
                        value="{{ request('to_paid_date') }}"
                        class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
-                <div class="text-right flex justify-end gap-2">
-                    <a href="{{ route('admin.orders.payments.index') }}" 
-                    class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="window.location.href='{{ route('admin.orders.payments.index') }}'"
+        class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
                         Reset
-                    </a>
-                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
+                    </button>
+                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                         Filter
                     </button>
                 </div>

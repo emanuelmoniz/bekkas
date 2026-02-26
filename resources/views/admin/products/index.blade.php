@@ -9,10 +9,10 @@
 
         {{-- ACTION BAR --}}
         <div class="mb-4 flex justify-end">
-            <a href="{{ route('admin.products.create') }}"
-               class="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 rounded-full uppercase">
+            <button type="submit" type="button" onclick="window.location.href='{{ route('admin.products.create') }}'"
+        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                 New Product
-            </a>
+            </button>
         </div>
 
         {{-- FILTERS --}}
@@ -63,12 +63,13 @@
                 @endforeach
 
                 {{-- ACTIONS --}}
-                <div class="flex gap-2">
-                    <a href="{{ route('admin.products.index') }}"
-                       class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                <div class="flex justify-end gap-2">
+                    <button type="button"
+                       onclick="window.location.href='{{ route('admin.products.index') }}'"
+                       class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
                         Reset
-                    </a>
-                    <button type="submit" class="inline-flex items-center px-8 py-3 bg-primary rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary/90 transition ease-in-out duration-150">
+                    </button>
+                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                         Filter
                     </button>
                 </div>
@@ -100,17 +101,17 @@
                                 {{ $product->stock }}
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
-                                <a href="{{ route('admin.products.edit', $product) }}"
-                                   class="inline-flex bg-primary text-white px-8 py-3 rounded-full uppercase text-sm">
+                                <button type="submit" type="button" onclick="window.location.href='{{ route('admin.products.edit', $product) }}'"
+        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                                     Edit
-                                </a>
+                                </button>
                                 <form method="POST"
                                       action="{{ route('admin.products.destroy', $product) }}"
                                       class="inline">
                                     @csrf
                                     @method('DELETE')
                                     <button onclick="return confirm('Delete this product?')"
-                                            class="bg-grey-light text-grey-dark px-8 py-3 rounded-full uppercase text-sm">
+                                            class="bg-grey-light text-grey-dark px-2 py-2 rounded uppercase text-sm">
                                         Delete
                                     </button>
                                 </form>

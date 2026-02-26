@@ -13,7 +13,7 @@
 
             @foreach ($locales as $localeCode => $localeName)
             <div>
-                <label class="block font-medium text-sm text-grey-dark">Name ({{ $localeName }}) <span class="text-status-error">*</span></label>
+                <label class="block text-sm text-grey-dark">Name ({{ $localeName }}) <span class="text-status-error">*</span></label>
                 <input type="text"
                        name="translations[{{ $localeCode }}]"
                        value="{{ old("translations.{$localeCode}") }}"
@@ -41,10 +41,11 @@
             </label>
 
             <div class="flex justify-between">
-                <a href="{{ route('admin.countries.index') }}"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                <button type="button"
+                   onclick="window.location.href='{{ route('admin.countries.index') }}'"
+                   class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                     Cancel
-                </a>
+                </button>
                 <x-primary-button>Save</x-primary-button>
             </div>
         </form>

@@ -9,21 +9,21 @@
 
         {{-- ACTION BAR --}}
         <div class="mb-4 flex justify-end">
-            <a href="{{ route('admin.materials.create') }}"
-               class="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 rounded-full uppercase">
+            <button type="button" onclick="window.location.href='{{ route('admin.materials.create') }}'"
+        class="inline-flex items-center bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                 New Material
-            </a>
+            </button>
         </div>
 
         {{-- FILTERS --}}
         <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
-            <div class="flex flex-wrap gap-4">
+            <div class="flex items-center gap-4">
                 <input type="text" name="name" value="{{ request('name') }}" placeholder="Name"
-                       class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
-                <div class="flex gap-2 ml-auto">
-                    <a href="{{ route('admin.materials.index') }}"
-                       class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">Reset</a>
-                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">Filter</button>
+                       class="flex-1 border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+                <div class="flex gap-2">
+                    <button type="button" onclick="window.location.href='{{ route('admin.materials.index') }}'"
+        class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">Reset</button>
+                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">Filter</button>
                 </div>
             </div>
         </form>
@@ -46,10 +46,10 @@
                             </td>
 
                             <td class="px-4 py-2 text-right space-x-2">
-                                <a href="{{ route('admin.materials.edit', $material) }}"
-                                   class="inline-flex bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-sm">
+                                <button type="button" onclick="window.location.href='{{ route('admin.materials.edit', $material) }}'"
+        class="inline-flex bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
                                     Edit
-                                </a>
+                                </button>
 
                                 <form method="POST"
                                       action="{{ route('admin.materials.destroy', $material) }}"
@@ -59,7 +59,7 @@
 
                                     <button type="submit"
                                             onclick="return confirm('Delete this material?')"
-                                            class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-8 py-3 rounded-full uppercase text-sm">
+                                            class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-2 py-2 rounded uppercase text-sm">
                                         Delete
                                     </button>
                                 </form>

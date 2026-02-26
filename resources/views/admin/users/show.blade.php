@@ -9,26 +9,26 @@
 
         {{-- USER INFO --}}
         <div class="bg-white shadow rounded p-6 mb-6">
-            <h3 class="text-xs text-grey-dark font-medium uppercase tracking-widest mb-4">User Information</h3>
+            <h3 class="text-xs text-grey-dark uppercase mb-4">User Information</h3>
 
             <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Name</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Name</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $user->name }}</p>
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Email</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Email</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $user->email }}</p>
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Phone</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Phone</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $user->phone ?? '-' }}</p>
                 </div>
 
                 <div>
-                    <p class="text-xs text-grey-dark font-medium uppercase tracking-widest">Active</p>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Active</p>
                     <p class="text-sm text-grey-dark mt-1">
                         @if($user->is_active)
                             <span class="text-status-success font-bold">&#10003;</span>
@@ -42,7 +42,7 @@
 
         {{-- ADDRESSES --}}
         <div class="bg-white shadow rounded p-6 mb-6">
-            <h3 class="text-xs text-grey-dark font-medium uppercase tracking-widest mb-4">Addresses</h3>
+            <h3 class="text-xs text-grey-dark uppercase mb-4">Addresses</h3>
 
             @forelse ($user->addresses as $address)
                 <div class="border border-grey-medium rounded p-4 mb-3">
@@ -62,7 +62,7 @@
                         <p class="text-sm text-grey-dark">Phone: {{ $address->phone }}</p>
                     @endif
                     @if($address->is_default)
-                        <span class="inline-block mt-2 px-2 py-1 bg-grey-light text-grey-dark text-xs rounded">Default</span>
+                        <span class="inline-block mt-2 px-2 py-1 bg-grey-light text-grey-dark text-sm rounded">Default</span>
                     @endif
                 </div>
             @empty
@@ -72,15 +72,17 @@
 
         {{-- ACTIONS --}}
         <div class="flex justify-between mt-6">
-            <a href="{{ route('admin.users.index') }}"
-               class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+            <button type="button"
+               onclick="window.location.href='{{ route('admin.users.index') }}'"
+               class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
                 Back
-            </a>
+            </button>
 
-            <a href="{{ route('admin.users.edit', $user) }}"
-               class="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary/90 transition ease-in-out duration-150">
+            <button type="button"
+               onclick="window.location.href='{{ route('admin.users.edit', $user) }}'"
+               class="inline-flex items-center px-2 py-2 bg-primary border border-transparent rounded text-sm text-white uppercase hover:bg-primary/90 transition ease-in-out duration-150">
                 Edit User
-            </a>
+            </button>
         </div>
 
     </div>

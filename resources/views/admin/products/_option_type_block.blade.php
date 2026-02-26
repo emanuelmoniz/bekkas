@@ -4,7 +4,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
-                <label class="block font-medium mb-1">Name ({{ $locale }})</label>
+                <label class="block mb-1">Name ({{ $locale }})</label>
                 <input type="text"
                        name="option_types[{{ $index }}][name][{{ $locale }}]"
                        value="{{ old("option_types.$index.name.$locale", $data['name'][$locale] ?? '') }}"
@@ -16,7 +16,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
-                <label class="block font-medium mb-1">Description ({{ $locale }})</label>
+                <label class="block mb-1">Description ({{ $locale }})</label>
                 <textarea name="option_types[{{ $index }}][description][{{ $locale }}]"
                           class="w-full border rounded px-3 py-2">{{ old("option_types.$index.description.$locale", $data['description'][$locale] ?? '') }}</textarea>
             </div>
@@ -58,7 +58,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     @foreach (\App\Models\Locale::activeCodes() as $locale)
                         <div>
-                            <label class="block font-medium mb-1">Option Name ({{ $locale }})</label>
+                            <label class="block mb-1">Option Name ({{ $locale }})</label>
                             <input type="text"
                                    name="option_types[{{ $index }}][options][{{ $j }}][name][{{ $locale }}]"
                                    value="{{ old("option_types.$index.options.$j.name.$locale", $opt['name'][$locale] ?? '') }}"
@@ -70,7 +70,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                     @foreach (\App\Models\Locale::activeCodes() as $locale)
                         <div>
-                            <label class="block font-medium mb-1">Description ({{ $locale }})</label>
+                            <label class="block mb-1">Description ({{ $locale }})</label>
                             <textarea name="option_types[{{ $index }}][options][{{ $j }}][description][{{ $locale }}]"
                                       class="w-full border rounded px-3 py-2">{{ old("option_types.$index.options.$j.description.$locale", $opt['description'][$locale] ?? '') }}</textarea>
                         </div>
@@ -84,7 +84,7 @@
                 </label>
 
                 <div class="mt-2">
-                    <label class="block font-medium mb-1">Stock</label>
+                    <label class="block mb-1">Stock</label>
                     <input type="number" min="0"
                            name="option_types[{{ $index }}][options][{{ $j }}][stock]"
                            value="{{ old("option_types.$index.options.$j.stock", $opt['stock'] ?? 0) }}"
@@ -94,14 +94,14 @@
                 <div class="option-price-fields mt-2 grid grid-cols-1 md:grid-cols-2 gap-4"
                      style="{{ ($data['have_price'] ?? false) ? '' : 'display:none' }}">
                     <div>
-                        <label class="block font-medium mb-1">Price (gross)</label>
+                        <label class="block mb-1">Price (gross)</label>
                         <input type="number" step="0.01" min="0"
                                name="option_types[{{ $index }}][options][{{ $j }}][price]"
                                value="{{ old("option_types.$index.options.$j.price", $opt['price'] ?? '') }}"
                                class="w-full border rounded px-3 py-2">
                     </div>
                     <div>
-                        <label class="block font-medium mb-1">Promo Price</label>
+                        <label class="block mb-1">Promo Price</label>
                         <input type="number" step="0.01" min="0"
                                name="option_types[{{ $index }}][options][{{ $j }}][promo_price]"
                                value="{{ old("option_types.$index.options.$j.promo_price", $opt['promo_price'] ?? '') }}"
@@ -112,7 +112,7 @@
         @endforeach
     </div>
 
-    <button type="button" class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-8 py-3 rounded-full uppercase add-option">
+    <button type="button" class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm add-option">
         + Add option
     </button>
 </div>
