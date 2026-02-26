@@ -7,7 +7,7 @@
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            @include('admin.products._form', ['mode' => 'create'])
+        @include('admin.products._form', ['mode' => 'create'])
 
     </div>
 </x-app-layout>

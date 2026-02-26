@@ -7,196 +7,115 @@
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            {{-- USER INFORMATION --}}
-            <form method="POST" action="{{ route('admin.users.update', $user) }}" class="mb-6">
-                @csrf
-                @method('PATCH')
+        {{-- USER INFORMATION --}}
+        <form method="POST" action="{{ route('admin.users.update', $user) }}" class="mb-6">
+            @csrf
+            @method('PATCH')
 
-                <div class="bg-white p-6 rounded shadow space-y-4">
-                    <h3 class="text-lg font-semibold border-b pb-2">User Information</h3>
+            <div class="bg-white p-6 rounded shadow space-y-4">
+                <h3 class="text-lg font-semibold border-b pb-2">User Information</h3>
 
-                    {{-- NAME --}}
-                    <div>
-                        <x-input-label for="name">Name <span class="text-status-error">*</span></x-input-label>
-                        <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required />
-                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                    </div>
-
-                    {{-- EMAIL --}}
-                    <div>
-                        <x-input-label for="email">Email <span class="text-status-error">*</span></x-input-label>
-                        <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required />
-                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                    </div>
-
-                    {{-- PHONE --}}
-                    <div>
-                        <x-input-label for="phone">Phone</x-input-label>
-                        <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" />
-                        <x-input-error :messages="$errors->get('phone')" class="mt-2" />
-                    </div>
-
-                    {{-- PASSWORD --}}
-                    <div>
-                        <x-input-label for="password">New Password <span class="font-normal text-grey-dark">(leave blank to keep current)</span></x-input-label>
-                        <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" />
-                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                    </div>
-
-                    {{-- PASSWORD CONFIRMATION --}}
-                    <div>
-                        <x-input-label for="password_confirmation">Confirm Password</x-input-label>
-                        <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" />
-                    </div>
-
-                    {{-- IS_ACTIVE --}}
-                    <div>
-                        <label class="inline-flex items-center">
-                            <input type="hidden" name="is_active" value="0">
-                            <input type="checkbox"
-                                   name="is_active"
-                                   value="1"
-                                   @checked(old('is_active', $user->is_active))
-                                   class="rounded border-grey-medium">
-                            <span class="ml-2 font-semibold">Active</span>
-                        </label>
-                    </div>
-
-                    <div class="flex justify-between">
-                        <a href="{{ route('admin.users.index') }}"
-                           class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
-                            Cancel
-                        </a>
-                        <x-primary-button>Update User</x-primary-button>
-                    </div>
+                {{-- NAME --}}
+                <div>
+                    <x-input-label for="name">Name <span class="text-status-error">*</span></x-input-label>
+                    <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
                 </div>
-            </form>
 
-            {{-- ADDRESSES --}}
-            <div class="bg-white p-6 rounded shadow mb-6">
-                <h3 class="text-lg font-semibold border-b pb-2 mb-4">Addresses</h3>
+                {{-- EMAIL --}}
+                <div>
+                    <x-input-label for="email">Email <span class="text-status-error">*</span></x-input-label>
+                    <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required />
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                </div>
 
-                @foreach ($user->addresses as $address)
-                    <form method="POST" action="{{ route('admin.users.addresses.update', [$user, $address]) }}" class="border rounded p-4 mb-4">
-                        @csrf
-                        @method('PATCH')
+                {{-- PHONE --}}
+                <div>
+                    <x-input-label for="phone">Phone</x-input-label>
+                    <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" />
+                    <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+                </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            {{-- TITLE --}}
-                            <div>
-                                <x-input-label for="title_{{ $address->id }}">Title</x-input-label>
-                                <x-text-input id="title_{{ $address->id }}" name="title" type="text" class="mt-1 block w-full" :value="old('title', $address->title)" />
-                            </div>
+                {{-- PASSWORD --}}
+                <div>
+                    <x-input-label for="password">New Password <span class="font-normal text-grey-dark">(leave blank to keep current)</span></x-input-label>
+                    <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" />
+                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                </div>
 
-                            {{-- NIF --}}
-                            <div>
-                                <x-input-label for="nif_{{ $address->id }}">NIF</x-input-label>
-                                <x-text-input id="nif_{{ $address->id }}" name="nif" type="text" class="mt-1 block w-full" :value="old('nif', $address->nif)" />
-                            </div>
+                {{-- PASSWORD CONFIRMATION --}}
+                <div>
+                    <x-input-label for="password_confirmation">Confirm Password</x-input-label>
+                    <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" />
+                </div>
 
-                            {{-- ADDRESS LINE 1 --}}
-                            <div class="md:col-span-2">
-                                <x-input-label>Address Line 1 <span class="text-status-error">*</span></x-input-label>
-                                <x-text-input name="address_line_1" type="text" class="mt-1 block w-full" :value="old('address_line_1', $address->address_line_1)" required />
-                            </div>
+                {{-- IS_ACTIVE --}}
+                <div>
+                    <label class="inline-flex items-center">
+                        <input type="hidden" name="is_active" value="0">
+                        <input type="checkbox"
+                               name="is_active"
+                               value="1"
+                               @checked(old('is_active', $user->is_active))
+                               class="rounded border-grey-medium">
+                        <span class="ml-2 font-semibold">Active</span>
+                    </label>
+                </div>
 
-                            {{-- ADDRESS LINE 2 --}}
-                            <div class="md:col-span-2">
-                                <x-input-label>Address Line 2</x-input-label>
-                                <x-text-input name="address_line_2" type="text" class="mt-1 block w-full" :value="old('address_line_2', $address->address_line_2)" />
-                            </div>
+                <div class="flex justify-between">
+                    <a href="{{ route('admin.users.index') }}"
+                       class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                        Cancel
+                    </a>
+                    <x-primary-button>Update User</x-primary-button>
+                </div>
+            </div>
+        </form>
 
-                            {{-- POSTAL CODE --}}
-                            <div>
-                                <x-input-label>Postal Code <span class="text-status-error">*</span></x-input-label>
-                                <x-text-input name="postal_code" type="text" class="mt-1 block w-full" :value="old('postal_code', $address->postal_code)" required />
-                            </div>
+        {{-- ADDRESSES --}}
+        <div class="bg-white p-6 rounded shadow mb-6">
+            <h3 class="text-lg font-semibold border-b pb-2 mb-4">Addresses</h3>
 
-                            {{-- CITY --}}
-                            <div>
-                                <x-input-label>City <span class="text-status-error">*</span></x-input-label>
-                                <x-text-input name="city" type="text" class="mt-1 block w-full" :value="old('city', $address->city)" required />
-                            </div>
-
-                            {{-- COUNTRY --}}
-                            <div class="md:col-span-2">
-                                <x-input-label>Country <span class="text-status-error">*</span></x-input-label>
-                                <select name="country_id" required class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
-                                    @foreach ($countries as $country)
-                                        <option value="{{ $country->id }}" @selected(old('country_id', $address->country_id) == $country->id)>
-                                            {{ $country->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            {{-- PHONE --}}
-                            <div>
-                                <x-input-label>Phone</x-input-label>
-                                <x-text-input name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $address->phone)" />
-                            </div>
-
-                            {{-- IS DEFAULT --}}
-                            <div class="flex items-center">
-                                <label class="inline-flex items-center">
-                                    <input type="hidden" name="is_default" value="0">
-                                    <input type="checkbox"
-                                           name="is_default"
-                                           value="1"
-                                           @checked(old('is_default', $address->is_default))
-                                           class="rounded border-grey-medium">
-                                    <span class="ml-2 font-semibold">Default Address</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="flex justify-end">
-                            <x-primary-button>Update Address</x-primary-button>
-                        </div>
-                    </form>
-                @endforeach
-
-                {{-- ADD NEW ADDRESS --}}
-                <form method="POST" action="{{ route('admin.users.addresses.store', $user) }}" class="border-2 border-dashed border-grey-medium rounded p-4 bg-white">
+            @foreach ($user->addresses as $address)
+                <form method="POST" action="{{ route('admin.users.addresses.update', [$user, $address]) }}" class="border rounded p-4 mb-4">
                     @csrf
-
-                    <h4 class="font-semibold mb-3">Add New Address</h4>
+                    @method('PATCH')
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         {{-- TITLE --}}
                         <div>
-                            <x-input-label for="new_title">Title</x-input-label>
-                            <x-text-input id="new_title" name="title" type="text" class="mt-1 block w-full" />
+                            <x-input-label for="title_{{ $address->id }}">Title</x-input-label>
+                            <x-text-input id="title_{{ $address->id }}" name="title" type="text" class="mt-1 block w-full" :value="old('title', $address->title)" />
                         </div>
 
                         {{-- NIF --}}
                         <div>
-                            <x-input-label for="new_nif">NIF</x-input-label>
-                            <x-text-input id="new_nif" name="nif" type="text" class="mt-1 block w-full" />
+                            <x-input-label for="nif_{{ $address->id }}">NIF</x-input-label>
+                            <x-text-input id="nif_{{ $address->id }}" name="nif" type="text" class="mt-1 block w-full" :value="old('nif', $address->nif)" />
                         </div>
 
                         {{-- ADDRESS LINE 1 --}}
                         <div class="md:col-span-2">
                             <x-input-label>Address Line 1 <span class="text-status-error">*</span></x-input-label>
-                            <x-text-input name="address_line_1" type="text" class="mt-1 block w-full" required />
+                            <x-text-input name="address_line_1" type="text" class="mt-1 block w-full" :value="old('address_line_1', $address->address_line_1)" required />
                         </div>
 
                         {{-- ADDRESS LINE 2 --}}
                         <div class="md:col-span-2">
                             <x-input-label>Address Line 2</x-input-label>
-                            <x-text-input name="address_line_2" type="text" class="mt-1 block w-full" />
+                            <x-text-input name="address_line_2" type="text" class="mt-1 block w-full" :value="old('address_line_2', $address->address_line_2)" />
                         </div>
 
                         {{-- POSTAL CODE --}}
                         <div>
                             <x-input-label>Postal Code <span class="text-status-error">*</span></x-input-label>
-                            <x-text-input name="postal_code" type="text" class="mt-1 block w-full" required />
+                            <x-text-input name="postal_code" type="text" class="mt-1 block w-full" :value="old('postal_code', $address->postal_code)" required />
                         </div>
 
                         {{-- CITY --}}
                         <div>
                             <x-input-label>City <span class="text-status-error">*</span></x-input-label>
-                            <x-text-input name="city" type="text" class="mt-1 block w-full" required />
+                            <x-text-input name="city" type="text" class="mt-1 block w-full" :value="old('city', $address->city)" required />
                         </div>
 
                         {{-- COUNTRY --}}
@@ -204,7 +123,7 @@
                             <x-input-label>Country <span class="text-status-error">*</span></x-input-label>
                             <select name="country_id" required class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                                 @foreach ($countries as $country)
-                                    <option value="{{ $country->id }}">
+                                    <option value="{{ $country->id }}" @selected(old('country_id', $address->country_id) == $country->id)>
                                         {{ $country->name }}
                                     </option>
                                 @endforeach
@@ -214,7 +133,7 @@
                         {{-- PHONE --}}
                         <div>
                             <x-input-label>Phone</x-input-label>
-                            <x-text-input name="phone" type="text" class="mt-1 block w-full" />
+                            <x-text-input name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $address->phone)" />
                         </div>
 
                         {{-- IS DEFAULT --}}
@@ -224,6 +143,7 @@
                                 <input type="checkbox"
                                        name="is_default"
                                        value="1"
+                                       @checked(old('is_default', $address->is_default))
                                        class="rounded border-grey-medium">
                                 <span class="ml-2 font-semibold">Default Address</span>
                             </label>
@@ -231,18 +151,98 @@
                     </div>
 
                     <div class="flex justify-end">
-                        <x-primary-button>Add Address</x-primary-button>
+                        <x-primary-button>Update Address</x-primary-button>
                     </div>
                 </form>
-            </div>
+            @endforeach
 
-            {{-- BACK BUTTON --}}
-            <div class="flex justify-start">
-                <a href="{{ route('admin.users.index') }}"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
-                    Back to Users
-                </a>
-            </div>
+            {{-- ADD NEW ADDRESS --}}
+            <form method="POST" action="{{ route('admin.users.addresses.store', $user) }}" class="border-2 border-dashed border-grey-medium rounded p-4 bg-white">
+                @csrf
+
+                <h4 class="font-semibold mb-3">Add New Address</h4>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    {{-- TITLE --}}
+                    <div>
+                        <x-input-label for="new_title">Title</x-input-label>
+                        <x-text-input id="new_title" name="title" type="text" class="mt-1 block w-full" />
+                    </div>
+
+                    {{-- NIF --}}
+                    <div>
+                        <x-input-label for="new_nif">NIF</x-input-label>
+                        <x-text-input id="new_nif" name="nif" type="text" class="mt-1 block w-full" />
+                    </div>
+
+                    {{-- ADDRESS LINE 1 --}}
+                    <div class="md:col-span-2">
+                        <x-input-label>Address Line 1 <span class="text-status-error">*</span></x-input-label>
+                        <x-text-input name="address_line_1" type="text" class="mt-1 block w-full" required />
+                    </div>
+
+                    {{-- ADDRESS LINE 2 --}}
+                    <div class="md:col-span-2">
+                        <x-input-label>Address Line 2</x-input-label>
+                        <x-text-input name="address_line_2" type="text" class="mt-1 block w-full" />
+                    </div>
+
+                    {{-- POSTAL CODE --}}
+                    <div>
+                        <x-input-label>Postal Code <span class="text-status-error">*</span></x-input-label>
+                        <x-text-input name="postal_code" type="text" class="mt-1 block w-full" required />
+                    </div>
+
+                    {{-- CITY --}}
+                    <div>
+                        <x-input-label>City <span class="text-status-error">*</span></x-input-label>
+                        <x-text-input name="city" type="text" class="mt-1 block w-full" required />
+                    </div>
+
+                    {{-- COUNTRY --}}
+                    <div class="md:col-span-2">
+                        <x-input-label>Country <span class="text-status-error">*</span></x-input-label>
+                        <select name="country_id" required class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
+                            @foreach ($countries as $country)
+                                <option value="{{ $country->id }}">
+                                    {{ $country->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    {{-- PHONE --}}
+                    <div>
+                        <x-input-label>Phone</x-input-label>
+                        <x-text-input name="phone" type="text" class="mt-1 block w-full" />
+                    </div>
+
+                    {{-- IS DEFAULT --}}
+                    <div class="flex items-center">
+                        <label class="inline-flex items-center">
+                            <input type="hidden" name="is_default" value="0">
+                            <input type="checkbox"
+                                   name="is_default"
+                                   value="1"
+                                   class="rounded border-grey-medium">
+                            <span class="ml-2 font-semibold">Default Address</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <x-primary-button>Add Address</x-primary-button>
+                </div>
+            </form>
+        </div>
+
+        {{-- BACK BUTTON --}}
+        <div class="flex justify-start">
+            <a href="{{ route('admin.users.index') }}"
+               class="inline-flex items-center px-4 py-2 bg-white border border-grey-medium rounded-md font-semibold text-xs text-grey-dark uppercase tracking-widest shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                Back to Users
+            </a>
+        </div>
 
     </div>
 </x-app-layout>

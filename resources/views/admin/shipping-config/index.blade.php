@@ -21,7 +21,7 @@
                        step="0.01"
                        min="0"
                        value="{{ old('free_shipping_over', $freeShippingOver) }}"
-                       class="w-full border rounded px-3 py-2"
+                       class="w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm"
                        required>
                 @error('free_shipping_over')
                     <p class="text-status-error text-sm mt-1">{{ $message }}</p>
@@ -37,7 +37,7 @@
                 </label>
                 <select id="default_shipping_tier_id" 
                         name="default_shipping_tier_id" 
-                        class="w-full border rounded px-3 py-2">
+                        class="w-full border-grey-medium focus:border-accent-primary focus:ring-accent-primary rounded-md shadow-sm">
                     <option value="">— Select Default Tier —</option>
                     @foreach($shippingTiers as $tier)
                         <option value="{{ $tier->id }}" 
