@@ -1,6 +1,6 @@
-@if ($paginator->hasPages())
-    <nav role="navigation" aria-label="{{ t('pagination.navigation') }}">
-
+<x-pagination :paginator="$paginator" :elements="$elements" />
+{{-- All pagination markup lives in resources/views/components/pagination.blade.php --}}
+@if(false){{-- dead original template; kept only for git history --}}
         <div class="flex gap-2 items-center justify-between sm:hidden">
 
             @if ($paginator->onFirstPage())

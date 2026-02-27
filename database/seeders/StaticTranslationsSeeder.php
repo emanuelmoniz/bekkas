@@ -1145,7 +1145,7 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'custom.projects.portfolio_button', 'locale' => 'pt-PT', 'value' => 'Ver portfólio completo',       'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.projects.portfolio_button', 'locale' => 'en-UK', 'value' => 'Check our full portfolio',    'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'tickets.new', 'locale' => 'pt-PT', 'value' => 'Novo Ticket', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.new', 'locale' => 'pt-PT', 'value' => 'Novo Pedido', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.new', 'locale' => 'en-UK', 'value' => 'New Ticket', 'created_at' => $now, 'updated_at' => $now],
 
             // Ticket create form
