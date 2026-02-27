@@ -23,7 +23,7 @@
         </div>
     </x-slot>
 
-    <div class="py-6 max-w-5xl mx-auto space-y-6">
+    <div class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
         {{-- TICKET META --}}
         <div class="bg-white p-6 rounded shadow space-y-2">

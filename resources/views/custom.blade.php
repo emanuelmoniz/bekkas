@@ -35,8 +35,8 @@
         </section>
 
         <!-- FEATURES SECTION -->
-        <section class="py-16 md:py-24 bg-light px-6">
-            <div class="max-w-7xl mx-auto">
+        <section class="py-16 md:py-24 bg-light">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-4xl font-bold mb-12 text-center text-dark">{{ t('custom.features.title') ?: 'Our Services' }}</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -62,7 +62,8 @@
         </section>
 
         <!-- REQUEST SECTION -->
-        <section id="request" class="py-16 md:py-24 bg-grey-light px-6">
+        <section id="request" class="py-16 md:py-24 bg-grey-light">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-lg pt-8 shadow-lg max-w-3xl mx-auto">
                 <h2 class="text-4xl font-bold mb-6 text-center text-dark">{{ t('custom.request.title') ?: 'Request a Quote' }}</h2>
                 <p class="text-center text-lg text-grey-dark mb-10">
@@ -74,6 +75,7 @@
                         {{ t('custom.request.ticket_button') ?: 'Create new ticket' }}
                     </a>
                 </div>
+            </div>
             </div>
         </section>
 

@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="p-6 bg-white shadow sm:rounded-lg">
                 <h3 class="text-lg font-medium text-dark">{{ t('profile.delete_by_email_intro') ?: 'Click the button below to confirm deletion of your account.' }}</h3>
 

@@ -169,7 +169,7 @@
     <div class="py-4">
 
         {{-- BACK LINK --}}
-        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 pb-4 flex">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4 flex">
             <a href="{{ $backUrl }}" class="text-sm text-accent-primary hover:underline flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -178,7 +178,7 @@
             </a>
         </div>
 
-        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-6 animate-sequence">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-6 animate-sequence">
 
             {{-- GALLERY --}}
             @php

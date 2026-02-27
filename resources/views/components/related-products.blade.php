@@ -85,7 +85,7 @@
 
 @if ($relatedProducts->isNotEmpty())
 <section class="py-8 border-t border-grey-light">
-    <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         @if ($title)
             <h3 class="text-lg font-semibold text-grey-dark mb-4 px-4 sm:px-0">{{ $title }}</h3>

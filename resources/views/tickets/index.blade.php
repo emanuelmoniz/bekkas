@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Actions --}}
         <div class="mb-4 flex justify-end">

@@ -17,7 +17,8 @@
     <body class="bg-white text-dark">
         @include('layouts.navigation')
 
-        <section class="py-16 md:py-24 px-6">
+        <section class="py-16 md:py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-4xl mx-auto prose">
                 <h1 class="text-4xl font-bold mb-6">{{ t('legal.terms.title') ?: 'Service Terms | Termos de Serviço' }}</h1>
 
@@ -36,6 +37,7 @@
                 <p>{{ t('legal.terms.section_shipping') ?: 'Description of the shipping policy.' }}</p>
 
                 <p class="mt-8 text-sm text-grey-dark">{{ t('legal.terms.last_updated') ?: 'Last updated: February 2026' }}</p>
+            </div>
             </div>
         </section>
 

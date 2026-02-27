@@ -69,8 +69,8 @@
         <x-home-banner :slides="$slides" />
 
         <!-- SERVICES SECTION -->
-        <section id="services" class="py-16 md:py-24 bg-light px-6 animate-sequence">
-            <div class="max-w-7xl mx-auto">
+        <section id="services" class="py-16 md:py-24 bg-light animate-sequence">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                     
                     <!-- Products Card -->
@@ -125,8 +125,8 @@
         </section>
 
         <!-- CONTACT SECTION -->
-        <section id="contact" class="py-16 md:py-24 bg-secondary px-6">
-            <div class="max-w-7xl mx-auto">
+        <section id="contact" class="py-16 md:py-24 bg-secondary">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12 animate-sequence">
                     

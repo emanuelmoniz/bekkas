@@ -32,8 +32,8 @@
         </section>
 
         <!-- MISSION SECTION -->
-        <section class="py-16 md:py-24 bg-white px-6 animate-sequence">
-            <div class="max-w-4xl mx-auto text-center anim-item" data-index="0">
+        <section class="py-16 md:py-24 bg-white animate-sequence">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-8 text-dark">{{ t('about.mission.title') ?: 'Our Mission' }}</h2>
                 <p class="text-lg md:text-xl text-grey-dark mb-6 leading-relaxed">
                     {{ t('about.mission.intro') ?: 'At BEKKAS, we believe that everyone deserves access to the transformative power of 3D printing technology.' }}
@@ -45,8 +45,8 @@
         </section>
 
         <!-- VALUES SECTION -->
-        <section class="py-16 md:py-24 bg-white px-6">
-            <div class="max-w-7xl mx-auto">
+        <section class="py-16 md:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-4xl font-bold mb-12 text-center text-dark">{{ t('about.values.title') ?: 'What We Stand For' }}</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 animate-sequence">
@@ -72,8 +72,8 @@
         </section>
 
         <!-- STORY SECTION -->
-        <section class="py-16 md:py-24 bg-white px-6 animate-sequence">
-            <div class="max-w-4xl mx-auto anim-item" data-index="0">
+        <section class="py-16 md:py-24 bg-white animate-sequence">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-8 text-center text-dark">{{ t('about.story.title') ?: 'Our Story' }}</h2>
                 <div class="space-y-6 text-lg text-grey-dark">
                     <p>
@@ -90,8 +90,8 @@
         </section>
 
         <!-- CTA SECTION -->
-        <section class="py-16 md:py-24 bg-primary px-6 animate-sequence">
-            <div class="max-w-4xl mx-auto text-center text-white anim-item" data-index="0">
+        <section class="py-16 md:py-24 bg-primary animate-sequence">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-6">{{ t('about.cta.title') ?: 'Ready to Start Your Project?' }}</h2>
                 <p class="text-xl mb-8">
                     {{ t('about.cta.description') ?: 'Join hundreds of satisfied customers who have brought their ideas to life with BEKKAS.' }}
