@@ -12,6 +12,7 @@ class TicketCategoryTranslation extends Model
         'ticket_category_id',
         'locale',
         'name',
+        'description',
     ];
 
     public function category()

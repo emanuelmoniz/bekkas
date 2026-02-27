@@ -53,13 +53,18 @@ class TicketController extends Controller
         return view('tickets.index', compact('tickets', 'categories'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $categories = TicketCategory::with('translations')
             ->where('active', true)
             ->get();
 
-        return view('tickets.create', compact('categories'));
+        $preselectedCategory = null;
+        if ($request->filled('category')) {
+            $preselectedCategory = $categories->firstWhere('slug', $request->query('category'));
+        }
+
+        return view('tickets.create', compact('categories', 'preselectedCategory'));
     }
 
     public function store(Request $request)

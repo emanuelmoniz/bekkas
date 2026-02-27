@@ -55,23 +55,28 @@ class TicketCategoryController extends Controller
         ]);
 
         $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
-        $rules = [];
+        $rules = [
+            'slug' => 'required|string|max:100|alpha_dash|unique:ticket_categories,slug',
+        ];
         foreach (Locale::activeCodes() as $locale) {
-            $rules["name.$locale"] = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
+            $rules["name.$locale"]        = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
+            $rules["description.$locale"] = 'nullable|string';
         }
         $request->validate($rules);
 
         $category = TicketCategory::create([
+            'slug'   => $request->slug,
             'active' => true,
         ]);
 
         foreach (Locale::activeCodes() as $locale) {
-            $value = $request->input("name.$locale");
-            if (!empty($value)) {
+            $name = $request->input("name.$locale");
+            if (!empty($name)) {
                 TicketCategoryTranslation::create([
                     'ticket_category_id' => $category->id,
-                    'locale' => $locale,
-                    'name' => $value,
+                    'locale'             => $locale,
+                    'name'               => $name,
+                    'description'        => $request->input("description.$locale"),
                 ]);
             }
         }
@@ -105,26 +110,32 @@ class TicketCategoryController extends Controller
         $this->ensureAdmin();
 
         $defaultLocale = Locale::defaultLocale()?->code ?? 'en-UK';
-        $rules = ['active' => 'nullable|boolean'];
+        $rules = [
+            'active' => 'nullable|boolean',
+            'slug'   => 'required|string|max:100|alpha_dash|unique:ticket_categories,slug,'.$ticketCategory->id,
+        ];
         foreach (Locale::activeCodes() as $locale) {
-            $rules["name.$locale"] = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
+            $rules["name.$locale"]        = $locale === $defaultLocale ? 'required|string|max:255' : 'nullable|string|max:255';
+            $rules["description.$locale"] = 'nullable|string';
         }
         $request->validate($rules);
 
         $ticketCategory->update([
+            'slug'   => $request->slug,
             'active' => (bool) $request->active,
         ]);
 
         foreach (Locale::activeCodes() as $locale) {
-            $value = $request->input("name.$locale");
-            if (!empty($value)) {
+            $name = $request->input("name.$locale");
+            if (!empty($name)) {
                 TicketCategoryTranslation::updateOrCreate(
                     [
                         'ticket_category_id' => $ticketCategory->id,
-                        'locale' => $locale,
+                        'locale'             => $locale,
                     ],
                     [
-                        'name' => $value,
+                        'name'        => $name,
+                        'description' => $request->input("description.$locale"),
                     ]
                 );
             }

@@ -10,6 +10,7 @@ class TicketCategory extends Model
     use HasFactory;
 
     protected $fillable = [
+        'slug',
         'active',
     ];
 

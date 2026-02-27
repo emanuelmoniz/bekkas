@@ -7,7 +7,7 @@
 
         <div class="bg-white shadow rounded p-6 mb-6">
             <h3 class="text-xs text-grey-dark uppercase mb-4">Basic Information</h3>
-            <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <dl class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Active</p>
                     <p class="text-sm text-grey-dark mt-1">
@@ -18,6 +18,10 @@
                         @endif
                     </p>
                 </div>
+                <div>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Slug</p>
+                    <p class="text-sm text-grey-dark mt-1 font-mono">{{ $category->slug ?: '—' }}</p>
+                </div>
             </dl>
         </div>
 
@@ -25,11 +29,15 @@
             <h3 class="text-xs text-grey-dark uppercase mb-4">Translations</h3>
             <div class="space-y-4">
                 @foreach($category->translations as $translation)
-                    <div class="border border-grey-light rounded p-4">
-                        <p class="text-xs text-grey-dark uppercase mb-2">{{ $translation->locale }}</p>
+                    <div class="border border-grey-light rounded p-4 space-y-3">
+                        <p class="text-xs font-bold text-grey-dark uppercase">{{ $translation->locale }}</p>
                         <div>
                             <p class="text-xs text-grey-medium uppercase">Name</p>
                             <p class="text-sm text-grey-dark mt-1">{{ $translation->name ?: '—' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-grey-medium uppercase">Description</p>
+                            <p class="text-sm text-grey-dark mt-1 whitespace-pre-line">{{ $translation->description ?: '—' }}</p>
                         </div>
                     </div>
                 @endforeach
