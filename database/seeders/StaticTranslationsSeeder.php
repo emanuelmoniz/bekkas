@@ -1017,8 +1017,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'custom.banner.subtitle', 'locale' => 'pt-PT', 'value' => 'Soluções à medida de impressão 3D.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.banner.subtitle', 'locale' => 'en-UK', 'value' => 'Custom 3D printing solutions.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'custom.banner.button', 'locale' => 'pt-PT', 'value' => 'Preços', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.banner.button', 'locale' => 'en-UK', 'value' => 'Pricing', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.banner.button', 'locale' => 'pt-PT', 'value' => 'Preços e Serviços', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.banner.button', 'locale' => 'en-UK', 'value' => 'Pricing and Services', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'custom.features.title', 'locale' => 'pt-PT', 'value' => 'Opções', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.features.title', 'locale' => 'en-UK', 'value' => 'Options', 'created_at' => $now, 'updated_at' => $now],
@@ -1038,7 +1038,7 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'custom.features.support', 'locale' => 'pt-PT', 'value' => 'Apoio Especializado', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.features.support', 'locale' => 'en-UK', 'value' => 'Expert Support', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'custom.features.support_desc', 'locale' => 'pt-PT', 'value' => 'Suporte dedicado desde a consulta de design até a entrega final.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.support_desc', 'locale' => 'pt-PT', 'value' => 'Suporte dedicado em todas as fases do projeto até à entrega.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.features.support_desc', 'locale' => 'en-UK', 'value' => 'Dedicated support from design consultation to final delivery.', 'created_at' => $now, 'updated_at' => $now],
 
             // Modeling bullets
@@ -1066,10 +1066,10 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'custom.features.support_b3', 'locale' => 'pt-PT', 'value' => 'Flexível e Personalizado', 'created_at' => $now, 'updated_at' => $now],
 
             // custom.request — 3-service-card section
-            ['key' => 'custom.request.title',        'locale' => 'pt-PT', 'value' => 'Preços', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.title',        'locale' => 'en-UK', 'value' => 'Pricing', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.subtitle1',     'locale' => 'pt-PT', 'value' => 'Escolha o serviço que melhor se adapta à sua situação.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.subtitle1',     'locale' => 'en-UK', 'value' => 'Choose the service that best matches your situation.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.title',        'locale' => 'pt-PT', 'value' => 'Serviços e Preços', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.title',        'locale' => 'en-UK', 'value' => 'Services and Pricing', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.subtitle1',     'locale' => 'pt-PT', 'value' => 'Escolha o serviço que melhor se adapta à sua necessidade.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.subtitle1',     'locale' => 'en-UK', 'value' => 'Choose the service that best matches your needs.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle2',     'locale' => 'pt-PT', 'value' => 'Leia atentamente as caracteristicas e informações de cada opção.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle2',     'locale' => 'en-UK', 'value' => 'Read carefully the features and informations of each option.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle3',     'locale' => 'pt-PT', 'value' => 'Cada opção abrirá um ticket com o serviço já selecionado.', 'created_at' => $now, 'updated_at' => $now],
@@ -1110,7 +1110,7 @@ class StaticTranslationsSeeder extends Seeder
             // Card 3 — Print
             ['key' => 'custom.request.print_tier',    'locale' => 'pt-PT', 'value' => 'Apenas Impressão',                       'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.print_tier',    'locale' => 'en-UK', 'value' => 'Print only',                             'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.print_title',   'locale' => 'pt-PT', 'value' => 'Tenho o ficheiro pronto',       'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.print_title',   'locale' => 'pt-PT', 'value' => 'Tenho um ficheiro pronto',       'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.print_title',   'locale' => 'en-UK', 'value' => 'I have a print-ready file',              'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.print_desc',    'locale' => 'pt-PT', 'value' => 'O seu ficheiro está pronto para impressão. Envie e nós damos orçamento e imprimimos. Ideal também para modelos encontrados online.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.print_desc',    'locale' => 'en-UK', 'value' => 'Your file is ready to print. Send it over and we will quote and print it. Also ideal for models found online.', 'created_at' => $now, 'updated_at' => $now],
@@ -1335,7 +1335,7 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.email.thanks', 'locale' => 'pt-PT', 'value' => 'Obrigado,', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.thanks', 'locale' => 'en-UK', 'value' => 'Thanks,', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'nav.my_tickets', 'locale' => 'pt-PT', 'value' => 'Tickets', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'nav.my_tickets', 'locale' => 'pt-PT', 'value' => 'Pedidos', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'nav.my_tickets', 'locale' => 'en-UK', 'value' => 'Tickets', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'nav.orders', 'locale' => 'pt-PT', 'value' => 'Encomendas', 'created_at' => $now, 'updated_at' => $now],

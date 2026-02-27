@@ -93,79 +93,49 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
                     {{-- Card 1: R&D --}}
-                    <a href="{{ route('tickets.create', ['category' => 'rnd']) }}"
-                       class="bg-white rounded-xl shadow-md flex flex-col overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group">
-                        <div class="bg-dark px-6 py-5">
-                            <span class="text-xs font-bold uppercase tracking-widest text-accent-secondary">{{ t('custom.request.rnd_tier') ?: 'R&D + Preparation + Print' }}</span>
-                            <h3 class="text-2xl font-bold text-white mt-1">{{ t('custom.request.rnd_title') ?: 'I have an idea' }}</h3>
-                        </div>
-                        <div class="px-6 py-5 flex flex-col flex-1">
-                            <p class="text-grey-dark text-sm flex-1">
-                                {{ t('custom.request.rnd_desc') ?: 'You have a concept but no file. We model, prepare and print everything from scratch according to your specifications.' }}
-                            </p>
-                            <ul class="mt-4 mb-5 space-y-1 text-sm text-grey-dark">
-                                <li>✓ {{ t('custom.request.rnd_bullet1') ?: 'Full product development' }}</li>
-                                <li>✓ {{ t('custom.request.rnd_bullet2') ?: 'Quote includes R&D, prep & print' }}</li>
-                                <li>✓ {{ t('custom.request.rnd_bullet3') ?: 'Price based on complexity + print time' }}</li>
-                            </ul>
-                            <p class="text-xs text-grey-dark/70 mb-5">
-                                {{ t('custom.request.rnd_attach') ?: 'Attach: photos, sketches, reference images, any existing files.' }}
-                            </p>
-                            <span class="mt-auto inline-flex items-center justify-center gap-2 bg-primary group-hover:bg-primary/90 text-white px-6 py-3 rounded-full uppercase font-semibold text-sm transition-colors text-center">
-                                {{ t('custom.request.cta_button') ?: 'Request this service' }}
-                            </span>
-                        </div>
-                    </a>
+                    <x-request-card
+                        :href="route('tickets.create', ['category' => 'rnd'])"
+                        :tier="t('custom.request.rnd_tier') ?: 'R&D + Preparation + Print'"
+                        :title="t('custom.request.rnd_title') ?: 'I have an idea'"
+                        :description="t('custom.request.rnd_desc') ?: 'You have a concept but no file. We model, prepare and print everything from scratch according to your specifications.'"
+                        :bullets="array_filter([
+                            t('custom.request.rnd_bullet1') ?: 'Full product development',
+                            t('custom.request.rnd_bullet2') ?: 'Quote includes R&D, prep & print',
+                            t('custom.request.rnd_bullet3') ?: 'Price based on complexity + print time',
+                        ])"
+                        :attach="t('custom.request.rnd_attach') ?: 'Attach: photos, sketches, reference images, any existing files.'"
+                        :button="t('custom.request.cta_button') ?: 'Request this service'"
+                    />
 
                     {{-- Card 2: Preparation --}}
-                    <a href="{{ route('tickets.create', ['category' => 'preparation']) }}"
-                       class="bg-white rounded-xl shadow-md flex flex-col overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group">
-                        <div class="bg-dark px-6 py-5">
-                            <span class="text-xs font-bold uppercase tracking-widest text-accent-secondary">{{ t('custom.request.prep_tier') ?: 'Preparation + Print' }}</span>
-                            <h3 class="text-2xl font-bold text-white mt-1">{{ t('custom.request.prep_title') ?: 'I have a 3D model' }}</h3>
-                        </div>
-                        <div class="px-6 py-5 flex flex-col flex-1">
-                            <p class="text-grey-dark text-sm flex-1">
-                                {{ t('custom.request.prep_desc') ?: 'You have a 3D file (e.g. an architecture or design project) but it needs to be optimised and prepared before printing.' }}
-                            </p>
-                            <ul class="mt-4 mb-5 space-y-1 text-sm text-grey-dark">
-                                <li>✓ {{ t('custom.request.prep_bullet1') ?: 'File simplification & repair' }}</li>
-                                <li>✓ {{ t('custom.request.prep_bullet2') ?: 'Preparation: €30/hr (15-min billing)' }}</li>
-                                <li>✓ {{ t('custom.request.prep_bullet3') ?: 'Print: €20/hr · 20% student discount' }}</li>
-                            </ul>
-                            <p class="text-xs text-grey-dark/70 mb-5">
-                                {{ t('custom.request.prep_attach') ?: 'Attach: 3D file(s) + scale, colour, material specs.' }}
-                            </p>
-                            <span class="mt-auto inline-flex items-center justify-center gap-2 bg-primary group-hover:bg-primary/90 text-white px-6 py-3 rounded-full uppercase font-semibold text-sm transition-colors text-center">
-                                {{ t('custom.request.cta_button') ?: 'Request this service' }}
-                            </span>
-                        </div>
-                    </a>
+                    <x-request-card
+                        :href="route('tickets.create', ['category' => 'preparation'])"
+                        :tier="t('custom.request.prep_tier') ?: 'Preparation + Print'"
+                        :title="t('custom.request.prep_title') ?: 'I have a 3D model'"
+                        :description="t('custom.request.prep_desc') ?: 'You have a 3D file (e.g. an architecture or design project) but it needs to be optimised and prepared before printing.'"
+                        :bullets="array_filter([
+                            t('custom.request.prep_bullet1') ?: 'File simplification & repair',
+                            t('custom.request.prep_bullet2') ?: 'Preparation: €30/hr (15-min billing)',
+                            t('custom.request.prep_bullet3') ?: 'Print: €20/hr · 20% student discount',
+                        ])"
+                        :attach="t('custom.request.prep_attach') ?: 'Attach: 3D file(s) + scale, colour, material specs.'"
+                        :button="t('custom.request.cta_button') ?: 'Request this service'"
+                    />
 
                     {{-- Card 3: Print --}}
-                    <a href="{{ route('tickets.create', ['category' => 'print']) }}"
-                       class="bg-white rounded-xl shadow-md flex flex-col overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group">
-                        <div class="bg-dark px-6 py-5">
-                            <span class="text-xs font-bold uppercase tracking-widest text-accent-secondary">{{ t('custom.request.print_tier') ?: 'Print only' }}</span>
-                            <h3 class="text-2xl font-bold text-white mt-1">{{ t('custom.request.print_title') ?: 'I have a print-ready file' }}</h3>
-                        </div>
-                        <div class="px-6 py-5 flex flex-col flex-1">
-                            <p class="text-grey-dark text-sm flex-1">
-                                {{ t('custom.request.print_desc') ?: 'Your file is ready to print. Send it over and we will quote and print it. Also ideal for models found online.' }}
-                            </p>
-                            <ul class="mt-4 mb-5 space-y-1 text-sm text-grey-dark">
-                                <li>✓ {{ t('custom.request.print_bullet1') ?: '€20/hr · billed in 15-min sets' }}</li>
-                                <li>✓ {{ t('custom.request.print_bullet2') ?: 'PLA included · other materials on request' }}</li>
-                                <li>✓ {{ t('custom.request.print_bullet3') ?: '20% student discount' }}</li>
-                            </ul>
-                            <p class="text-xs text-grey-dark/70 mb-5">
-                                {{ t('custom.request.print_attach') ?: 'Attach: print-ready file(s) + scale, colour, material, layer height, infill.' }}
-                            </p>
-                            <span class="mt-auto inline-flex items-center justify-center gap-2 bg-primary group-hover:bg-primary/90 text-white px-6 py-3 rounded-full uppercase font-semibold text-sm transition-colors text-center">
-                                {{ t('custom.request.cta_button') ?: 'Request this service' }}
-                            </span>
-                        </div>
-                    </a>
+                    <x-request-card
+                        :href="route('tickets.create', ['category' => 'print'])"
+                        :tier="t('custom.request.print_tier') ?: 'Print only'"
+                        :title="t('custom.request.print_title') ?: 'I have a print-ready file'"
+                        :description="t('custom.request.print_desc') ?: 'Your file is ready to print. Send it over and we will quote and print it. Also ideal for models found online.'"
+                        :bullets="array_filter([
+                            t('custom.request.print_bullet1') ?: '€20/hr · billed in 15-min sets',
+                            t('custom.request.print_bullet2') ?: 'PLA included · other materials on request',
+                            t('custom.request.print_bullet3') ?: '20% student discount',
+                        ])"
+                        :attach="t('custom.request.print_attach') ?: 'Attach: print-ready file(s) + scale, colour, material, layer height, infill.'"
+                        :button="t('custom.request.cta_button') ?: 'Request this service'"
+                    />
 
                 </div>
             </div>
