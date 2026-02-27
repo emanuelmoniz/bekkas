@@ -6,6 +6,7 @@
     'isFeatured' => false,      // bool — when true filter to is_featured products only
     'title'      => null,       // string|null — optional section heading
     'excludeId'  => null,       // int|null — product ID to omit (e.g. the currently viewed product)
+    'excludeIds' => [],         // array — list of product IDs to omit (e.g. all current favorites)
 ])
 
 {{--
@@ -43,6 +44,11 @@
     // Exclude a specific product (e.g. the one already being viewed).
     if ($excludeId !== null) {
         $query->where('id', '!=', $excludeId);
+    }
+
+    // Exclude multiple products (e.g. all current favorites).
+    if (!empty($excludeIds)) {
+        $query->whereNotIn('id', (array) $excludeIds);
     }
 
     // Category filter — if categories provided, restrict to products in those categories.

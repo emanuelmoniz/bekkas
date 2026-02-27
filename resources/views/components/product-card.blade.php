@@ -92,7 +92,7 @@
         @endif
 
         <div class="p-4 pt-3">
-            <h3>
+            <h3 class="text-lg font-medium">
                 {{ optional($product->translation())->name }}
             </h3>
 

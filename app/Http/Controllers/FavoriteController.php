@@ -31,7 +31,7 @@ class FavoriteController extends Controller
         // Build query with filters (same as products page)
         $query = Product::whereIn('id', $favoriteIds)
             ->where('active', true)
-            ->with(['translations', 'primaryPhoto', 'categories', 'materials']);
+            ->with(['translations', 'photos', 'categories', 'materials']);
 
         // Name search filter
         if ($request->filled('name')) {
@@ -80,6 +80,23 @@ class FavoriteController extends Controller
             $q->whereIn('products.id', $favoriteIds)->where('active', true);
         })->with('translations')->get();
 
+        // Build category/material counts scoped to favorite products
+        $categoryCounts = [];
+        $materialCounts = [];
+        $favoriteProductsForCounts = Product::whereIn('id', $favoriteIds)
+            ->where('active', true)
+            ->with(['categories:id', 'materials:id'])
+            ->get(['id']);
+
+        foreach ($favoriteProductsForCounts as $p) {
+            foreach ($p->categories as $cat) {
+                $categoryCounts[$cat->id] = ($categoryCounts[$cat->id] ?? 0) + 1;
+            }
+            foreach ($p->materials as $mat) {
+                $materialCounts[$mat->id] = ($materialCounts[$mat->id] ?? 0) + 1;
+            }
+        }
+
         $hasFavorites = ! empty($favoriteIds);
 
         // Calculate delivery dates for products
@@ -89,7 +106,7 @@ class FavoriteController extends Controller
             $deliveryDates[$product->id] = $deliveryInfo['formatted'];
         }
 
-        return view('favorites.index', compact('products', 'categories', 'materials', 'hasFavorites', 'deliveryDates'));
+        return view('favorites.index', compact('products', 'categories', 'materials', 'categoryCounts', 'materialCounts', 'hasFavorites', 'deliveryDates', 'favoriteIds'));
     }
 
     public function toggle(Request $request, Product $product)
