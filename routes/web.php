@@ -76,6 +76,11 @@ Route::get('/custom', function () {
     return view('custom');
 })->name('custom.index');
 
+// Portfolio / Projects – public pages (show page not yet implemented)
+Route::get('/portfolio/{project:uuid}', function () {
+    abort(404);
+})->name('portfolio.show');
+
 Route::post('/contact', [ContactController::class, 'store'])
     ->name('contact.store');
 

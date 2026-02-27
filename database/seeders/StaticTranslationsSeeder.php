@@ -1088,8 +1088,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'custom.request.rnd_bullet2',  'locale' => 'en-UK', 'value' => 'Quote includes R&D, prep & print',        'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.rnd_bullet3',  'locale' => 'pt-PT', 'value' => 'Preço baseado na complexidade e tempo de impressão', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.rnd_bullet3',  'locale' => 'en-UK', 'value' => 'Price based on complexity + print time', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.rnd_attach',   'locale' => 'pt-PT', 'value' => 'Envie-nos fotos, esboços, imagens de referência, ficheiros existentes.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.rnd_attach',   'locale' => 'en-UK', 'value' => 'Send us photos, sketches, reference images, any existing files.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.rnd_attach',   'locale' => 'pt-PT', 'value' => 'Envie-nos fotos, esboços, imagens de referência, etc.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.rnd_attach',   'locale' => 'en-UK', 'value' => 'Send us photos, sketches, reference images, etc.', 'created_at' => $now, 'updated_at' => $now],
 
             // Card 2 — Preparation
             ['key' => 'custom.request.prep_tier',    'locale' => 'pt-PT', 'value' => 'Preparação + Impressão',                  'created_at' => $now, 'updated_at' => $now],
@@ -1104,8 +1104,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'custom.request.prep_bullet2', 'locale' => 'en-UK', 'value' => 'Print: €20/hr (15-min billing)',   'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.prep_bullet3', 'locale' => 'pt-PT', 'value' => '20% desconto para estudantes',           'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.prep_bullet3', 'locale' => 'en-UK', 'value' => '20% student discount',                  'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.prep_attach',  'locale' => 'pt-PT', 'value' => 'Anexe: ficheiro(s) 3D + escala, cor, especificações de material.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.prep_attach',  'locale' => 'en-UK', 'value' => 'Attach: 3D file(s) + scale, colour, material specs.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.prep_attach',  'locale' => 'pt-PT', 'value' => 'Anexe o(s) ficheiro(s) 3D e indique a escala e material.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.prep_attach',  'locale' => 'en-UK', 'value' => 'Attach 3D file(s) and specify scale and material.', 'created_at' => $now, 'updated_at' => $now],
 
             // Card 3 — Print
             ['key' => 'custom.request.print_tier',    'locale' => 'pt-PT', 'value' => 'Apenas Impressão',                       'created_at' => $now, 'updated_at' => $now],
@@ -1120,8 +1120,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'custom.request.print_bullet2', 'locale' => 'en-UK', 'value' => 'PLA included · other materials on request', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.print_bullet3', 'locale' => 'pt-PT', 'value' => '20% desconto para estudantes',           'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.print_bullet3', 'locale' => 'en-UK', 'value' => '20% student discount',                  'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.print_attach',  'locale' => 'pt-PT', 'value' => 'Anexe: ficheiro(s) prontos + escala, cor, material, altura de camada, preenchimento.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.print_attach',  'locale' => 'en-UK', 'value' => 'Attach: print-ready file(s) + scale, colour, material, layer height, infill.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.print_attach',  'locale' => 'pt-PT', 'value' => 'Anexe o(s) ficheiro(s) pronto para impressão.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.print_attach',  'locale' => 'en-UK', 'value' => 'Attach ready to print 3D file(s).', 'created_at' => $now, 'updated_at' => $now],
 
             // Shared CTA button
             ['key' => 'custom.request.cta_button',   'locale' => 'pt-PT', 'value' => 'Solicitar serviço',                 'created_at' => $now, 'updated_at' => $now],
