@@ -80,6 +80,7 @@
                 <thead class="bg-grey-light">
                     <tr>
                         <th class="px-4 py-2 text-left">Name</th>
+                        <th class="px-4 py-2 text-left">Client</th>
                         <th class="px-4 py-2 text-left">Production Date</th>
                         <th class="px-4 py-2 text-center">Featured</th>
                         <th class="px-4 py-2 text-left">Execution Time</th>
@@ -94,6 +95,9 @@
                                     {{ optional($project->translation())->name }}
                                 </a>
                                 <x-missing-locale-badge :model="$project" />
+                            </td>
+                            <td class="px-4 py-2">
+                                {{ $project->client ?? '-' }}
                             </td>
                             <td class="px-4 py-2">
                                 {{ $project->production_date ? $project->production_date->format('Y-m-d') : '-' }}
@@ -127,7 +131,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-4 py-6 text-center text-grey-medium">
+                            <td colspan="6" class="px-4 py-6 text-center text-grey-medium">
                                 No projects found.
                             </td>
                         </tr>

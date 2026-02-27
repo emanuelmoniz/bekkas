@@ -40,6 +40,20 @@
                     <p class="text-sm text-grey-dark mt-1">{{ $project->weight ?? '-' }}</p>
                 </div>
                 <div>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Client</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ $project->client ?? '-' }}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Client URL</p>
+                    <p class="text-sm text-grey-dark mt-1">
+                        @if($project->client_url)
+                            <a href="{{ $project->client_url }}" target="_blank" rel="noopener" class="text-accent-primary hover:underline">{{ $project->client_url }}</a>
+                        @else
+                            -
+                        @endif
+                    </p>
+                </div>
+                <div>
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Materials</p>
                     <p class="text-sm text-grey-dark mt-1">
                         {{ $project->materials->map(fn($m)=>optional($m->translation())->name)->filter()->join(', ') ?: '-' }}

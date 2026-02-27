@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Project extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'uuid',
         'production_date',
         'execution_time',
         'width',
@@ -18,6 +20,8 @@ class Project extends Model
         'weight',
         'is_active',
         'is_featured',
+        'client',
+        'client_url',
     ];
 
     protected $casts = [
@@ -26,7 +30,35 @@ class Project extends Model
         'weight' => 'decimal:2',
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
+        'uuid' => 'string',
     ];
+
+    /**
+     * Auto-generate a UUID on create; clean up image files on delete.
+     */
+    protected static function booted()
+    {
+        static::creating(function ($project) {
+            if (empty($project->uuid)) {
+                $project->uuid = (string) Str::uuid();
+            }
+        });
+
+        static::deleting(function (Project $project) {
+            $thumbnails = app(\App\Services\ImageThumbnailService::class);
+            foreach ($project->photos as $photo) {
+                $thumbnails->delete($photo->path, $photo->original_path);
+            }
+        });
+    }
+
+    /**
+     * Use uuid for route model binding.
+     */
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 
     public function translations()
     {
@@ -54,21 +86,4 @@ class Project extends Model
         return $this->hasOne(ProjectPhoto::class)->where('is_primary', true);
     }
 
-    /**
-     * When a project is deleted we need to remove any associated
-     * image files (thumbnail + original) from storage.  The HTTP
-     * controllers already call the thumbnail service when individual
-     * photos are removed, but the model event guarantees cleanup
-     * regardless of how the project is deleted (artisanal scripts,
-     * factories, seeds, etc.).
-     */
-    protected static function booted()
-    {
-        static::deleting(function (Project $project) {
-            $thumbnails = app(\App\Services\ImageThumbnailService::class);
-            foreach ($project->photos as $photo) {
-                $thumbnails->delete($photo->path, $photo->original_path);
-            }
-        });
-    }
 }

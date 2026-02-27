@@ -123,6 +123,27 @@
         </div>
     </div>
 
+    {{-- CLIENT --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <x-input-label for="client">Client</x-input-label>
+            <input type="text"
+                   id="client"
+                   name="client"
+                   value="{{ old('client', $project->client ?? '') }}"
+                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+        </div>
+
+        <div>
+            <x-input-label for="client_url">Client URL</x-input-label>
+            <input type="url"
+                   id="client_url"
+                   name="client_url"
+                   value="{{ old('client_url', $project->client_url ?? '') }}"
+                   class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+        </div>
+    </div>
+
     {{-- FLAGS --}}
     <div class="flex gap-6">
         <label class="flex items-center gap-2">

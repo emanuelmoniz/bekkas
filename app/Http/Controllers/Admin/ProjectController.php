@@ -83,6 +83,8 @@ class ProjectController extends Controller
             'weight' => $request->weight,
             'is_active' => $request->boolean('is_active', true),
             'is_featured' => $request->boolean('is_featured'),
+            'client' => $request->client ?: null,
+            'client_url' => $request->client_url ?: null,
         ]);
 
         foreach (Locale::activeList() as $locale => $locLabel) {
@@ -137,6 +139,8 @@ class ProjectController extends Controller
             'weight' => $request->weight,
             'is_active' => $request->boolean('is_active'),
             'is_featured' => $request->boolean('is_featured'),
+            'client' => $request->client ?: null,
+            'client_url' => $request->client_url ?: null,
         ]);
 
         foreach (Locale::activeList() as $locale => $locLabel) {
