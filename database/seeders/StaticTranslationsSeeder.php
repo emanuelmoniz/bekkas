@@ -38,6 +38,7 @@ class StaticTranslationsSeeder extends Seeder
             'footer.'                    => 'Global footer (all pages)',
             'custom.banner.'             => 'Custom services page — hero banner',
             'custom.features.'           => 'Custom services page — features section',
+            'custom.projects.'           => 'Custom services page — projects showcase section',
             'custom.request.'            => 'Custom services page — quote request section',
             'custom.'                    => 'Custom services page',
             'tickets.email.'             => 'Ticket email notifications',
@@ -1126,6 +1127,12 @@ class StaticTranslationsSeeder extends Seeder
             // Shared CTA button
             ['key' => 'custom.request.cta_button',   'locale' => 'pt-PT', 'value' => 'Solicitar serviço',                 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.cta_button',   'locale' => 'en-UK', 'value' => 'Request service',                   'created_at' => $now, 'updated_at' => $now],
+
+            // custom.projects — portfolio showcase section
+            ['key' => 'custom.projects.title',            'locale' => 'pt-PT', 'value' => 'Últimos Projetos',          'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.projects.title',            'locale' => 'en-UK', 'value' => 'Our past Projects',           'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.projects.portfolio_button', 'locale' => 'pt-PT', 'value' => 'Ver portfólio completo',       'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.projects.portfolio_button', 'locale' => 'en-UK', 'value' => 'Check our full portfolio',    'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.new', 'locale' => 'pt-PT', 'value' => 'Novo Ticket', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.new', 'locale' => 'en-UK', 'value' => 'New Ticket', 'created_at' => $now, 'updated_at' => $now],
