@@ -1,9 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-grey-dark">
-            {{ t('page.cart.title') ?: 'Cart' }}
-        </h2>
-    </x-slot>
 
     <div class="py-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
@@ -103,7 +98,7 @@
                         <span>€{{ number_format($productsGross, 2) }}</span>
                     </div>
 
-                    <div class="bg-primary/10 border border-accent-primary/20 rounded p-3 text-sm text-accent-primary">
+                    <div class="bg-accent-primary/10 border border-accent-primary/20 rounded p-3 text-sm text-accent-primary">
                         {{ t('cart.shipping_at_checkout') ?: 'The shipping cost will be calculated at checkout.' }}
                     </div>
 
