@@ -49,6 +49,10 @@ class StaticTranslationsSeeder extends Seeder
             'about.story.'               => 'About page — story section',
             'about.cta.'                 => 'About page — call to action section',
             'about.'                     => 'About page',
+            'portfolio.filter.'          => 'Portfolio page — filter section',
+            'portfolio.cta.'             => 'Portfolio page — call to action section',
+            'portfolio.'                 => 'Portfolio page',
+            'projects.card.'             => 'Project card component',
             'legal.terms.'               => 'Terms of Service page',
             'legal.privacy.'             => 'Privacy Policy page',
             'legal.'                     => 'Legal pages',
@@ -127,6 +131,13 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'nav.custom', 'locale' => 'pt-PT', 'value' => 'Produção', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'nav.custom', 'locale' => 'en-UK', 'value' => 'Custom', 'created_at' => $now, 'updated_at' => $now],
+
+            // custom submenu entries
+            ['key' => 'nav.services_prices', 'locale' => 'pt-PT', 'value' => 'Serviços & Preços', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'nav.services_prices', 'locale' => 'en-UK', 'value' => 'Services & Prices', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'nav.portfolio', 'locale' => 'pt-PT', 'value' => 'Portfólio', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'nav.portfolio', 'locale' => 'en-UK', 'value' => 'Portfolio', 'created_at' => $now, 'updated_at' => $now],
 
             // store submenu entries
             ['key' => 'nav.store.all_products', 'locale' => 'pt-PT', 'value' => 'Todos os Produtos', 'created_at' => $now, 'updated_at' => $now],
@@ -1803,6 +1814,38 @@ class StaticTranslationsSeeder extends Seeder
             // Tickets — message send failure
             ['key' => 'tickets.message_failed', 'locale' => 'pt-PT', 'value' => 'Não foi possível guardar a mensagem. Por favor tente novamente.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.message_failed', 'locale' => 'en-UK', 'value' => 'Failed to save message. Please try again.', 'created_at' => $now, 'updated_at' => $now],
+
+            // Portfolio page
+            ['key' => 'portfolio.title', 'locale' => 'pt-PT', 'value' => 'Portfólio', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.title', 'locale' => 'en-UK', 'value' => 'Portfolio', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.subtitle', 'locale' => 'pt-PT', 'value' => 'Uma mostra dos nossos projetos de impressão 3D.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.subtitle', 'locale' => 'en-UK', 'value' => 'A showcase of our 3D printing projects.', 'created_at' => $now, 'updated_at' => $now],
+
+            // Portfolio — filters
+            ['key' => 'portfolio.filter.year', 'locale' => 'pt-PT', 'value' => 'Ano', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.filter.year', 'locale' => 'en-UK', 'value' => 'Year', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.filter.material', 'locale' => 'pt-PT', 'value' => 'Material', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.filter.material', 'locale' => 'en-UK', 'value' => 'Material', 'created_at' => $now, 'updated_at' => $now],
+
+            // Portfolio — empty states
+            ['key' => 'portfolio.no_projects', 'locale' => 'pt-PT', 'value' => 'Ainda não há projetos. Volte em breve!', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.no_projects', 'locale' => 'en-UK', 'value' => 'No projects yet. Check back soon!', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.no_results', 'locale' => 'pt-PT', 'value' => 'Nenhum projeto corresponde aos filtros selecionados.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.no_results', 'locale' => 'en-UK', 'value' => 'No projects match the selected filters.', 'created_at' => $now, 'updated_at' => $now],
+
+            // Portfolio — CTA section
+            ['key' => 'portfolio.cta.title', 'locale' => 'pt-PT', 'value' => 'Tem um Projeto em Mente?', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.cta.title', 'locale' => 'en-UK', 'value' => 'Have a Project in Mind?', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.cta.description', 'locale' => 'pt-PT', 'value' => 'Explore os nos nossos produtos ou apresente-nos a sua ideia! ', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.cta.description', 'locale' => 'en-UK', 'value' => 'Explore our products or share your idea with us!', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.cta.shop', 'locale' => 'pt-PT', 'value' => 'Ver Produtos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.cta.shop', 'locale' => 'en-UK', 'value' => 'Browse Products', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.cta.custom', 'locale' => 'pt-PT', 'value' => 'Iniciar um Projecto', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'portfolio.cta.custom', 'locale' => 'en-UK', 'value' => 'Start a Project', 'created_at' => $now, 'updated_at' => $now],
+
+            // Project card component
+            ['key' => 'projects.card.no_photo', 'locale' => 'pt-PT', 'value' => 'Sem foto', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'projects.card.no_photo', 'locale' => 'en-UK', 'value' => 'No photo', 'created_at' => $now, 'updated_at' => $now],
         ];
 
         DB::table('static_translations')->upsert(

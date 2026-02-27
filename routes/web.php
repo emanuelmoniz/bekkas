@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\ConfigurationController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\OrderController;
@@ -76,7 +77,9 @@ Route::get('/custom', function () {
     return view('custom');
 })->name('custom.index');
 
-// Portfolio / Projects – public pages (show page not yet implemented)
+// Portfolio / Projects – public pages
+Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.index');
+
 Route::get('/portfolio/{project:uuid}', function () {
     abort(404);
 })->name('portfolio.show');

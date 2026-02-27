@@ -163,11 +163,29 @@
                             </div>
                         @endif
 
-                        {{-- Architecture --}}
-                        <div class="relative h-full flex items-center">
-                            <x-nav-button :active="request()->routeIs('custom.*')" @click="window.location.href='{{ route('custom.index') }}'">
+                        {{-- Custom (with dropdown) --}}
+                        <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                            <x-nav-button :active="request()->routeIs('custom.*') || request()->routeIs('portfolio.*')" @click="window.location.href='{{ route('custom.index') }}'">
                                 {{ t('nav.custom') ?: 'Custom' }}
                             </x-nav-button>
+                            <div x-show="open"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100"
+                                 x-transition:leave-end="opacity-0 scale-95"
+                                 class="absolute left-0 top-full mt-2 w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                 style="display: none;">
+                                <div class="py-1">
+                                    <a href="{{ route('custom.index') }}#request" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">
+                                        {{ t('nav.services_prices') ?: 'Services & Prices' }}
+                                    </a>
+                                    <a href="{{ route('portfolio.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">
+                                        {{ t('nav.portfolio') ?: 'Portfolio' }}
+                                    </a>
+                                </div>
+                            </div>
                         </div>
 
                         {{-- About --}}
@@ -440,9 +458,25 @@
                     </div>
                 @endif
                 
-                <x-responsive-nav-link :href="route('custom.index')" :active="request()->routeIs('custom.*')">
-                    {{ t('nav.custom') ?: 'Custom' }}
-                </x-responsive-nav-link>
+                <div x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium text-grey-dark hover:bg-grey-light">
+                        <span>{{ t('nav.custom') ?: 'Custom' }}</span>
+                        <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div x-show="open" class="pl-4 space-y-1">
+                        <x-responsive-nav-link :href="route('custom.index')" :active="request()->routeIs('custom.*') && !request()->routeIs('portfolio.*')">
+                            {{ t('nav.custom') ?: 'Custom' }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('custom.index') . '#requests'" :active="false">
+                            {{ t('nav.services_prices') ?: 'Services & Prices' }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('portfolio.index')" :active="request()->routeIs('portfolio.*')">
+                            {{ t('nav.portfolio') ?: 'Portfolio' }}
+                        </x-responsive-nav-link>
+                    </div>
+                </div>
                 <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
                     {{ t('nav.about') ?: 'About Us' }}
                 </x-responsive-nav-link>

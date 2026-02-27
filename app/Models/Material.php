@@ -24,4 +24,9 @@ class Material extends Model
     {
         return $this->belongsToMany(Product::class);
     }
+
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class);
+    }
 }

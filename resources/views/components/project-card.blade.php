@@ -52,7 +52,7 @@
 
     // TODO: replace '#' with route('portfolio.show', $project) once the
     // public project show page is implemented.
-    $showUrl = route('portfolio.show', $project);
+    $showUrl = $project->uuid ? route('portfolio.show', $project) : '#';
 @endphp
 
 {{--

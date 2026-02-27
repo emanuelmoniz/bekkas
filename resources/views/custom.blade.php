@@ -156,7 +156,7 @@
                 />
 
                 <div class="mt-10 flex justify-center">
-                    <a href="#"
+                    <a href="{{ route('portfolio.index') }}"
                        class="inline-flex items-center gap-2 border-2 border-dark text-dark hover:bg-dark hover:text-white px-8 py-3 rounded-full uppercase font-semibold text-sm transition-colors duration-200">
                         {{ t('custom.projects.portfolio_button') ?: 'Check our full portfolio' }}
                     </a>
