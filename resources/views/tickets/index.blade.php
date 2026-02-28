@@ -72,9 +72,11 @@
             </div>
         </form>
 
-        {{-- Tickets table (UNCHANGED) --}}
+        {{-- Tickets table --}}
         <div class="bg-white shadow rounded">
-            <table class="min-w-full border">
+
+            {{-- Desktop table (md+) --}}
+            <table class="hidden md:table w-full border">
                 <thead class="bg-grey-light">
                     <tr>
                         <th class="px-4 py-2 text-left">{{ t('tickets.ticket_id') ?: 'Ticket ID' }}</th>
@@ -117,14 +119,49 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5"
-                                class="px-4 py-6 text-center text-grey-medium">
+                            <td colspan="5" class="px-4 py-6 text-center text-grey-medium">
                                 {{ t('tickets.no_tickets') ?: 'No tickets found.' }}
                             </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
+
+            {{-- Mobile cards (< md) --}}
+            <div class="md:hidden divide-y divide-grey-light">
+                @forelse ($tickets as $ticket)
+                    <a href="{{ route('tickets.show', $ticket) }}"
+                       class="block px-4 py-3 hover:bg-grey-light/40 transition-colors">
+
+                        {{-- Ticket ID + status badge --}}
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="font-mono text-sm text-accent-secondary">
+                                {{ $ticket->ticket_number ?? $ticket->uuid }}
+                            </span>
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-grey-light text-grey-dark shrink-0">
+                                {{ ucfirst($ticket->status) }}
+                            </span>
+                        </div>
+
+                        {{-- Title --}}
+                        <p class="mt-1 font-semibold {{ $ticket->isUnreadFor(auth()->id()) ? 'text-status-error' : 'text-grey-dark' }}">
+                            {{ $ticket->title }}
+                        </p>
+
+                        {{-- Category + date --}}
+                        <div class="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-grey-medium">
+                            <span>{{ optional($ticket->category?->translation())->name ?? '—' }}</span>
+                            <span>{{ $ticket->last_message_at?->format('Y-m-d H:i') ?? '—' }}</span>
+                        </div>
+
+                    </a>
+                @empty
+                    <p class="px-4 py-6 text-center text-grey-medium">
+                        {{ t('tickets.no_tickets') ?: 'No tickets found.' }}
+                    </p>
+                @endforelse
+            </div>
+
         </div>
 
     </div>

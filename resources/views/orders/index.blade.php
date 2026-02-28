@@ -64,7 +64,9 @@
         </form>
 
         <div class="bg-white shadow rounded">
-            <table class="min-w-full border">
+
+            {{-- Desktop table (md+) --}}
+            <table class="hidden md:table w-full border">
                 <thead class="bg-grey-light">
                     <tr>
                         <th class="px-4 py-2 text-left">{{ t('orders.order_number') ?: 'Order #' }}</th>
@@ -105,6 +107,56 @@
                     @endforelse
                 </tbody>
             </table>
+
+            {{-- Mobile cards (< md) --}}
+            <div class="md:hidden divide-y divide-grey-light">
+                @forelse ($orders as $order)
+                    <a href="{{ route('orders.show', $order) }}"
+                       class="block px-4 py-3 hover:bg-grey-light/40 transition-colors">
+
+                        {{-- Order number + total --}}
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="font-mono text-sm text-accent-secondary">
+                                {{ $order->order_number }}
+                            </span>
+                            <span class="font-semibold text-sm text-grey-dark">
+                                {{ number_format($order->total_gross, 2) }} €
+                            </span>
+                        </div>
+
+                        {{-- Status + paid badge --}}
+                        <div class="mt-1 flex flex-wrap items-center gap-1.5">
+                            @php
+                                $statusObj = \App\Models\OrderStatus::where('code', $order->status)->first();
+                            @endphp
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-grey-light text-grey-dark">
+                                {{ optional($statusObj?->translation())->name ?? $order->status }}
+                            </span>
+                            @if($order->is_paid)
+                                <span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">
+                                    {{ t('orders.paid') ?: 'Paid' }}
+                                </span>
+                            @else
+                                <span class="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700">
+                                    {{ t('orders.not_paid') ?: 'Not Paid' }}
+                                </span>
+                            @endif
+                        </div>
+
+                        {{-- Created + updated dates --}}
+                        <div class="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-grey-medium">
+                            <span>{{ $order->created_at->format('d/m/Y H:i') }}</span>
+                            <span>{{ t('orders.last_update') ?: 'Updated' }}: {{ $order->updated_at->format('d/m/Y H:i') }}</span>
+                        </div>
+
+                    </a>
+                @empty
+                    <p class="px-4 py-6 text-center text-grey-medium">
+                        {{ t('orders.no_orders') ?: 'No orders found.' }}
+                    </p>
+                @endforelse
+            </div>
+
         </div>
     </div>
 </x-app-layout>
