@@ -6,12 +6,12 @@
     </x-slot>
 
     <div class="py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-6" x-data="checkoutData()">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-3 gap-6" x-data="checkoutData()">
 
             {{-- LEFT --}}
             <form method="POST"
                   action="{{ route('checkout.place') }}"
-                  class="md:col-span-2 bg-white p-6 rounded shadow space-y-4">
+                  class="lg:col-span-2 bg-white p-6 rounded shadow space-y-4">
                 @csrf
 
                 {{-- Validation Errors --}}

@@ -1,7 +1,7 @@
 <div class="option-type-block border p-4 relative" data-index="{{ $index }}">
     <button type="button" class="absolute top-2 right-2 text-red-600 remove-option-type">&times;</button>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
                 <label class="block mb-1">Name ({{ $locale }})</label>
@@ -13,7 +13,7 @@
         @endforeach
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
                 <label class="block mb-1">Description ({{ $locale }})</label>
@@ -55,7 +55,7 @@
             <div class="option-item border p-3 relative" data-index="{{ $j }}">
                 <button type="button" class="absolute top-2 right-2 text-red-600 remove-option">&times;</button>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     @foreach (\App\Models\Locale::activeCodes() as $locale)
                         <div>
                             <label class="block mb-1">Option Name ({{ $locale }})</label>
@@ -67,7 +67,7 @@
                     @endforeach
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-2">
                     @foreach (\App\Models\Locale::activeCodes() as $locale)
                         <div>
                             <label class="block mb-1">Description ({{ $locale }})</label>
@@ -91,7 +91,7 @@
                            class="w-full border rounded px-3 py-2">
                 </div>
 
-                <div class="option-price-fields mt-2 grid grid-cols-1 md:grid-cols-2 gap-4"
+                <div class="option-price-fields mt-2 grid grid-cols-1 lg:grid-cols-2 gap-4"
                      style="{{ ($data['have_price'] ?? false) ? '' : 'display:none' }}">
                     <div>
                         <label class="block mb-1">Price (gross)</label>

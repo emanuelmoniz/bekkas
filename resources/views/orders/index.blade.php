@@ -7,7 +7,7 @@
 
             {{-- Mobile toggle button --}}
             <button type="button" @click="open = !open"
-                class="sm:hidden w-full flex items-center justify-between px-3 py-2 border rounded text-sm font-medium text-grey-dark">
+                class="lg:hidden w-full flex items-center justify-between px-3 py-2 border rounded text-sm font-medium text-grey-dark">
                 <span>{{ t('orders.filters') ?: 'Filters' }}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -16,20 +16,20 @@
 
             {{-- Filter panel: collapsed on mobile, always visible on desktop --}}
             <div x-show="open"
-                 class="sm:!flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-3 mt-2 sm:mt-0">
+                 class="lg:!flex lg:flex-wrap lg:items-center lg:justify-between lg:gap-3 mt-2 lg:mt-0">
 
-                <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3">
+                <div class="flex flex-col lg:flex-row lg:flex-wrap lg:items-center gap-2 lg:gap-3">
                     {{-- Order # --}}
                     <input
                         type="text"
                         name="order_number"
                         value="{{ request('order_number') }}"
                         placeholder="{{ t('orders.order_number') ?: 'Order #' }}"
-                        class="w-full sm:w-40 border rounded px-3 py-2"
+                        class="w-full lg:w-40 border rounded px-3 py-2"
                     >
 
                     {{-- Status --}}
-                    <select name="status" class="w-full sm:w-auto border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+                    <select name="status" class="w-full lg:w-auto border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                         <option value="">{{ t('orders.status') ?: 'Status' }}</option>
                         @foreach($statuses as $status)
                             <option value="{{ $status->code }}" @selected(request('status') === $status->code)>
@@ -39,7 +39,7 @@
                     </select>
 
                     {{-- Paid --}}
-                    <select name="paid" class="w-full sm:w-auto border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+                    <select name="paid" class="w-full lg:w-auto border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                         <option value="">{{ t('orders.paid_all') ?: 'All' }}</option>
                         <option value="1" @selected(request('paid') === '1')>{{ t('orders.paid') ?: 'Paid' }}</option>
                         <option value="0" @selected(request('paid') === '0')>{{ t('orders.not_paid') ?: 'Not Paid' }}</option>
@@ -47,14 +47,14 @@
                 </div>
 
                 {{-- Actions --}}
-                <div class="flex flex-col sm:flex-row sm:items-center sm:shrink-0 gap-2 mt-2 sm:mt-0">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:shrink-0 gap-2 mt-2 lg:mt-0">
                     <a href="{{ route('orders.index') }}"
-                       class="w-full sm:w-auto text-center bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
+                       class="w-full lg:w-auto text-center bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
                         {{ t('orders.reset') ?: 'Reset' }}
                     </a>
                     <button
                         type="submit"
-                        class="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase"
+                        class="w-full lg:w-auto bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase"
                     >
                         {{ t('orders.filter') ?: 'Filter' }}
                     </button>
@@ -66,7 +66,7 @@
         <div class="bg-white shadow rounded">
 
             {{-- Desktop table (md+) --}}
-            <table class="hidden md:table w-full border">
+            <table class="hidden lg:table w-full border">
                 <thead class="bg-grey-light">
                     <tr>
                         <th class="px-4 py-2 text-left">{{ t('orders.order_number') ?: 'Order #' }}</th>
@@ -109,7 +109,7 @@
             </table>
 
             {{-- Mobile cards (< md) --}}
-            <div class="md:hidden divide-y divide-grey-light">
+            <div class="lg:hidden divide-y divide-grey-light">
                 @forelse ($orders as $order)
                     <a href="{{ route('orders.show', $order) }}"
                        class="block px-4 py-3 hover:bg-grey-light/40 transition-colors">

@@ -11,7 +11,7 @@
              ORDER INFO (READ)
         ======================= --}}
         <div class="bg-white shadow rounded p-6">
-            <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <dl class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Date</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $order->created_at->format('d/m/Y H:i') }}</p>
@@ -105,12 +105,12 @@
         ======================= --}}
         <div class="bg-white shadow rounded p-6">
             <h3 class="text-xs text-grey-dark uppercase mb-4">Shipping Address</h3>
-            <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="md:col-span-2">
+            <dl class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="lg:col-span-2">
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Name</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $order->address_title }}</p>
                 </div>
-                <div class="md:col-span-2">
+                <div class="lg:col-span-2">
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Address</p>
                     <p class="text-sm text-grey-dark mt-1">
                         {{ $order->address_line_1 }}

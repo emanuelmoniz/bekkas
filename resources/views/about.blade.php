@@ -26,30 +26,30 @@
             
             <!-- Content -->
             <div class="relative z-10 text-center text-white px-6">
-                <h1 class="text-5xl md:text-7xl font-bold mb-6">{{ t('about.banner.title') ?: 'About BEKKAS' }}</h1>
-                <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">{{ t('about.banner.subtitle') ?: 'Making 3D printing accessible to everyone' }}</p>
+                <h1 class="text-5xl lg:text-7xl font-bold mb-6">{{ t('about.banner.title') ?: 'About BEKKAS' }}</h1>
+                <p class="text-xl lg:text-2xl mb-8 max-w-2xl mx-auto">{{ t('about.banner.subtitle') ?: 'Making 3D printing accessible to everyone' }}</p>
             </div>
         </section>
 
         <!-- MISSION SECTION -->
-        <section class="py-16 md:py-24 bg-white animate-sequence">
+        <section class="py-16 lg:py-24 bg-white animate-sequence">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-8 text-dark">{{ t('about.mission.title') ?: 'Our Mission' }}</h2>
-                <p class="text-lg md:text-xl text-grey-dark mb-6 leading-relaxed">
+                <p class="text-lg lg:text-xl text-grey-dark mb-6 leading-relaxed">
                     {{ t('about.mission.intro') ?: 'At BEKKAS, we believe that everyone deserves access to the transformative power of 3D printing technology.' }}
                 </p>
-                <p class="text-lg md:text-xl text-grey-dark leading-relaxed">
+                <p class="text-lg lg:text-xl text-grey-dark leading-relaxed">
                     {{ t('about.mission.purpose') ?: 'Our business is focused on making 3D printing accessible and affordable, giving everybody a chance to have something unique and personalizable that reflects their vision and creativity.' }}
                 </p>
             </div>
         </section>
 
         <!-- VALUES SECTION -->
-        <section class="py-16 md:py-24 bg-white">
+        <section class="py-16 lg:py-24 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-4xl font-bold mb-12 text-center text-dark">{{ t('about.values.title') ?: 'What We Stand For' }}</h2>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 animate-sequence">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-sequence">
                     <!-- Value 1 -->
                     <div class="bg-white p-8 rounded-lg anim-item" data-index="0">
                         <h3 class="text-xl font-bold mb-4 text-dark">{{ t('about.values.accessibility') ?: 'Accessibility' }}</h3>
@@ -72,7 +72,7 @@
         </section>
 
         <!-- STORY SECTION -->
-        <section class="py-16 md:py-24 bg-white animate-sequence">
+        <section class="py-16 lg:py-24 bg-white animate-sequence">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-8 text-center text-dark">{{ t('about.story.title') ?: 'Our Story' }}</h2>
                 <div class="space-y-6 text-lg text-grey-dark">
@@ -90,7 +90,7 @@
         </section>
 
         <!-- CTA SECTION -->
-        <section class="py-16 md:py-24 bg-primary animate-sequence">
+        <section class="py-16 lg:py-24 bg-primary animate-sequence">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-6">{{ t('about.cta.title') ?: 'Ready to Start Your Project?' }}</h2>
                 <p class="text-xl mb-8">

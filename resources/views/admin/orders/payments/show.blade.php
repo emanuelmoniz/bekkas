@@ -6,7 +6,7 @@
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white shadow rounded p-6 space-y-6">
             <div class="flex justify-between items-start gap-4">
-                <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <dl class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div>
                         <p class="text-xs text-grey-dark uppercase tracking-widest">Payment ID</p>
                         <p class="text-sm text-grey-dark mt-1">{{ $payment->payment_id ?? $payment->id }}</p>

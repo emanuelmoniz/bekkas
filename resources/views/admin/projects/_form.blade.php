@@ -11,7 +11,7 @@
 
     {{-- TRANSLATIONS --}}
     @php $defaultLocale = \App\Models\Locale::defaultLocale()?->code ?? 'en-UK'; @endphp
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
                 <x-input-label>Name ({{ $locale }}) @if($locale === $defaultLocale)<span class="text-status-error">*</span>@endif</x-input-label>
@@ -28,7 +28,7 @@
         @endforeach
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
                 <x-input-label>Description ({{ $locale }})</x-input-label>
@@ -43,7 +43,7 @@
     </div>
 
     {{-- PROJECT FIELDS --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div>
             <x-input-label for="production_date">Production Date</x-input-label>
             <input type="date"
@@ -94,7 +94,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
             <x-input-label for="weight">Weight</x-input-label>
             <input type="number"
@@ -124,7 +124,7 @@
     </div>
 
     {{-- CLIENT --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
             <x-input-label for="client">Client</x-input-label>
             <input type="text"

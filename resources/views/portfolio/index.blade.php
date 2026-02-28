@@ -136,9 +136,9 @@
         >
 
         {{-- ── HERO / TITLE SECTION ────────────────────────────────────────── --}}
-        <section class="bg-secondary py-12 md:py-16">
+        <section class="bg-secondary py-12 lg:py-16">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h1 class="uppercase text-4xl md:text-5xl font-bold text-dark mb-3">
+                <h1 class="uppercase text-4xl lg:text-5xl font-bold text-dark mb-3">
                     {{ t('portfolio.title') ?: 'Portfolio' }}
                 </h1>
                 <p class="text-grey-dark text-lg max-w-2xl mx-auto">
@@ -204,7 +204,7 @@
         </section>
 
         {{-- ── PROJECTS GRID ───────────────────────────────────────────────── --}}
-        <section class="bg-light pt-6 md:pt-8 pb-10 md:pb-14">
+        <section class="bg-light pt-6 lg:pt-8 pb-10 lg:pb-14">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 @if($projects->isEmpty())
@@ -212,7 +212,7 @@
                         {{ t('portfolio.no_projects') ?: 'No projects yet. Check back soon!' }}
                     </p>
                 @else
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 animate-sequence">
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 animate-sequence">
                         @foreach($projects as $project)
                         <div class="anim-item"
                             data-portfolio-card
@@ -244,7 +244,7 @@
         </section>
 
         {{-- ── CTA / NAVIGATION SECTION ──────────────────────────────────── --}}
-        <section class="py-16 md:py-24 bg-primary animate-sequence">
+        <section class="py-16 lg:py-24 bg-primary animate-sequence">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-6">
                     {{ t('portfolio.cta.title') ?: 'Have a Project in Mind?' }}

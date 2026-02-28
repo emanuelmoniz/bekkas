@@ -7,7 +7,7 @@
 
         <div class="bg-white shadow rounded p-6 mb-6">
             <h3 class="text-xs text-grey-dark uppercase mb-4">Basic Information</h3>
-            <dl class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <dl class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div>
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Active</p>
                     <p class="text-sm text-grey-dark mt-1">

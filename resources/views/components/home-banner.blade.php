@@ -16,10 +16,10 @@
             <template x-for="(slide,index) in displaySlides" :key="index">
                 <div class="flex-none" :style="`width: ${slideWidth}%; margin: 0 ${gap/2}%`">
                     <!-- each slide has rounded corners and hides overflow -->
-                    <div class="bg-cover bg-center min-h-[50vh] md:min-h-[75vh] rounded-2xl overflow-hidden"
+                    <div class="bg-cover bg-center min-h-[50vh] lg:min-h-[75vh] rounded-2xl overflow-hidden"
                          :style="`background-image: url('${slide.image}')`">
-                        <div class="min-h-[50vh] md:min-h-[75vh] flex flex-col items-center justify-end text-center text-white px-6 pb-20 bg-dark/40">
-                            <h1 class="text-4xl md:text-6xl font-bold mb-4" x-text="slide.tagline"></h1>
+                        <div class="min-h-[50vh] lg:min-h-[75vh] flex flex-col items-center justify-end text-center text-white px-6 pb-20 bg-dark/40">
+                            <h1 class="text-4xl lg:text-6xl font-bold mb-4" x-text="slide.tagline"></h1>
                             <a :href="slide.buttonUrl" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-semibold transition-colors" x-text="slide.buttonText"></a>
                         </div>
                     </div>

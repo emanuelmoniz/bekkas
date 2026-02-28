@@ -12,7 +12,7 @@
 
     {{-- TRANSLATIONS --}}
     @php $defaultLocale = \App\Models\Locale::defaultLocale()?->code ?? 'en-UK'; @endphp
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
                 <x-input-label>Name ({{ $locale }}) @if($locale === $defaultLocale)<span class="text-status-error">*</span>@endif</x-input-label>
@@ -30,7 +30,7 @@
     </div>
 
     {{-- DESCRIPTION --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
                 <x-input-label>Description ({{ $locale }})</x-input-label>
@@ -45,7 +45,7 @@
     </div>
 
     {{-- TECHNICAL INFORMATION --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         @foreach (\App\Models\Locale::activeCodes() as $locale)
             <div>
                 <x-input-label>Technical Info ({{ $locale }})</x-input-label>
@@ -60,7 +60,7 @@
     </div>
 
     {{-- PRICE / TAX --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div id="product-price-wrapper">
             <x-input-label for="price">Price (gross)</x-input-label>
             <input type="number"
@@ -207,7 +207,7 @@
 
 
 {{-- STOCK / DIMENSIONS / FLAGS --}}
-<div class="grid grid-cols-1 md:grid-cols-6 gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-6 gap-6">
     <div>
         <x-input-label for="stock">Stock</x-input-label>
         <div id="product-stock-wrapper">
@@ -284,7 +284,7 @@
     </label>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <label class="flex items-center gap-2">
         <input type="checkbox"
                name="is_featured"
@@ -323,7 +323,7 @@
 <template id="option-type-template">
     <div class="option-type-block border p-4 relative" data-index="__INDEX__">
         <button type="button" class="absolute top-2 right-2 text-red-600 remove-option-type">&times;</button>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             @foreach (\App\Models\Locale::activeCodes() as $locale)
                 <div>
                     <label class="block mb-1">Name ({{ $locale }})</label>
@@ -333,7 +333,7 @@
                 </div>
             @endforeach
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
             @foreach (\App\Models\Locale::activeCodes() as $locale)
                 <div>
                     <label class="block mb-1">Description ({{ $locale }})</label>
@@ -367,7 +367,7 @@
 <template id="option-template">
     <div class="option-item border p-3 relative" data-index="__OPT_INDEX__">
         <button type="button" class="absolute top-2 right-2 text-red-600 remove-option">&times;</button>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             @foreach (\App\Models\Locale::activeCodes() as $locale)
                 <div>
                     <label class="block mb-1">Option Name ({{ $locale }})</label>
@@ -375,7 +375,7 @@
                 </div>
             @endforeach
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-2">
             @foreach (\App\Models\Locale::activeCodes() as $locale)
                 <div>
                     <label class="block mb-1">Description ({{ $locale }})</label>
@@ -393,7 +393,7 @@
                    value="0" placeholder="0"
                    class="w-full border rounded px-3 py-2">
         </div>
-        <div class="option-price-fields mt-2 grid grid-cols-1 md:grid-cols-2 gap-4" style="display:none">
+        <div class="option-price-fields mt-2 grid grid-cols-1 lg:grid-cols-2 gap-4" style="display:none">
             <div>
                 <label class="block mb-1">Price (gross)</label>
                 <input type="number" step="0.01" min="0"

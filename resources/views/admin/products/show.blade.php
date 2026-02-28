@@ -8,7 +8,7 @@
         {{-- BASIC INFO --}}
         <div class="bg-white shadow rounded p-6 mb-6">
             <h3 class="text-xs text-grey-dark uppercase mb-4">Basic Information</h3>
-            <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <dl class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Price</p>
                     <p class="text-sm text-grey-dark mt-1">{{ number_format($product->price, 2) }}</p>
@@ -85,16 +85,16 @@
                 @foreach($product->translations as $translation)
                     <div class="border border-grey-light rounded p-4">
                         <p class="text-xs text-grey-dark uppercase mb-2">{{ $translation->locale }}</p>
-                        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <dl class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                             <div>
                                 <p class="text-xs text-grey-medium uppercase">Name</p>
                                 <p class="text-sm text-grey-dark mt-1">{{ $translation->name ?: '—' }}</p>
                             </div>
-                            <div class="md:col-span-2">
+                            <div class="lg:col-span-2">
                                 <p class="text-xs text-grey-medium uppercase">Description</p>
                                 <p class="text-sm text-grey-dark mt-1 whitespace-pre-line">{{ $translation->description ?: '—' }}</p>
                             </div>
-                            <div class="md:col-span-2">
+                            <div class="lg:col-span-2">
                                 <p class="text-xs text-grey-medium uppercase">Technical Info</p>
                                 <p class="text-sm text-grey-dark mt-1 whitespace-pre-line">{{ $translation->technical_info ?: '—' }}</p>
                             </div>

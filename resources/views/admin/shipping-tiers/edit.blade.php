@@ -40,7 +40,7 @@
             @csrf
             @method('PATCH')
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 @foreach ($locales as $locale => $label)
                 <div>
                     <x-input-label>Name ({{ $label }}) @if($locale === $defaultLocale)<span class="text-status-error">*</span>@endif</x-input-label>
@@ -54,7 +54,7 @@
                 @endforeach
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
                     <x-input-label for="weight_from">Weight From (g) <span class="text-status-error">*</span></x-input-label>
                     <x-text-input id="weight_from" name="weight_from" type="number" class="mt-1 block w-full" :value="old('weight_from', $shippingTier->weight_from)" required />
@@ -68,7 +68,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
                     <x-input-label for="cost_gross">Cost (gross) <span class="text-status-error">*</span></x-input-label>
                     <x-text-input id="cost_gross" name="cost_gross" type="number" step="0.01" class="mt-1 block w-full" :value="old('cost_gross', $shippingTier->cost_gross)" required />
@@ -82,7 +82,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
                     <x-input-label for="tax_id">Tax <span class="text-status-error">*</span></x-input-label>
                     <select id="tax_id" name="tax_id"

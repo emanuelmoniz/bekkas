@@ -66,7 +66,7 @@
             <div class="bg-white p-6 rounded shadow mb-6 space-y-4">
                 <h3 class="text-lg border-b pb-2">Default Address</h3>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     {{-- TITLE --}}
                     <div>
                         <x-input-label for="title">Title</x-input-label>
@@ -82,14 +82,14 @@
                     </div>
 
                     {{-- ADDRESS LINE 1 --}}
-                    <div class="md:col-span-2">
+                    <div class="lg:col-span-2">
                         <x-input-label for="address_line_1">Address Line 1 <span class="text-status-error">*</span></x-input-label>
                         <x-text-input id="address_line_1" name="address_line_1" type="text" class="mt-1 block w-full" :value="old('address_line_1')" required />
                         <x-input-error :messages="$errors->get('address_line_1')" class="mt-2" />
                     </div>
 
                     {{-- ADDRESS LINE 2 --}}
-                    <div class="md:col-span-2">
+                    <div class="lg:col-span-2">
                         <x-input-label for="address_line_2">Address Line 2</x-input-label>
                         <x-text-input id="address_line_2" name="address_line_2" type="text" class="mt-1 block w-full" :value="old('address_line_2')" />
                         <x-input-error :messages="$errors->get('address_line_2')" class="mt-2" />
@@ -110,7 +110,7 @@
                     </div>
 
                     {{-- COUNTRY --}}
-                    <div class="md:col-span-2">
+                    <div class="lg:col-span-2">
                         <x-input-label for="country_id">Country <span class="text-status-error">*</span></x-input-label>
                         <select id="country_id" name="country_id" required class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                             @foreach ($countries as $country)

@@ -82,7 +82,7 @@
                     @csrf
                     @method('PATCH')
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
                         {{-- TITLE --}}
                         <div>
                             <x-input-label for="title_{{ $address->id }}">Title</x-input-label>
@@ -96,13 +96,13 @@
                         </div>
 
                         {{-- ADDRESS LINE 1 --}}
-                        <div class="md:col-span-2">
+                        <div class="lg:col-span-2">
                             <x-input-label>Address Line 1 <span class="text-status-error">*</span></x-input-label>
                             <x-text-input name="address_line_1" type="text" class="mt-1 block w-full" :value="old('address_line_1', $address->address_line_1)" required />
                         </div>
 
                         {{-- ADDRESS LINE 2 --}}
-                        <div class="md:col-span-2">
+                        <div class="lg:col-span-2">
                             <x-input-label>Address Line 2</x-input-label>
                             <x-text-input name="address_line_2" type="text" class="mt-1 block w-full" :value="old('address_line_2', $address->address_line_2)" />
                         </div>
@@ -120,7 +120,7 @@
                         </div>
 
                         {{-- COUNTRY --}}
-                        <div class="md:col-span-2">
+                        <div class="lg:col-span-2">
                             <x-input-label>Country <span class="text-status-error">*</span></x-input-label>
                             <select name="country_id" required class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                                 @foreach ($countries as $country)
@@ -163,7 +163,7 @@
 
                 <h4 class="font-semibold mb-3">Add New Address</h4>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
                     {{-- TITLE --}}
                     <div>
                         <x-input-label for="new_title">Title</x-input-label>
@@ -177,13 +177,13 @@
                     </div>
 
                     {{-- ADDRESS LINE 1 --}}
-                    <div class="md:col-span-2">
+                    <div class="lg:col-span-2">
                         <x-input-label>Address Line 1 <span class="text-status-error">*</span></x-input-label>
                         <x-text-input name="address_line_1" type="text" class="mt-1 block w-full" required />
                     </div>
 
                     {{-- ADDRESS LINE 2 --}}
-                    <div class="md:col-span-2">
+                    <div class="lg:col-span-2">
                         <x-input-label>Address Line 2</x-input-label>
                         <x-text-input name="address_line_2" type="text" class="mt-1 block w-full" />
                     </div>
@@ -201,7 +201,7 @@
                     </div>
 
                     {{-- COUNTRY --}}
-                    <div class="md:col-span-2">
+                    <div class="lg:col-span-2">
                         <x-input-label>Country <span class="text-status-error">*</span></x-input-label>
                         <select name="country_id" required class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                             @foreach ($countries as $country)

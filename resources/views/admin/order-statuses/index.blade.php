@@ -12,7 +12,7 @@
         </div>
 
         <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 <input type="text" name="name" value="{{ request('name') }}" placeholder="Name"
                        class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 <input type="text" name="code" value="{{ request('code') }}" placeholder="Code"

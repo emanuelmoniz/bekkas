@@ -13,7 +13,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden h-full space-x-8 sm:-my-px sm:flex sm:flex-1 sm:justify-center">
+                <div class="hidden h-full space-x-8 lg:-my-px lg:flex lg:flex-1 lg:justify-center">
                     @if(request()->is('admin/*') || request()->is('admin'))
                         {{-- ADMIN MENU --}}
                         
@@ -212,7 +212,7 @@
             </div>
 
             <!-- Right side -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6 gap-6">
+            <div class="hidden lg:flex lg:items-center lg:ms-6 gap-6">
                 @php $cartCount = array_sum(array_column(session('cart', []), 'quantity')); @endphp
                 <!-- Language Selector -->
                 <div class="flex items-center gap-2">
@@ -304,7 +304,7 @@
             </div>
 
             <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
+            <div class="-me-2 flex items-center lg:hidden">
                 <button @click="open = ! open"
                         class="inline-flex items-center justify-center p-2 rounded-full text-grey-medium hover:text-grey-medium hover:bg-grey-light focus:outline-none transition">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -327,7 +327,7 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': ! open }" class="hidden sm:hidden">
+    <div :class="{ 'block': open, 'hidden': ! open }" class="hidden lg:hidden">
         <div class="pt-2 pb-3 space-y-1">
             @if(request()->is('admin/*') || request()->is('admin'))
                 {{-- ADMIN MENU MOBILE --}}

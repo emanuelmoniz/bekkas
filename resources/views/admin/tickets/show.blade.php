@@ -34,7 +34,7 @@
 
         {{-- TICKET META --}}
         <div class="bg-white shadow rounded p-6">
-            <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <dl class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Ticket ID</p>
                     <p class="text-sm text-grey-dark mt-1 font-mono">{{ $ticket->ticket_number ?? $ticket->uuid }}</p>

@@ -69,9 +69,9 @@
         <x-home-banner :slides="$slides" />
 
         <!-- SERVICES SECTION -->
-        <section id="services" class="py-16 md:py-24 bg-light animate-sequence">
+        <section id="services" class="py-16 lg:py-24 bg-light animate-sequence">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
                     
                     <!-- Products Card -->
                     @if(config('app.store_enabled'))
@@ -125,10 +125,10 @@
         </section>
 
         <!-- CONTACT SECTION -->
-        <section id="contact" class="py-16 md:py-24 bg-secondary">
+        <section id="contact" class="py-16 lg:py-24 bg-secondary">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 animate-sequence">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 animate-sequence">
                     
                     <!-- Contact Info -->
                     <div class="space-y-8 anim-item" data-index="0">

@@ -7,7 +7,7 @@
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white shadow rounded p-6">
-            <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <dl class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Country</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $region->country?->name }}</p>
@@ -34,7 +34,7 @@
                     </p>
                 </div>
 
-                <div class="md:col-span-2">
+                <div class="lg:col-span-2">
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Name</p>
                     @foreach ($locales as $localeCode => $localeName)
                         @php $t = $region->translations->where('locale', $localeCode)->first(); @endphp

@@ -17,7 +17,7 @@
     <body class="bg-white text-dark">
         @include('layouts.navigation')
 
-        <section class="py-16 md:py-24">
+        <section class="py-16 lg:py-24">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-4xl mx-auto prose">
                 <h1 class="text-4xl font-bold mb-6">{{ t('legal.privacy.title') ?: 'Privacy Policy' }}</h1>
