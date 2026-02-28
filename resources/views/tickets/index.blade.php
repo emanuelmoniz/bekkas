@@ -11,20 +11,20 @@
         </div>
 
         {{-- Filters --}}
-        <form method="GET" class="mb-6 bg-white p-4 rounded shadow" x-data="{ open: false }">
+        <form method="GET" class="mb-6 lg:bg-white lg:p-4 lg:rounded lg:shadow" x-data="{ open: false }">
 
             {{-- Mobile toggle button --}}
             <button type="button" @click="open = !open"
-                class="lg:hidden w-full flex items-center justify-between px-3 py-2 border rounded text-sm font-medium text-grey-dark">
+                class="lg:hidden w-full flex items-center justify-between bg-white border border-grey-light rounded-full uppercase px-8 py-3 mb-2 font-semibold">
                 <span>{{ t('tickets.filters') ?: 'Filters' }}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
             </button>
 
             {{-- Filter panel: collapsed on mobile, always visible on desktop --}}
-            <div x-show="open"
-                 class="lg:!flex lg:flex-wrap lg:items-center lg:gap-3 mt-2 lg:mt-0">
+            <div x-show="open" x-cloak
+                 class="bg-white border border-grey-light rounded p-4 lg:bg-transparent lg:border-0 lg:rounded-none lg:p-0 lg:!flex lg:flex-wrap lg:items-center lg:gap-3 lg:mt-0">
 
                 <div class="flex flex-col lg:flex-row lg:flex-wrap lg:items-center lg:flex-1 gap-2 lg:gap-3">
                     {{-- Ticket ID --}}
