@@ -178,6 +178,9 @@
                                  class="absolute left-0 top-full mt-2 w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                  style="display: none;">
                                 <div class="py-1">
+                                    <a href="{{ route('custom.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">
+                                        {{ t('nav.features') ?: 'Features' }}
+                                    </a>
                                     <a href="{{ route('custom.index') }}#request" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">
                                         {{ t('nav.services_prices') ?: 'Services & Prices' }}
                                     </a>
@@ -443,7 +446,7 @@
                 {{-- PUBLIC MENU MOBILE --}}
                 @if(config('app.store_enabled'))
                     <div x-data="{ open: false }">
-                        <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium text-grey-dark hover:bg-grey-light">
+                        <button @click="open = !open" class="w-full flex items-center justify-between ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-grey-dark hover:text-grey-dark hover:bg-white hover:border-grey-medium">
                             <span>{{ t('nav.store') ?: 'Store' }}</span>
                             <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -464,7 +467,7 @@
                 @endif
                 
                 <div x-data="{ open: false }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium text-grey-dark hover:bg-grey-light">
+                    <button @click="open = !open" class="w-full flex items-center justify-between ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-grey-dark hover:text-grey-dark hover:bg-white hover:border-grey-medium">
                         <span>{{ t('nav.custom') ?: 'Custom' }}</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -472,7 +475,7 @@
                     </button>
                     <div x-show="open" class="pl-4 space-y-1">
                         <x-responsive-nav-link :href="route('custom.index')" :active="request()->routeIs('custom.*') && !request()->routeIs('portfolio.*')">
-                            {{ t('nav.custom') ?: 'Custom' }}
+                            {{ t('nav.features') ?: 'Features' }}
                         </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('custom.index') . '#requests'" :active="false">
                             {{ t('nav.services_prices') ?: 'Services & Prices' }}

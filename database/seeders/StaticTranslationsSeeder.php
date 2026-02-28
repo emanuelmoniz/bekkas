@@ -133,6 +133,10 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'nav.custom', 'locale' => 'en-UK', 'value' => 'Custom', 'created_at' => $now, 'updated_at' => $now],
 
             // custom submenu entries
+
+            ['key' => 'nav.features', 'locale' => 'pt-PT', 'value' => 'Recursos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'nav.features', 'locale' => 'en-UK', 'value' => 'Features', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'nav.services_prices', 'locale' => 'pt-PT', 'value' => 'Serviços & Preços', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'nav.services_prices', 'locale' => 'en-UK', 'value' => 'Services & Prices', 'created_at' => $now, 'updated_at' => $now],
 
