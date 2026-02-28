@@ -475,6 +475,19 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'orders.no_orders', 'locale' => 'pt-PT', 'value' => 'Nenhuma encomenda encontrada.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.no_orders', 'locale' => 'en-UK', 'value' => 'No orders found.', 'created_at' => $now, 'updated_at' => $now],
 
+            // Orders index — page title & filter bar
+            ['key' => 'orders.index_title', 'locale' => 'pt-PT', 'value' => 'As Minhas Encomendas', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.index_title', 'locale' => 'en-UK', 'value' => 'My Orders', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'orders.paid_all', 'locale' => 'pt-PT', 'value' => 'Todos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.paid_all', 'locale' => 'en-UK', 'value' => 'All', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'orders.filter', 'locale' => 'pt-PT', 'value' => 'Filtrar', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.filter', 'locale' => 'en-UK', 'value' => 'Filter', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'orders.reset', 'locale' => 'pt-PT', 'value' => 'Limpar', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.reset', 'locale' => 'en-UK', 'value' => 'Reset', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'orders.expected_delivery', 'locale' => 'pt-PT', 'value' => 'Entrega Prevista', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.expected_delivery', 'locale' => 'en-UK', 'value' => 'Expected Delivery', 'created_at' => $now, 'updated_at' => $now],
 

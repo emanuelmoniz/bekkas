@@ -17,45 +17,37 @@
 
         {{-- Filters --}}
         <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
-            <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+            <div class="flex flex-wrap items-center gap-3">
 
                 {{-- Ticket ID --}}
-                <div>
-                    <label class="block text-sm font-medium mb-1">{{ t('tickets.ticket_id') ?: 'Ticket ID' }}</label>
-                    <input
-                        type="text"
-                        name="ticket_id"
-                        value="{{ request('ticket_id') }}"
-                        class="w-full border rounded px-3 py-2"
-                    >
-                </div>
+                <input
+                    type="text"
+                    name="ticket_id"
+                    value="{{ request('ticket_id') }}"
+                    placeholder="{{ t('tickets.ticket_id') ?: 'Ticket ID' }}"
+                    class="border rounded px-3 py-2 w-36"
+                >
 
-                {{-- Ticket Title (NEW) --}}
-                <div>
-                    <label class="block text-sm font-medium mb-1">{{ t('tickets.title') ?: 'Title' }}</label>
-                    <input
-                        type="text"
-                        name="title"
-                        value="{{ request('title') }}"
-                        class="w-full border rounded px-3 py-2"
-                        placeholder="{{ t('tickets.search_title') ?: 'Search title' }}"
-                    >
-                </div>
+                {{-- Title --}}
+                <input
+                    type="text"
+                    name="title"
+                    value="{{ request('title') }}"
+                    placeholder="{{ t('tickets.search_title') ?: 'Search title' }}"
+                    class="border rounded px-3 py-2 flex-1 min-w-40"
+                >
 
                 {{-- Category --}}
-                <div>
-                    <label class="block text-sm font-medium mb-1">{{ t('tickets.category') ?: 'Category' }}</label>
-                    <select name="category_id" class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm w-full">
-                        <option value="">{{ t('tickets.select_category') ?: 'Select category' }}</option>
-                        @foreach($categories as $category)
-                            @php $name = optional($category->translation())->name; @endphp
-                            <option value="{{ $category->id }}" @selected(request('category_id') == $category->id)>{{ $name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                <select name="category_id" class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+                    <option value="">{{ t('tickets.category') ?: 'Category' }}</option>
+                    @foreach($categories as $category)
+                        @php $name = optional($category->translation())->name; @endphp
+                        <option value="{{ $category->id }}" @selected(request('category_id') == $category->id)>{{ $name }}</option>
+                    @endforeach
+                </select>
 
                 {{-- Actions --}}
-                <div class="flex items-end gap-2">
+                <div class="ml-auto flex items-center gap-2">
                     <a href="{{ route('tickets.index') }}"
                        class="bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
                         {{ t('tickets.reset') ?: 'Reset' }}
@@ -86,7 +78,11 @@
                 <tbody>
                     @forelse ($tickets as $ticket)
                         <tr class="border-t">
-                            <td class="px-4 py-2 font-mono text-sm">{{ $ticket->ticket_number ?? $ticket->uuid }}</td>
+                            <td class="px-4 py-2 font-mono text-sm">
+                                <a href="{{ route('tickets.show', $ticket) }}" class="text-accent-secondary hover:underline">
+                                    {{ $ticket->ticket_number ?? $ticket->uuid }}
+                                </a>
+                            </td>
 
                             <td class="px-4 py-2 font-semibold">
                                 <a href="{{ route('tickets.show', $ticket) }}"

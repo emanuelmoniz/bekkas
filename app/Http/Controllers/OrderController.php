@@ -25,14 +25,28 @@ class OrderController extends Controller
 {
     use AuthorizesRequests;
 
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::where('user_id', Auth::id())
-            ->latest()
-            ->with(['items', 'address'])
-            ->get();
+        $query = Order::where('user_id', Auth::id())
+            ->with(['items', 'address']);
 
-        return view('orders.index', compact('orders'));
+        if ($request->filled('order_number')) {
+            $query->where('order_number', 'like', '%' . trim($request->order_number) . '%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('paid') && in_array($request->paid, ['1', '0'], true)) {
+            $query->where('is_paid', $request->paid === '1');
+        }
+
+        $orders = $query->latest()->get();
+
+        $statuses = \App\Models\OrderStatus::with('translations')->orderBy('sort_order')->get();
+
+        return view('orders.index', compact('orders', 'statuses'));
     }
 
     public function show(Order $order)
