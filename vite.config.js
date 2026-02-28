@@ -7,7 +7,7 @@ export default defineConfig({
     assetsInclude: ['**/*.ttf', '**/*.otf', '**/*.woff', '**/*.woff2'],
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/css/home-splash.css', 'resources/js/app.js'],
+            input: ['resources/css/app.css', 'resources/css/home-splash.css', 'resources/js/app.js', 'resources/js/contact-tracking.js'],
             refresh: true,
         }),
     ],

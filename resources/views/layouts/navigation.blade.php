@@ -197,9 +197,14 @@
 
                         {{-- Contact --}}
                         <div class="relative h-full flex items-center">
-                            <x-nav-button :active="false" @click="if (window.location.pathname === '/') { window.location.hash = '#contact'; } else { window.location.href='{{ url('/#contact') }}'; }">
+                            <button
+                                type="button"
+                                x-bind:class="$store.contactInView
+                                    ? 'uppercase inline-flex items-center h-full px-1 pt-1 border-b-2 border-accent-primary text-sm font-sans font-medium leading-5 text-dark focus:outline-none focus:border-accent-primary transition duration-150 ease-in-out'
+                                    : 'uppercase inline-flex items-center h-full px-1 pt-1 border-b-2 border-transparent text-sm font-sans font-medium leading-5 text-grey-medium hover:text-grey-dark hover:border-grey-medium focus:outline-none focus:text-grey-dark focus:border-grey-medium transition duration-150 ease-in-out'"
+                                @click="if (window.location.pathname === '/') { window.location.hash = '#contact'; } else { window.location.href='{{ url('/#contact') }}'; }">
                                 {{ t('nav.contact') ?: 'Contact' }}
-                            </x-nav-button>
+                            </button>
                         </div>
 
                     @endif
@@ -480,9 +485,12 @@
                 <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
                     {{ t('nav.about') ?: 'About Us' }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="'https://bekkas.pt#contact'" :active="false">
+                <a href="{{ url('/#contact') }}"
+                   x-bind:class="$store.contactInView
+                       ? 'block w-full ps-3 pe-4 py-2 border-l-4 border-accent-primary text-start text-base font-medium text-accent-primary bg-accent-primary/10 focus:outline-none focus:text-accent-primary focus:bg-accent-primary/10 focus:border-accent-primary transition duration-150 ease-in-out'
+                       : 'block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-grey-dark hover:text-grey-dark hover:bg-white hover:border-grey-medium focus:outline-none focus:text-grey-dark focus:bg-white focus:border-grey-medium transition duration-150 ease-in-out'">
                     {{ t('nav.contact') ?: 'Contact' }}
-                </x-responsive-nav-link>
+                </a>
                 
                 <div x-data="{}" x-show="$store.favorites.count > 0" style="display: none;">
                     <x-responsive-nav-link :href="route('favorites.index')" :active="request()->routeIs('favorites.*')">

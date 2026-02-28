@@ -180,7 +180,7 @@
 
         @include('layouts.footer')
 
-
+        @vite('resources/js/contact-tracking.js')
 
     </body>
 </html>

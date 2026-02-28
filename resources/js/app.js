@@ -28,6 +28,9 @@ Alpine.store('cart', {
     count: window.initialCartCount || 0
 });
 
+// Contact section in-view store — updated by IntersectionObserver on the homepage
+Alpine.store('contactInView', false);
+
 // Global flash store — use for client-displayed flash messages (keeps UI consistent)
 Alpine.store('flash', {
     show: false,
