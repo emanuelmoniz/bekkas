@@ -482,6 +482,9 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'orders.paid_all', 'locale' => 'pt-PT', 'value' => 'Todos', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.paid_all', 'locale' => 'en-UK', 'value' => 'All', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'orders.filters', 'locale' => 'pt-PT', 'value' => 'Filtros', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.filters', 'locale' => 'en-UK', 'value' => 'Filters', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'orders.filter', 'locale' => 'pt-PT', 'value' => 'Filtrar', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.filter', 'locale' => 'en-UK', 'value' => 'Filter', 'created_at' => $now, 'updated_at' => $now],
 
@@ -1223,6 +1226,9 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'tickets.search', 'locale' => 'pt-PT', 'value' => 'Pesquisar...', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.search', 'locale' => 'en-UK', 'value' => 'Search...', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'tickets.filters', 'locale' => 'pt-PT', 'value' => 'Filtros', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.filters', 'locale' => 'en-UK', 'value' => 'Filters', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.reset', 'locale' => 'pt-PT', 'value' => 'Limpar', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.reset', 'locale' => 'en-UK', 'value' => 'Reset', 'created_at' => $now, 'updated_at' => $now],
