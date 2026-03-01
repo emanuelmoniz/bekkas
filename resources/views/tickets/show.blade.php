@@ -99,7 +99,7 @@
             @foreach ($ticket->messages as $msg)
                 <div class="bg-white p-4 rounded shadow">
                     <div class="text-sm text-grey-dark mb-1">
-                        {{ $msg->is_system ? t('tickets.system', 'System') : ($msg->user?->name ?? '—') }}
+                        {{ $msg->is_system ? (t('tickets.system') ?: 'System') : ($msg->user?->name ?? '—') }}
                         · {{ $msg->created_at }}
                     </div>
 
