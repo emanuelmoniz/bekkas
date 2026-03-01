@@ -63,7 +63,6 @@
 <div data-flash-root x-data="{ localShow: {{ $hasServerMessage ? 'true' : 'false' }} }" x-show="Alpine.store('flash').show || localShow" x-cloak class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4" @unless($hasServerMessage) style="display:none" @endunless x-bind:aria-hidden="!(Alpine.store('flash').show || localShow)">
     <div class="px-4 py-3 rounded relative pr-12 border border-grey-light border-l-4"
          x-show="Alpine.store('flash').show || localShow"
-         x-init="localShow && setTimeout(() => localShow = false, 6000)"
          x-transition
          x-bind:class="{
              'bg-status-success/10 border-status-success text-status-success': Alpine.store('flash').type === 'success' || {{ $serverType === 'success' ? 'true' : 'false' }},

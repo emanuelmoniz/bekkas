@@ -36,16 +36,8 @@ Alpine.store('flash', {
     show: false,
     type: 'success',
     message: null,
-    // internal timer handle for auto-hide
-    _autoHide: null,
 
     showMessage(msg, type = 'success') {
-        // clear any pending hide timer
-        if (this._autoHide) {
-            clearTimeout(this._autoHide);
-            this._autoHide = null;
-        }
-
         this.message = msg;
         this.type = type || 'success';
         this.show = true;
@@ -53,12 +45,6 @@ Alpine.store('flash', {
         // Do NOT auto-focus the close button. Keeping the button reachable via keyboard
         // (tabindex toggles) preserves accessibility without surprising focus changes.
         // (Users can still focus the button manually or via keyboard navigation.)
-
-        // auto-hide after 6s (store the timer so it can be cancelled)
-        this._autoHide = setTimeout(() => {
-            this.hide();
-            this._autoHide = null;
-        }, 6000);
     },
 
     hide() {
@@ -85,12 +71,6 @@ Alpine.store('flash', {
             }
         } catch (e) {
             // defensive: ignore focus-management failures
-        }
-
-        // clear any pending hide timer
-        if (this._autoHide) {
-            clearTimeout(this._autoHide);
-            this._autoHide = null;
         }
 
         // Finally hide the flash (aria-hidden will update after this)
