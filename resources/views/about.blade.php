@@ -90,7 +90,7 @@
         </section>
 
         <!-- CTA SECTION -->
-        <section class="py-16 lg:py-24 bg-primary animate-sequence">
+        <section class="py-16 lg:py-24 bg-accent-primary animate-sequence">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-6">{{ t('about.cta.title') ?: 'Ready to Start Your Project?' }}</h2>
                 <p class="text-xl mb-8">
@@ -102,7 +102,7 @@
                             {{ t('about.cta.shop') ?: 'Browse Products' }}
                         </a>
                     @endif
-                    <a href="{{ route('tickets.create') }}" class="inline-block bg-primary/90 hover:bg-primary/95 text-white px-8 py-3 rounded-full uppercase font-semibold transition-colors anim-item" data-index="1">
+                    <a href="{{ route('tickets.create') }}" class="inline-block bg-white/10 hover:bg-white/20 border border-white/40 text-white px-8 py-3 rounded-full uppercase font-semibold transition-colors anim-item" data-index="1">
                         {{ t('about.cta.contact') ?: 'Start a Project' }}
                     </a>
                 </div>
