@@ -80,13 +80,23 @@ export MAIL_MAILER=array
 export CACHE_DRIVER=array
 export SESSION_DRIVER=array
 
+echo "Clearing stale Laravel bootstrap cache..."
+rm -f bootstrap/cache/packages.php bootstrap/cache/services.php
+
 echo "Running migrations on test database..."
 # Run migrations explicitly against the isolated sqlite DB to avoid touching other connections
 DB_CONNECTION=sqlite DB_DATABASE="$TMPDB" php artisan migrate --force --database=sqlite
 
 echo "Running PHPUnit tests..."
-# Pass through any args to artisan test, also ensure the test runner uses the isolated DB
-DB_CONNECTION=sqlite DB_DATABASE="$TMPDB" php artisan test "$@"
+# Run through artisan when available; otherwise fallback to vendor phpunit.
+if php artisan list --raw | grep -q '^test$'; then
+  DB_CONNECTION=sqlite DB_DATABASE="$TMPDB" php artisan test "$@"
+elif [ -x "vendor/bin/phpunit" ]; then
+  DB_CONNECTION=sqlite DB_DATABASE="$TMPDB" ./vendor/bin/phpunit "$@"
+else
+  echo "No test runner found. Install dev dependencies (composer install) and retry."
+  exit 1
+fi
 
 # You can uncomment the following line to remove the temporary DB after tests
 # rm -f "$TMPDB"
