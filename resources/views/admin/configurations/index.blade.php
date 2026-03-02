@@ -50,6 +50,33 @@
 
             <hr>
 
+            <h3 class="font-semibold">Maintenance Mode</h3>
+            <p class="text-sm text-grey-dark mb-3">When enabled, all non-admin traffic is redirected to the maintenance page.</p>
+
+            <div class="grid grid-cols-4 gap-4">
+                <label class="inline-flex items-center col-span-4">
+                    <input type="checkbox" name="is_maintenance" value="1" @checked(old('is_maintenance', $c->is_maintenance ?? true)) class="mr-2">
+                    <span class="font-medium text-red-600">Maintenance mode active</span>
+                </label>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mt-4">
+                <div class="col-span-2">
+                    <label class="block mb-2">Maintenance title</label>
+                    <input name="maintenance_title" value="{{ old('maintenance_title', $c->maintenance_title ?? 'BEKKAS IS IMPROVING') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+                </div>
+                <div class="col-span-2">
+                    <label class="block mb-2">Maintenance subtitle</label>
+                    <input name="maintenance_subtitle" value="{{ old('maintenance_subtitle', $c->maintenance_subtitle ?? 'Everyday design will be even better!') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+                </div>
+                <div class="col-span-2">
+                    <label class="block mb-2">Maintenance message</label>
+                    <textarea name="maintenance_text" rows="3" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">{{ old('maintenance_text', $c->maintenance_text ?? 'Our website is not available at the moment. We will try to be quick. Please come back soon.') }}</textarea>
+                </div>
+            </div>
+
+            <hr>
+
             <h3 class="font-semibold">Email</h3>
             <div class="grid grid-cols-2 gap-4">
                 <div>

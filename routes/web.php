@@ -44,6 +44,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/maintenance', function () {
+    $config = \App\Models\Configuration::latest()->first();
+    return response()->view('maintenance', [
+        'maintenance_title'    => $config->maintenance_title    ?? 'BEKKAS IS IMPROVING',
+        'maintenance_subtitle' => $config->maintenance_subtitle ?? 'Everyday design will be even better!',
+        'maintenance_text'     => $config->maintenance_text     ?? 'Our website is not available at the moment. We will try to be quick. Please come back soon.',
+    ], 503);
+})->name('maintenance');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
