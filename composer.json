@@ -79,7 +79,13 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "barryvdh/laravel-ide-helper",
+                "laravel/breeze",
+                "laravel/pail",
+                "laravel/sail",
+                "nunomaduro/collision"
+            ]
         }
     },
     "config": {
