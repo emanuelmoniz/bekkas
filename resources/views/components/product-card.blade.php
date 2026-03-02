@@ -50,21 +50,30 @@
     $scrollerImages = $product->photos
         ->sortByDesc('is_primary')
         ->map(fn ($p) => asset('storage/' . $p->path));
+
+    // A product is unavailable when it has no stock and does not accept backorders.
+    $isUnavailable = (($product->stock ?? 0) <= 0 && !$product->is_backorder);
 @endphp
 
-<div {{ $attributes->merge(['class' => 'bg-white rounded shadow hover:shadow-lg transition relative overflow-hidden isolate' . ($animated ? ' anim-item' : '')]) }}>
+<div {{ $attributes->merge(['class' => 'bg-white rounded shadow hover:shadow-lg transition relative overflow-hidden isolate' . ($animated ? ' anim-item' : '') . ($isUnavailable ? ' grayscale opacity-75' : '')]) }}>
 
-    {{-- Badges: featured / promo --}}
+    {{-- Badges: featured / promo (hidden when unavailable) / out-of-stock --}}
     <div class="absolute top-2 left-2 flex flex-col items-start gap-2 z-10">
-        @if($product->is_featured)
-            <span class="inline-block w-auto bg-accent-secondary text-white text-xs font-semibold uppercase px-2 py-1 rounded">
-                {{ t('store.badge.featured') ?: 'FEATURED' }}
+        @if($isUnavailable)
+            <span class="inline-block w-auto bg-gray-700 text-gray-400 text-xs font-semibold uppercase px-2 py-1 rounded">
+                {{ t('store.out_of_stock') ?: 'Out of stock' }}
             </span>
-        @endif
-        @if($product->is_promo)
-            <span class="inline-block w-auto bg-primary text-white text-xs font-semibold uppercase px-2 py-1 rounded">
-                {{ t('store.badge.promo') ?: 'PROMO' }}
-            </span>
+        @else
+            @if($product->is_featured)
+                <span class="inline-block w-auto bg-accent-secondary text-white text-xs font-semibold uppercase px-2 py-1 rounded">
+                    {{ t('store.badge.featured') ?: 'FEATURED' }}
+                </span>
+            @endif
+            @if($product->is_promo)
+                <span class="inline-block w-auto bg-primary text-white text-xs font-semibold uppercase px-2 py-1 rounded">
+                    {{ t('store.badge.promo') ?: 'PROMO' }}
+                </span>
+            @endif
         @endif
     </div>
 
@@ -92,7 +101,7 @@
         @endif
 
         <div class="p-4 pt-3">
-            <h3 class="text-lg font-medium">
+            <h3 class="text-md font-medium text-dark">
                 {{ optional($product->translation())->name }}
             </h3>
 

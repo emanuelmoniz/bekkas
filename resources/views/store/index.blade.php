@@ -20,7 +20,7 @@
 
                 {{-- PRODUCTS --}}
                 <div>
-                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-6 animate-sequence">
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 animate-sequence">
                         @forelse ($products as $product)
                             <x-product-card
                                 :product="$product"
