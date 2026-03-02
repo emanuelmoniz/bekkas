@@ -974,17 +974,26 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'home.banner.tagline1', 'locale' => 'pt-PT', 'value' => 'Criar o futuro, da ideia ao objeto', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.tagline1', 'locale' => 'en-UK', 'value' => 'Printing Life layer by layer', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'home.banner.subtagline1', 'locale' => 'pt-PT', 'value' => 'Criar o futuro, da ideia ao objeto', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.subtagline1', 'locale' => 'en-UK', 'value' => 'Printing Life layer by layer', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'home.banner.button1', 'locale' => 'pt-PT', 'value' => 'SERVIÇOS', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.button1', 'locale' => 'en-UK', 'value' => 'OUR SERVICES', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.banner.tagline2', 'locale' => 'pt-PT', 'value' => 'Brincos inspirados em origami.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.tagline2', 'locale' => 'en-UK', 'value' => 'Origami-inspired earrings.', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'home.banner.subtagline2', 'locale' => 'pt-PT', 'value' => 'Brincos inspirados em origami.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.subtagline2', 'locale' => 'en-UK', 'value' => 'Origami-inspired earrings.', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'home.banner.button2', 'locale' => 'pt-PT', 'value' => 'LOJA', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.button2', 'locale' => 'en-UK', 'value' => 'STORE', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.banner.tagline3', 'locale' => 'pt-PT', 'value' => 'Imprimimos as tuas ideias e projetos.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.tagline3', 'locale' => 'en-UK', 'value' => 'We print your ideas and projects.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'home.banner.subtagline3', 'locale' => 'pt-PT', 'value' => 'Imprimimos as tuas ideias e projetos.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.subtagline3', 'locale' => 'en-UK', 'value' => 'We print your ideas and projects.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.banner.button3', 'locale' => 'pt-PT', 'value' => 'PRODUÇÃO', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.button3', 'locale' => 'en-UK', 'value' => 'CUSTOM', 'created_at' => $now, 'updated_at' => $now],

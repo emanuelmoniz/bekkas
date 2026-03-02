@@ -48,18 +48,21 @@
                     // local placeholders copied during build
                     'image' => asset('images/slide1.jpg'),
                     'tagline' => $homeTagline1,
+                    'subtagline' => t('home.banner.subtagline1') ?: 'Printing Life layer by layer',
                     'buttonText' => $homeButton1,
                     'buttonUrl' => '#services',
                 ],
                 [
                     'image' => asset('images/slide2.jpg'),
                     'tagline' => $homeTagline2,
+                    'subtagline' => t('home.banner.subtagline2') ?: 'Printing Life layer by layer',
                     'buttonText' => $homeButton2,
                     'buttonUrl' => '/store',
                 ],
                 [
                     'image' => asset('images/slide3.jpg'),
                     'tagline' => $homeTagline3,
+                    'subtagline' => t('home.banner.subtagline3') ?: 'Printing Life layer by layer',
                     'buttonText' => $homeButton3,
                     'buttonUrl' => '/custom',
                 ],
