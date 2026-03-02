@@ -210,7 +210,7 @@
             )">
 
                 {{-- NAME (moved from header) --}}
-                <h2 class="font-semibold text-xl text-grey-dark">
+                <h2 class="font-semibold text-xl text-dark">
                     {{ optional($product->translation())->name }}
                 </h2>
 
@@ -305,14 +305,14 @@
 
                 {{-- EXPECTED DELIVERY --}}
                 @if(isset($deliveryDate) && $deliveryDate)
-                    <div class="rounded border border-grey-light border-l-4 bg-accent-primary/10 p-3">
-                        <div class="text-sm font-medium text-accent-primary">
+                    <div class="rounded border border-grey-light border-l-4 bg-status-info/10 p-3">
+                        <div class="text-sm font-medium text-status-info">
                             {{ t('store.expected_delivery') ?: 'Expected delivery' }}
                         </div>
-                        <div class="text-lg font-semibold text-accent-primary">
+                        <div class="text-lg font-semibold text-status-info">
                             {{ $deliveryDate }}
                         </div>
-                        <div class="text-xs text-accent-primary mt-1">
+                        <div class="text-xs text-status-info mt-1">
                             {{ t('store.delivery_working_days') ?: 'Calculated in working days (Mon-Fri)' }}
                         </div>
                     </div>
@@ -324,14 +324,14 @@
                     @if ($product->stock > 0)
                         <div class="text-sm">
                             {{ t('store.stock') ?: 'Stock' }}:
-                            <span class="text-accent-secondary font-medium">{{ t('store.available') ?: 'Available' }}</span>
+                            <span class="text-status-success font-medium">{{ t('store.available') ?: 'Available' }}</span>
                         </div>
                     @elseif ($product->is_backorder)
-                        <div class="rounded border border-grey-light border-l-4 bg-accent-secondary/10 p-3">
-                            <div class="text-sm font-medium text-accent-secondary mb-1">
+                        <div class="rounded border border-grey-light border-l-4 bg-status-warning/10 p-3">
+                            <div class="text-sm font-medium text-status-warning mb-1">
                                 {{ t('store.backorder_title') ?: 'Made to order' }}
                             </div>
-                            <div class="text-sm text-accent-secondary">
+                            <div class="text-sm text-status-warning">
                                 {{ t('store.backorder_message') ?: 'This item does not have stock, but can be printed per request. The production time is' }}
                                 <span class="font-medium">{{ $product->production_time }} {{ t('store.working_days') ?: 'working days' }}</span>.
                                 {{ t('store.backorder_delivery_note') ?: 'The shown delivery date estimation already includes this production time.' }}
@@ -340,7 +340,7 @@
                     @else
                         <div class="text-sm">
                             {{ t('store.stock') ?: 'Stock' }}:
-                            <span class="text-primary font-medium">{{ t('store.out_of_stock') ?: 'Out of stock' }}</span>
+                            <span class="text-status-error font-medium">{{ t('store.out_of_stock') ?: 'Out of stock' }}</span>
                         </div>
                     @endif
                 </template>
@@ -350,9 +350,9 @@
                     <div class="text-sm">
                         {{ t('store.stock') ?: 'Stock' }}:
                         <span x-show="resolvedStock > 0 || {{ $product->is_backorder ? 'true' : 'false' }}"
-                              class="text-accent-primary font-medium">{{ t('store.available') ?: 'Available' }}</span>
+                              class="text-status-success font-medium">{{ t('store.available') ?: 'Available' }}</span>
                         <span x-show="resolvedStock <= 0 && !{{ $product->is_backorder ? 'true' : 'false' }}"
-                              class="text-primary font-medium">{{ t('store.out_of_stock') ?: 'Out of stock' }}</span>
+                              class="text-status-error font-medium">{{ t('store.out_of_stock') ?: 'Out of stock' }}</span>
                     </div>
                 </template>
 

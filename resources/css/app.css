@@ -111,6 +111,7 @@
 /* Theme color variables (kebab-case) — store raw RGB triplets so they can be used directly
      in `rgb(var(--color‑name) / <alpha-value>)` expressions. */
 :root{
+  /* Core palette */
   --color-primary: 193 48 39;
   --color-secondary: 236 230 221;
   --color-accent-primary: 92 136 160;
@@ -118,13 +119,15 @@
   --color-grey-dark: 91 91 91;
   --color-grey-medium: 150 150 150;
   --color-grey-light: 232 232 232;
-  --color-success: 96 211 148;
-  --color-error: 233 65 85;
-  --color-warning: 248 154 70;
-  --color-info: 77 114 152;
   --color-light: 246 241 234;
   --color-dark: 33 22 20;
   --color-white: 255 255 255;
+
+  /* Semantic status colors */
+  --color-success: 68 173 110;
+  --color-error: 233 65 85;
+  --color-warning: 248 154 70;
+  --color-info: 77 114 152;
 }
 
 @layer base {
