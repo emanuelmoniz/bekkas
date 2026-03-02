@@ -22,9 +22,9 @@ class ProductPhotoController extends Controller
             $stored = $thumbnails->store($file, 'products');
 
             $product->photos()->create([
-                'path'          => $stored['path'],
+                'path' => $stored['path'],
                 'original_path' => $stored['original_path'],
-                'is_primary'    => ! $hasPrimary && $index === 0,
+                'is_primary' => ! $hasPrimary && $index === 0,
             ]);
         }
 
@@ -47,4 +47,3 @@ class ProductPhotoController extends Controller
         return back();
     }
 }
-

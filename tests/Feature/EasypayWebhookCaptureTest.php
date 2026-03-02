@@ -6,7 +6,6 @@ use App\Models\EasypayCheckoutSession;
 use App\Models\EasypayPayment;
 use App\Models\Order;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class EasypayWebhookCaptureTest extends TestCase
@@ -30,13 +29,11 @@ class EasypayWebhookCaptureTest extends TestCase
                 'paid_at' => now()->toIso8601String(),
                 'checkout' => ['id' => 'chk_web_1'],
                 'captures' => [
-                    ['id' => 'cap_1', 'status' => 'success', 'value' => 11]
+                    ['id' => 'cap_1', 'status' => 'success', 'value' => 11],
                 ],
             ], 200),
             'https://api.test.easypay.pt/2.0/checkout/chk_web_1' => Http::response(['checkout' => ['id' => 'chk_web_1', 'status' => 'paid']], 200),
         ]);
-
-
 
         // Configure webhook auth/header
         config()->set('easypay.webhook_user', 'webhook-user');
@@ -84,7 +81,6 @@ class EasypayWebhookCaptureTest extends TestCase
         $session->refresh();
         $this->assertStringContainsString('chk_web_1', $session->message);
         $this->assertEquals('paid', $session->status);
-
 
     }
 }

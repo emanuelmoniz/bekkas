@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -45,7 +45,9 @@ return new class extends Migration
             ];
 
             // Only set values that are non-null to avoid overwriting deliberate DB values.
-            $filtered = array_filter($values, function ($v) { return $v !== null && $v !== ''; });
+            $filtered = array_filter($values, function ($v) {
+                return $v !== null && $v !== '';
+            });
 
             if ($row) {
                 DB::table('configurations')->where('id', $row->id)->update(array_merge($filtered, ['updated_at' => now()]));

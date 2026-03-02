@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\EasypayPayment;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 
 class EasypayPaymentController extends Controller
 {
     use AuthorizesRequests;
+
     /**
      * Display a listing of Easypay payments (admin).
      */
@@ -100,6 +101,7 @@ class EasypayPaymentController extends Controller
             return redirect()->back();
         } catch (\Throwable $e) {
             logger()->warning('Admin refund request failed', ['payment_id' => $payment->id, 'err' => $e->getMessage()]);
+
             return redirect()->back()->with('error', 'Refund could not be processed.');
         }
     }
@@ -121,6 +123,7 @@ class EasypayPaymentController extends Controller
             $single = $svc->getSinglePayment($payment->payment_id);
         } catch (\Throwable $e) {
             logger()->warning('Admin payment refresh failed', ['payment_id' => $payment->id, 'err' => $e->getMessage()]);
+
             return redirect()->back()->with('error', 'Failed to fetch payment details');
         }
 
@@ -145,6 +148,7 @@ class EasypayPaymentController extends Controller
             $payment->refresh();
         } catch (\Throwable $e) {
             logger()->warning('Admin payment refresh: could not persist remote response', ['payment_id' => $payment->id, 'err' => $e->getMessage()]);
+
             return redirect()->back()->with('error', 'Failed to persist payment details');
         }
 
@@ -178,6 +182,7 @@ class EasypayPaymentController extends Controller
             $resp = $svc->getRefund($payment->refund_id);
         } catch (\Throwable $e) {
             logger()->warning('Admin refund-refresh failed', ['payment_id' => $payment->id, 'err' => $e->getMessage()]);
+
             return redirect()->back()->with('error', 'Failed to fetch refund details');
         }
 
@@ -194,6 +199,7 @@ class EasypayPaymentController extends Controller
             $payment->save();
         } catch (\Throwable $e) {
             logger()->warning('Admin refund-refresh: persist failed', ['payment_id' => $payment->id, 'err' => $e->getMessage()]);
+
             return redirect()->back()->with('error', 'Failed to persist refund details');
         }
 

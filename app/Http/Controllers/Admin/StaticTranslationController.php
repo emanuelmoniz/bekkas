@@ -29,12 +29,12 @@ class StaticTranslationController extends Controller
     {
         $keyRows = StaticTranslation::select(DB::raw('`key`, MIN(`context`) as context'))
             ->when($request->filled('search'), fn ($q) => $q->where('key', 'like', '%'.$request->search.'%'))
-            ->when($request->filled('ctx'),    fn ($q) => $q->where('context', 'like', '%'.$request->ctx.'%'))
-            ->when($request->filled('text'),   fn ($q) => $q->whereExists(function ($sq) use ($request) {
+            ->when($request->filled('ctx'), fn ($q) => $q->where('context', 'like', '%'.$request->ctx.'%'))
+            ->when($request->filled('text'), fn ($q) => $q->whereExists(function ($sq) use ($request) {
                 $sq->select(DB::raw(1))
-                   ->from('static_translations as st2')
-                   ->whereColumn('st2.key', 'static_translations.key')
-                   ->where('st2.value', 'like', '%'.$request->text.'%');
+                    ->from('static_translations as st2')
+                    ->whereColumn('st2.key', 'static_translations.key')
+                    ->where('st2.value', 'like', '%'.$request->text.'%');
             }))
             ->groupBy('key')
             ->orderBy('key')
@@ -61,7 +61,7 @@ class StaticTranslationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'key'      => [
+            'key' => [
                 'required', 'string', 'max:255',
                 function ($attribute, $value, $fail) {
                     if (StaticTranslation::where('key', $value)->exists()) {
@@ -69,23 +69,23 @@ class StaticTranslationController extends Controller
                     }
                 },
             ],
-            'context'  => ['nullable', 'string', 'max:255'],
-            'values'   => ['required', 'array'],
+            'context' => ['nullable', 'string', 'max:255'],
+            'values' => ['required', 'array'],
             'values.*' => ['nullable', 'string'],
         ]);
 
-        $key     = $request->input('key');
+        $key = $request->input('key');
         $context = $request->input('context');
-        $now     = now();
-        $rows    = [];
+        $now = now();
+        $rows = [];
 
         foreach ($request->input('values', []) as $locale => $value) {
             if (filled($value)) {
                 $rows[] = [
-                    'key'        => $key,
-                    'locale'     => $locale,
-                    'context'    => $context,
-                    'value'      => $value,
+                    'key' => $key,
+                    'locale' => $locale,
+                    'context' => $context,
+                    'value' => $value,
                     'created_at' => $now,
                     'updated_at' => $now,
                 ];
@@ -105,7 +105,7 @@ class StaticTranslationController extends Controller
 
     public function edit(string $encodedKey)
     {
-        $key  = self::decodeKey($encodedKey);
+        $key = self::decodeKey($encodedKey);
         $rows = StaticTranslation::where('key', $key)->get()->keyBy('locale');
 
         if ($rows->isEmpty()) {
@@ -124,8 +124,8 @@ class StaticTranslationController extends Controller
         $key = self::decodeKey($encodedKey);
 
         $request->validate([
-            'context'  => ['nullable', 'string', 'max:255'],
-            'values'   => ['required', 'array'],
+            'context' => ['nullable', 'string', 'max:255'],
+            'values' => ['required', 'array'],
             'values.*' => ['nullable', 'string'],
         ]);
 

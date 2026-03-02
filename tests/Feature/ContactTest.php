@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\Configuration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
-use App\Models\Configuration;
 use Tests\TestCase;
 
 class ContactTest extends TestCase

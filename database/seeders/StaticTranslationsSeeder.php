@@ -14,62 +14,62 @@ class StaticTranslationsSeeder extends Seeder
         // Context descriptions: keyed by prefix (longer/more-specific prefixes first).
         // Used to set the context column on INSERT only — admin edits are never overwritten.
         $contextMap = [
-            'checkout.pay.'              => 'Checkout — payment widget page (Easypay SDK)',
-            'checkout.validation.'       => 'Checkout — address form validation messages',
-            'checkout.'                  => 'Checkout page — address & shipping selection',
-            'orders.email.'              => 'Order email notifications',
-            'orders.'                    => 'My Orders page & order detail page',
-            'store.badge.'               => 'Store — product card badges',
-            'store.filter.'              => 'Store — filter panel',
-            'store.order.'               => 'Store — sort options',
-            'store.'                     => 'Store — product listing & detail page',
-            'favorites.filter.'          => 'My Favorites page — filter panel',
-            'favorites.'                 => 'My Favorites page',
-            'nav.'                       => 'Global navigation menu (all pages)',
-            'page.'                      => 'Page title tags',
-            'cart.'                      => 'Shopping cart page',
-            'shipping_config.'           => 'Admin — shipping configuration page',
-            'profile.'                   => 'User profile page — settings, addresses, password',
-            'auth.'                      => 'Auth pages — login, register, password reset, email verification',
-            'home.banner.'               => 'Home page — hero banner',
-            'home.services.'             => 'Home page — services section',
-            'home.contact.'              => 'Home page — contact preview section',
-            'home.'                      => 'Home page',
-            'footer.'                    => 'Global footer (all pages)',
-            'custom.banner.'             => 'Custom services page — hero banner',
-            'custom.features.'           => 'Custom services page — features section',
-            'custom.projects.'           => 'Custom services page — projects showcase section',
-            'custom.request.'            => 'Custom services page — quote request section',
-            'custom.'                    => 'Custom services page',
-            'tickets.email.'             => 'Ticket email notifications',
-            'tickets.'                   => 'Support tickets — create, list, detail pages',
-            'about.banner.'              => 'About page — hero banner',
-            'about.mission.'             => 'About page — mission section',
-            'about.values.'              => 'About page — values section',
-            'about.story.'               => 'About page — story section',
-            'about.cta.'                 => 'About page — call to action section',
-            'about.'                     => 'About page',
-            'portfolio.filter.'          => 'Portfolio page — filter section',
-            'portfolio.cta.'             => 'Portfolio page — call to action section',
-            'portfolio.'                 => 'Portfolio page',
-            'projects.card.'             => 'Project card component',
-            'legal.terms.'               => 'Terms of Service page',
-            'legal.privacy.'             => 'Privacy Policy page',
-            'legal.'                     => 'Legal pages',
-            'contact.email.'             => 'Contact form email notifications',
-            'contact.'                   => 'Contact page & contact form',
-            'validation.password.'       => 'Shared validation — password rules',
-            'validation.'                => 'Shared form validation messages',
-            'stock.'                     => 'Cart & checkout — stock validation messages',
-            'error.'                     => 'Error pages (404, 500)',
-            'pagination.'                => 'Shared pagination component (all listing pages)',
-            'gallery.'                   => 'Image gallery component (product & project pages)',
-            'tax.'                       => 'Cart & checkout — tax display',
-            'verification-link-sent'     => 'Profile page — email verification status',
+            'checkout.pay.' => 'Checkout — payment widget page (Easypay SDK)',
+            'checkout.validation.' => 'Checkout — address form validation messages',
+            'checkout.' => 'Checkout page — address & shipping selection',
+            'orders.email.' => 'Order email notifications',
+            'orders.' => 'My Orders page & order detail page',
+            'store.badge.' => 'Store — product card badges',
+            'store.filter.' => 'Store — filter panel',
+            'store.order.' => 'Store — sort options',
+            'store.' => 'Store — product listing & detail page',
+            'favorites.filter.' => 'My Favorites page — filter panel',
+            'favorites.' => 'My Favorites page',
+            'nav.' => 'Global navigation menu (all pages)',
+            'page.' => 'Page title tags',
+            'cart.' => 'Shopping cart page',
+            'shipping_config.' => 'Admin — shipping configuration page',
+            'profile.' => 'User profile page — settings, addresses, password',
+            'auth.' => 'Auth pages — login, register, password reset, email verification',
+            'home.banner.' => 'Home page — hero banner',
+            'home.services.' => 'Home page — services section',
+            'home.contact.' => 'Home page — contact preview section',
+            'home.' => 'Home page',
+            'footer.' => 'Global footer (all pages)',
+            'custom.banner.' => 'Custom services page — hero banner',
+            'custom.features.' => 'Custom services page — features section',
+            'custom.projects.' => 'Custom services page — projects showcase section',
+            'custom.request.' => 'Custom services page — quote request section',
+            'custom.' => 'Custom services page',
+            'tickets.email.' => 'Ticket email notifications',
+            'tickets.' => 'Support tickets — create, list, detail pages',
+            'about.banner.' => 'About page — hero banner',
+            'about.mission.' => 'About page — mission section',
+            'about.values.' => 'About page — values section',
+            'about.story.' => 'About page — story section',
+            'about.cta.' => 'About page — call to action section',
+            'about.' => 'About page',
+            'portfolio.filter.' => 'Portfolio page — filter section',
+            'portfolio.cta.' => 'Portfolio page — call to action section',
+            'portfolio.' => 'Portfolio page',
+            'projects.card.' => 'Project card component',
+            'legal.terms.' => 'Terms of Service page',
+            'legal.privacy.' => 'Privacy Policy page',
+            'legal.' => 'Legal pages',
+            'contact.email.' => 'Contact form email notifications',
+            'contact.' => 'Contact page & contact form',
+            'validation.password.' => 'Shared validation — password rules',
+            'validation.' => 'Shared form validation messages',
+            'stock.' => 'Cart & checkout — stock validation messages',
+            'error.' => 'Error pages (404, 500)',
+            'pagination.' => 'Shared pagination component (all listing pages)',
+            'gallery.' => 'Image gallery component (product & project pages)',
+            'tax.' => 'Cart & checkout — tax display',
+            'verification-link-sent' => 'Profile page — email verification status',
         ];
 
         // Sort by prefix length descending so the most-specific prefix wins.
-        uksort($contextMap, fn($a, $b) => strlen($b) <=> strlen($a));
+        uksort($contextMap, fn ($a, $b) => strlen($b) <=> strlen($a));
 
         $getContext = function (string $key) use ($contextMap): string {
             foreach ($contextMap as $prefix => $context) {
@@ -77,6 +77,7 @@ class StaticTranslationsSeeder extends Seeder
                     return $context;
                 }
             }
+
             return '';
         };
 
@@ -974,17 +975,26 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'home.banner.tagline1', 'locale' => 'pt-PT', 'value' => 'Criar o futuro, da ideia ao objeto', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.tagline1', 'locale' => 'en-UK', 'value' => 'Printing Life layer by layer', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'home.banner.subtagline1', 'locale' => 'pt-PT', 'value' => 'Criar o futuro, da ideia ao objeto', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.subtagline1', 'locale' => 'en-UK', 'value' => 'Printing Life layer by layer', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'home.banner.button1', 'locale' => 'pt-PT', 'value' => 'SERVIÇOS', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.button1', 'locale' => 'en-UK', 'value' => 'OUR SERVICES', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.banner.tagline2', 'locale' => 'pt-PT', 'value' => 'Brincos inspirados em origami.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.tagline2', 'locale' => 'en-UK', 'value' => 'Origami-inspired earrings.', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'home.banner.subtagline2', 'locale' => 'pt-PT', 'value' => 'Brincos inspirados em origami.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.subtagline2', 'locale' => 'en-UK', 'value' => 'Origami-inspired earrings.', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'home.banner.button2', 'locale' => 'pt-PT', 'value' => 'LOJA', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.button2', 'locale' => 'en-UK', 'value' => 'STORE', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.banner.tagline3', 'locale' => 'pt-PT', 'value' => 'Imprimimos as tuas ideias e projetos.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.tagline3', 'locale' => 'en-UK', 'value' => 'We print your ideas and projects.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'home.banner.subtagline3', 'locale' => 'pt-PT', 'value' => 'Imprimimos as tuas ideias e projetos.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.subtagline3', 'locale' => 'en-UK', 'value' => 'We print your ideas and projects.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.banner.button3', 'locale' => 'pt-PT', 'value' => 'PRODUÇÃO', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.button3', 'locale' => 'en-UK', 'value' => 'CUSTOM', 'created_at' => $now, 'updated_at' => $now],
@@ -1112,7 +1122,7 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'custom.request.subtitle2',     'locale' => 'en-UK', 'value' => 'Read carefully the features and informations of each option.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle3',     'locale' => 'pt-PT', 'value' => 'Cada opção abrirá um ticket com o serviço já selecionado.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle3',     'locale' => 'en-UK', 'value' => 'Each option opens a ticket with the right service already selected.', 'created_at' => $now, 'updated_at' => $now],
-            
+
             // Card 1 — R&D
             ['key' => 'custom.request.rnd_tier',     'locale' => 'pt-PT', 'value' => 'I&D + Preparação + Impressão',            'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.rnd_tier',     'locale' => 'en-UK', 'value' => 'R&D + Preparation + Print',               'created_at' => $now, 'updated_at' => $now],
@@ -1879,7 +1889,7 @@ class StaticTranslationsSeeder extends Seeder
 
         DB::table('static_translations')->upsert(
             // Add context to each row (used on INSERT only — see update columns below)
-            array_map(fn($r) => $r + ['context' => $getContext($r['key'])], $rows),
+            array_map(fn ($r) => $r + ['context' => $getContext($r['key'])], $rows),
             // Unique key for conflict detection
             ['key', 'locale'],
             // On conflict only update value & timestamps; context edits made via admin are preserved

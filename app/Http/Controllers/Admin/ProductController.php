@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
-use App\Models\Material;
 use App\Models\Locale;
+use App\Models\Material;
 use App\Models\Product;
 use App\Models\ProductTranslation;
 use App\Models\Tax;
@@ -100,9 +100,7 @@ class ProductController extends Controller
                 $nameRules["name.{$locale}"] = 'nullable|string|max:255';
             }
         }
-        $request->validate($nameRules);
-
-        $request->validate([
+        $request->validate(array_merge($nameRules, [
             'tax_id' => 'required|exists:taxes,id',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
@@ -131,7 +129,7 @@ class ProductController extends Controller
             'option_types.*.options.*.promo_price' => 'sometimes|nullable|numeric|min:0',
             'option_types.*.options.*.name' => 'sometimes|array',
             'option_types.*.options.*.description' => 'sometimes|array',
-        ]);
+        ]));
 
         $this->validateOptionTypeFlags($request->input('option_types', []));
 
@@ -158,7 +156,7 @@ class ProductController extends Controller
 
         foreach (Locale::activeList() as $locale => $locLabel) {
             $nameValue = $request->input("name.$locale");
-            if (!empty($nameValue)) {
+            if (! empty($nameValue)) {
                 ProductTranslation::create([
                     'product_id' => $product->id,
                     'locale' => $locale,
@@ -214,9 +212,7 @@ class ProductController extends Controller
                 $nameRules["name.{$locale}"] = 'nullable|string|max:255';
             }
         }
-        $request->validate($nameRules);
-
-        $request->validate([
+        $request->validate(array_merge($nameRules, [
             'tax_id' => 'required|exists:taxes,id',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
@@ -240,7 +236,7 @@ class ProductController extends Controller
             'option_types.*.options.*.promo_price' => 'sometimes|nullable|numeric|min:0',
             'option_types.*.options.*.name' => 'sometimes|array',
             'option_types.*.options.*.description' => 'sometimes|array',
-        ]);
+        ]));
 
         $this->validateOptionTypeFlags($request->input('option_types', []));
 
@@ -274,7 +270,7 @@ class ProductController extends Controller
 
         foreach (Locale::activeList() as $locale => $locLabel) {
             $nameValue = $request->input("name.$locale");
-            if (!empty($nameValue)) {
+            if (! empty($nameValue)) {
                 $product->translations()
                     ->updateOrCreate(
                         ['locale' => $locale],
@@ -313,10 +309,6 @@ class ProductController extends Controller
      * submitted by the form. We don't attempt to patch existing records;
      * instead the caller is expected to delete any previous data before
      * invoking this helper (simpler for our use‑case).
-     *
-     * @param  Product  $product
-     * @param  array    $types
-     * @return void
      */
     protected function saveOptionTypes(Product $product, array $types): void
     {
@@ -325,7 +317,7 @@ class ProductController extends Controller
             $havePrice = isset($typeData['have_price']) ? (bool) $typeData['have_price'] : false;
 
             $type = $product->optionTypes()->create([
-                'is_active'  => isset($typeData['is_active']) ? (bool) $typeData['is_active'] : false,
+                'is_active' => isset($typeData['is_active']) ? (bool) $typeData['is_active'] : false,
                 'have_stock' => $haveStock,
                 'have_price' => $havePrice,
             ]);
@@ -333,8 +325,8 @@ class ProductController extends Controller
             // translations
             foreach (Locale::activeList() as $locale => $label) {
                 $type->translations()->create([
-                    'locale'      => $locale,
-                    'name'        => $typeData['name'][$locale] ?? null,
+                    'locale' => $locale,
+                    'name' => $typeData['name'][$locale] ?? null,
                     'description' => $typeData['description'][$locale] ?? null,
                 ]);
             }
@@ -342,17 +334,17 @@ class ProductController extends Controller
             // options nested within this type
             foreach ($typeData['options'] ?? [] as $optData) {
                 $opt = $type->options()->create([
-                    'is_active'  => isset($optData['is_active']) ? (bool) $optData['is_active'] : false,
-                    'stock'      => isset($optData['stock']) ? (int) $optData['stock'] : 0,
+                    'is_active' => isset($optData['is_active']) ? (bool) $optData['is_active'] : false,
+                    'stock' => isset($optData['stock']) ? (int) $optData['stock'] : 0,
                     // Only persist price/promo_price when the parent type has have_price
-                    'price'       => $havePrice && isset($optData['price']) ? $optData['price'] : null,
+                    'price' => $havePrice && isset($optData['price']) ? $optData['price'] : null,
                     'promo_price' => $havePrice && isset($optData['promo_price']) ? $optData['promo_price'] : null,
                 ]);
 
                 foreach (Locale::activeList() as $locale => $label) {
                     $opt->translations()->create([
-                        'locale'      => $locale,
-                        'name'        => $optData['name'][$locale] ?? null,
+                        'locale' => $locale,
+                        'name' => $optData['name'][$locale] ?? null,
                         'description' => $optData['description'][$locale] ?? null,
                     ]);
                 }

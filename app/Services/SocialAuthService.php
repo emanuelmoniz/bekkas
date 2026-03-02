@@ -20,8 +20,7 @@ class SocialAuthService
      *     - else create SocialAccount, link and return user
      * - Else -> create user (verified), attach client role, create SocialAccount, return user
      *
-     * @param string $provider
-     * @param \Laravel\Socialite\Two\User|object $providerUser  object must expose getId(), getEmail(), getName(), getAvatar()
+     * @param  \Laravel\Socialite\Two\User|object  $providerUser  object must expose getId(), getEmail(), getName(), getAvatar()
      */
     public function findOrCreateUserFromProvider(string $provider, $providerUser): User
     {
@@ -102,7 +101,7 @@ class SocialAuthService
                         $ext = 'jpg';
                     }
 
-                    $filename = 'avatars/social/'.strtolower($provider)."_".$providerId.'_'.\Illuminate\Support\Str::random(8).'.'.$ext;
+                    $filename = 'avatars/social/'.strtolower($provider).'_'.$providerId.'_'.\Illuminate\Support\Str::random(8).'.'.$ext;
                     \Illuminate\Support\Facades\Storage::disk('public')->put($filename, $data);
                     $avatarPath = '/storage/'.$filename;
                 }

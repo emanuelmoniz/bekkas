@@ -85,6 +85,4 @@ class EasypayPayloadController extends Controller
 
         return redirect()->route('admin.orders.payloads.index')->with('success', 'Payload deleted');
     }
-
-
 }

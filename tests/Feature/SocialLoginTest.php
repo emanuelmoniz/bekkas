@@ -23,20 +23,40 @@ class SocialLoginTest extends TestCase
         Socialite::shouldReceive('driver')->with('google')->andReturnSelf();
         Socialite::shouldReceive('stateless')->andReturnSelf();
 
-        $providerUser = new class {
+        $providerUser = new class
+        {
             public $id = 'g-12345';
+
             public $name = 'Google User';
+
             public $email = 'social@example.com';
+
             public $avatar = 'http://avatar';
-            public function getId() { return $this->id; }
-            public function getName() { return $this->name; }
-            public function getEmail() { return $this->email; }
-            public function getAvatar() { return $this->avatar; }
+
+            public function getId()
+            {
+                return $this->id;
+            }
+
+            public function getName()
+            {
+                return $this->name;
+            }
+
+            public function getEmail()
+            {
+                return $this->email;
+            }
+
+            public function getAvatar()
+            {
+                return $this->avatar;
+            }
         };
 
         Socialite::shouldReceive('user')->andReturn($providerUser);
 
-        $this->followingRedirects()->get(route('login.provider.callback', 'google') . '?code=dummy')
+        $this->followingRedirects()->get(route('login.provider.callback', 'google').'?code=dummy')
             ->assertOk()
             ->assertSeeText(''); // page body not important here
 
@@ -55,19 +75,38 @@ class SocialLoginTest extends TestCase
         Socialite::shouldReceive('driver')->with('google')->andReturnSelf();
         Socialite::shouldReceive('stateless')->andReturnSelf();
 
-        $providerUser = new class {
+        $providerUser = new class
+        {
             public $id = 'g-9999';
+
             public $name = 'Unverified';
+
             public $email = 'unverified@example.com';
-            public function getId() { return $this->id; }
-            public function getName() { return $this->name; }
-            public function getEmail() { return $this->email; }
-            public function getAvatar() { return null; }
+
+            public function getId()
+            {
+                return $this->id;
+            }
+
+            public function getName()
+            {
+                return $this->name;
+            }
+
+            public function getEmail()
+            {
+                return $this->email;
+            }
+
+            public function getAvatar()
+            {
+                return null;
+            }
         };
 
         Socialite::shouldReceive('user')->andReturn($providerUser);
 
-        $resp = $this->get(route('login.provider.callback', 'google') . '?code=dummy');
+        $resp = $this->get(route('login.provider.callback', 'google').'?code=dummy');
 
         $resp->assertRedirect(route('login'));
         $resp->assertSessionHas('unverified_email', 'unverified@example.com');
@@ -81,7 +120,7 @@ class SocialLoginTest extends TestCase
         Socialite::shouldReceive('user')->andThrow(new \Exception('oauth error'));
         // Expect we log the exception for diagnostics
         // (do not mock Log here so we can see full error in test logs)
-        $resp = $this->get(route('login.provider.callback', 'google') . '?code=dummy');
+        $resp = $this->get(route('login.provider.callback', 'google').'?code=dummy');
         $resp->assertRedirect(route('login'));
 
         // login page should show social error message
@@ -94,7 +133,7 @@ class SocialLoginTest extends TestCase
         Log::shouldReceive('debug')->once();
         Log::shouldReceive('warning')->once();
 
-        $resp = $this->get(route('login.provider.callback', 'google') . '?error=access_denied&error_description=consent_required');
+        $resp = $this->get(route('login.provider.callback', 'google').'?error=access_denied&error_description=consent_required');
 
         $resp->assertRedirect(route('login'));
         $this->get(route('login'))->assertSeeText(t('auth.social_failed'));
@@ -106,7 +145,7 @@ class SocialLoginTest extends TestCase
         Log::shouldReceive('debug')->once();
         Log::shouldReceive('warning')->once();
 
-        $resp = $this->get(route('login.provider.callback', 'google') . '?state=foo');
+        $resp = $this->get(route('login.provider.callback', 'google').'?state=foo');
 
         $resp->assertRedirect(route('login'));
         $this->get(route('login'))->assertSeeText(t('auth.social_failed'));
@@ -118,7 +157,7 @@ class SocialLoginTest extends TestCase
         Log::shouldReceive('debug')->once();
         Log::shouldReceive('warning')->once();
 
-        $resp = $this->get(route('login.provider.callback', 'google') . '?code=');
+        $resp = $this->get(route('login.provider.callback', 'google').'?code=');
 
         $resp->assertRedirect(route('login'));
         $this->get(route('login'))->assertSeeText(t('auth.social_failed'));
@@ -137,20 +176,40 @@ class SocialLoginTest extends TestCase
         Socialite::shouldReceive('driver')->with('microsoft')->andReturnSelf();
         Socialite::shouldReceive('stateless')->andReturnSelf();
 
-        $providerUser = new class {
+        $providerUser = new class
+        {
             public $id = 'ms-12345';
+
             public $name = 'Microsoft User';
+
             public $email = 'msocial@example.com';
+
             public $avatar = 'http://avatar-ms';
-            public function getId() { return $this->id; }
-            public function getName() { return $this->name; }
-            public function getEmail() { return $this->email; }
-            public function getAvatar() { return $this->avatar; }
+
+            public function getId()
+            {
+                return $this->id;
+            }
+
+            public function getName()
+            {
+                return $this->name;
+            }
+
+            public function getEmail()
+            {
+                return $this->email;
+            }
+
+            public function getAvatar()
+            {
+                return $this->avatar;
+            }
         };
 
         Socialite::shouldReceive('user')->andReturn($providerUser);
 
-        $this->followingRedirects()->get(route('login.provider.callback', 'microsoft') . '?code=dummy')
+        $this->followingRedirects()->get(route('login.provider.callback', 'microsoft').'?code=dummy')
             ->assertOk();
 
         $this->assertDatabaseHas('users', ['email' => 'msocial@example.com']);
@@ -171,27 +230,51 @@ class SocialLoginTest extends TestCase
         // tiny 1x1 PNG data URI
         $dataUri = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAn8B9QJ3jQAAAABJRU5ErkJggg==';
 
-        $providerUser = new class($dataUri) {
+        $providerUser = new class($dataUri)
+        {
             public $id = 'ms-12345';
+
             public $name = 'Microsoft Avatar';
+
             public $email = 'msavatar@example.com';
+
             public $avatar;
-            public function __construct($avatar) { $this->avatar = $avatar; }
-            public function getId() { return $this->id; }
-            public function getName() { return $this->name; }
-            public function getEmail() { return $this->email; }
-            public function getAvatar() { return $this->avatar; }
+
+            public function __construct($avatar)
+            {
+                $this->avatar = $avatar;
+            }
+
+            public function getId()
+            {
+                return $this->id;
+            }
+
+            public function getName()
+            {
+                return $this->name;
+            }
+
+            public function getEmail()
+            {
+                return $this->email;
+            }
+
+            public function getAvatar()
+            {
+                return $this->avatar;
+            }
         };
 
         Socialite::shouldReceive('user')->andReturn($providerUser);
 
-        $this->followingRedirects()->get(route('login.provider.callback', 'microsoft') . '?code=dummy')
+        $this->followingRedirects()->get(route('login.provider.callback', 'microsoft').'?code=dummy')
             ->assertOk();
 
         $this->assertDatabaseHas('users', ['email' => 'msavatar@example.com']);
         $this->assertDatabaseHas('social_accounts', ['provider' => 'microsoft', 'provider_id' => 'ms-12345']);
 
-        $account = \App\Models\SocialAccount::where('provider','microsoft')->where('provider_id','ms-12345')->first();
+        $account = \App\Models\SocialAccount::where('provider', 'microsoft')->where('provider_id', 'ms-12345')->first();
         $this->assertNotNull($account->avatar);
         $this->assertStringStartsWith('/storage/avatars/social/microsoft_ms-12345_', $account->avatar);
 
@@ -206,19 +289,38 @@ class SocialLoginTest extends TestCase
         Socialite::shouldReceive('driver')->with('microsoft')->andReturnSelf();
         Socialite::shouldReceive('stateless')->andReturnSelf();
 
-        $providerUser = new class {
+        $providerUser = new class
+        {
             public $id = 'ms-9999';
+
             public $name = 'Unverified MS';
+
             public $email = 'unverified-ms@example.com';
-            public function getId() { return $this->id; }
-            public function getName() { return $this->name; }
-            public function getEmail() { return $this->email; }
-            public function getAvatar() { return null; }
+
+            public function getId()
+            {
+                return $this->id;
+            }
+
+            public function getName()
+            {
+                return $this->name;
+            }
+
+            public function getEmail()
+            {
+                return $this->email;
+            }
+
+            public function getAvatar()
+            {
+                return null;
+            }
         };
 
         Socialite::shouldReceive('user')->andReturn($providerUser);
 
-        $resp = $this->get(route('login.provider.callback', 'microsoft') . '?code=dummy');
+        $resp = $this->get(route('login.provider.callback', 'microsoft').'?code=dummy');
 
         $resp->assertRedirect(route('login'));
         $resp->assertSessionHas('unverified_email', 'unverified-ms@example.com');
@@ -230,7 +332,7 @@ class SocialLoginTest extends TestCase
         Log::shouldReceive('debug')->once();
         Log::shouldReceive('warning')->once();
 
-        $resp = $this->get(route('login.provider.callback', 'microsoft') . '?code=');
+        $resp = $this->get(route('login.provider.callback', 'microsoft').'?code=');
 
         $resp->assertRedirect(route('login'));
         $this->get(route('login'))->assertSeeText(t('auth.social_failed'));

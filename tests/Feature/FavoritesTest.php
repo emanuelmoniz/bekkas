@@ -52,7 +52,7 @@ class FavoritesTest extends TestCase
 
         // record each product as favourite in the database
         foreach ($products as $p) {
-            \App\Models\Favorite::create([ 'user_id' => $user->id, 'product_id' => $p->id ]);
+            \App\Models\Favorite::create(['user_id' => $user->id, 'product_id' => $p->id]);
         }
 
         $this->actingAs($user);

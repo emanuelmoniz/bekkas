@@ -56,11 +56,11 @@ class ProductShowTest extends TestCase
         $response->assertSee($product->translation()->technical_info, false);
 
         // price formatting assertion
-        $formatted = '€'.number_format($product->price,2);
+        $formatted = '€'.number_format($product->price, 2);
         $response->assertSee($formatted);
 
         // weight and dimensions should render without decimals
-        $product->update([ 'weight' => 123.45 ]); // fractional weight
+        $product->update(['weight' => 123.45]); // fractional weight
         $response = $this->get(route('store.show', $product));
         $response->assertSee('123 g');
         $response->assertSee('10 × 20 × 30 mm');

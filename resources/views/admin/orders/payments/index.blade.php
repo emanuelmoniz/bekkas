@@ -38,6 +38,7 @@
                         <th class="px-3 py-2">Paid at</th>
                         <th class="px-3 py-2">Status</th>
                         <th class="px-3 py-2">Method</th>
+                        <th class="px-3 py-2 text-right">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,6 +51,9 @@
                             <td class="px-3 py-2">{{ $p->paid_at?->format('d/m/Y H:i') ?? '-' }}</td>
                             <td class="px-3 py-2">{{ $p->payment_status ?? '-' }}</td>
                             <td class="px-3 py-2">{{ $p->payment_method ?? '-' }}</td>
+                            <td class="px-3 py-2 text-right">
+                                <a href="{{ route('admin.orders.payments.show', $p) }}" class="text-accent-secondary hover:underline">View</a>
+                            </td>
 
                         </tr>
                     @endforeach

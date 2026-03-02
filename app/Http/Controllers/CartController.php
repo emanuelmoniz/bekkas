@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddToCartRequest;
 use App\Models\Product;
-use App\Models\ProductOption;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -23,9 +22,10 @@ class CartController extends Controller
         if (is_array($entry)) {
             return [
                 'quantity' => (int) ($entry['quantity'] ?? 0),
-                'options'  => $entry['options'] ?? [],
+                'options' => $entry['options'] ?? [],
             ];
         }
+
         // Legacy: plain integer quantity, no options
         return ['quantity' => (int) $entry, 'options' => []];
     }
@@ -43,9 +43,10 @@ class CartController extends Controller
         ksort($optionsMap);
         $parts = [];
         foreach ($optionsMap as $typeId => $optionId) {
-            $parts[] = $typeId . ':' . $optionId;
+            $parts[] = $typeId.':'.$optionId;
         }
-        return $productId . '_' . implode(',', $parts);
+
+        return $productId.'_'.implode(',', $parts);
     }
 
     /** Extract the product ID from a composite cart key. */
@@ -58,6 +59,7 @@ class CartController extends Controller
     private function cartCount(): int
     {
         $cart = session('cart', []);
+
         return array_sum(array_map(
             fn ($e) => $this->normaliseEntry($e)['quantity'],
             $cart
@@ -76,8 +78,8 @@ class CartController extends Controller
     {
         $product->loadMissing(['optionTypes.options']);
 
-        $resolved   = [];
-        $errors     = [];
+        $resolved = [];
+        $errors = [];
 
         foreach ($product->optionTypes as $type) {
             if (! $type->is_active) {
@@ -90,6 +92,7 @@ class CartController extends Controller
             if (! $optionId) {
                 $typeName = optional($type->translation())->name ?? "Option type #{$type->id}";
                 $errors[] = str_replace(':type', $typeName, t('store.select_option_for') ?: "Please select a value for: {$typeName}");
+
                 continue;
             }
 
@@ -99,6 +102,7 @@ class CartController extends Controller
             if (! $option) {
                 $typeName = optional($type->translation())->name ?? "Option type #{$type->id}";
                 $errors[] = str_replace(':type', $typeName, t('store.invalid_option_for') ?: "Invalid selection for: {$typeName}");
+
                 continue;
             }
 
@@ -125,11 +129,13 @@ class CartController extends Controller
                 // Stock lives on the option, not the product
                 if (! $product->is_backorder && $option->stock <= 0) {
                     $optName = optional($option->translation())->name ?? "Option #{$option->id}";
+
                     return t('store.out_of_stock') ?: "'{$optName}' is out of stock.";
                 }
                 if (! $product->is_backorder && $newQty > $option->stock) {
                     return str_replace(':stock', $option->stock, t('stock.only_available'));
                 }
+
                 // Once we found the stock-controlling type, no need to check product stock
                 return null;
             }
@@ -164,51 +170,51 @@ class CartController extends Controller
 
         $items = [];
         $productsGross = 0;
-        $productsTax   = 0;
+        $productsTax = 0;
 
         $taxEnabled = (bool) config('app.tax_enabled', env('APP_TAX_ENABLED', true));
 
         foreach ($cart as $cartKey => $rawEntry) {
             $productId = self::productIdFromCartKey($cartKey);
-            $product   = $products[$productId] ?? null;
+            $product = $products[$productId] ?? null;
             if (! $product) {
                 continue;
             }
 
-            $entry   = $this->normaliseEntry($rawEntry);
-            $qty     = $entry['quantity'];
+            $entry = $this->normaliseEntry($rawEntry);
+            $qty = $entry['quantity'];
             $options = $entry['options']; // [type_id => option_id]
 
             // Resolve unit price (may come from a selected option's price)
             $unitGross = $this->resolveUnitPrice($product, $options);
 
-            $taxPct    = $taxEnabled ? (optional($product->tax)->percentage ?? 0) : 0;
+            $taxPct = $taxEnabled ? (optional($product->tax)->percentage ?? 0) : 0;
             $lineGross = $unitGross * $qty;
-            $lineNet   = $taxPct > 0 ? $lineGross / (1 + $taxPct / 100) : $lineGross;
-            $lineTax   = $taxPct > 0 ? $lineGross - $lineNet : 0;
+            $lineNet = $taxPct > 0 ? $lineGross / (1 + $taxPct / 100) : $lineGross;
+            $lineTax = $taxPct > 0 ? $lineGross - $lineNet : 0;
 
             // Build human-readable option labels for display
             $selectedOptionLabels = $this->buildOptionLabels($product, $options);
 
             $items[] = [
-                'cart_key'              => $cartKey,
-                'product'               => $product,
-                'quantity'              => $qty,
-                'options'               => $options,
-                'selected_option_labels'=> $selectedOptionLabels,
-                'unit_gross'            => $unitGross,
-                'line_gross'            => round($lineGross, 2),
-                'line_tax'              => round($lineTax, 2),
+                'cart_key' => $cartKey,
+                'product' => $product,
+                'quantity' => $qty,
+                'options' => $options,
+                'selected_option_labels' => $selectedOptionLabels,
+                'unit_gross' => $unitGross,
+                'line_gross' => round($lineGross, 2),
+                'line_tax' => round($lineTax, 2),
             ];
 
             $productsGross += $lineGross;
-            $productsTax   += $lineTax;
+            $productsTax += $lineTax;
         }
 
         return view('cart.index', [
-            'items'         => $items,
+            'items' => $items,
             'productsGross' => round($productsGross, 2),
-            'productsTax'   => round($productsTax, 2),
+            'productsTax' => round($productsTax, 2),
         ]);
     }
 
@@ -234,6 +240,7 @@ class CartController extends Controller
             if ($request->wantsJson() || $request->ajax()) {
                 return response()->json(['success' => false, 'message' => $resolved], 422);
             }
+
             return back()->with('error', $resolved);
         }
 
@@ -244,10 +251,10 @@ class CartController extends Controller
         }
         $cartKey = self::makeCartKey($product->id, $optionsMap);
 
-        $cart       = session()->get('cart', []);
-        $entry      = $this->normaliseEntry($cart[$cartKey] ?? 0);
+        $cart = session()->get('cart', []);
+        $entry = $this->normaliseEntry($cart[$cartKey] ?? 0);
         $currentQty = $entry['quantity'];
-        $newQty     = $currentQty + $request->quantity;
+        $newQty = $currentQty + $request->quantity;
 
         // Stock check
         $stockError = $this->checkStock($product, $resolved, $newQty);
@@ -255,6 +262,7 @@ class CartController extends Controller
             if ($request->wantsJson() || $request->ajax()) {
                 return response()->json(['success' => false, 'message' => $stockError], 422);
             }
+
             return back()->with('error', $stockError);
         }
 
@@ -267,7 +275,7 @@ class CartController extends Controller
 
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json([
-                'success'   => true,
+                'success' => true,
                 'cartCount' => $this->cartCount(),
             ]);
         }
@@ -280,7 +288,7 @@ class CartController extends Controller
         $product->loadMissing(['optionTypes.options.translations']);
 
         $submittedOptions = $request->input('options', []);
-        $oldCartKey       = $request->input('old_cart_key');
+        $oldCartKey = $request->input('old_cart_key');
 
         $resolved = $this->resolveOptions($product, $submittedOptions);
         if (is_string($resolved)) {
@@ -352,6 +360,7 @@ class CartController extends Controller
                 if ($product->is_promo && $option->promo_price !== null) {
                     return (float) $option->promo_price;
                 }
+
                 return (float) $option->price;
             }
         }
@@ -377,10 +386,11 @@ class CartController extends Controller
                 continue;
             }
             $labels[] = [
-                'type_name'   => optional($type->translation())->name ?? '',
+                'type_name' => optional($type->translation())->name ?? '',
                 'option_name' => optional($option->translation())->name ?? '',
             ];
         }
+
         return $labels;
     }
 }

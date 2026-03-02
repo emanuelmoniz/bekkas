@@ -247,7 +247,6 @@ class AdminEasypayPaymentsTest extends TestCase
         $this->assertEquals('r_1', $payment->refund_id);
     }
 
-
     public function test_order_show_includes_payments_link()
     {
         $role = Role::firstOrCreate(['name' => 'admin']);

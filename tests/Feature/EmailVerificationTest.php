@@ -43,6 +43,7 @@ class EmailVerificationTest extends TestCase
             $this->assertEquals(t('auth.verify_email_subject'), $mail->subject);
             $this->assertContains(t('auth.verify_email_intro'), $mail->introLines);
             $this->assertEquals(t('auth.verify_email_action'), $mail->actionText ?? t('auth.verify_email_action'));
+
             return true;
         });
 
@@ -140,6 +141,7 @@ class EmailVerificationTest extends TestCase
         Notification::assertSentTo($user, VerifyEmail::class, function ($notification, $channels) use (&$verificationUrl, $user) {
             $mail = $notification->toMail($user);
             $verificationUrl = $mail->actionUrl;
+
             return true;
         });
 

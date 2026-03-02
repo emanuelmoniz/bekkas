@@ -96,7 +96,7 @@ class EasypayOrchestrationServiceTest extends TestCase
         $this->assertNull($manifest3);
     }
 
-    public function test_prepareSdkForOrder_cancels_active_session_persists_checkout_details_and_recreates_session()
+    public function test_prepare_sdk_for_order_cancels_active_session_persists_checkout_details_and_recreates_session()
     {
         \Illuminate\Support\Facades\Config::set('easypay.enabled', true);
         \Illuminate\Support\Facades\Config::set('easypay.base_url', 'https://api.test.easypay.pt/2.0');

@@ -48,7 +48,7 @@ class CategoryController extends Controller
 
         foreach (Locale::activeCodes() as $locale) {
             $value = $request->input("name.$locale");
-            if (!empty($value)) {
+            if (! empty($value)) {
                 CategoryTranslation::create([
                     'category_id' => $category->id,
                     'locale' => $locale,
@@ -92,7 +92,7 @@ class CategoryController extends Controller
 
         foreach (Locale::activeCodes() as $locale) {
             $value = $request->input("name.$locale");
-            if (!empty($value)) {
+            if (! empty($value)) {
                 $category->translations()
                     ->updateOrCreate(
                         ['locale' => $locale],

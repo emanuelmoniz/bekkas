@@ -12,9 +12,9 @@ class ProductOption extends Model
     protected $fillable = ['product_option_type_id', 'is_active', 'stock', 'price', 'promo_price'];
 
     protected $casts = [
-        'is_active'   => 'boolean',
-        'stock'       => 'integer',
-        'price'       => 'decimal:2',
+        'is_active' => 'boolean',
+        'stock' => 'integer',
+        'price' => 'decimal:2',
         'promo_price' => 'decimal:2',
     ];
 
@@ -31,6 +31,7 @@ class ProductOption extends Model
     public function translation(?string $locale = null)
     {
         $locale = $locale ?? app()->getLocale();
+
         return $this->translations->where('locale', $locale)->first();
     }
 }

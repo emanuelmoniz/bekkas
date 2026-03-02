@@ -213,10 +213,6 @@ class Order extends Model
      * Idempotent: mark this order as refunded. Use when an authoritative refund
      * confirmation is available (e.g. Easypay webhook). When the $source is
      * authoritative we send the transactional email to the customer.
-     *
-     * @param  string|null  $source
-     * @param  array  $meta
-     * @return bool
      */
     public function markAsRefunded(?string $source = null, array $meta = []): bool
     {

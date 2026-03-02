@@ -224,16 +224,16 @@ class CountrySeeder extends Seeder
         // Locales not present (e.g. es-ES) are intentionally left untouched.
         foreach ($countries as $data) {
             $country = Country::create([
-                'iso_alpha2'   => $data['iso_alpha2'],
+                'iso_alpha2' => $data['iso_alpha2'],
                 'country_code' => $data['country_code'],
-                'is_active'    => true,
+                'is_active' => true,
             ]);
 
             foreach ($data['translations'] as $locale => $name) {
                 CountryTranslation::create([
                     'country_id' => $country->id,
-                    'locale'     => $locale,
-                    'name'       => $name,
+                    'locale' => $locale,
+                    'name' => $name,
                 ]);
             }
         }

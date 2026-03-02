@@ -68,6 +68,7 @@ class Project extends Model
     public function translation($locale = null)
     {
         $locale = $locale ?? app()->getLocale();
+
         return $this->translations->where('locale', $locale)->first();
     }
 
@@ -85,5 +86,4 @@ class Project extends Model
     {
         return $this->hasOne(ProjectPhoto::class)->where('is_primary', true);
     }
-
 }

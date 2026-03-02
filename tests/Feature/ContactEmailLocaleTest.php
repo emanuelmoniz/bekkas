@@ -34,7 +34,7 @@ class ContactEmailLocaleTest extends TestCase
         $resp->assertRedirect();
 
         Mail::assertQueued(\App\Mail\ContactMessage::class, function ($mail) {
-            return ($mail->locale === 'en-UK' || $mail->locale === 'en');
+            return $mail->locale === 'en-UK' || $mail->locale === 'en';
         });
     }
 

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Webhooks;
 
 use App\Http\Controllers\Controller;
+use App\Services\EasypayWebhookService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Services\EasypayWebhookService;
 use Illuminate\Support\Facades\Log;
 
 class EasypayController extends Controller
@@ -25,10 +25,11 @@ class EasypayController extends Controller
 
         // Enforce Basic auth when configured (allow local/testing without creds)
         if ($cfgUser || $cfgPass) {
-            if (! (is_string($user) && is_string($pass) && 
+            if (! (is_string($user) && is_string($pass) &&
                 hash_equals((string) $cfgUser, (string) $user) &&
                 hash_equals((string) $cfgPass, (string) $pass))) {
                 Log::warning('easypay.webhook.auth_failed', ['ip' => $request->ip(), 'user' => $user]);
+
                 return response()->json(['message' => 'Unauthorized'], 401);
             }
         } else {
@@ -42,6 +43,7 @@ class EasypayController extends Controller
             $received = (string) $request->header($headerName, '');
             if (! hash_equals((string) $secret, $received)) {
                 Log::warning('easypay.webhook.header_mismatch', ['header' => $headerName, 'received_prefix' => substr($received, 0, 8)]);
+
                 return response()->json(['message' => 'Forbidden'], 403);
             }
         }

@@ -28,13 +28,13 @@ return new class extends Migration
                 $name = match (true) {
                     str_starts_with($locale, 'pt') => $country->name_pt,
                     str_starts_with($locale, 'en') => $country->name_en,
-                    default                        => $country->name_en,
+                    default => $country->name_en,
                 };
 
                 DB::table('country_translations')->insert([
                     'country_id' => $country->id,
-                    'locale'     => $locale,
-                    'name'       => $name,
+                    'locale' => $locale,
+                    'name' => $name,
                 ]);
             }
         }

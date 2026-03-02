@@ -2,17 +2,18 @@
 
 namespace Tests\Unit;
 
-use App\Services\EasypayService;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Order;
 use App\Models\ShippingTier;
+use App\Services\EasypayService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class EasypayServiceTest extends TestCase
 {
     use RefreshDatabase;
+
     public function test_get_single_payment_returns_array()
     {
         Http::fake([

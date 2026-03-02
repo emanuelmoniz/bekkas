@@ -95,7 +95,6 @@ if (! function_exists('image_scroller_images')) {
      * such that primaries precede non‑primaries and then by photo age, which
      * allows any global `max` limit to cut the newest entries.
      *
-     * @param  array  $config
      * @return \Illuminate\Support\Collection
      */
     function image_scroller_images(array $config = [])
@@ -111,8 +110,8 @@ if (! function_exists('image_scroller_images')) {
          * single item (product or project).  The resulting array contains
          * entry arrays rather than raw paths.
          *
-         * @param \Illuminate\Database\Eloquent\Collection $photos
-         * @param int|null $limit
+         * @param  \Illuminate\Database\Eloquent\Collection  $photos
+         * @param  int|null  $limit
          */
         $addEntriesForPhotos = function ($photos, $limit) use (&$entries) {
             if ($photos->isEmpty()) {
@@ -134,6 +133,7 @@ if (! function_exists('image_scroller_images')) {
                         'priority' => $chosen->is_primary ? 0 : 1,
                     ]);
                 }
+
                 return;
             }
 
@@ -147,7 +147,7 @@ if (! function_exists('image_scroller_images')) {
                     'created_at' => $primary->created_at,
                     'priority' => 0,
                 ]);
-                $photos = $photos->reject(fn($p) => $p->id === $primary->id)->values();
+                $photos = $photos->reject(fn ($p) => $p->id === $primary->id)->values();
             }
 
             foreach ($photos as $photo) {
@@ -262,11 +262,10 @@ if (! function_exists('image_scroller_images')) {
         }
 
         return $ordered->map(function ($entry) {
-            return asset('storage/' . ltrim($entry['path'], '/'));
+            return asset('storage/'.ltrim($entry['path'], '/'));
         })->values();
     }
 }
-
 
 // maintenance helper ------------------------------------------------------
 if (! function_exists('cleanup_unused_images')) {
@@ -290,7 +289,6 @@ if (! function_exists('cleanup_unused_images')) {
      * The returned array contains the paths relative to the storage disk
      * (e.g. `products/xyz.jpg`).
      *
-     * @param bool $actuallyDelete
      * @return array<string>
      */
     function cleanup_unused_images(bool $actuallyDelete = false): array
@@ -338,9 +336,9 @@ if (! function_exists('cleanup_unused_images')) {
         $referenced = $referenced->merge($avatars);
 
         // normalise to remove leading slashes and dedupe
-        $referenced = $referenced->map(fn($p) => ltrim((string) $p, '/'))
-                                 ->unique()
-                                 ->values();
+        $referenced = $referenced->map(fn ($p) => ltrim((string) $p, '/'))
+            ->unique()
+            ->values();
 
         // ensure we also protect originals for any thumbnail we know about
         // (some rows still have null `original_path` but the file is present).
@@ -350,6 +348,7 @@ if (! function_exists('cleanup_unused_images')) {
             if (preg_match('#^(products|projects)/([^/]+)$#', $p, $m)) {
                 return $m[1].'/originals/'.$m[2];
             }
+
             return null;
         })->filter();
 

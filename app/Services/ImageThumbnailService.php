@@ -19,26 +19,26 @@ class ImageThumbnailService
 
     public function __construct()
     {
-        $this->manager = new ImageManager(new Driver());
+        $this->manager = new ImageManager(new Driver);
     }
 
     /**
      * Store an uploaded image and generate a 1000px-shorter-side thumbnail.
      *
-     * @param  UploadedFile  $file     The uploaded image file.
-     * @param  string        $folder   Storage folder, e.g. 'products' or 'projects'.
-     * @param  string        $disk     Laravel filesystem disk (default: 'public').
+     * @param  UploadedFile  $file  The uploaded image file.
+     * @param  string  $folder  Storage folder, e.g. 'products' or 'projects'.
+     * @param  string  $disk  Laravel filesystem disk (default: 'public').
      * @return array{path: string, original_path: string}
-     *         `path`          – path to the thumbnail (used in image scrollers).
-     *         `original_path` – path to the full-resolution original (for future gallery).
+     *                                                    `path`          – path to the thumbnail (used in image scrollers).
+     *                                                    `original_path` – path to the full-resolution original (for future gallery).
      */
     public function store(UploadedFile $file, string $folder, string $disk = 'public'): array
     {
-        $extension  = strtolower($file->getClientOriginalExtension()) ?: 'jpg';
-        $filename   = Str::random(40) . '.' . $extension;
+        $extension = strtolower($file->getClientOriginalExtension()) ?: 'jpg';
+        $filename = Str::random(40).'.'.$extension;
 
         // ── 1. Save original ─────────────────────────────────────────────────
-        $originalPath = $folder . '/originals/' . $filename;
+        $originalPath = $folder.'/originals/'.$filename;
         Storage::disk($disk)->put($originalPath, $file->getContent());
 
         // ── 2. Build thumbnail ────────────────────────────────────────────────
@@ -60,11 +60,11 @@ class ImageThumbnailService
         }
 
         // ── 3. Save thumbnail ─────────────────────────────────────────────────
-        $thumbnailPath = $folder . '/' . $filename;
+        $thumbnailPath = $folder.'/'.$filename;
         Storage::disk($disk)->put($thumbnailPath, $image->encodeByExtension($extension));
 
         return [
-            'path'          => $thumbnailPath,
+            'path' => $thumbnailPath,
             'original_path' => $originalPath,
         ];
     }
@@ -72,9 +72,8 @@ class ImageThumbnailService
     /**
      * Delete both the thumbnail and the original from storage.
      *
-     * @param  string       $path          Path to the thumbnail.
+     * @param  string  $path  Path to the thumbnail.
      * @param  string|null  $originalPath  Path to the original (nullable for legacy rows).
-     * @param  string       $disk
      */
     public function delete(string $path, ?string $originalPath, string $disk = 'public'): void
     {

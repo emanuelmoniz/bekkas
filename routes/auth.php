@@ -32,8 +32,6 @@ Route::middleware('guest')->group(function () {
     // can be used both for unauthenticated sign-in and for linking while
     // authenticated (profile -> link flow).
 
-
-
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
 

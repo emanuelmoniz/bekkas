@@ -10,6 +10,10 @@ class Country extends Model
 {
     use HasFactory;
 
+    protected ?string $legacyNamePt = null;
+
+    protected ?string $legacyNameEn = null;
+
     protected $fillable = [
         'iso_alpha2',
         'country_code',
@@ -19,6 +23,25 @@ class Country extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    protected static function booted()
+    {
+        static::saved(function (Country $country) {
+            if ($country->legacyNamePt !== null) {
+                CountryTranslation::updateOrCreate(
+                    ['country_id' => $country->id, 'locale' => 'pt-PT'],
+                    ['name' => $country->legacyNamePt]
+                );
+            }
+
+            if ($country->legacyNameEn !== null) {
+                CountryTranslation::updateOrCreate(
+                    ['country_id' => $country->id, 'locale' => 'en-UK'],
+                    ['name' => $country->legacyNameEn]
+                );
+            }
+        });
+    }
 
     public function addresses()
     {
@@ -48,23 +71,45 @@ class Country extends Model
         return $this->translation()?->name;
     }
 
+    public function getNamePtAttribute(): ?string
+    {
+        return $this->translations->where('locale', 'pt-PT')->first()?->name;
+    }
+
+    public function getNameEnAttribute(): ?string
+    {
+        return $this->translations->where('locale', 'en-UK')->first()?->name;
+    }
+
+    public function setNamePtAttribute($value): void
+    {
+        $this->legacyNamePt = is_string($value) ? $value : null;
+        unset($this->attributes['name_pt']);
+    }
+
+    public function setNameEnAttribute($value): void
+    {
+        $this->legacyNameEn = is_string($value) ? $value : null;
+        unset($this->attributes['name_en']);
+    }
+
     /**
      * Order by the translated name for the given locale,
      * falling back to the app fallback locale.
      */
     public function scopeOrderByTranslatedName(Builder $query, ?string $locale = null): Builder
     {
-        $locale   = $locale ?? app()->getLocale();
+        $locale = $locale ?? app()->getLocale();
         $fallback = config('app.fallback_locale', 'en-UK');
 
         return $query
             ->leftJoin('country_translations as _ct_order', function ($join) use ($locale) {
                 $join->on('_ct_order.country_id', '=', 'countries.id')
-                     ->where('_ct_order.locale', '=', $locale);
+                    ->where('_ct_order.locale', '=', $locale);
             })
             ->leftJoin('country_translations as _ct_fallback', function ($join) use ($fallback) {
                 $join->on('_ct_fallback.country_id', '=', 'countries.id')
-                     ->where('_ct_fallback.locale', '=', $fallback);
+                    ->where('_ct_fallback.locale', '=', $fallback);
             })
             ->orderByRaw('COALESCE(_ct_order.name, _ct_fallback.name)')
             ->addSelect('countries.*');

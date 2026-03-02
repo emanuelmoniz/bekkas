@@ -26,8 +26,8 @@ return new class extends Migration
             foreach ($locales as $locale) {
                 DB::table('region_translations')->insert([
                     'region_id' => $region->id,
-                    'locale'    => $locale,
-                    'name'      => $region->name,
+                    'locale' => $locale,
+                    'name' => $region->name,
                 ]);
             }
         }

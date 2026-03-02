@@ -4,8 +4,8 @@ namespace App\Services;
 
 use Illuminate\Support\Str;
 use Unsplash\HttpClient;
-use Unsplash\Search;
 use Unsplash\Photo;
+use Unsplash\Search;
 
 class UnsplashService
 {
@@ -16,17 +16,14 @@ class UnsplashService
         HttpClient::init([
             // the library historically refers to "applicationId" for the public key
             'applicationId' => $config['access_key'] ?? $config['app_id'] ?? '',
-            'secret'        => $config['secret'] ?? '',
-            'callbackUrl'   => config('app.url'),
-            'utmSource'     => $config['utm_source'] ?? config('app.name'),
+            'secret' => $config['secret'] ?? '',
+            'callbackUrl' => config('app.url'),
+            'utmSource' => $config['utm_source'] ?? config('app.name'),
         ]);
     }
 
     /**
      * Run a simple photo search and return the first result (or null).
-     *
-     * @param string $query
-     * @return Photo|null
      */
     public function searchFirstPhoto(string $query): ?Photo
     {
@@ -37,6 +34,7 @@ class UnsplashService
         // one into the correct Photo instance using getArrayObject().
         if ($results && is_array($results->getResults()) && count($results->getResults()) > 0) {
             $arrayObj = $results->getArrayObject();
+
             return $arrayObj[0] ?? null;
         }
 
@@ -47,9 +45,8 @@ class UnsplashService
      * Given a Photo object, download the actual image file into public/{$folder}.
      * Triggers the Unsplash "download" endpoint as required by guidelines.
      *
-     * @param Photo  $photo
-     * @param string $folder  sub‑directory inside public/ (default: images)
-     * @return string|null    relative path from public/ (e.g. "images/abc.jpg")
+     * @param  string  $folder  sub‑directory inside public/ (default: images)
+     * @return string|null relative path from public/ (e.g. "images/abc.jpg")
      */
     public function downloadToPublic(Photo $photo, string $folder = 'images'): ?string
     {
@@ -71,8 +68,8 @@ class UnsplashService
         }
 
         $extension = 'jpg';
-        $filename = Str::random(40) . '.' . $extension;
-        $path = $folder . '/' . $filename;
+        $filename = Str::random(40).'.'.$extension;
+        $path = $folder.'/'.$filename;
 
         $destination = public_path($path);
         $dir = dirname($destination);
@@ -87,10 +84,6 @@ class UnsplashService
 
     /**
      * Convenience helper that searches and downloads the first photo for a query.
-     *
-     * @param string $query
-     * @param string $folder
-     * @return string|null
      */
     public function searchAndDownload(string $query, string $folder = 'images'): ?string
     {

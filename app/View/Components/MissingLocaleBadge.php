@@ -16,7 +16,7 @@ use Illuminate\View\Component;
  */
 class MissingLocaleBadge extends Component
 {
-    /** @var \Illuminate\Support\Collection  Locale codes that are missing */
+    /** @var \Illuminate\Support\Collection Locale codes that are missing */
     public $missingLocales;
 
     public function __construct(public $model)

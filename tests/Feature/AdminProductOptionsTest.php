@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Product;
 use App\Models\Role;
 use App\Models\Tax;
-use App\Models\ProductOptionType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -213,16 +212,16 @@ class AdminProductOptionsTest extends TestCase
             'stock' => 1,
             'production_time' => 0,
             'weight' => 50,
-            'name' => [ 'pt-PT' => 'Produto existente', 'en-UK' => 'Existing product' ],
+            'name' => ['pt-PT' => 'Produto existente', 'en-UK' => 'Existing product'],
             'option_types' => [
                 [
                     'is_active' => 1,
-                    'name' => [ 'pt-PT' => 'Tipo 1', 'en-UK' => 'Type 1' ],
+                    'name' => ['pt-PT' => 'Tipo 1', 'en-UK' => 'Type 1'],
                     'options' => [
                         [
                             'is_active' => 1,
                             'stock' => '',
-                            'name' => [ 'pt-PT' => 'Novo', 'en-UK' => 'New' ],
+                            'name' => ['pt-PT' => 'Novo', 'en-UK' => 'New'],
                         ],
                     ],
                 ],

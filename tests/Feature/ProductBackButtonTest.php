@@ -33,7 +33,7 @@ class ProductBackButtonTest extends TestCase
         $response->assertViewHas('backUrl', url('/store?name=foo&order=price_low_high'));
 
         // and the rendered html should contain a link to that URL
-        $response->assertSee('href="' . e(url('/store?name=foo&order=price_low_high')) . '"', false);
+        $response->assertSee('href="'.e(url('/store?name=foo&order=price_low_high')).'"', false);
     }
 
     #[Test]

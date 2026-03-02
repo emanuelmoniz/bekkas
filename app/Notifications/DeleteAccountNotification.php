@@ -2,12 +2,12 @@
 
 namespace App\Notifications;
 
-use Illuminate\Notifications\Notification;
+use Carbon\Carbon;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\URL;
 
 class DeleteAccountNotification extends Notification
 {
