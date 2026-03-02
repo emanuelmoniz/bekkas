@@ -35,6 +35,9 @@ echo "[deploy] APP_ENV: $APP_ENV_VAL"
 if [ "$APP_ENV_VAL" = "local" ]; then
   composer install --no-interaction
 else
+  # Remove stale bootstrap cache before installing to avoid pre-uninstall script
+  # crashes when switching from a dev vendor state to a --no-dev install.
+  rm -f bootstrap/cache/packages.php bootstrap/cache/services.php
   composer install --no-dev --optimize-autoloader --no-interaction
 fi
 

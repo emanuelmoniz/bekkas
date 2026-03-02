@@ -972,31 +972,31 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'auth.recaptcha_required', 'locale' => 'en-UK', 'value' => 'Please verify that you are not a robot.', 'created_at' => $now, 'updated_at' => $now],
 
             // Home page
-            ['key' => 'home.banner.tagline1', 'locale' => 'pt-PT', 'value' => 'Criar o futuro, da ideia ao objeto', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.banner.tagline1', 'locale' => 'en-UK', 'value' => 'Printing Life layer by layer', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.tagline1', 'locale' => 'pt-PT', 'value' => 'Do Conceito à Criação.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.tagline1', 'locale' => 'en-UK', 'value' => 'From Concept to Creation.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.banner.subtagline1', 'locale' => 'pt-PT', 'value' => 'Criar o futuro, da ideia ao objeto', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.banner.subtagline1', 'locale' => 'en-UK', 'value' => 'Printing Life layer by layer', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.subtagline1', 'locale' => 'pt-PT', 'value' => 'Design, prototipagem e impressão 3D num só lugar.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.subtagline1', 'locale' => 'en-UK', 'value' => 'Design, prototyping and 3D printing — all in one place.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.banner.button1', 'locale' => 'pt-PT', 'value' => 'SERVIÇOS', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.banner.button1', 'locale' => 'en-UK', 'value' => 'OUR SERVICES', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.button1', 'locale' => 'pt-PT', 'value' => 'VER MAIS', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.button1', 'locale' => 'en-UK', 'value' => 'EXPLORE MORE', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.banner.tagline2', 'locale' => 'pt-PT', 'value' => 'Brincos inspirados em origami.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.banner.tagline2', 'locale' => 'en-UK', 'value' => 'Origami-inspired earrings.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.tagline2', 'locale' => 'pt-PT', 'value' => 'Pronto a Imprimir. Pronto a Enviar.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.tagline2', 'locale' => 'en-UK', 'value' => 'Designed to Impress. Printed to Last.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.banner.subtagline2', 'locale' => 'pt-PT', 'value' => 'Brincos inspirados em origami.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.banner.subtagline2', 'locale' => 'en-UK', 'value' => 'Origami-inspired earrings.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.subtagline2', 'locale' => 'pt-PT', 'value' => 'Peças originais em impressão 3D, desenhadas e produzidas por nós.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.subtagline2', 'locale' => 'en-UK', 'value' => 'Original 3D printed pieces, designed and produced by us.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.banner.button2', 'locale' => 'pt-PT', 'value' => 'LOJA', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.button2', 'locale' => 'en-UK', 'value' => 'STORE', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.banner.tagline3', 'locale' => 'pt-PT', 'value' => 'Imprimimos as tuas ideias e projetos.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.banner.tagline3', 'locale' => 'en-UK', 'value' => 'We print your ideas and projects.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.tagline3', 'locale' => 'pt-PT', 'value' => 'Transformamos as suas ideias em realidade.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.tagline3', 'locale' => 'en-UK', 'value' => "Dream It. Print It. \r\nWe turn your ideas into reality.", 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.banner.subtagline3', 'locale' => 'pt-PT', 'value' => 'Imprimimos as tuas ideias e projetos.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.banner.subtagline3', 'locale' => 'en-UK', 'value' => 'We print your ideas and projects.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.subtagline3', 'locale' => 'pt-PT', 'value' => 'Protótipos, maquetes e peças personalizadas com detalhe.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.subtagline3', 'locale' => 'en-UK', 'value' => 'Prototypes, models and custom parts with detail and accuracy.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.banner.button3', 'locale' => 'pt-PT', 'value' => 'PRODUÇÃO', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.banner.button3', 'locale' => 'pt-PT', 'value' => 'SERVIÇOS', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.button3', 'locale' => 'en-UK', 'value' => 'CUSTOM', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.services.store.title', 'locale' => 'pt-PT', 'value' => 'Loja', 'created_at' => $now, 'updated_at' => $now],
@@ -1008,11 +1008,11 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'home.services.store.button', 'locale' => 'pt-PT', 'value' => 'Ver Produtos', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.services.store.button', 'locale' => 'en-UK', 'value' => 'View Products', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.services.custom.title', 'locale' => 'pt-PT', 'value' => 'Produção', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.custom.title', 'locale' => 'pt-PT', 'value' => 'Serviços', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.services.custom.title', 'locale' => 'en-UK', 'value' => 'Custom', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'home.services.custom.description', 'locale' => 'pt-PT', 'value' => 'Serviço de impressão para arquitetos, engenheiros e criadores. Transforme seus projetos em modelos 3D.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'home.services.custom.description', 'locale' => 'en-UK', 'value' => 'Printing service for architects, engineers and creators. Transform your projects into 3D models.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.custom.description', 'locale' => 'pt-PT', 'value' => 'Serviço de impressão 3D para arquitetos, designers, engenheiros e criadores, com apoio personalizado.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.custom.description', 'locale' => 'en-UK', 'value' => 'Printing service for architects, designers, engineers and creators, with personalized help.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'home.services.custom.button', 'locale' => 'pt-PT', 'value' => 'Mais Informações', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.services.custom.button', 'locale' => 'en-UK', 'value' => 'More Info', 'created_at' => $now, 'updated_at' => $now],
@@ -1116,6 +1116,8 @@ class StaticTranslationsSeeder extends Seeder
             // custom.request — 3-service-card section
             ['key' => 'custom.request.title',        'locale' => 'pt-PT', 'value' => 'Serviços e Preços', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.title',        'locale' => 'en-UK', 'value' => 'Services and Pricing', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.subtitle',      'locale' => 'pt-PT', 'value' => 'Escolha o serviço que melhor se adapta à sua situação. Cada opção abre um ticket com a categoria já selecionada.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.subtitle',      'locale' => 'en-UK', 'value' => 'Choose the service that best matches your situation. Each option opens a ticket with the right category already selected.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle1',     'locale' => 'pt-PT', 'value' => 'Escolha o serviço que melhor se adapta à sua necessidade.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle1',     'locale' => 'en-UK', 'value' => 'Choose the service that best matches your needs.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle2',     'locale' => 'pt-PT', 'value' => 'Leia atentamente as caracteristicas e informações de cada opção.', 'created_at' => $now, 'updated_at' => $now],
