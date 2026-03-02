@@ -17,8 +17,10 @@ class MaintenanceMode
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Always allow the maintenance page itself and admin routes through
-        if ($request->routeIs('maintenance') || $request->is('admin*')) {
+        // Always allow the maintenance page, admin routes, and auth (login/logout) through.
+        // Use path-based check for login so both the GET (show form) and POST (submit) are exempted —
+        // the POST /login route is not named, so routeIs('login') would miss it.
+        if ($request->routeIs('maintenance') || $request->is('login', 'admin*') || $request->routeIs('logout')) {
             return $next($request);
         }
 

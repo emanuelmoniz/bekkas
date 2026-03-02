@@ -113,4 +113,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(\App\Models\SocialAccount::class);
     }
+
+    /**
+     * Whether the user has a local password set.
+     * Social-only users have password = null.
+     */
+    public function hasPassword(): bool
+    {
+        return !is_null($this->getAttributes()['password'] ?? null);
+    }
 }

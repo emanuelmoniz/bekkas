@@ -814,6 +814,12 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.update_password_desc', 'locale' => 'pt-PT', 'value' => 'Certifique-se de que a sua conta está a usar uma palavra-passe longa e aleatória para se manter seguro.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.update_password_desc', 'locale' => 'en-UK', 'value' => 'Ensure your account is using a long, random password to stay secure.', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'profile.set_password', 'locale' => 'pt-PT', 'value' => 'Definir Palavra-passe', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.set_password', 'locale' => 'en-UK', 'value' => 'Set Password', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.set_password_desc', 'locale' => 'pt-PT', 'value' => 'Entrou com um fornecedor social. Adicione uma palavra-passe para também poder entrar com o seu email.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.set_password_desc', 'locale' => 'en-UK', 'value' => 'You signed in using a social provider. Add a password to also be able to sign in with your email.', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'profile.delete_account', 'locale' => 'pt-PT', 'value' => 'Eliminar Conta', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.delete_account', 'locale' => 'en-UK', 'value' => 'Delete Account', 'created_at' => $now, 'updated_at' => $now],
 

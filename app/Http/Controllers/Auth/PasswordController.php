@@ -16,19 +16,30 @@ class PasswordController extends Controller
      */
     public function update(Request $request): RedirectResponse
     {
-        $validator = Validator::make($request->all(), [
-            'current_password' => ['required', 'current_password'],
+        $user = $request->user();
+        $userHasPassword = $user->hasPassword();
+
+        $rules = [
             'password' => [
                 'required',
                 'confirmed',
                 PasswordValidation::rules(),
             ],
-        ], [
+        ];
+
+        $messages = [
             'current_password.required' => t('validation.current_password_required'),
             'current_password.current_password' => t('validation.current_password_incorrect'),
             'password.required' => t('validation.password_required'),
             'password.confirmed' => t('validation.password_mismatch'),
-        ]);
+        ];
+
+        // Only require current password if the user already has one set
+        if ($userHasPassword) {
+            $rules['current_password'] = ['required', 'current_password'];
+        }
+
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return redirect()->back()
@@ -36,7 +47,7 @@ class PasswordController extends Controller
                 ->withInput();
         }
 
-        $request->user()->update([
+        $user->update([
             'password' => Hash::make($validator->validated()['password']),
         ]);
 
