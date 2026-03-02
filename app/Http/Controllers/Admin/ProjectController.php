@@ -89,7 +89,7 @@ class ProjectController extends Controller
 
         foreach (Locale::activeList() as $locale => $locLabel) {
             $nameValue = $request->input("name.$locale");
-            if (!empty($nameValue)) {
+            if (! empty($nameValue)) {
                 ProjectTranslation::create([
                     'project_id' => $project->id,
                     'locale' => $locale,
@@ -107,6 +107,7 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         $project->load(['translations', 'materials', 'photos']);
+
         return view('admin.projects.show', compact('project'));
     }
 
@@ -145,7 +146,7 @@ class ProjectController extends Controller
 
         foreach (Locale::activeList() as $locale => $locLabel) {
             $nameValue = $request->input("name.$locale");
-            if (!empty($nameValue)) {
+            if (! empty($nameValue)) {
                 $project->translations()
                     ->updateOrCreate(
                         ['locale' => $locale],

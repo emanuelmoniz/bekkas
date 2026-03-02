@@ -45,6 +45,7 @@
                         <th class="px-3 py-2">Order Date</th>
                         <th class="px-3 py-2">Session created at</th>
                         <th class="px-3 py-2">Status</th>
+                        <th class="px-3 py-2 text-right">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,6 +57,9 @@
                             <td class="px-3 py-2">{{ optional($s->order)->created_at?->format('d/m/Y H:i') ?? '-' }}</td>
                             <td class="px-3 py-2">{{ $s->created_at->format('d/m/Y H:i') }}</td>
                             <td class="px-3 py-2">{{ $s->status ?? '-' }}</td>
+                            <td class="px-3 py-2 text-right">
+                                <a href="{{ route('admin.orders.checkouts.show', $s) }}" class="text-accent-secondary hover:underline">View</a>
+                            </td>
 
                         </tr>
                     @endforeach

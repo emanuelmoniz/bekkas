@@ -17,6 +17,4 @@ class ProjectTranslation extends Model
         'name',
         'description',
     ];
-
-
 }

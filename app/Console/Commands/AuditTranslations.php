@@ -30,14 +30,17 @@ class AuditTranslations extends Command
     // ── Paths ─────────────────────────────────────────────────────────────────
 
     private string $seederPath;
-    private array  $scanRoots;
-    private array  $excludeDirs;
-    private array  $excludeFiles;
+
+    private array $scanRoots;
+
+    private array $excludeDirs;
+
+    private array $excludeFiles;
 
     public function handle(): int
     {
-        $this->seederPath  = database_path('seeders/StaticTranslationsSeeder.php');
-        $this->scanRoots   = [
+        $this->seederPath = database_path('seeders/StaticTranslationsSeeder.php');
+        $this->scanRoots = [
             app_path(),
             resource_path(),
             base_path('routes'),
@@ -66,7 +69,7 @@ class AuditTranslations extends Command
             }
         }
 
-        $usages   = collect($usagesRaw);
+        $usages = collect($usagesRaw);
         $codeKeys = $usages->keys()->sort()->values();
 
         // ── 2. Collect keys declared in seeder ────────────────────────────────
@@ -76,13 +79,13 @@ class AuditTranslations extends Command
         // ── 3. Diff ───────────────────────────────────────────────────────────
 
         $missing = $codeKeys->diff($seederKeys)->values();    // in code, not in seeder
-        $unused  = $seederKeys->diff($codeKeys)->values();    // in seeder, not in code
+        $unused = $seederKeys->diff($codeKeys)->values();    // in seeder, not in code
         $healthy = $codeKeys->intersect($seederKeys)->count();
 
         // ── 4. Report ─────────────────────────────────────────────────────────
 
         $showMissing = ! $this->option('unused');
-        $showUnused  = ! $this->option('missing');
+        $showUnused = ! $this->option('missing');
 
         $this->line('');
         $this->line(sprintf(
@@ -144,6 +147,7 @@ class AuditTranslations extends Command
 
             if ($unused->isEmpty()) {
                 $this->line('<fg=green>  --fix: nothing to remove — seeder is already clean.</>');
+
                 return self::SUCCESS;
             }
 
@@ -152,6 +156,7 @@ class AuditTranslations extends Command
                 $unused->count()
             ))) {
                 $this->line('Aborted.');
+
                 return self::SUCCESS;
             }
 
@@ -215,8 +220,8 @@ class AuditTranslations extends Command
                 );
 
                 foreach ($matches[2] as $key) {
-                    $relative       = str_replace(base_path() . '/', '', $realPath);
-                    $usages[$key][] = $relative . ':' . ($lineNo + 1);
+                    $relative = str_replace(base_path().'/', '', $realPath);
+                    $usages[$key][] = $relative.':'.($lineNo + 1);
                 }
             }
         }
@@ -231,10 +236,11 @@ class AuditTranslations extends Command
     {
         if (! file_exists($this->seederPath)) {
             $this->error('Seeder not found: '.$this->seederPath);
+
             return collect();
         }
 
-        $src  = file_get_contents($this->seederPath);
+        $src = file_get_contents($this->seederPath);
         $keys = [];
 
         // Match: 'key' => 'some.dotted.key'  or  "key" => "some.dotted.key"
@@ -257,16 +263,17 @@ class AuditTranslations extends Command
      */
     private function fixSeeder(Collection $unusedKeys): int
     {
-        $src      = file_get_contents($this->seederPath);
-        $lines    = explode("\n", $src);
-        $out      = [];
-        $removed  = 0;
+        $src = file_get_contents($this->seederPath);
+        $lines = explode("\n", $src);
+        $out = [];
+        $removed = 0;
         $unusedSet = $unusedKeys->flip()->toArray();
 
         foreach ($lines as $line) {
             if (preg_match('/[\'"]key[\'"]\s*=>\s*[\'"]([a-zA-Z0-9_.\-]+)[\'"]/', $line, $m)
                 && isset($unusedSet[$m[1]])) {
                 $removed++;
+
                 continue; // drop the line
             }
             $out[] = $line;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -97,7 +97,7 @@ class ProfileController extends Controller
         // Only meaningful for social-only or password-less users, but harmless otherwise.
         Log::info('Account deletion link requested (user)', ['user_id' => $user->id, 'email' => $user->email]);
 
-        $user->notify(new \App\Notifications\DeleteAccountNotification());
+        $user->notify(new \App\Notifications\DeleteAccountNotification);
 
         return back()->with('status', 'deletion-link-sent');
     }
@@ -165,4 +165,3 @@ class ProfileController extends Controller
         }
     }
 }
-

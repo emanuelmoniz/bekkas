@@ -26,7 +26,7 @@ class ProductController extends Controller
 
         if ($request->filled('name')) {
             $query->whereHas('translations', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->name . '%');
+                $q->where('name', 'like', '%'.$request->name.'%');
             });
         }
 
@@ -80,10 +80,10 @@ class ProductController extends Controller
                     // join product_translations for ordering by name in current locale
                     $dir = $request->order === 'name_az' ? 'asc' : 'desc';
                     $query->join('product_translations as pt', 'products.id', '=', 'pt.product_id')
-                          ->where('pt.locale', app()->getLocale())
+                        ->where('pt.locale', app()->getLocale())
                           // avoid selecting translation columns in paginator
-                          ->select('products.*')
-                          ->orderBy('pt.name', $dir);
+                        ->select('products.*')
+                        ->orderBy('pt.name', $dir);
                     break;
                 case 'price_low_high':
                     $query->orderByRaw(
@@ -201,6 +201,7 @@ class ProductController extends Controller
         $deliveryDate = $deliveryInfo['formatted'];
 
         $backUrl = session('store_return_url', route('store.index'));
+
         return view('store.show', compact('product', 'isFavorite', 'deliveryDate', 'backUrl'));
     }
 }

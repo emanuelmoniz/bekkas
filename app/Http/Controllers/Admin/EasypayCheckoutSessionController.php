@@ -137,4 +137,3 @@ class EasypayCheckoutSessionController extends Controller
         return redirect()->back()->with('error', 'Failed to cancel checkout (see response)');
     }
 }
-

@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Exceptions\SocialAuthException;
 use App\Http\Controllers\Controller;
 use App\Services\SocialAuthService;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
@@ -38,7 +36,9 @@ class SocialAuthController extends Controller
         // Log incoming callback query (mask sensitive values like 'code') for deterministic debugging
         $reqQuery = request()->query();
         $masked = $reqQuery;
-        if (isset($masked['code'])) { $masked['code'] = '***masked***'; }
+        if (isset($masked['code'])) {
+            $masked['code'] = '***masked***';
+        }
         Log::debug('Social callback incoming', ['provider' => $provider, 'query' => $masked]);
 
         // If provider returned an OAuth error in the callback, surface a user-friendly message and log details
@@ -57,7 +57,7 @@ class SocialAuthController extends Controller
             Log::warning('Missing or empty authorization code in OAuth callback', [
                 'provider' => $provider,
                 'query_keys' => array_keys($reqQuery),
-                'code_empty' => request()->has('code') && request('code') === ''
+                'code_empty' => request()->has('code') && request('code') === '',
             ]);
 
             if (auth()->check()) {
@@ -72,7 +72,9 @@ class SocialAuthController extends Controller
         } catch (\Exception $e) {
             // Log provider callback failures for deterministic debugging (mask any code present)
             $reqQuery = request()->query();
-            if (isset($reqQuery['code'])) { $reqQuery['code'] = '***masked***'; }
+            if (isset($reqQuery['code'])) {
+                $reqQuery['code'] = '***masked***';
+            }
             Log::error('Socialite callback failed', ['provider' => $provider, 'query' => $reqQuery, 'has_code' => request()->has('code'), 'error_param' => request('error'), 'exception' => $e]);
 
             if (auth()->check()) {
@@ -85,7 +87,7 @@ class SocialAuthController extends Controller
         // If an authenticated user initiated the flow, treat this as a "link" operation
         if (auth()->check()) {
             try {
-                (new SocialAuthService())->linkProviderToUser(auth()->user(), $provider, $providerUser);
+                (new SocialAuthService)->linkProviderToUser(auth()->user(), $provider, $providerUser);
             } catch (SocialAuthException $e) {
                 // Map known exception codes to DB-driven translation keys
                 if ($e->getCode() === SocialAuthException::PROVIDER_ALREADY_LINKED) {
@@ -102,7 +104,7 @@ class SocialAuthController extends Controller
 
         // Unauthenticated: normal sign-in / registration flow
         try {
-            $user = (new SocialAuthService())->findOrCreateUserFromProvider($provider, $providerUser);
+            $user = (new SocialAuthService)->findOrCreateUserFromProvider($provider, $providerUser);
         } catch (SocialAuthException $e) {
             if ($e->getCode() === SocialAuthException::UNVERIFIED_EMAIL) {
                 return redirect()
@@ -127,7 +129,7 @@ class SocialAuthController extends Controller
         $user = auth()->user();
 
         try {
-            (new \App\Services\SocialAuthService())->unlinkProviderFromUser($user, $provider);
+            (new \App\Services\SocialAuthService)->unlinkProviderFromUser($user, $provider);
         } catch (SocialAuthException $e) {
             $msg = $e->getMessage();
 

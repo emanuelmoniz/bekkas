@@ -44,7 +44,7 @@ class MaterialController extends Controller
 
         foreach (Locale::activeCodes() as $locale) {
             $value = $request->input("name.$locale");
-            if (!empty($value)) {
+            if (! empty($value)) {
                 MaterialTranslation::create([
                     'material_id' => $material->id,
                     'locale' => $locale,
@@ -81,7 +81,7 @@ class MaterialController extends Controller
 
         foreach (Locale::activeCodes() as $locale) {
             $value = $request->input("name.$locale");
-            if (!empty($value)) {
+            if (! empty($value)) {
                 $material->translations()
                     ->updateOrCreate(
                         ['locale' => $locale],

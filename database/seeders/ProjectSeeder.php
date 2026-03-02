@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Str;
 use App\Services\ImageThumbnailService;
+use Illuminate\Database\Seeder;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 
 class ProjectSeeder extends Seeder
 {
@@ -484,7 +482,7 @@ class ProjectSeeder extends Seeder
             }
         }
 
-        if (!empty($basePhotos)) {
+        if (! empty($basePhotos)) {
             $counts = array_fill_keys(array_keys($queries), 1);
             while (min($counts) < 5) {
                 $eligible = array_filter($counts, function ($c) {
@@ -507,7 +505,7 @@ class ProjectSeeder extends Seeder
 
         @array_map('unlink', glob(public_path('seed-temp/*')));
 
-        if (!empty($photoRows)) {
+        if (! empty($photoRows)) {
             DB::table('project_photos')->insert($photoRows);
         }
     }

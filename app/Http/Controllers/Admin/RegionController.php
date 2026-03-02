@@ -65,9 +65,9 @@ class RegionController extends Controller
         $locales = Locale::activeCodes()->all();
 
         $rules = [
-            'country_id'       => 'required|exists:countries,id',
+            'country_id' => 'required|exists:countries,id',
             'postal_code_from' => 'required|string|max:20',
-            'postal_code_to'   => 'required|string|max:20',
+            'postal_code_to' => 'required|string|max:20',
         ];
 
         foreach ($locales as $locale) {
@@ -78,19 +78,19 @@ class RegionController extends Controller
 
         DB::transaction(function () use ($request, $locales) {
             $region = Region::create([
-                'country_id'       => $request->country_id,
+                'country_id' => $request->country_id,
                 'postal_code_from' => $request->postal_code_from,
-                'postal_code_to'   => $request->postal_code_to,
-                'is_active'        => $request->boolean('is_active', true),
+                'postal_code_to' => $request->postal_code_to,
+                'is_active' => $request->boolean('is_active', true),
             ]);
 
             foreach ($locales as $locale) {
                 $value = $request->input("translations.{$locale}");
-                if (!empty($value)) {
+                if (! empty($value)) {
                     RegionTranslation::create([
                         'region_id' => $region->id,
-                        'locale'    => $locale,
-                        'name'      => $value,
+                        'locale' => $locale,
+                        'name' => $value,
                     ]);
                 }
             }
@@ -135,9 +135,9 @@ class RegionController extends Controller
         $locales = Locale::activeCodes()->all();
 
         $rules = [
-            'country_id'       => 'required|exists:countries,id',
+            'country_id' => 'required|exists:countries,id',
             'postal_code_from' => 'required|string|max:20',
-            'postal_code_to'   => 'required|string|max:20',
+            'postal_code_to' => 'required|string|max:20',
             'default_shipping_tier_id' => ['nullable', function ($attribute, $value, $fail) use ($region) {
                 if ($value) {
                     $exists = DB::table('region_shipping_tier')
@@ -159,15 +159,15 @@ class RegionController extends Controller
 
         DB::transaction(function () use ($request, $region, $locales) {
             $region->update([
-                'country_id'       => $request->country_id,
+                'country_id' => $request->country_id,
                 'postal_code_from' => $request->postal_code_from,
-                'postal_code_to'   => $request->postal_code_to,
-                'is_active'        => $request->boolean('is_active'),
+                'postal_code_to' => $request->postal_code_to,
+                'is_active' => $request->boolean('is_active'),
             ]);
 
             foreach ($locales as $locale) {
                 $value = $request->input("translations.{$locale}");
-                if (!empty($value)) {
+                if (! empty($value)) {
                     RegionTranslation::updateOrCreate(
                         ['region_id' => $region->id, 'locale' => $locale],
                         ['name' => $value]

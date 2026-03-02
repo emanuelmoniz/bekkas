@@ -48,7 +48,7 @@ class CountryController extends Controller
         $locales = Locale::activeList();
 
         $rules = [
-            'iso_alpha2'   => 'required|string|size:2|unique:countries,iso_alpha2',
+            'iso_alpha2' => 'required|string|size:2|unique:countries,iso_alpha2',
             'country_code' => 'required|string|max:10',
         ];
 
@@ -61,9 +61,9 @@ class CountryController extends Controller
 
         DB::transaction(function () use ($request, $locales) {
             $country = Country::create([
-                'iso_alpha2'   => strtoupper($request->iso_alpha2),
+                'iso_alpha2' => strtoupper($request->iso_alpha2),
                 'country_code' => $request->country_code,
-                'is_active'    => $request->boolean('is_active'),
+                'is_active' => $request->boolean('is_active'),
             ]);
 
             foreach (array_keys($locales) as $locale) {
@@ -71,8 +71,8 @@ class CountryController extends Controller
                 if (filled($name)) {
                     CountryTranslation::create([
                         'country_id' => $country->id,
-                        'locale'     => $locale,
-                        'name'       => $name,
+                        'locale' => $locale,
+                        'name' => $name,
                     ]);
                 }
             }
@@ -102,7 +102,7 @@ class CountryController extends Controller
         $locales = Locale::activeList();
 
         $rules = [
-            'iso_alpha2'   => 'required|string|size:2|unique:countries,iso_alpha2,'.$country->id,
+            'iso_alpha2' => 'required|string|size:2|unique:countries,iso_alpha2,'.$country->id,
             'country_code' => 'required|string|max:10',
         ];
 
@@ -115,9 +115,9 @@ class CountryController extends Controller
 
         DB::transaction(function () use ($request, $country, $locales) {
             $country->update([
-                'iso_alpha2'   => strtoupper($request->iso_alpha2),
+                'iso_alpha2' => strtoupper($request->iso_alpha2),
                 'country_code' => $request->country_code,
-                'is_active'    => $request->boolean('is_active'),
+                'is_active' => $request->boolean('is_active'),
             ]);
 
             foreach (array_keys($locales) as $locale) {

@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Configuration;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
 
 class ConfigurationServiceProvider extends ServiceProvider
 {
@@ -99,6 +99,7 @@ class ConfigurationServiceProvider extends ServiceProvider
                 // cast numeric strings to int where appropriate
                 if (is_string($value) && is_numeric($value) && str_starts_with($key, 'easypay.') && (str_contains($key, 'ttl') || str_ends_with($key, '.port'))) {
                     config()->set($key, (int) $value);
+
                     continue;
                 }
 

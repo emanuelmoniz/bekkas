@@ -142,8 +142,6 @@ class AdminEasypayPayloadsTest extends TestCase
         $this->assertDatabaseMissing('easypay_payloads', ['id' => $payload->id]);
     }
 
-
-
     public function test_admin_can_create_payload_from_order_show()
     {
         $role = Role::firstOrCreate(['name' => 'admin']);

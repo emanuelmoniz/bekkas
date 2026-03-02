@@ -5,11 +5,11 @@ namespace Tests\Feature;
 use App\Models\Ticket;
 use App\Models\TicketCategory;
 use App\Models\User;
+use App\Notifications\DeleteAccountNotification;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Notifications\DeleteAccountNotification;
 
 class DeleteAccountTest extends TestCase
 {

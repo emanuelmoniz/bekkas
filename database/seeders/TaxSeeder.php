@@ -16,9 +16,9 @@ class TaxSeeder extends Seeder
 
         DB::table('taxes')->insert([
             [
-                'id'         => 1,
+                'id' => 1,
                 'percentage' => '23.00',
-                'is_active'  => true,
+                'is_active' => true,
                 'created_at' => '2026-02-23 17:10:58',
                 'updated_at' => '2026-02-23 17:10:58',
             ],

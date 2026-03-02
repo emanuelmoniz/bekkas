@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ConfigurationController;
 use App\Http\Controllers\Admin\CountryController;
+use App\Http\Controllers\Admin\LocaleController;
 use App\Http\Controllers\Admin\MaterialController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\OrderStatusController;
@@ -16,18 +18,16 @@ use App\Http\Controllers\Admin\ShippingTierController;
 use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\TicketAdminController;
 use App\Http\Controllers\Admin\TicketCategoryController;
-use App\Http\Controllers\Admin\LocaleController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
-use App\Http\Controllers\Admin\ConfigurationController;
+use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ProductController as ClientProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\TicketAttachmentController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketMessageController;
@@ -46,10 +46,11 @@ Route::get('/', function () {
 
 Route::get('/maintenance', function () {
     $config = \App\Models\Configuration::latest()->first();
+
     return response()->view('maintenance', [
-        'maintenance_title'    => $config->maintenance_title    ?? 'BEKKAS IS IMPROVING',
+        'maintenance_title' => $config->maintenance_title ?? 'BEKKAS IS IMPROVING',
         'maintenance_subtitle' => $config->maintenance_subtitle ?? 'Everyday design will be even better!',
-        'maintenance_text'     => $config->maintenance_text     ?? 'Our website is not available at the moment. We will try to be quick. Please come back soon.',
+        'maintenance_text' => $config->maintenance_text ?? 'Our website is not available at the moment. We will try to be quick. Please come back soon.',
     ], 503);
 })->name('maintenance');
 
@@ -155,8 +156,12 @@ Route::middleware('auth')->group(function () {
 
     // Social account linking/unlinking (authenticated)
     $__profile_link_allowed = [];
-    if (config('services.google.enabled')) { $__profile_link_allowed[] = 'google'; }
-    if (config('services.microsoft.enabled')) { $__profile_link_allowed[] = 'microsoft'; }
+    if (config('services.google.enabled')) {
+        $__profile_link_allowed[] = 'google';
+    }
+    if (config('services.microsoft.enabled')) {
+        $__profile_link_allowed[] = 'microsoft';
+    }
 
     if (! empty($__profile_link_allowed)) {
         Route::get('/profile/social/{provider}/link', [SocialAuthController::class, 'redirectToProvider'])

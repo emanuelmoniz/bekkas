@@ -19,19 +19,38 @@ class SocialLinkingTest extends TestCase
         Socialite::shouldReceive('driver')->with('google')->andReturnSelf();
         Socialite::shouldReceive('stateless')->andReturnSelf();
 
-        $providerUser = new class {
+        $providerUser = new class
+        {
             public $id = 'g-link-1';
+
             public $name = 'Link User';
+
             public $email = 'me@example.com';
-            public function getId() { return $this->id; }
-            public function getName() { return $this->name; }
-            public function getEmail() { return $this->email; }
-            public function getAvatar() { return null; }
+
+            public function getId()
+            {
+                return $this->id;
+            }
+
+            public function getName()
+            {
+                return $this->name;
+            }
+
+            public function getEmail()
+            {
+                return $this->email;
+            }
+
+            public function getAvatar()
+            {
+                return null;
+            }
         };
 
         Socialite::shouldReceive('user')->andReturn($providerUser);
 
-        $this->actingAs($user)->get(route('login.provider.callback', 'google') . '?code=dummy')
+        $this->actingAs($user)->get(route('login.provider.callback', 'google').'?code=dummy')
             ->assertRedirect(route('profile.edit'));
 
         $this->assertDatabaseHas('social_accounts', ['user_id' => $user->id, 'provider' => 'google', 'provider_id' => 'g-link-1']);
@@ -47,19 +66,38 @@ class SocialLinkingTest extends TestCase
         Socialite::shouldReceive('driver')->with('google')->andReturnSelf();
         Socialite::shouldReceive('stateless')->andReturnSelf();
 
-        $providerUser = new class {
+        $providerUser = new class
+        {
             public $id = 'g-dup';
+
             public $name = 'Dup';
+
             public $email = 'two@example.com';
-            public function getId() { return $this->id; }
-            public function getName() { return $this->name; }
-            public function getEmail() { return $this->email; }
-            public function getAvatar() { return null; }
+
+            public function getId()
+            {
+                return $this->id;
+            }
+
+            public function getName()
+            {
+                return $this->name;
+            }
+
+            public function getEmail()
+            {
+                return $this->email;
+            }
+
+            public function getAvatar()
+            {
+                return null;
+            }
         };
 
         Socialite::shouldReceive('user')->andReturn($providerUser);
 
-        $resp = $this->actingAs($user1)->get(route('login.provider.callback', 'google') . '?code=dummy');
+        $resp = $this->actingAs($user1)->get(route('login.provider.callback', 'google').'?code=dummy');
         $resp->assertRedirect(route('profile.edit'));
         $this->assertTrue(session()->has('errors'));
         $errors = session('errors')->get('social');
@@ -89,19 +127,38 @@ class SocialLinkingTest extends TestCase
         Socialite::shouldReceive('driver')->with('microsoft')->andReturnSelf();
         Socialite::shouldReceive('stateless')->andReturnSelf();
 
-        $providerUser = new class {
+        $providerUser = new class
+        {
             public $id = 'ms-link-1';
+
             public $name = 'MS Link User';
+
             public $email = 'me-ms@example.com';
-            public function getId() { return $this->id; }
-            public function getName() { return $this->name; }
-            public function getEmail() { return $this->email; }
-            public function getAvatar() { return null; }
+
+            public function getId()
+            {
+                return $this->id;
+            }
+
+            public function getName()
+            {
+                return $this->name;
+            }
+
+            public function getEmail()
+            {
+                return $this->email;
+            }
+
+            public function getAvatar()
+            {
+                return null;
+            }
         };
 
         Socialite::shouldReceive('user')->andReturn($providerUser);
 
-        $this->actingAs($user)->get(route('login.provider.callback', 'microsoft') . '?code=dummy')
+        $this->actingAs($user)->get(route('login.provider.callback', 'microsoft').'?code=dummy')
             ->assertRedirect(route('profile.edit'));
 
         $this->assertDatabaseHas('social_accounts', ['user_id' => $user->id, 'provider' => 'microsoft', 'provider_id' => 'ms-link-1']);
@@ -117,19 +174,38 @@ class SocialLinkingTest extends TestCase
         Socialite::shouldReceive('driver')->with('microsoft')->andReturnSelf();
         Socialite::shouldReceive('stateless')->andReturnSelf();
 
-        $providerUser = new class {
+        $providerUser = new class
+        {
             public $id = 'ms-dup';
+
             public $name = 'Dup MS';
+
             public $email = 'two-ms@example.com';
-            public function getId() { return $this->id; }
-            public function getName() { return $this->name; }
-            public function getEmail() { return $this->email; }
-            public function getAvatar() { return null; }
+
+            public function getId()
+            {
+                return $this->id;
+            }
+
+            public function getName()
+            {
+                return $this->name;
+            }
+
+            public function getEmail()
+            {
+                return $this->email;
+            }
+
+            public function getAvatar()
+            {
+                return null;
+            }
         };
 
         Socialite::shouldReceive('user')->andReturn($providerUser);
 
-        $resp = $this->actingAs($user1)->get(route('login.provider.callback', 'microsoft') . '?code=dummy');
+        $resp = $this->actingAs($user1)->get(route('login.provider.callback', 'microsoft').'?code=dummy');
         $resp->assertRedirect(route('profile.edit'));
         $this->assertTrue(session()->has('errors'));
         $errors = session('errors')->get('social');

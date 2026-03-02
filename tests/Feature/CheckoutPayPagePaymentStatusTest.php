@@ -299,7 +299,7 @@ class CheckoutPayPagePaymentStatusTest extends TestCase
             'session_id' => 'sess_block',
             'is_active' => true,
             'status' => 'pending',
-            'message' => json_encode(['id' => 'chk_block','session' => 'sess_block']),
+            'message' => json_encode(['id' => 'chk_block', 'session' => 'sess_block']),
         ]);
 
         $resp = $this->actingAs($user)->get(route('orders.pay', $order->uuid));

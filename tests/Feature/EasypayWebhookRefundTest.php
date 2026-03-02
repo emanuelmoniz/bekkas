@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\EasypayPayment;
 use App\Models\EasypayCheckoutSession;
+use App\Models\EasypayPayment;
 use App\Models\Order;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
@@ -43,14 +43,14 @@ class EasypayWebhookRefundTest extends TestCase
                 'status' => 'success',
                 'value' => 11.00,
                 'capture' => [
-                    'payment_id' => 'pay_r_1'
+                    'payment_id' => 'pay_r_1',
                 ],
             ], 200),
 
             'https://api.test.easypay.pt/2.0/single/pay_r_1' => Http::response([
                 'id' => 'pay_r_1',
                 'payment_status' => 'refunded',
-                'captures' => [ ['id' => 'cap_r_1', 'status' => 'refunded', 'value' => 11.00] ],
+                'captures' => [['id' => 'cap_r_1', 'status' => 'refunded', 'value' => 11.00]],
             ], 200),
         ]);
 
@@ -81,6 +81,7 @@ class EasypayWebhookRefundTest extends TestCase
 
         \Illuminate\Support\Facades\Mail::assertQueued(\App\Mail\OrderNotification::class, function ($mail) use ($order) {
             $expected = new \App\Mail\OrderNotification($order, 'orders.email.event.refunded', $order->user->name, (t('orders.refunded') ?: 'Refunded'), ['status' => (t('orders.refunded') ?: 'Refunded')]);
+
             return $mail->subject === $expected->subject && $mail->hasTo($order->user->email);
         });
     }
@@ -132,7 +133,6 @@ class EasypayWebhookRefundTest extends TestCase
 
         \Illuminate\Support\Facades\Mail::assertNothingQueued(\App\Mail\OrderNotification::class);
     }
-
 
     public function test_refund_does_not_change_status_when_not_processing()
     {

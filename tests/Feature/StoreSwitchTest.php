@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Address;
 use App\Models\Country;
 use App\Models\Order;
 use App\Models\Product;

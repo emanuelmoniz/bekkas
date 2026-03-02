@@ -15,7 +15,7 @@ class ProjectFactory extends Factory
             'production_date' => $this->faker->date(),
             'execution_time' => $this->faker->randomFloat(2, 1, 10),
 
-            // replaced the old "dimensions" text column with 
+            // replaced the old "dimensions" text column with
             // explicit numeric measurements in millimetres.
             'width' => $this->faker->randomFloat(2, 1, 100),
             'length' => $this->faker->randomFloat(2, 1, 100),

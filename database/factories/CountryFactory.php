@@ -13,9 +13,9 @@ class CountryFactory extends Factory
     public function definition()
     {
         return [
-            'iso_alpha2'   => 'PT',
+            'iso_alpha2' => 'PT',
             'country_code' => '+351',
-            'is_active'    => true,
+            'is_active' => true,
         ];
     }
 

@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class EasypayWebhookServiceTest extends TestCase
 {
-    public function test_handleGeneric_logs_payload()
+    public function test_handle_generic_logs_payload()
     {
         Log::shouldReceive('info')
             ->once()
@@ -16,7 +16,7 @@ class EasypayWebhookServiceTest extends TestCase
                 return is_array($arg) && array_key_exists('payload', $arg);
             }));
 
-        $s = new EasypayWebhookService();
+        $s = new EasypayWebhookService;
         $s->handleGeneric(['id' => '1'], ['ip' => '127.0.0.1']);
 
         $this->assertTrue(true); // nothing else to assert

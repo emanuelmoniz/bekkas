@@ -41,7 +41,6 @@ class ConfigurationProviderTest extends TestCase
         $provider->boot();
         $this->assertFalse(config('app.store_enabled'));
 
-
     }
 
     #[\PHPUnit\Framework\Attributes\Test]

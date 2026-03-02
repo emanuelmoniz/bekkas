@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use App\Exceptions\SocialAuthException;
-use App\Services\SocialAuthService;
 use App\Models\User;
+use App\Services\SocialAuthService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,17 +14,36 @@ class SocialAuthServiceTest extends TestCase
 
     public function test_creates_user_when_no_existing_user()
     {
-        $providerUser = new class {
+        $providerUser = new class
+        {
             public $id = 'p-1';
+
             public $name = 'New Social';
+
             public $email = 'new.social@example.com';
-            public function getId() { return $this->id; }
-            public function getName() { return $this->name; }
-            public function getEmail() { return $this->email; }
-            public function getAvatar() { return null; }
+
+            public function getId()
+            {
+                return $this->id;
+            }
+
+            public function getName()
+            {
+                return $this->name;
+            }
+
+            public function getEmail()
+            {
+                return $this->email;
+            }
+
+            public function getAvatar()
+            {
+                return null;
+            }
         };
 
-        $svc = new SocialAuthService();
+        $svc = new SocialAuthService;
         $user = $svc->findOrCreateUserFromProvider('google', $providerUser);
 
         $this->assertInstanceOf(User::class, $user);
@@ -35,17 +54,36 @@ class SocialAuthServiceTest extends TestCase
 
     public function test_creates_user_when_no_existing_user_for_microsoft()
     {
-        $providerUser = new class {
+        $providerUser = new class
+        {
             public $id = 'ms-p-1';
+
             public $name = 'New MS Social';
+
             public $email = 'new.ms.social@example.com';
-            public function getId() { return $this->id; }
-            public function getName() { return $this->name; }
-            public function getEmail() { return $this->email; }
-            public function getAvatar() { return null; }
+
+            public function getId()
+            {
+                return $this->id;
+            }
+
+            public function getName()
+            {
+                return $this->name;
+            }
+
+            public function getEmail()
+            {
+                return $this->email;
+            }
+
+            public function getAvatar()
+            {
+                return null;
+            }
         };
 
-        $svc = new SocialAuthService();
+        $svc = new SocialAuthService;
         $user = $svc->findOrCreateUserFromProvider('microsoft', $providerUser);
 
         $this->assertInstanceOf(User::class, $user);
@@ -58,20 +96,39 @@ class SocialAuthServiceTest extends TestCase
     {
         $existing = User::factory()->unverified()->create(['email' => 'blocked@example.com']);
 
-        $providerUser = new class {
+        $providerUser = new class
+        {
             public $id = 'p-2';
+
             public $name = 'Blocked';
+
             public $email = 'blocked@example.com';
-            public function getId() { return $this->id; }
-            public function getName() { return $this->name; }
-            public function getEmail() { return $this->email; }
-            public function getAvatar() { return null; }
+
+            public function getId()
+            {
+                return $this->id;
+            }
+
+            public function getName()
+            {
+                return $this->name;
+            }
+
+            public function getEmail()
+            {
+                return $this->email;
+            }
+
+            public function getAvatar()
+            {
+                return null;
+            }
         };
 
         $this->expectException(SocialAuthException::class);
         $this->expectExceptionCode(SocialAuthException::UNVERIFIED_EMAIL);
 
-        $svc = new SocialAuthService();
+        $svc = new SocialAuthService;
         $svc->findOrCreateUserFromProvider('google', $providerUser);
     }
 
@@ -79,16 +136,34 @@ class SocialAuthServiceTest extends TestCase
     {
         $user = User::factory()->create(['email' => 'link@example.com']);
 
-        $providerUser = new class {
+        $providerUser = new class
+        {
             public $id = 'p-link-1';
+
             public $name = 'Linker';
-            public function getId() { return $this->id; }
-            public function getName() { return $this->name; }
-            public function getEmail() { return null; }
-            public function getAvatar() { return null; }
+
+            public function getId()
+            {
+                return $this->id;
+            }
+
+            public function getName()
+            {
+                return $this->name;
+            }
+
+            public function getEmail()
+            {
+                return null;
+            }
+
+            public function getAvatar()
+            {
+                return null;
+            }
         };
 
-        $svc = new SocialAuthService();
+        $svc = new SocialAuthService;
         $svc->linkProviderToUser($user, 'google', $providerUser);
 
         $this->assertDatabaseHas('social_accounts', ['user_id' => $user->id, 'provider' => 'google', 'provider_id' => 'p-link-1']);
@@ -101,18 +176,35 @@ class SocialAuthServiceTest extends TestCase
 
         \App\Models\SocialAccount::create(['user_id' => $user2->id, 'provider' => 'google', 'provider_id' => 'p-taken']);
 
-        $providerUser = new class {
+        $providerUser = new class
+        {
             public $id = 'p-taken';
-            public function getId() { return $this->id; }
-            public function getName() { return 'Taken'; }
-            public function getEmail() { return null; }
-            public function getAvatar() { return null; }
+
+            public function getId()
+            {
+                return $this->id;
+            }
+
+            public function getName()
+            {
+                return 'Taken';
+            }
+
+            public function getEmail()
+            {
+                return null;
+            }
+
+            public function getAvatar()
+            {
+                return null;
+            }
         };
 
         $this->expectException(SocialAuthException::class);
         $this->expectExceptionCode(SocialAuthException::PROVIDER_ALREADY_LINKED);
 
-        $svc = new SocialAuthService();
+        $svc = new SocialAuthService;
         $svc->linkProviderToUser($user1, 'google', $providerUser);
     }
 
@@ -121,7 +213,7 @@ class SocialAuthServiceTest extends TestCase
         $user = User::factory()->create();
         $sa = \App\Models\SocialAccount::create(['user_id' => $user->id, 'provider' => 'google', 'provider_id' => 'p-unlink']);
 
-        $svc = new SocialAuthService();
+        $svc = new SocialAuthService;
         $svc->unlinkProviderFromUser($user, 'google');
 
         $this->assertDatabaseMissing('social_accounts', ['id' => $sa->id]);

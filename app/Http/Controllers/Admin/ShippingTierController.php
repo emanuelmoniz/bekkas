@@ -102,7 +102,7 @@ class ShippingTierController extends Controller
 
         foreach (Locale::activeCodes() as $locale) {
             $value = $request->input("name.$locale");
-            if (!empty($value)) {
+            if (! empty($value)) {
                 ShippingTierTranslation::create([
                     'shipping_tier_id' => $tier->id,
                     'locale' => $locale,
@@ -179,7 +179,7 @@ class ShippingTierController extends Controller
 
         foreach (Locale::activeCodes() as $locale) {
             $value = $request->input("name.$locale");
-            if (!empty($value)) {
+            if (! empty($value)) {
                 ShippingTierTranslation::updateOrCreate(
                     ['shipping_tier_id' => $shippingTier->id, 'locale' => $locale],
                     ['name' => $value]
@@ -243,8 +243,8 @@ class ShippingTierController extends Controller
             ->sortBy(fn ($r) => $r->name ?? '')
             ->values()
             ->map(fn ($r) => [
-                'id'         => $r->id,
-                'name'       => $r->name,
+                'id' => $r->id,
+                'name' => $r->name,
                 'country_id' => $r->country_id,
             ]);
 

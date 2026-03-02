@@ -22,9 +22,9 @@ class ProjectPhotoController extends Controller
             $stored = $thumbnails->store($file, 'projects');
 
             $project->photos()->create([
-                'path'          => $stored['path'],
+                'path' => $stored['path'],
                 'original_path' => $stored['original_path'],
-                'is_primary'    => ! $hasPrimary && $index === 0,
+                'is_primary' => ! $hasPrimary && $index === 0,
             ]);
         }
 
@@ -47,4 +47,3 @@ class ProjectPhotoController extends Controller
         return back();
     }
 }
-

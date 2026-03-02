@@ -148,10 +148,10 @@ class EasypayOrchestrationService
         }
 
         // C) Deduplicate active sessions inside TTL: keep only the most-recent active one
-        $activeFresh = $order->easypayCheckoutSessions()->where('is_active', true)->get()->filter(fn($x) => self::isSessionFresh($x, $ttl));
+        $activeFresh = $order->easypayCheckoutSessions()->where('is_active', true)->get()->filter(fn ($x) => self::isSessionFresh($x, $ttl));
         if ($activeFresh->count() > 1) {
             $keep = $activeFresh->sortByDesc('updated_at')->first();
-            $toCancel = $activeFresh->reject(fn($x) => $x->id === $keep->id);
+            $toCancel = $activeFresh->reject(fn ($x) => $x->id === $keep->id);
             foreach ($toCancel as $s) {
                 try {
                     $res = EasypayService::cancelCheckout($s->checkout_id);
@@ -264,7 +264,7 @@ class EasypayOrchestrationService
 
         // 1) No sessions at all OR all sessions inactive -> create one and return its manifest
         $sessions = $order->easypayCheckoutSessions()->latest('updated_at')->get();
-        $anyActive = $sessions->contains(fn($x) => $x->is_active && $x->status === 'pending');
+        $anyActive = $sessions->contains(fn ($x) => $x->is_active && $x->status === 'pending');
         if ($sessions->isEmpty() || ! $anyActive) {
             $payload = $order->easypayPayload ?? EasypayService::createOrGetPayload($order);
             $new = EasypayService::createCheckoutSession($payload);
@@ -274,7 +274,7 @@ class EasypayOrchestrationService
         }
 
         // 2) There is at least one active session inside TTL — pick the most recent
-        $fresh = $sessions->filter(fn($x) => $x->is_active && $x->status === 'pending' && self::isSessionFresh($x, $ttl))->sortByDesc('updated_at');
+        $fresh = $sessions->filter(fn ($x) => $x->is_active && $x->status === 'pending' && self::isSessionFresh($x, $ttl))->sortByDesc('updated_at');
         $latest = $fresh->first();
         if ($latest) {
             // If there's NO corresponding payment record -> reuse this session
@@ -314,7 +314,9 @@ class EasypayOrchestrationService
                         continue;
                     }
 
-                    if (empty($p->payment_id)) continue;
+                    if (empty($p->payment_id)) {
+                        continue;
+                    }
 
                     $single = (new EasypayService)->getSinglePayment($p->payment_id);
                     if (is_array($single) && ! empty($single)) {
@@ -323,7 +325,7 @@ class EasypayOrchestrationService
                             'paid_at' => data_get($single, 'paid_at') ? \Carbon\Carbon::parse(data_get($single, 'paid_at')) : $p->paid_at,
                             'capture_id' => data_get($single, 'captures.0.id') ?? null,
                             'raw_response' => $single,
-                        ], fn($v) => ! is_null($v)));
+                        ], fn ($v) => ! is_null($v)));
                     }
                 }
             } catch (\Throwable $e) {
@@ -345,6 +347,7 @@ class EasypayOrchestrationService
 
         return $manifest && $new->is_active ? ['manifest' => $manifest, 'message' => null] : ['manifest' => null, 'message' => self::buildPayUnavailableMessage($new->message ?? null)];
     }
+
     /**
      * Build the user-facing unavailable message (append debug when available).
      */

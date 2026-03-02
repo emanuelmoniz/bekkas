@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class AddToCartRequest extends FormRequest
@@ -22,14 +22,14 @@ class AddToCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'quantity'   => ['required', 'integer', 'min:1', 'max:999'],
+            'quantity' => ['required', 'integer', 'min:1', 'max:999'],
             // options is optional at the request level; completeness is enforced
             // in the controller after loading the product's option types.
-            'options'    => ['sometimes', 'nullable', 'array'],
+            'options' => ['sometimes', 'nullable', 'array'],
             // Individual option id validity is enforced in the controller
             // after loading the product's option types; no strict rule here
             // prevents blank/null values from generating raw validation.integer messages.
-            'options.*'  => ['nullable'],
+            'options.*' => ['nullable'],
         ];
     }
 

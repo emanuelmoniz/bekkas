@@ -74,7 +74,7 @@ class TicketAdminController extends Controller
             $val = trim($request->ticket_id);
             $query->where(function ($q) use ($val) {
                 $q->where('id', 'like', "%{$val}%")
-                  ->orWhere('ticket_number', 'like', "%{$val}%");
+                    ->orWhere('ticket_number', 'like', "%{$val}%");
             });
         }
 

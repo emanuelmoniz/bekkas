@@ -27,7 +27,7 @@ return new class extends Migration
                 DB::table('tax_translations')->insert([
                     'tax_id' => $tax->id,
                     'locale' => $locale,
-                    'name'   => $tax->name,
+                    'name' => $tax->name,
                 ]);
             }
         }

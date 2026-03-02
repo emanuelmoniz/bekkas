@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreOrderRequest;
 use App\Models\Address;
 use App\Models\Order;
-use App\Models\OrderItemOption;
 use App\Models\Product;
-use App\Models\ProductOption;
 use App\Models\ShippingConfig;
 use App\Models\ShippingTier;
 use App\Services\DefaultShippingTierResolver;
@@ -31,7 +29,7 @@ class OrderController extends Controller
             ->with(['items', 'address']);
 
         if ($request->filled('order_number')) {
-            $query->where('order_number', 'like', '%' . trim($request->order_number) . '%');
+            $query->where('order_number', 'like', '%'.trim($request->order_number).'%');
         }
 
         if ($request->filled('status')) {
@@ -123,9 +121,11 @@ class OrderController extends Controller
         foreach ($cart as $cartKey => $rawEntry) {
             $productId = CartController::productIdFromCartKey($cartKey);
             $product = $products[$productId] ?? null;
-            if (! $product) continue;
-            $entry   = $this->cartEntry($rawEntry);
-            $qty     = $entry['quantity'];
+            if (! $product) {
+                continue;
+            }
+            $entry = $this->cartEntry($rawEntry);
+            $qty = $entry['quantity'];
             $unitGross = CartController::resolveUnitPrice($product, $entry['options']);
             $productsGross += $unitGross * $qty;
             $totalWeight += ($product->weight * $qty);
@@ -305,15 +305,17 @@ class OrderController extends Controller
         foreach ($cart as $cartKey => $rawCartEntry) {
             $productId = CartController::productIdFromCartKey($cartKey);
             $product = $products[$productId] ?? null;
-            if (! $product) continue;
+            if (! $product) {
+                continue;
+            }
 
             // Skip validation for backorder products
             if ($product->is_backorder) {
                 continue;
             }
 
-            $entry   = $this->cartEntry($rawCartEntry);
-            $qty     = $entry['quantity'];
+            $entry = $this->cartEntry($rawCartEntry);
+            $qty = $entry['quantity'];
             $productName = optional($product->translation())->name ?? "Product #{$productId}";
 
             // Check if an option type controls stock
@@ -334,6 +336,7 @@ class OrderController extends Controller
                             $message = str_replace(':qty', $qty, $message);
                             $stockErrors[] = $message;
                         }
+
                         continue;
                     }
                 }
@@ -364,10 +367,12 @@ class OrderController extends Controller
 
         foreach ($cart as $cartKey => $rawCartEntry) {
             $productId = CartController::productIdFromCartKey($cartKey);
-            $product   = $products[$productId] ?? null;
-            if (! $product) continue;
-            $entry     = $this->cartEntry($rawCartEntry);
-            $qty       = $entry['quantity'];
+            $product = $products[$productId] ?? null;
+            if (! $product) {
+                continue;
+            }
+            $entry = $this->cartEntry($rawCartEntry);
+            $qty = $entry['quantity'];
             $unitGross = CartController::resolveUnitPrice($product, $entry['options']);
 
             // Safe tax retrieval (Laravel optional helper)
@@ -386,7 +391,7 @@ class OrderController extends Controller
                     $option = $type->options->firstWhere('id', $optionId);
                     if ($option) {
                         $selectedOptionLabels[] = [
-                            'type_name'   => optional($type->translation())->name ?? '',
+                            'type_name' => optional($type->translation())->name ?? '',
                             'option_name' => optional($option->translation())->name ?? '',
                         ];
                     }
@@ -394,17 +399,17 @@ class OrderController extends Controller
             }
 
             $items[] = [
-                'product'               => $product,
-                'quantity'              => $qty,
-                'options'               => $entry['options'],
-                'selected_option_labels'=> $selectedOptionLabels,
-                'gross'                 => round($gross, 2),
-                'tax'                   => round($tax, 2),
+                'product' => $product,
+                'quantity' => $qty,
+                'options' => $entry['options'],
+                'selected_option_labels' => $selectedOptionLabels,
+                'gross' => round($gross, 2),
+                'tax' => round($tax, 2),
             ];
 
             $productsGross += $gross;
-            $productsTax   += $tax;
-            $totalWeight   += ($product->weight * $qty);
+            $productsTax += $tax;
+            $totalWeight += ($product->weight * $qty);
         }
 
         $addresses = Auth::user()->addresses()->get();
@@ -584,10 +589,10 @@ class OrderController extends Controller
 
                 // Validate stock availability before processing (skip backorder products)
                 foreach ($cart as $cartKey => $rawEntry) {
-                    $entry     = $this->cartEntry($rawEntry);
-                    $qty       = $entry['quantity'];
+                    $entry = $this->cartEntry($rawEntry);
+                    $qty = $entry['quantity'];
                     $productId = CartController::productIdFromCartKey($cartKey);
-                    $product   = $products[$productId] ?? null;
+                    $product = $products[$productId] ?? null;
                     if (! $product) {
                         throw new \Exception(str_replace(':id', $productId, t('stock.product_not_found')));
                     }
@@ -600,8 +605,8 @@ class OrderController extends Controller
                     // Check option-level stock first
                     $stockType = $product->optionTypes->where('is_active', true)->where('have_stock', true)->first();
                     if ($stockType) {
-                        $optId   = $entry['options'][$stockType->id] ?? null;
-                        $option  = $optId ? ($lockedOptions[$optId] ?? null) : null;
+                        $optId = $entry['options'][$stockType->id] ?? null;
+                        $option = $optId ? ($lockedOptions[$optId] ?? null) : null;
                         if ($option) {
                             if ($option->stock < $qty) {
                                 $productName = optional($product->translation())->name ?? "Product #{$productId}";
@@ -611,6 +616,7 @@ class OrderController extends Controller
                                 $message = str_replace(':qty', $qty, $message);
                                 throw new \Exception($message);
                             }
+
                             continue; // option-level check passed
                         }
                     }
@@ -634,10 +640,10 @@ class OrderController extends Controller
                 $items = [];
 
                 foreach ($cart as $cartKey => $rawEntry) {
-                    $entry     = $this->cartEntry($rawEntry);
-                    $qty       = $entry['quantity'];
+                    $entry = $this->cartEntry($rawEntry);
+                    $qty = $entry['quantity'];
                     $productId = CartController::productIdFromCartKey($cartKey);
-                    $product   = $products[$productId] ?? null;
+                    $product = $products[$productId] ?? null;
                     if (! $product) {
                         continue;
                     }
@@ -653,7 +659,7 @@ class OrderController extends Controller
                     $tax = $taxPct > 0 ? $gross - $net : 0;
 
                     // Determine backorder status at option or product level
-                    $stockType   = $product->optionTypes->where('is_active', true)->where('have_stock', true)->first();
+                    $stockType = $product->optionTypes->where('is_active', true)->where('have_stock', true)->first();
                     $optionStock = null;
                     if ($stockType) {
                         $optId = $entry['options'][$stockType->id] ?? null;
@@ -662,21 +668,21 @@ class OrderController extends Controller
                     $wasBackordered = $optionStock ? ($optionStock->stock == 0) : ($product->stock == 0);
 
                     $items[] = [
-                        'product_id'       => $product->id,
-                        'quantity'         => $qty,
-                        'was_backordered'  => $wasBackordered,
+                        'product_id' => $product->id,
+                        'quantity' => $qty,
+                        'was_backordered' => $wasBackordered,
                         'unit_price_gross' => $unitGross,
-                        'tax_percentage'   => $taxPct,
-                        'unit_weight'      => $product->weight,
-                        'total_net'        => round($net, 2),
-                        'total_tax'        => round($tax, 2),
-                        'total_gross'      => round($gross, 2),
-                        '_options_map'     => $entry['options'],
+                        'tax_percentage' => $taxPct,
+                        'unit_weight' => $product->weight,
+                        'total_net' => round($net, 2),
+                        'total_tax' => round($tax, 2),
+                        'total_gross' => round($gross, 2),
+                        '_options_map' => $entry['options'],
                     ];
 
                     $productsGross += $gross;
-                    $productsTax   += $tax;
-                    $productsNet   += $net;
+                    $productsTax += $tax;
+                    $productsNet += $net;
 
                     $totalWeight += ($product->weight * $qty);
 
@@ -822,8 +828,8 @@ class OrderController extends Controller
                         $type = $option->optionType;
                         $orderItem->orderItemOptions()->create([
                             'product_option_id' => $optionId,
-                            'option_type_name'  => optional($type?->translation())->name ?? '',
-                            'option_name'       => optional($option->translation())->name ?? '',
+                            'option_type_name' => optional($type?->translation())->name ?? '',
+                            'option_name' => optional($option->translation())->name ?? '',
                         ]);
                     }
                 }
@@ -916,7 +922,6 @@ class OrderController extends Controller
         $order->loadMissing(['items.product', 'easypayPayload', 'easypayCheckoutSessions']);
 
         $order->loadMissing(['items.product', 'easypayPayload', 'easypayCheckoutSessions']);
-
 
         // Short-circuit when Easypay is disabled: do not create payloads/sessions and always show a friendly message.
         if (! config('easypay.enabled')) {
@@ -1087,9 +1092,10 @@ class OrderController extends Controller
         if (is_array($rawEntry)) {
             return [
                 'quantity' => (int) ($rawEntry['quantity'] ?? 0),
-                'options'  => $rawEntry['options'] ?? [],
+                'options' => $rawEntry['options'] ?? [],
             ];
         }
+
         return ['quantity' => (int) $rawEntry, 'options' => []];
     }
 }

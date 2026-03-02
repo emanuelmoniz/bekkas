@@ -20,7 +20,7 @@ class ConfigurationController extends Controller
     {
         $data = $request->validate([
             'app_name' => 'nullable|string',
-            'default_locale' => 'nullable|string|max:10|in:' . implode(',', array_keys(config('app.locales', []))),
+            'default_locale' => 'nullable|string|max:10|in:'.implode(',', array_keys(config('app.locales', []))),
             'store_enabled' => 'nullable|boolean',
             'send_mails_enabled' => 'nullable|boolean',
             'easypay_enabled' => 'nullable|boolean',
@@ -78,14 +78,14 @@ class ConfigurationController extends Controller
         $last = Configuration::latest()->first();
 
         // Compare arrays — if identical, do nothing
-        $compareFields = array_intersect_key($data, array_flip((new Configuration())->getFillable()));
+        $compareFields = array_intersect_key($data, array_flip((new Configuration)->getFillable()));
 
         $identical = false;
         if ($last) {
             $lastData = $last->only(array_keys($compareFields));
             // stringify null vs empty for fair comparison
-            $normalizedLast = array_map(fn($v) => $v === null ? '' : (string) $v, $lastData);
-            $normalizedNew = array_map(fn($v) => $v === null ? '' : (string) $v, $compareFields);
+            $normalizedLast = array_map(fn ($v) => $v === null ? '' : (string) $v, $lastData);
+            $normalizedNew = array_map(fn ($v) => $v === null ? '' : (string) $v, $compareFields);
             $identical = $normalizedLast === $normalizedNew;
         }
 

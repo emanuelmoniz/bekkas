@@ -83,8 +83,12 @@ class EasypayService
             // Try to resolve a ShippingTier id by name (best-effort). If not found
             // fall back to a stable string key made from the name.
             $shippingTier = \App\Models\ShippingTier::whereHas('translations', function ($q) use ($shippingDescription) {
-                    $q->where('name', $shippingDescription);
-                })->first();
+                $q->where('name', $shippingDescription);
+            })->first();
+
+            if (! $shippingTier) {
+                $shippingTier = \App\Models\ShippingTier::where('cost_gross', round($order->shipping_gross, 2))->first();
+            }
 
             $shippingKey = $shippingTier ? (string) $shippingTier->id : ('shipping:'.\Illuminate\Support\Str::slug($shippingDescription ?? 'shipping'));
 
@@ -280,9 +284,11 @@ class EasypayService
             }
 
             $body = $resp->json() ?: $resp->body();
+
             return ['ok' => $resp->successful(), 'status' => $resp->status(), 'body' => $body];
         } catch (\Exception $e) {
             Log::warning('Easypay deleteSinglePayment failed', ['payment_id' => $paymentId, 'err' => $e->getMessage()]);
+
             return ['ok' => false, 'status' => 503, 'body' => ['status' => 'error', 'message' => [$e->getMessage()]]];
         }
     }
@@ -325,6 +331,7 @@ class EasypayService
             return ['ok' => $status >= 200 && $status < 300, 'status' => $status, 'body' => $body];
         } catch (\Exception $e) {
             Log::warning('Easypay POST /refund/{id} request failed', ['payment_id' => $paymentId, 'err' => $e->getMessage()]);
+
             return ['ok' => false, 'status' => 502, 'body' => ['status' => 'error', 'message' => [$e->getMessage()]]];
         }
     }
@@ -361,6 +368,7 @@ class EasypayService
             return ['ok' => $resp->successful(), 'status' => $status, 'body' => $body];
         } catch (\Exception $e) {
             Log::warning('Easypay GET /refund/{id} request failed', ['refund_id' => $refundId, 'err' => $e->getMessage()]);
+
             return ['ok' => false, 'status' => 502, 'body' => ['status' => 'error', 'message' => [$e->getMessage()]]];
         }
     }

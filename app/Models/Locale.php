@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Locale extends Model
 {
     protected $primaryKey = 'code';
-    public $incrementing  = false;
-    protected $keyType    = 'string';
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
 
     protected $fillable = [
         'code',

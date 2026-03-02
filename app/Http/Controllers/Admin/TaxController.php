@@ -56,7 +56,7 @@ class TaxController extends Controller
         DB::transaction(function () use ($request, $locales) {
             $tax = Tax::create([
                 'percentage' => $request->percentage,
-                'is_active'  => $request->boolean('is_active', true),
+                'is_active' => $request->boolean('is_active', true),
             ]);
 
             foreach (array_keys($locales) as $locale) {
@@ -65,7 +65,7 @@ class TaxController extends Controller
                     TaxTranslation::create([
                         'tax_id' => $tax->id,
                         'locale' => $locale,
-                        'name'   => $name,
+                        'name' => $name,
                     ]);
                 }
             }
@@ -107,7 +107,7 @@ class TaxController extends Controller
         DB::transaction(function () use ($request, $tax, $locales) {
             $tax->update([
                 'percentage' => $request->percentage,
-                'is_active'  => $request->boolean('is_active'),
+                'is_active' => $request->boolean('is_active'),
             ]);
 
             foreach (array_keys($locales) as $locale) {

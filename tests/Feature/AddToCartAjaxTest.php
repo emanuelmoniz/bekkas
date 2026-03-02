@@ -25,7 +25,7 @@ class AddToCartAjaxTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertJson([ 'success' => true, 'cartCount' => 3 ]);
+            ->assertJson(['success' => true, 'cartCount' => 3]);
 
         // session should have cart entry (composite key: "{id}_" with array value)
         $cartKey = CartController::makeCartKey($product->id, []);
@@ -47,7 +47,7 @@ class AddToCartAjaxTest extends TestCase
         // second add
         $response = $this->postJson(route('cart.add', $product), ['quantity' => 1]);
 
-        $response->assertJson([ 'cartCount' => 3 ]);
+        $response->assertJson(['cartCount' => 3]);
         $cartKey = CartController::makeCartKey($product->id, []);
         $this->assertEquals(3, session('cart')[$cartKey]['quantity']);
     }
@@ -62,7 +62,7 @@ class AddToCartAjaxTest extends TestCase
 
         $response = $this->postJson(route('cart.add', $product), ['quantity' => 1]);
         $response->assertStatus(404)
-                 ->assertJson(['success' => false]);
+            ->assertJson(['success' => false]);
     }
 
     #[Test]
@@ -76,6 +76,6 @@ class AddToCartAjaxTest extends TestCase
 
         $response = $this->postJson(route('cart.add', $product), ['quantity' => 1]);
         $response->assertStatus(422)
-                 ->assertJson(['success' => false]);
+            ->assertJson(['success' => false]);
     }
 }

@@ -13,10 +13,6 @@ class EasypayWebhookService
     /**
      * Handle generic notification payload.
      * For now: structured logging only (developer requested).
-     *
-     * @param array $payload
-     * @param array $meta
-     * @return void
      */
     public function handleGeneric(array $payload, array $meta = []): void
     {
@@ -33,8 +29,9 @@ class EasypayWebhookService
             try {
                 $this->handleCaptureSuccess($payload);
             } catch (\Throwable $e) {
-                Log::error('easypay.webhook.capture_error', ['err' => $e->getMessage(), 'payload_id' => data_get($payload, 'id')] );
+                Log::error('easypay.webhook.capture_error', ['err' => $e->getMessage(), 'payload_id' => data_get($payload, 'id')]);
             }
+
             return;
         }
 
@@ -42,8 +39,9 @@ class EasypayWebhookService
             try {
                 $this->handleRefundSuccess($payload);
             } catch (\Throwable $e) {
-                Log::error('easypay.webhook.refund_error', ['err' => $e->getMessage(), 'payload_id' => data_get($payload, 'id')] );
+                Log::error('easypay.webhook.refund_error', ['err' => $e->getMessage(), 'payload_id' => data_get($payload, 'id')]);
             }
+
             return;
         }
     }
@@ -60,20 +58,23 @@ class EasypayWebhookService
         $paymentId = data_get($payload, 'id');
         if (empty($paymentId)) {
             Log::warning('easypay.webhook.capture_missing_id', ['payload' => $payload]);
+
             return;
         }
 
-        $api = new EasypayService();
+        $api = new EasypayService;
         $single = null;
         try {
             $single = $api->getSinglePayment($paymentId);
         } catch (\Throwable $e) {
             Log::warning('easypay.webhook.capture_get_single_failed', ['payment_id' => $paymentId, 'err' => $e->getMessage()]);
+
             return;
         }
 
         if (empty($single) || ! is_array($single)) {
             Log::warning('easypay.webhook.capture_no_remote', ['payment_id' => $paymentId]);
+
             return;
         }
 
@@ -186,6 +187,7 @@ class EasypayWebhookService
         $refundId = data_get($payload, 'id');
         if (empty($refundId)) {
             Log::warning('easypay.webhook.refund_missing_id', ['payload' => $payload]);
+
             return;
         }
 
@@ -193,25 +195,29 @@ class EasypayWebhookService
         $record = \App\Models\EasypayPayment::where('refund_id', $refundId)->first();
         if (! $record) {
             Log::warning('easypay.webhook.refund_no_matching_payment', ['refund_id' => $refundId]);
+
             return;
         }
 
         // Only proceed if the payment is currently 'paid' — otherwise ignore (per spec)
         if (($record->payment_status ?? '') !== 'paid') {
             Log::info('easypay.webhook.refund_ignored_not_paid', ['refund_id' => $refundId, 'payment_id' => $record->payment_id, 'status' => $record->payment_status]);
+
             return;
         }
 
-        $api = new EasypayService();
+        $api = new EasypayService;
         $refund = $api->getRefund($refundId);
         if (empty($refund) || ! array_key_exists('body', $refund) || ! is_array($refund['body'])) {
             Log::warning('easypay.webhook.refund_get_failed', ['refund_id' => $refundId, 'res' => $refund]);
+
             return;
         }
 
         $refundStatus = data_get($refund, 'body.status');
         if ($refundStatus !== 'success') {
             Log::info('easypay.webhook.refund_not_success', ['refund_id' => $refundId, 'status' => $refundStatus]);
+
             return;
         }
 
@@ -223,11 +229,13 @@ class EasypayWebhookService
             $single = $api->getSinglePayment($linkedPaymentId);
         } catch (\Throwable $e) {
             Log::warning('easypay.webhook.refund_get_single_failed', ['payment_id' => $linkedPaymentId, 'err' => $e->getMessage()]);
+
             return;
         }
 
         if (empty($single) || ! is_array($single)) {
             Log::warning('easypay.webhook.refund_single_missing', ['payment_id' => $linkedPaymentId, 'refund_id' => $refundId]);
+
             return;
         }
 
@@ -254,6 +262,7 @@ class EasypayWebhookService
             $p->save();
         } catch (\Throwable $e) {
             Log::warning('easypay.webhook.refund_persist_failed', ['payment_id' => $linkedPaymentId, 'refund_id' => $refundId, 'err' => $e->getMessage()]);
+
             return;
         }
 
@@ -276,6 +285,5 @@ class EasypayWebhookService
             }
         }
 
-        return;
     }
 }

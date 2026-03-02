@@ -18,9 +18,9 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('country_id')
-                  ->references('id')
-                  ->on('countries')
-                  ->nullOnDelete();
+                ->references('id')
+                ->on('countries')
+                ->nullOnDelete();
         });
     }
 

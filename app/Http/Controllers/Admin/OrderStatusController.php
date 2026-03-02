@@ -60,7 +60,7 @@ class OrderStatusController extends Controller
         ]);
 
         foreach ($request->translations as $translation) {
-            if (!empty($translation['name'])) {
+            if (! empty($translation['name'])) {
                 $status->translations()->create([
                     'locale' => $translation['locale'],
                     'name' => $translation['name'],
@@ -103,7 +103,7 @@ class OrderStatusController extends Controller
         ]);
 
         foreach ($request->translations as $translation) {
-            if (!empty($translation['name'])) {
+            if (! empty($translation['name'])) {
                 $orderStatus->translations()->updateOrCreate(
                     ['locale' => $translation['locale']],
                     ['name' => $translation['name']]

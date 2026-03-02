@@ -21,8 +21,8 @@ class TaxSwitchTest extends TestCase
         parent::setUp();
 
         // Ensure DB translations exist for tests (t() uses DB-driven translations)
-        \App\Models\StaticTranslation::create([ 'key' => 'tax.included_in_price', 'locale' => 'en-UK', 'value' => 'All taxes are included in the price' ]);
-        \App\Models\StaticTranslation::create([ 'key' => 'tax.included_in_price', 'locale' => 'pt-PT', 'value' => 'Todos os impostos estão incluídos no preço' ]);
+        \App\Models\StaticTranslation::create(['key' => 'tax.included_in_price', 'locale' => 'en-UK', 'value' => 'All taxes are included in the price']);
+        \App\Models\StaticTranslation::create(['key' => 'tax.included_in_price', 'locale' => 'pt-PT', 'value' => 'Todos os impostos estão incluídos no preço']);
     }
 
     public function test_cart_and_checkout_show_disclaimer_when_tax_disabled()
@@ -53,7 +53,7 @@ class TaxSwitchTest extends TestCase
             str_contains($content, 'All taxes are included in the price')
             || str_contains($content, 'Todos os impostos estão incluídos no preço')
             || str_contains($content, 'tax.included_in_price'),
-            "Cart page content did not contain expected disclaimer:\n" . $content
+            "Cart page content did not contain expected disclaimer:\n".$content
         );
 
         // Prepare address + shipping tier for checkout view
@@ -241,7 +241,7 @@ class TaxSwitchTest extends TestCase
             str_contains($content, 'All taxes are included in the price')
             || str_contains($content, 'Todos os impostos estão incluídos no preço')
             || str_contains($content, 'tax.included_in_price'),
-            "Order page content did not contain expected disclaimer:\n" . $content
+            "Order page content did not contain expected disclaimer:\n".$content
         );
 
         // Should NOT show a numeric products tax line (even though app.tax_enabled is now true)

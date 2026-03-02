@@ -2,12 +2,11 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Product;
-use App\Models\Project;
 use App\Models\ProductPhoto;
-use App\Models\ProjectPhoto;
+use App\Models\Project;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ImageScrollerTest extends TestCase
 {
@@ -153,4 +152,5 @@ class ImageScrollerTest extends TestCase
         $this->assertStringContainsString('&quot;autoplay&quot;:true', $html);
         $this->assertStringNotContainsString('autoplay_desktop', $html);
         $this->assertStringNotContainsString('autoplay_mobile', $html);
-    }}
+    }
+}
