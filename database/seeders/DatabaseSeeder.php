@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             ProjectSeeder::class,
             TicketCategorySeeder::class,
             TicketCategoryTranslationSeeder::class,
+            StaticTranslationSeeder::class,
         ]);
     }
 }

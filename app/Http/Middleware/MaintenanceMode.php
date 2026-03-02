@@ -20,7 +20,8 @@ class MaintenanceMode
         // Always allow the maintenance page, admin routes, and auth (login/logout) through.
         // Use path-based check for login so both the GET (show form) and POST (submit) are exempted —
         // the POST /login route is not named, so routeIs('login') would miss it.
-        if ($request->routeIs('maintenance') || $request->is('login', 'admin*') || $request->routeIs('logout')) {
+        // 'login/*' also covers social OAuth routes (login/google, login/google/callback, etc.)
+        if ($request->routeIs('maintenance') || $request->is('login', 'login/*', 'admin*') || $request->routeIs('logout')) {
             return $next($request);
         }
 
