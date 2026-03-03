@@ -2,12 +2,30 @@
 
     <div class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
 
             {{-- STATUS --}}
             <div class="bg-white shadow rounded p-4">
 
-                @if(! empty($paymentStatusMessage))
+                @php
+                    // custom messages for certain order states override any paymentStatusMessage
+                    $customStatusMessage = null;
+                    if($order->status === 'DISPATCHED') {
+                        $customStatusMessage = t('orders.status.dispatched_message') ?: 'Our order is on the way. Check tracking information below';
+                    } elseif($order->status === 'DELIVERED') {
+                        $customStatusMessage = t('orders.status.delivered_message') ?: 'Your order was delivered.';
+                    } elseif($order->status === 'REFUNDED') {
+                        $customStatusMessage = t('orders.status.refunded_message') ?: 'Your order was refunded.';
+                    } elseif($order->status === 'CANCELED') {
+                        $customStatusMessage = t('orders.status.canceled_message') ?: 'Your order was canceled. For more information, please contact us.';
+                    }
+                @endphp
+
+                @if($customStatusMessage)
+                    <div class="my-3 p-3 rounded border border-status-info border-l-4 bg-status-info/10 text-status-info text-sm">
+                        {{ $customStatusMessage }}
+                    </div>
+                @elseif(! empty($paymentStatusMessage))
                     <div class="my-3 p-3 rounded border border-status-info border-l-4 bg-status-info/10 text-status-info text-sm">
                         {{ $paymentStatusMessage }}
                     </div>
@@ -91,7 +109,7 @@
             </div>
 
             {{-- ADDRESS --}}
-            <div class="bg-white shadow rounded p-4">
+            <div class="bg-white shadow rounded p-4 flex flex-col justify-end">
                 <h3 class="font-semibold mb-2">{{ t('orders.shipping_address') ?: 'Shipping Address' }}</h3>
                 <p>{{ $order->address_title }}</p>
                 <p>{{ $order->address_line_1 }}</p>
@@ -145,12 +163,12 @@
             <p>{{ t('orders.products_net') ?: 'Products (net)' }}: {{ number_format($order->products_total_net, 2) }} €</p>
 
             @if($order->tax_enabled)
-                <p>{{ t('orders.products_tax') ?: 'Products tax' }}: {{ number_format($order->products_total_tax, 2) }} €</p>
-                <p>{{ t('orders.shipping') ?: 'Shipping' }}: {{ number_format($order->shipping_gross, 2) }} €</p>
-                <p>{{ t('orders.shipping_tax') ?: 'Shipping tax' }}: {{ number_format($order->shipping_tax, 2) }} €</p>
+                <p class="text-sm text-grey-medium">{{ t('orders.products_tax') ?: 'Products tax' }}: {{ number_format($order->products_total_tax, 2) }} €</p>
+                <p>{{ t('orders.shipping') ?: 'Shipping' }}: {{ number_format($order->shipping_gross - $order->shipping_tax, 2) }} €</p>
+                <p class="text-sm text-grey-medium">{{ t('orders.shipping_tax') ?: 'Shipping tax' }}: {{ number_format($order->shipping_tax, 2) }} €</p>
             @else
-                <p>{{ t('tax.included_in_price') ?: 'All taxes are included in the price' }}</p>
                 <p>{{ t('orders.shipping') ?: 'Shipping' }}: {{ number_format($order->shipping_gross, 2) }} €</p>
+                <p class="text-sm text-grey-medium">{{ t('tax.included_in_price') ?: 'All taxes are included in the price' }}</p>
             @endif
 
             <hr>
