@@ -197,8 +197,8 @@ class TaxSwitchTest extends TestCase
         $taxAmt = round($gross - $net, 2);
 
         // net should appear on the "Products" summary row and tax on the product tax row
-        $this->assertTrue(str_contains($content, "€".$net), "Expected net amount €{$net} not found:\n$content");
-        $this->assertTrue(str_contains($content, "€".$taxAmt), "Expected tax amount €{$taxAmt} not found:\n$content");
+        $this->assertTrue(str_contains($content, '€'.$net), "Expected net amount €{$net} not found:\n$content");
+        $this->assertTrue(str_contains($content, '€'.$taxAmt), "Expected tax amount €{$taxAmt} not found:\n$content");
 
         // the per-item tax line should use our new translation (or fallback English/Portuguese)
         $this->assertTrue(
