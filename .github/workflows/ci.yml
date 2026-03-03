@@ -52,6 +52,15 @@ jobs:
           php artisan key:generate --ansi
           php artisan config:clear
 
+      - name: Prepare Laravel writable paths
+        run: |
+          mkdir -p storage/framework/views
+          mkdir -p storage/framework/cache
+          mkdir -p storage/framework/sessions
+          mkdir -p storage/framework/testing
+          mkdir -p storage/logs
+          mkdir -p bootstrap/cache
+
       - name: Run PHP CS (Pint)
         run: ./vendor/bin/pint --test
 
