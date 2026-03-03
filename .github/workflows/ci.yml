@@ -16,6 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Debug environment
+        run: |
+          php -v
+          composer --version
+          node -v
+          npm -v
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -49,7 +56,7 @@ jobs:
         run: ./vendor/bin/pint --test
 
       - name: Run Tests
-        run: composer test --no-interaction
+        run: ./bin/run-tests.sh -- --log-junit storage/logs/junit.xml
 
       - name: Install Node dependencies
         run: npm ci
