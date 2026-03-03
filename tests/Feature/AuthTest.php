@@ -157,7 +157,6 @@ class AuthTest extends TestCase
 
         $resp = $this->withSession(['locale' => 'pt-PT'])
             ->get(route('login'));
-        file_put_contents(storage_path('debug/auth-login-pt.html'), $resp->getContent() ?: '');
         $resp->assertSee('Entrar')->assertDontSee('Log in');
 
         $this->withSession(['locale' => 'pt-PT'])

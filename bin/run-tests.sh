@@ -62,6 +62,17 @@ if ! php -v >/dev/null 2>&1; then
   exit 1
 fi
 
+# Ensure Composer dependencies exist before running tests.
+if [ ! -f "vendor/autoload.php" ]; then
+  if ! command -v composer >/dev/null 2>&1; then
+    echo "Composer is required but was not found in PATH. Install Composer and retry."
+    exit 1
+  fi
+
+  echo "Composer dependencies not found. Running composer install..."
+  composer install --no-interaction --prefer-dist --no-progress
+fi
+
 if ! php -m | grep -qi pdo_sqlite; then
   echo "PDO SQLite extension not found. Install it (e.g. sudo apt install php-sqlite) and retry."
   exit 1
@@ -91,7 +102,7 @@ export CACHE_DRIVER=array
 export SESSION_DRIVER=array
 
 echo "Clearing stale Laravel bootstrap cache..."
-rm -f bootstrap/cache/packages.php bootstrap/cache/services.php
+rm -f bootstrap/cache/*.php
 
 echo "Running migrations on test database..."
 # Run migrations explicitly against the isolated sqlite DB to avoid touching other connections
