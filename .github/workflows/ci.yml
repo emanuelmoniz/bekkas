@@ -64,14 +64,17 @@ jobs:
       - name: Run PHP CS (Pint)
         run: ./vendor/bin/pint --test
 
-      - name: Run Tests
-        run: ./bin/run-tests.sh --log-junit storage/logs/junit.xml
-
       - name: Install Node dependencies
         run: npm ci
 
       - name: Build assets
         run: npm run build
+
+      - name: Verify Vite manifest
+        run: test -f public/build/manifest.json
+
+      - name: Run Tests
+        run: ./bin/run-tests.sh --log-junit storage/logs/junit.xml
 
       - name: Upload test artifacts
         if: always()
