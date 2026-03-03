@@ -8,7 +8,7 @@
             <div class="bg-white shadow rounded p-4">
 
                 @if(! empty($paymentStatusMessage))
-                    <div class="my-3 p-3 rounded border border-grey-light border-l-4 bg-primary/10 text-accent-primary text-sm">
+                    <div class="my-3 p-3 rounded border border-status-info border-l-4 bg-status-info/10 text-status-info text-sm">
                         {{ $paymentStatusMessage }}
                     </div>
                 @endif

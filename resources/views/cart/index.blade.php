@@ -98,7 +98,7 @@
                         <span>€{{ number_format($productsGross, 2) }}</span>
                     </div>
 
-                    <div class="bg-accent-primary/10 border border-accent-primary/20 rounded p-3 text-sm text-accent-primary">
+                    <div class="bg-status-info/10 border border-status-info rounded p-3 text-sm text-status-info">
                         {{ t('cart.shipping_at_checkout') ?: 'The shipping cost will be calculated at checkout.' }}
                     </div>
 

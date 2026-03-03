@@ -36,7 +36,7 @@
         {{-- Payment-status driven UI (server refreshed) --}}
         {{-- Controller MUST provide: paymentStatusMessage, paymentInfo, suppressSdk — view no longer queries EasypayPayment directly. --}}
         @if(! empty($paymentStatusMessage))
-            <div class="mb-4 p-3 rounded border border-grey-light border-l-4 bg-primary/10 text-accent-primary text-sm">
+            <div class="mb-4 p-3 rounded border border-status-info border-l-4 bg-status-info/10 text-status-info text-sm">
                 {{ $paymentStatusMessage }}
             </div>
         @endif
