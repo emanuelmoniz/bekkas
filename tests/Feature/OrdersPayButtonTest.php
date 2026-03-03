@@ -107,7 +107,7 @@ class OrdersPayButtonTest extends TestCase
         // stub the refresh service to return a bogus message if called
         $this->mock(\App\Services\EasypayPaymentRefreshService::class, function ($mock) {
             $mock->shouldReceive('refreshLatestPaymentForOrder')
-                 ->andReturn(['paymentStatusMessage' => 'SHOULD NOT SEE']);
+                ->andReturn(['paymentStatusMessage' => 'SHOULD NOT SEE']);
         });
 
         $resp = $this->actingAs($user)->get(route('orders.show', $order));
@@ -132,7 +132,7 @@ class OrdersPayButtonTest extends TestCase
 
         $this->mock(\App\Services\EasypayPaymentRefreshService::class, function ($mock) {
             $mock->shouldReceive('refreshLatestPaymentForOrder')
-                 ->andReturn(['paymentStatusMessage' => 'SHOULD NOT SEE']);
+                ->andReturn(['paymentStatusMessage' => 'SHOULD NOT SEE']);
         });
 
         $resp = $this->actingAs($user)->get(route('orders.show', $order));
@@ -157,7 +157,7 @@ class OrdersPayButtonTest extends TestCase
 
         $this->mock(\App\Services\EasypayPaymentRefreshService::class, function ($mock) {
             $mock->shouldReceive('refreshLatestPaymentForOrder')
-                 ->andReturn(['paymentStatusMessage' => 'SHOULD NOT SEE']);
+                ->andReturn(['paymentStatusMessage' => 'SHOULD NOT SEE']);
         });
 
         $resp = $this->actingAs($user)->get(route('orders.show', $order));
