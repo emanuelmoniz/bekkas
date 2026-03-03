@@ -17,6 +17,8 @@ storage/*.key
 storage/logs/*
 storage/framework/*
 !storage/framework/.gitignore
+storage/debug/*
+!storage/debug/.gitignore
 public/storage
 
 # Vite / frontend
