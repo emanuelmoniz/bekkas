@@ -8,7 +8,7 @@
             <div class="bg-white shadow rounded p-4">
 
                 @if(! empty($paymentStatusMessage))
-                    <div class="my-3 p-3 rounded border border-grey-light border-l-4 bg-primary/10 text-accent-primary text-sm">
+                    <div class="my-3 p-3 rounded border border-status-info border-l-4 bg-status-info/10 text-status-info text-sm">
                         {{ $paymentStatusMessage }}
                     </div>
                 @endif
@@ -32,7 +32,7 @@
                     @endif
                     @if($order->tracking_url)
                         <p>
-                            <a href="{{ $order->tracking_url }}" target="_blank" class="text-accent-secondary hover:underline">
+                            <a href="{{ $order->tracking_url }}" target="_blank" class="text-accent-primary hover:underline">
                                 {{ t('orders.track_shipment') ?: 'Track Your Shipment' }}
                             </a>
                         </p>
@@ -108,7 +108,7 @@
 
         {{-- PRODUCTS --}}
         <div class="bg-white shadow rounded p-4">
-            <h3 class="font-semibold mb-2">{{ t('orders.products') ?: 'Products' }}</h3>
+            <!--<h3 class="font-semibold mb-2">{{ t('orders.products') ?: 'Products' }}</h3>-->
             <table class="min-w-full border">
                 <thead class="bg-grey-light">
                     <tr>

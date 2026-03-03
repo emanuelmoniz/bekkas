@@ -14,6 +14,7 @@ class StaticTranslationsSeeder extends Seeder
         // Context descriptions: keyed by prefix (longer/more-specific prefixes first).
         // Used to set the context column on INSERT only — admin edits are never overwritten.
         $contextMap = [
+            'address_form.' => 'Shared address form labels (checkout + profile)',
             'checkout.pay.' => 'Checkout — payment widget page (Easypay SDK)',
             'checkout.validation.' => 'Checkout — address form validation messages',
             'checkout.' => 'Checkout page — address & shipping selection',
@@ -179,6 +180,10 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'cart.summary.product_tax', 'locale' => 'pt-PT', 'value' => 'Imposto dos produtos', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'cart.summary.product_tax', 'locale' => 'en-UK', 'value' => 'Product tax', 'created_at' => $now, 'updated_at' => $now],
+
+            // per-line tax label used on cart items when tax is enabled
+            ['key' => 'cart.item_tax_included', 'locale' => 'pt-PT', 'value' => 'Inclui :amount de imposto', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'cart.item_tax_included', 'locale' => 'en-UK', 'value' => 'Includes :amount tax', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'cart.summary.shipping', 'locale' => 'pt-PT', 'value' => 'Envio', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'cart.summary.shipping', 'locale' => 'en-UK', 'value' => 'Shipping', 'created_at' => $now, 'updated_at' => $now],
@@ -347,26 +352,26 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.pay.session_cancelled', 'locale' => 'pt-PT', 'value' => 'Sessão de pagamento anterior cancelada. A criar nova sessão…', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.pay.session_cancelled', 'locale' => 'en-UK', 'value' => 'Previous payment session cancelled. Creating a new session…', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'checkout.address_title', 'locale' => 'pt-PT', 'value' => 'Nome da morada', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.address_title', 'locale' => 'en-UK', 'value' => 'Address name', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'checkout.nif', 'locale' => 'pt-PT', 'value' => 'NIF', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.nif', 'locale' => 'en-UK', 'value' => 'NIF', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'checkout.address_line_1', 'locale' => 'pt-PT', 'value' => 'Morada linha 1', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.address_line_1', 'locale' => 'en-UK', 'value' => 'Address line 1', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'checkout.address_line_2', 'locale' => 'pt-PT', 'value' => 'Morada linha 2', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.address_line_2', 'locale' => 'en-UK', 'value' => 'Address line 2', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'checkout.postal_code', 'locale' => 'pt-PT', 'value' => 'Código postal', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.postal_code', 'locale' => 'en-UK', 'value' => 'Postal code', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'checkout.city', 'locale' => 'pt-PT', 'value' => 'Cidade', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.city', 'locale' => 'en-UK', 'value' => 'City', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'checkout.country', 'locale' => 'pt-PT', 'value' => 'País', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.country', 'locale' => 'en-UK', 'value' => 'Country', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.title', 'locale' => 'pt-PT', 'value' => 'Nome da morada', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.title', 'locale' => 'en-UK', 'value' => 'Address name', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.nif', 'locale' => 'pt-PT', 'value' => 'NIF', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.nif', 'locale' => 'en-UK', 'value' => 'NIF', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.phone', 'locale' => 'pt-PT', 'value' => 'Telefone', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.phone', 'locale' => 'en-UK', 'value' => 'Phone', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.address_line_1', 'locale' => 'pt-PT', 'value' => 'Morada linha 1', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.address_line_1', 'locale' => 'en-UK', 'value' => 'Address line 1', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.address_line_2', 'locale' => 'pt-PT', 'value' => 'Morada linha 2', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.address_line_2', 'locale' => 'en-UK', 'value' => 'Address line 2', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.postal_code', 'locale' => 'pt-PT', 'value' => 'Código postal', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.postal_code', 'locale' => 'en-UK', 'value' => 'Postal code', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.city', 'locale' => 'pt-PT', 'value' => 'Cidade', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.city', 'locale' => 'en-UK', 'value' => 'City', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.country', 'locale' => 'pt-PT', 'value' => 'País', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.country', 'locale' => 'en-UK', 'value' => 'Country', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.new_address', 'locale' => 'pt-PT', 'value' => 'Nova morada', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.new_address', 'locale' => 'en-UK', 'value' => 'New address', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.new_address_details', 'locale' => 'pt-PT', 'value' => 'Detalhes da nova morada', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.new_address_details', 'locale' => 'en-UK', 'value' => 'New address details', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'checkout.set_as_default', 'locale' => 'pt-PT', 'value' => 'Definir como morada predefinida', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.set_as_default', 'locale' => 'en-UK', 'value' => 'Set as default address', 'created_at' => $now, 'updated_at' => $now],
@@ -695,35 +700,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.add_new_address', 'locale' => 'pt-PT', 'value' => 'Adicionar nova morada', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.add_new_address', 'locale' => 'en-UK', 'value' => 'Add new address', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'profile.address_title', 'locale' => 'pt-PT', 'value' => 'Nome da morada', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.address_title', 'locale' => 'en-UK', 'value' => 'Address name', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'profile.address_nif_optional', 'locale' => 'pt-PT', 'value' => 'NIF (opcional)', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.address_nif_optional', 'locale' => 'en-UK', 'value' => 'NIF (optional)', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'profile.address_phone_optional', 'locale' => 'pt-PT', 'value' => 'Telefone (opcional)', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.address_phone_optional', 'locale' => 'en-UK', 'value' => 'Phone (optional)', 'created_at' => $now, 'updated_at' => $now],
-
             ['key' => 'profile.phone', 'locale' => 'pt-PT', 'value' => 'Telefone', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.phone', 'locale' => 'en-UK', 'value' => 'Phone', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'profile.address_line_1', 'locale' => 'pt-PT', 'value' => 'Morada linha 1', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.address_line_1', 'locale' => 'en-UK', 'value' => 'Address line 1', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'profile.address_line_2', 'locale' => 'pt-PT', 'value' => 'Morada linha 2', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.address_line_2', 'locale' => 'en-UK', 'value' => 'Address line 2', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'profile.address_line_2_optional', 'locale' => 'pt-PT', 'value' => 'Morada linha 2 (opcional)', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.address_line_2_optional', 'locale' => 'en-UK', 'value' => 'Address line 2 (optional)', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'profile.address_postal_code', 'locale' => 'pt-PT', 'value' => 'Código postal', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.address_postal_code', 'locale' => 'en-UK', 'value' => 'Postal code', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'profile.address_city', 'locale' => 'pt-PT', 'value' => 'Cidade', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.address_city', 'locale' => 'en-UK', 'value' => 'City', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'profile.address_country', 'locale' => 'pt-PT', 'value' => 'País', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.address_country', 'locale' => 'en-UK', 'value' => 'Country', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'profile.add_address', 'locale' => 'pt-PT', 'value' => 'Adicionar morada', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.add_address', 'locale' => 'en-UK', 'value' => 'Add Address', 'created_at' => $now, 'updated_at' => $now],
@@ -1730,17 +1708,11 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.validation.nif_invalid', 'locale' => 'pt-PT', 'value' => 'O formato do NIF/Número de contribuinte é inválido.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.validation.nif_invalid', 'locale' => 'en-UK', 'value' => 'NIF/VAT number format is invalid.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'checkout.nif_optional', 'locale' => 'pt-PT', 'value' => 'NIF (opcional)', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.nif_optional', 'locale' => 'en-UK', 'value' => 'NIF (optional)', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'checkout.phone_optional', 'locale' => 'pt-PT', 'value' => 'Telefone (opcional)', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.phone_optional', 'locale' => 'en-UK', 'value' => 'Phone (optional)', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'checkout.validation.address_line_1_required', 'locale' => 'pt-PT', 'value' => 'O endereço é obrigatório.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.validation.address_line_1_required', 'locale' => 'en-UK', 'value' => 'Address is required.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'checkout.validation.address_line_2_optional', 'locale' => 'pt-PT', 'value' => 'Morada linha 2 (opcional)', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.validation.address_line_2_optional', 'locale' => 'en-UK', 'value' => 'Address line 2 (optional)', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'checkout.validation.postal_code_required', 'locale' => 'pt-PT', 'value' => 'O código postal é obrigatório.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.validation.postal_code_required', 'locale' => 'en-UK', 'value' => 'Postal code is required.', 'created_at' => $now, 'updated_at' => $now],

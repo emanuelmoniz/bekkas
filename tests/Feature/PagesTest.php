@@ -152,11 +152,12 @@ class PagesTest extends TestCase
         $this->seed(\Database\Seeders\StaticTranslationsSeeder::class);
         app()->setLocale('en-UK');
 
-        // create a few products with the various badge combinations
-        \App\Models\Product::factory()->create(['is_featured' => true, 'is_promo' => false, 'active' => true]);
-        \App\Models\Product::factory()->create(['is_featured' => false, 'is_promo' => true, 'active' => true]);
+        // create a few available products with the various badge combinations
+        // badges are hidden when product is unavailable (no stock and no backorder)
+        \App\Models\Product::factory()->create(['is_featured' => true, 'is_promo' => false, 'active' => true, 'stock' => 10, 'is_backorder' => false]);
+        \App\Models\Product::factory()->create(['is_featured' => false, 'is_promo' => true, 'active' => true, 'stock' => 10, 'is_backorder' => false]);
         // also one with both flags to ensure both badges can coexist
-        \App\Models\Product::factory()->create(['is_featured' => true, 'is_promo' => true, 'active' => true]);
+        \App\Models\Product::factory()->create(['is_featured' => true, 'is_promo' => true, 'active' => true, 'stock' => 10, 'is_backorder' => false]);
 
         $response = $this->get(route('store.index'));
 
@@ -165,9 +166,9 @@ class PagesTest extends TestCase
         $response->assertSeeText('PROMO');
         // text should be white regardless of background
         $response->assertSee('text-white');
-        // background colours correspond to accent primary/secondary tokens
+        // background colours correspond to current design tokens
         $response->assertSee('bg-accent-secondary');
-        $response->assertSee('bg-accent-primary');
+        $response->assertSee('bg-primary');
         // spacing between badges increased so check for gap class
         $response->assertSee('gap-2');
     }

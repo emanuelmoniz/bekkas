@@ -104,6 +104,49 @@ class CheckoutTest extends TestCase
         $this->assertTrue($tiers->contains(fn ($t) => ($t['is_free'] ?? false) === true));
     }
 
+    public function test_checkout_page_shows_address_form_fields()
+    {
+        $user = User::factory()->create();
+
+        $tax = Tax::create(['name' => 'VAT', 'percentage' => 23, 'is_active' => true]);
+
+        $product = Product::create([
+            'tax_id' => $tax->id,
+            'price' => 10.00,
+            'stock' => 5,
+            'weight' => 1.0,
+            'active' => true,
+        ]);
+
+        // create existing address to exercise scenario
+        $country = Country::firstOrCreate(['iso_alpha2' => 'PT'], ['name_pt' => 'Portugal', 'name_en' => 'Portugal', 'country_code' => '351', 'is_active' => true]);
+        $user->addresses()->create([
+            'title' => 'Home',
+            'address_line_1' => 'Rua Teste 1',
+            'postal_code' => '1000-000',
+            'city' => 'Lisbon',
+            'country_id' => $country->id,
+            'is_default' => true,
+        ]);
+
+        $response = $this->withSession(['cart' => [$product->id => 1]])
+            ->actingAs($user)
+            ->get(route('checkout.index'))
+            ->assertStatus(200);
+
+        $content = $response->getContent();
+        // basic check that the input name and label are present
+        $this->assertStringContainsString('name="title"', $content);
+        // we expect at least one <label> element for the address form
+        $this->assertStringContainsString('<label', $content);
+        // required asterisk should be rendered for title field
+        $this->assertStringContainsString('text-status-error', $content);
+        // even though user has an existing address, the new-address inputs section should be empty
+        preg_match('/<div id="newAddressForm".*?<\/div>/s', $content, $matches);
+        $newHtml = $matches[0] ?? '';
+        $this->assertFalse(str_contains($newHtml, 'Rua Teste 1'), 'New address form was prefilled with existing address');
+    }
+
     public function test_place_order_creates_order_and_decrements_stock()
     {
         $user = User::factory()->create();

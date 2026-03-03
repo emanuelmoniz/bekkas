@@ -3,94 +3,91 @@
         <h2 class="text-lg font-medium text-dark">{{ t('profile.addresses') ?: 'Addresses' }}</h2>
     </header>
 
+    @php
+        $addressFormContext = session('address_form_context');
+        $addressEditId = (int) session('address_edit_id');
+    @endphp
+
+    <x-validation-errors-alert :fields="['title','nif','phone','address_line_1','address_line_2','postal_code','city','country_id']" />
+
     <div class="space-y-4 mb-6">
         @php $addressCount = $addresses->count(); @endphp
 
         @forelse ($addresses as $address)
-            <div class="border p-4 rounded space-y-3">
-                {{-- UPDATE FORM --}}
-                <form method="POST" action="{{ route('addresses.update', $address) }}" class="space-y-2">
-                    @csrf
-                    @method('PATCH')
+            <details id="address-{{ $address->id }}" class="border rounded" @if($address->is_default || ($addressFormContext === 'update' && $addressEditId === (int) $address->id)) open @endif>
+                <summary class="px-4 py-3 cursor-pointer font-medium text-dark">
+                    {{ $address->title ?: (t('address_form.new_address') ?: 'New address') }}
+                </summary>
 
-                    <div class="grid grid-cols-2 gap-2">
-                        <input name="title" value="{{ $address->title }}" placeholder="{{ t('profile.address_title') ?: 'Address name' }}" class="border rounded px-2 py-1" required>
-                        <input name="nif" value="{{ $address->nif }}" placeholder="{{ t('profile.address_nif_optional') ?: 'NIF (optional)' }}" class="border rounded px-2 py-1">
-                        <input name="phone" value="{{ $address->phone }}" placeholder="{{ t('profile.address_phone_optional') ?: 'Phone (optional)' }}" class="border rounded px-2 py-1">
-                        <input name="address_line_1" value="{{ $address->address_line_1 }}" placeholder="{{ t('profile.address_line_1') ?: 'Address line 1' }}" class="border rounded px-2 py-1" required>
-                        <input name="address_line_2" value="{{ $address->address_line_2 }}" placeholder="{{ t('profile.address_line_2_optional') ?: 'Address line 2 (optional)' }}" class="border rounded px-2 py-1">
-                        <input name="postal_code" value="{{ $address->postal_code }}" placeholder="{{ t('profile.address_postal_code') ?: 'Postal code' }}" class="border rounded px-2 py-1" required>
-                        <input name="city" value="{{ $address->city }}" class="border rounded px-2 py-1" required>
-                        <select name="country_id" class="border rounded px-2 py-1" required>
-                            @foreach(\App\Models\Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get() as $country)
-                                <option value="{{ $country->id }}" @selected($address->country_id == $country->id)>
-                                    {{ $country->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="p-4 border-t space-y-3">
+                    {{-- UPDATE FORM --}}
+                    <form method="POST" action="{{ route('addresses.update', $address) }}" class="space-y-2" novalidate>
+                        @csrf
+                        @method('PATCH')
 
-                    <label class="flex items-center gap-2">
-                        <input type="checkbox"
-                               name="is_default"
-                               value="1"
-                               @checked($address->is_default)
-                               @disabled($address->is_default)>
-                        {{ t('profile.default_address') ?: 'Default address' }}
-                    </label>
+                        {{-- address fields --}}
+                        @include('partials.address-form-fields', [
+                            'address' => $address,
+                            // update form fields are always enabled
+                            'disabledExpr' => null,
+                            'inputClasses' => 'border rounded px-3 py-2 w-full',
+                            'useOldInput' => $addressFormContext === 'update' && $addressEditId === (int) $address->id,
+                            'requiredFields' => ['title','address_line_1','postal_code','city','country_id'],
+                        ])
 
-                    <button class="bg-primary text-white px-8 py-3 rounded-full uppercase">
-                        {{ t('profile.save') ?: 'Save' }}
-                    </button>
-                </form>
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox"
+                                   name="is_default"
+                                   value="1"
+                                   @checked($address->is_default)
+                                   @disabled($address->is_default)>
+                            {{ t('profile.default_address') ?: 'Default address' }}
+                        </label>
 
-                {{-- DELETE FORM (SEPARATE) --}}
-                <form method="POST"
-                      action="{{ route('addresses.destroy', $address) }}"
-                      onsubmit="return confirm('Delete this address?')">
-                    @csrf
-                    @method('DELETE')
+                        <x-primary-button>{{ t('profile.save') ?: 'Save' }}</x-primary-button>
+                    </form>
 
-                    <button class="text-grey-dark text-sm">
-                        {{ t('profile.delete') ?: 'Delete' }}
-                    </button>
-                </form>
-            </div>
+                    {{-- DELETE FORM (SEPARATE) --}}
+                    <form method="POST"
+                          action="{{ route('addresses.destroy', $address) }}"
+                          onsubmit="return confirm('Delete this address?')">
+                        @csrf
+                        @method('DELETE')
+
+                        <button class="text-grey-dark text-sm">
+                            {{ t('profile.delete') ?: 'Delete' }}
+                        </button>
+                    </form>
+                </div>
+            </details>
         @empty
             <p class="text-sm text-grey-dark">{{ t('profile.no_addresses') ?: 'No addresses yet.' }}</p>
         @endforelse
     </div>
 
     {{-- ADD NEW ADDRESS --}}
-    <form method="POST" action="{{ route('addresses.store') }}" class="border p-4 rounded space-y-2">
-        @csrf
-        <h3 class="font-medium">{{ t('profile.add_new_address') ?: 'Add new address' }}</h3>
+    <details id="new-address-form" class="border rounded" @if($addressFormContext === 'store' && (old('title') || old('address_line_1') || old('postal_code') || old('city') || old('country_id'))) open @endif>
+        <summary class="px-4 py-3 cursor-pointer font-medium text-dark">
+            {{ t('address_form.new_address') ?: 'New address' }}
+        </summary>
 
-        <div class="grid grid-cols-2 gap-2">
-            <input name="title" placeholder="{{ t('profile.address_title') ?: 'Address name' }}" class="border rounded px-2 py-1" required>
-            <input name="nif" placeholder="{{ t('profile.address_nif_optional') ?: 'NIF (optional)' }}" class="border rounded px-2 py-1">
-            <input name="phone" placeholder="{{ t('profile.address_phone_optional') ?: 'Phone (optional)' }}" class="border rounded px-2 py-1">
-            <input name="address_line_1" placeholder="{{ t('profile.address_line_1') ?: 'Address line 1' }}" class="border rounded px-2 py-1" required>
-            <input name="address_line_2" placeholder="{{ t('profile.address_line_2_optional') ?: 'Address line 2 (optional)' }}" class="border rounded px-2 py-1">
-            <input name="postal_code" placeholder="{{ t('profile.address_postal_code') ?: 'Postal code' }}" class="border rounded px-2 py-1" required>
-            <input name="city" placeholder="{{ t('profile.address_city') ?: 'City' }}" class="border rounded px-2 py-1" required>
-            <select name="country_id" class="border rounded px-2 py-1" required>
-                <option value="">{{ t('profile.address_country') ?: 'Country' }}</option>
-                @foreach(\App\Models\Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get() as $country)
-                    <option value="{{ $country->id }}" @selected(old('country_id') == $country->id)>
-                        {{ $country->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+        <form method="POST" action="{{ route('addresses.store') }}" class="p-4 border-t space-y-2" novalidate>
+            @csrf
 
-        <label class="flex items-center gap-2 mt-2">
-            <input type="checkbox" name="is_default" value="1">
-            {{ t('profile.default_address') ?: 'Default address' }}
-        </label>
+            {{-- address fields for new entry --}}
+            @include('partials.address-form-fields', [
+                'address' => null,
+                'inputClasses' => 'border rounded px-3 py-2 w-full',
+                'useOldInput' => $addressFormContext === 'store',
+                'requiredFields' => ['title','address_line_1','postal_code','city','country_id'],
+            ])
 
-        <button class="bg-primary text-white px-8 py-3 rounded-full uppercase mt-2">
-            {{ t('profile.add_address') ?: 'Add Address' }}
-        </button>
-    </form>
+            <label class="flex items-center gap-2 mt-2">
+                <input type="checkbox" name="is_default" value="1">
+                {{ t('profile.default_address') ?: 'Default address' }}
+            </label>
+
+            <x-primary-button>{{ t('profile.add_address') ?: 'Add Address' }}</x-primary-button>
+        </form>
+    </details>
 </section>
