@@ -5,28 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AddressController extends Controller
 {
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'nif' => 'nullable|string|max:50',
-            'phone' => 'nullable|string|max:20',
-            'address_line_1' => 'required|string|max:255',
-            'address_line_2' => 'nullable|string|max:255',
-            'postal_code' => 'required|string|max:20',
-            'city' => 'required|string|max:100',
-            'country_id' => 'required|exists:countries,id',
-            'is_default' => 'nullable|boolean',
-        ], [
-            'title.required' => t('validation.title_required') ?: 'Please enter an address title.',
-            'address_line_1.required' => t('validation.address_required') ?: 'Please enter your address.',
-            'postal_code.required' => t('validation.postal_code_required') ?: 'Please enter your postal code.',
-            'city.required' => t('validation.city_required') ?: 'Please enter your city.',
-            'country_id.required' => t('validation.country_required') ?: 'Please select your country.',
-        ]);
+        $validator = Validator::make($request->all(), $this->validationRules(), $this->validationMessages());
+
+        if ($validator->fails()) {
+            return redirect()
+                ->route('profile.edit')
+                ->withFragment('addresses-section')
+                ->withErrors($validator)
+                ->withInput()
+                ->with('address_form_context', 'store');
+        }
+
+        $data = $validator->validated();
 
         $user = Auth::user();
 
@@ -51,23 +47,19 @@ class AddressController extends Controller
     {
         $this->authorizeAddress($address);
 
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'nif' => 'nullable|string|max:50',
-            'phone' => 'nullable|string|max:20',
-            'address_line_1' => 'required|string|max:255',
-            'address_line_2' => 'nullable|string|max:255',
-            'postal_code' => 'required|string|max:20',
-            'city' => 'required|string|max:100',
-            'country_id' => 'required|exists:countries,id',
-            'is_default' => 'nullable|boolean',
-        ], [
-            'title.required' => t('validation.title_required') ?: 'Please enter an address title.',
-            'address_line_1.required' => t('validation.address_required') ?: 'Please enter your address.',
-            'postal_code.required' => t('validation.postal_code_required') ?: 'Please enter your postal code.',
-            'city.required' => t('validation.city_required') ?: 'Please enter your city.',
-            'country_id.required' => t('validation.country_required') ?: 'Please select your country.',
-        ]);
+        $validator = Validator::make($request->all(), $this->validationRules(), $this->validationMessages());
+
+        if ($validator->fails()) {
+            return redirect()
+                ->route('profile.edit')
+                ->withFragment('address-'.$address->id)
+                ->withErrors($validator)
+                ->withInput()
+                ->with('address_form_context', 'update')
+                ->with('address_edit_id', $address->id);
+        }
+
+        $data = $validator->validated();
 
         $user = $address->user;
 
@@ -106,5 +98,31 @@ class AddressController extends Controller
         if ($address->user_id !== Auth::id()) {
             abort(403);
         }
+    }
+
+    protected function validationRules(): array
+    {
+        return [
+            'title' => 'required|string|max:255',
+            'nif' => 'nullable|string|max:50',
+            'phone' => 'nullable|string|max:20',
+            'address_line_1' => 'required|string|max:255',
+            'address_line_2' => 'nullable|string|max:255',
+            'postal_code' => 'required|string|max:20',
+            'city' => 'required|string|max:100',
+            'country_id' => 'required|exists:countries,id',
+            'is_default' => 'nullable|boolean',
+        ];
+    }
+
+    protected function validationMessages(): array
+    {
+        return [
+            'title.required' => t('validation.title_required') ?: 'Please enter an address title.',
+            'address_line_1.required' => t('validation.address_required') ?: 'Please enter your address.',
+            'postal_code.required' => t('validation.postal_code_required') ?: 'Please enter your postal code.',
+            'city.required' => t('validation.city_required') ?: 'Please enter your city.',
+            'country_id.required' => t('validation.country_required') ?: 'Please select your country.',
+        ];
     }
 }

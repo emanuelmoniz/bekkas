@@ -1,6 +1,8 @@
-<div class="p-6 bg-white border rounded shadow-sm">
-    <h2 class="text-lg font-medium text-dark">{{ t('profile.social_accounts') ?: 'Social accounts' }}</h2>
-    <p class="mt-1 text-sm text-grey-dark">{{ t('profile.social_accounts_desc') ?: 'Link external accounts (Google) to sign in quickly.' }}</p>
+<section>
+    <header class="mb-4">
+        <h2 class="text-lg font-medium text-dark">{{ t('profile.social_accounts') ?: 'Social accounts' }}</h2>
+        <p class="mt-1 text-sm text-grey-dark">{{ t('profile.social_accounts_desc') ?: 'Link external accounts (Google) to sign in quickly.' }}</p>
+    </header>
 
     <div class="mt-6 space-y-4">
         <div class="flex items-center justify-between">
@@ -58,8 +60,5 @@
                 @endif
             </div>
         </div>
-
     </div>
-
-
-</div>
+</section>

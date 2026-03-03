@@ -90,7 +90,7 @@
                     @forelse ($tickets as $ticket)
                         <tr class="border-t">
                             <td class="px-4 py-2 font-mono text-sm">
-                                <a href="{{ route('tickets.show', $ticket) }}" class="text-accent-secondary hover:underline">
+                                <a href="{{ route('tickets.show', $ticket) }}" class="text-accent-primary hover:underline">
                                     {{ $ticket->ticket_number ?? $ticket->uuid }}
                                 </a>
                             </td>
@@ -135,7 +135,7 @@
 
                         {{-- Ticket ID + status badge --}}
                         <div class="flex items-center justify-between gap-2">
-                            <span class="font-mono text-sm text-accent-secondary">
+                            <span class="font-mono text-sm text-accent-primary">
                                 {{ $ticket->ticket_number ?? $ticket->uuid }}
                             </span>
                             <span class="text-xs px-2 py-0.5 rounded-full bg-grey-light text-grey-dark shrink-0">

@@ -81,7 +81,7 @@
                     @forelse ($orders as $order)
                         <tr class="border-t">
                             <td class="px-4 py-2 font-mono text-sm">
-                                <a href="{{ route('orders.show', $order) }}" class="text-accent-secondary hover:underline">
+                                <a href="{{ route('orders.show', $order) }}" class="text-accent-primary hover:underline">
                                     {{ $order->order_number }}
                                 </a>
                             </td>
@@ -116,7 +116,7 @@
 
                         {{-- Order number + total --}}
                         <div class="flex items-center justify-between gap-2">
-                            <span class="font-mono text-sm text-accent-secondary">
+                            <span class="font-mono text-sm text-accent-primary">
                                 {{ $order->order_number }}
                             </span>
                             <span class="font-semibold text-sm text-grey-dark">

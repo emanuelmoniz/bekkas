@@ -112,7 +112,7 @@
                             @foreach ($msg->attachments as $file)
                                 <li>
                                     <a href="{{ route('tickets.attachments.download', $file) }}"
-                                       class="text-accent-secondary hover:underline">
+                                       class="text-accent-primary hover:underline">
                                         {{ $file->original_name }}
                                     </a>
                                 </li>
