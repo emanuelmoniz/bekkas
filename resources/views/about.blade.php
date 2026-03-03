@@ -102,7 +102,7 @@
                             {{ t('about.cta.shop') ?: 'Browse Products' }}
                         </a>
                     @endif
-                    <a href="{{ route('tickets.create') }}" class="inline-block bg-white/10 hover:bg-white/20 border border-white/40 text-white px-8 py-3 rounded-full uppercase font-semibold transition-colors anim-item" data-index="1">
+                    <a href="{{ route('custom.index') }}#request" class="inline-block bg-white/10 hover:bg-white/20 border border-white/40 text-white px-8 py-3 rounded-full uppercase font-semibold transition-colors anim-item" data-index="1">
                         {{ t('about.cta.contact') ?: 'Start a Project' }}
                     </a>
                 </div>

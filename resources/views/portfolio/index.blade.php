@@ -260,7 +260,7 @@
                             {{ t('portfolio.cta.shop') ?: 'Browse Products' }}
                         </a>
                     @endif
-                    <a href="{{ route('custom.index') }}"
+                    <a href="{{ route('custom.index') }}#request"
                        class="inline-block bg-white/10 hover:bg-white/20 text-white border border-white/40 px-8 py-3 rounded-full uppercase font-semibold transition-colors anim-item"
                        data-index="1">
                         {{ t('portfolio.cta.custom') ?: 'Start a Custom Project' }}
