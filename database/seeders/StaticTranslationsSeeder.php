@@ -93,6 +93,14 @@ class StaticTranslationsSeeder extends Seeder
             // Orders Yes/No
             ['key' => 'orders.yes', 'locale' => 'pt-PT', 'value' => 'Sim', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.yes', 'locale' => 'en-UK', 'value' => 'Yes', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.status.dispatched_message', 'locale' => 'pt-PT', 'value' => 'O seu pedido está a caminho. Verifique a informação de rastreio abaixo', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.status.dispatched_message', 'locale' => 'en-UK', 'value' => 'Your order is on the way. Check tracking information below', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.status.delivered_message', 'locale' => 'pt-PT', 'value' => 'O seu pedido foi entregue.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.status.delivered_message', 'locale' => 'en-UK', 'value' => 'Your order was delivered.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.status.refunded_message', 'locale' => 'pt-PT', 'value' => 'O seu pedido foi reembolsado.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.status.refunded_message', 'locale' => 'en-UK', 'value' => 'Your order was refunded.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.status.canceled_message', 'locale' => 'pt-PT', 'value' => 'O seu pedido foi cancelado. Para mais informações, por favor contacte-nos.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.status.canceled_message', 'locale' => 'en-UK', 'value' => 'Your order was canceled. For more information, please contact us.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.no', 'locale' => 'pt-PT', 'value' => 'Não', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.no', 'locale' => 'en-UK', 'value' => 'No', 'created_at' => $now, 'updated_at' => $now],
             // Pagination summary (used by component)
@@ -458,8 +466,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'orders.gross', 'locale' => 'pt-PT', 'value' => 'Bruto', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.gross', 'locale' => 'en-UK', 'value' => 'Gross', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'orders.products_net', 'locale' => 'pt-PT', 'value' => 'Produtos (líquido)', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'orders.products_net', 'locale' => 'en-UK', 'value' => 'Products (net)', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.products_net', 'locale' => 'pt-PT', 'value' => 'Produtos', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.products_net', 'locale' => 'en-UK', 'value' => 'Products', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'orders.products_tax', 'locale' => 'pt-PT', 'value' => 'Imposto dos produtos', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.products_tax', 'locale' => 'en-UK', 'value' => 'Products tax', 'created_at' => $now, 'updated_at' => $now],
@@ -467,7 +475,7 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'orders.shipping', 'locale' => 'pt-PT', 'value' => 'Envio', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.shipping', 'locale' => 'en-UK', 'value' => 'Shipping', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'orders.shipping_tax', 'locale' => 'pt-PT', 'value' => 'Imposto de envio', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'orders.shipping_tax', 'locale' => 'pt-PT', 'value' => 'Imposto do envio', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.shipping_tax', 'locale' => 'en-UK', 'value' => 'Shipping tax', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'orders.total', 'locale' => 'pt-PT', 'value' => 'Total', 'created_at' => $now, 'updated_at' => $now],

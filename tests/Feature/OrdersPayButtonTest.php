@@ -89,4 +89,81 @@ class OrdersPayButtonTest extends TestCase
         // Show informative authorised message (server-driven)
         $resp->assertSee(t('checkout.pay.status.authorised') ?: 'Payment authorised — processing is underway, please check your order details in a moment.', false);
     }
+
+    public function test_order_page_shows_dispatch_message_and_hides_any_payment_status()
+    {
+        Config::set('easypay.enabled', true);
+
+        $user = User::factory()->create();
+        $order = Order::factory()->for($user)->create(['status' => 'DISPATCHED']);
+
+        // create a payment that would normally trigger a refresh
+        \App\Models\EasypayPayment::create([
+            'payment_id' => 'pay_x',
+            'order_id' => $order->id,
+            'payment_status' => 'paid',
+        ]);
+
+        // stub the refresh service to return a bogus message if called
+        $this->mock(\App\Services\EasypayPaymentRefreshService::class, function ($mock) {
+            $mock->shouldReceive('refreshLatestPaymentForOrder')
+                 ->andReturn(['paymentStatusMessage' => 'SHOULD NOT SEE']);
+        });
+
+        $resp = $this->actingAs($user)->get(route('orders.show', $order));
+        $resp->assertStatus(200);
+
+        $resp->assertSee(t('orders.status.dispatched_message') ?: 'Our order is on the way. Check tracking information below', false);
+        $resp->assertDontSee('SHOULD NOT SEE', false);
+    }
+
+    public function test_order_page_shows_delivered_message_and_hides_any_payment_status()
+    {
+        Config::set('easypay.enabled', true);
+
+        $user = User::factory()->create();
+        $order = Order::factory()->for($user)->create(['status' => 'DELIVERED']);
+
+        \App\Models\EasypayPayment::create([
+            'payment_id' => 'pay_x',
+            'order_id' => $order->id,
+            'payment_status' => 'paid',
+        ]);
+
+        $this->mock(\App\Services\EasypayPaymentRefreshService::class, function ($mock) {
+            $mock->shouldReceive('refreshLatestPaymentForOrder')
+                 ->andReturn(['paymentStatusMessage' => 'SHOULD NOT SEE']);
+        });
+
+        $resp = $this->actingAs($user)->get(route('orders.show', $order));
+        $resp->assertStatus(200);
+
+        $resp->assertSee(t('orders.status.delivered_message') ?: 'Your order was delivered.', false);
+        $resp->assertDontSee('SHOULD NOT SEE', false);
+    }
+
+    public function test_order_page_shows_refunded_message_and_hides_any_payment_status()
+    {
+        Config::set('easypay.enabled', true);
+
+        $user = User::factory()->create();
+        $order = Order::factory()->for($user)->create(['status' => 'REFUNDED']);
+
+        \App\Models\EasypayPayment::create([
+            'payment_id' => 'pay_x',
+            'order_id' => $order->id,
+            'payment_status' => 'paid',
+        ]);
+
+        $this->mock(\App\Services\EasypayPaymentRefreshService::class, function ($mock) {
+            $mock->shouldReceive('refreshLatestPaymentForOrder')
+                 ->andReturn(['paymentStatusMessage' => 'SHOULD NOT SEE']);
+        });
+
+        $resp = $this->actingAs($user)->get(route('orders.show', $order));
+        $resp->assertStatus(200);
+
+        $resp->assertSee(t('orders.status.refunded_message') ?: 'Your order was refunded.', false);
+        $resp->assertDontSee('SHOULD NOT SEE', false);
+    }
 }

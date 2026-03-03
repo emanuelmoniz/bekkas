@@ -24,7 +24,7 @@
         @if (!empty($bullets))
             <ul class="mt-4 space-y-1 text-sm text-grey-dark w-full text-left">
                 @foreach ($bullets as $bullet)
-                    <li class="flex items-start gap-2">
+                    <li class="flex justify-center gap-2">
                         <!-- <span class="text-primary font-bold mt-0.5">&#10003;</span> -->
                         <span>{{ $bullet }}</span>
                     </li>
