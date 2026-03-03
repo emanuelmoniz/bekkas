@@ -71,7 +71,7 @@ Notes:
 3) How CI (GitHub Actions) runs tests (overview)
 - When you push to a branch or open a pull request, the configured workflow (.github/workflows/ci.yml) performs these steps:
   1. Checkout repository
-  2. Setup PHP and Node versions (currently PHP 8.2 in CI)
+  2. Setup PHP and Node versions (currently PHP 8.4 in CI)
   3. Install Composer and npm dependencies
   4. Create env (copy .env.example, generate app key)
   5. Prepare a database (usually SQLite in CI or a service like MySQL via Actions services)

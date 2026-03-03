@@ -7,7 +7,7 @@ A modern e-commerce and support site for a 3D printing studio built with Laravel
 ## 🚀 Quickstart
 
 **Requirements:**
-- PHP 8.2+
+- PHP 8.4+
 - Composer
 - Node 18+ / npm
 - MySQL (or a supported DB)
@@ -39,7 +39,7 @@ A modern e-commerce and support site for a 3D printing studio built with Laravel
 ## 🧭 Project overview
 
 Key components:
-- Laravel 12 (PHP ^8.2)
+- Laravel 12 (PHP ^8.4)
 - Frontend: Vite + Tailwind + Alpine.js
 - DB-driven static translations with `t()` helper (cached)
 - Features: Products catalog, Cart & Checkout, Orders (client + admin), Shipping Tiers, Tickets (support), Favorites, Admin area
