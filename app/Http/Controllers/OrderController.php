@@ -958,6 +958,16 @@ class OrderController extends Controller
             if (! empty($activeManifest)) {
                 $payUnavailableMessage = null; // explicit clearing to preserve prior behaviour
             }
+
+            // Defensive fallback: if orchestration returned no manifest but there is still
+            // a fresh active/pending persisted session, use its canonical DB manifest.
+            if (empty($activeManifest)) {
+                $fallback = $orch->getLatestActiveManifest($order, $ttl);
+                if (! empty($fallback)) {
+                    $activeManifest = $fallback;
+                    $payUnavailableMessage = null;
+                }
+            }
         } catch (\Exception $e) {
             // Log and show a friendly, translatable message. Include full error only in debug.
             Log::error('Easypay orchestration failed on pay page', ['order_id' => $order->id, 'error' => $e->getMessage()]);
@@ -967,6 +977,18 @@ class OrderController extends Controller
             if (config('app.debug')) {
                 $payUnavailableDebug = $e->getMessage();
                 $payUnavailableMessage = ($payUnavailableMessage.' '.($payUnavailableDebug ? (t('checkout.pay.unavailable_debug', ['error' => $payUnavailableDebug]) ?: $payUnavailableDebug) : ''));
+            }
+
+            // If orchestration throws, still try a persisted fresh active session as fallback.
+            try {
+                $fallbackOrch = new EasypayOrchestrationService;
+                $fallback = $fallbackOrch->getLatestActiveManifest($order, $ttl);
+                if (! empty($fallback)) {
+                    $activeManifest = $fallback;
+                    $payUnavailableMessage = null;
+                }
+            } catch (\Throwable $ignored) {
+                // keep graceful unavailable message
             }
         }
 
