@@ -1708,11 +1708,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.validation.nif_invalid', 'locale' => 'pt-PT', 'value' => 'O formato do NIF/Número de contribuinte é inválido.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.validation.nif_invalid', 'locale' => 'en-UK', 'value' => 'NIF/VAT number format is invalid.', 'created_at' => $now, 'updated_at' => $now],
 
-
-
             ['key' => 'checkout.validation.address_line_1_required', 'locale' => 'pt-PT', 'value' => 'O endereço é obrigatório.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.validation.address_line_1_required', 'locale' => 'en-UK', 'value' => 'Address is required.', 'created_at' => $now, 'updated_at' => $now],
-
 
             ['key' => 'checkout.validation.postal_code_required', 'locale' => 'pt-PT', 'value' => 'O código postal é obrigatório.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.validation.postal_code_required', 'locale' => 'en-UK', 'value' => 'Postal code is required.', 'created_at' => $now, 'updated_at' => $now],
