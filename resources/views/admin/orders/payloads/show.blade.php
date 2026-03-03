@@ -37,7 +37,7 @@
 
                         <form method="POST" action="{{ route('admin.orders.checkouts.store', $payload->order) }}" class="inline-block ms-2">
                             @csrf
-                            <button class="bg-status-success/10 border-green-200 text-status-success border px-2 py-2 rounded uppercase text-sm">Create checkout</button>
+                            <button class="bg-status-success/10 border-status-success text-status-success border px-2 py-2 rounded uppercase text-sm">Create checkout</button>
                         </form>
 
                     @endif

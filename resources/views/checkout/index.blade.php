@@ -11,20 +11,12 @@
             {{-- LEFT --}}
             <form method="POST"
                   action="{{ route('checkout.place') }}"
-                  class="lg:col-span-2 bg-white p-6 rounded shadow space-y-4">
+                class="lg:col-span-2 bg-white p-6 rounded shadow space-y-4"
+                novalidate>
                 @csrf
 
                 {{-- Validation Errors --}}
-                @if ($errors->any())
-                    <div class="px-4 py-3 rounded relative border border-grey-light border-l-4 bg-primary/10 text-primary" role="alert">
-                        <strong class="font-bold">{{ t('validation.error_heading') ?: 'Please fix the following errors:' }}</strong>
-                        <ul class="mt-2 list-disc list-inside text-sm">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                <x-validation-errors-alert />
 
                 <h3 class="font-semibold">{{ t('checkout.shipping_address') ?: 'Shipping Address' }}</h3>
 
@@ -58,36 +50,24 @@
                                value="new"
                                @click="addressMode = 'new'; selectedAddressId = null; onAddressChange()">
                         <span class="ml-2 font-medium">
-                            {{ t('checkout.new_address') ?: 'New address' }}
+                            {{ t('address_form.new_address') ?: 'New address' }}
                         </span>
                     </label>
                 @endif
 
                 {{-- NEW ADDRESS FORM --}}
-                <div x-show="addressMode === 'new'" x-cloak class="space-y-2 pt-4">
-                    <h4 class="font-medium">{{ t('checkout.new_address_details') ?: 'New address details' }}</h4>
+                <div id="newAddressForm" x-show="addressMode === 'new'" x-cloak class="space-y-2 pt-4">
+                    <h4 class="font-medium">{{ t('address_form.new_address_details') ?: 'New address details' }}</h4>
 
-                    <input name="title" placeholder="{{ t('checkout.address_title') ?: 'Address name' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
-                    <input name="nif" placeholder="{{ t('checkout.nif_optional') ?: 'NIF (optional)' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
-                    <input name="phone" placeholder="{{ t('checkout.phone_optional') ?: 'Phone (optional)' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
-                    <input name="address_line_1" placeholder="{{ t('checkout.address_line_1') ?: 'Address line 1' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
-                    <input name="address_line_2" placeholder="{{ t('checkout.validation.address_line_2_optional') ?: 'Address line 2 (optional)' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
-                    <input name="postal_code" 
-                           x-model="newPostalCode"
-                           @input="updateShippingTiersForNewAddress()"
-                           placeholder="{{ t('checkout.postal_code') ?: 'Postal code' }}" 
-                           class="border rounded px-3 py-2 w-full" 
-                           :disabled="addressMode !== 'new'">
-                    <input name="city" placeholder="{{ t('checkout.city') ?: 'City' }}" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
-                    <select name="country_id" x-model="newCountryId" @change="updateShippingTiersForNewAddress()" class="border rounded px-3 py-2 w-full" :disabled="addressMode !== 'new'">
-                        <option value="">{{ t('checkout.country') ?: 'Country' }}</option>
-                        @foreach(\App\Models\Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get() as $country)
-                            <option value="{{ $country->id }}">
-                                {{ $country->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    
+                    @include('partials.address-form-fields', [
+                        'address' => null,
+                        'disabledExpr' => "addressMode !== 'new'",
+                        'postalCodeBindings' => 'x-model="newPostalCode" @input="updateShippingTiersForNewAddress()"',
+                        'countryBindings' => 'x-model="newCountryId" @change="updateShippingTiersForNewAddress()"',
+                        'inputClasses' => 'border rounded px-3 py-2 w-full',
+                        'requiredFields' => ['title','address_line_1','postal_code','city','country_id'],
+                    ])
+
                     <label class="flex items-center gap-2 pt-2">
                         <input type="checkbox" name="is_default" value="1" class="rounded" :disabled="addressMode !== 'new'">
                         <span class="text-sm">{{ t('checkout.set_as_default') ?: 'Set as default address' }}</span>
@@ -95,8 +75,8 @@
                 </div>
 
                 {{-- SHIPPING TIER SELECTION --}}
-                <div x-show="addressMode === 'new' && availableTiers.length === 0 && !qualifiesForFreeShipping" x-cloak class="px-4 py-3 rounded border border-grey-light border-l-4 bg-primary/10 text-accent-secondary mt-6">
-                    <p class="text-sm text-accent-secondary">
+                <div x-show="addressMode === 'new' && availableTiers.length === 0 && !qualifiesForFreeShipping" x-cloak class="px-4 py-3 rounded border border-status-warning border-l-4 bg-status-warning/10 text-status-warning mt-6">
+                    <p class="text-sm text-status-warning">
                         {{ t('checkout.address_required_for_shipping') ?: 'Please fill the address form so we can show the available shipping options.' }}
                     </p>
                 </div>
@@ -131,8 +111,8 @@
                     </template>
                 </div>
 
-                <div x-show="!qualifiesForFreeShipping && addressMode === 'existing' && availableTiers.length === 0" x-cloak class="px-4 py-3 rounded border border-grey-light border-l-4 bg-primary/10 text-accent-secondary mt-6">
-                    <p class="text-sm text-accent-secondary">
+                <div x-show="!qualifiesForFreeShipping && addressMode === 'existing' && availableTiers.length === 0" x-cloak class="px-4 py-3 rounded border border-status-error border-l-4 bg-status-error/10 text-status-error mt-6">
+                    <p class="text-sm text-status-error">
                         {{ t('checkout.no_shipping_available') ?: 'No shipping options available for your address. Please contact us.' }}
                     </p>
                 </div>
@@ -302,9 +282,25 @@
                             this.fetchShippingTiers(address.postal_code, this.selectedAddressId, null);
                         }
                     } else if (this.addressMode === 'new') {
+                        // clear any previously entered values when switching to new
+                        const container = document.getElementById('newAddressForm');
+                        if (container) {
+                            container.querySelectorAll('input,select').forEach(el => {
+                                if (el.type !== 'checkbox' && el.type !== 'radio') {
+                                    el.value = '';
+                                }
+                                if (el.tagName.toLowerCase() === 'select') {
+                                    el.selectedIndex = 0;
+                                }
+                            });
+                        }
+                        this.newPostalCode = '';
+                        this.newCountryId = '';
+
                         this.updateShippingTiersForNewAddress();
                     }
                 },
+
                 get totalGross() {
                     return (Number(this.productsGross) + Number(this.shipping.gross)).toFixed(2);
                 },

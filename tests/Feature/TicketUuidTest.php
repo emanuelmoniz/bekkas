@@ -27,8 +27,14 @@ class TicketUuidTest extends TestCase
 
         $url = route('tickets.show', $ticket);
 
+        // ensure the generated URL uses the uuid and not the numeric id
         $this->assertStringContainsString($ticket->uuid, $url);
-        $this->assertStringNotContainsString('/'.$ticket->id, $url);
+
+        // parse the path segments so we don't accidentally fail when a uuid
+        // happens to start with the same digit(s) as the id (e.g. "/1d8a…").
+        $path = parse_url($url, PHP_URL_PATH);
+        $segments = explode('/', trim($path, '/'));
+        $this->assertNotContains((string) $ticket->id, $segments, 'URL should not contain the numeric ticket id as a segment');
     }
 
     public function test_view_ticket_by_uuid_returns_ok()

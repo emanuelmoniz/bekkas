@@ -23,6 +23,9 @@ class TaxSwitchTest extends TestCase
         // Ensure DB translations exist for tests (t() uses DB-driven translations)
         \App\Models\StaticTranslation::create(['key' => 'tax.included_in_price', 'locale' => 'en-UK', 'value' => 'All taxes are included in the price']);
         \App\Models\StaticTranslation::create(['key' => 'tax.included_in_price', 'locale' => 'pt-PT', 'value' => 'Todos os impostos estão incluídos no preço']);
+        // per-line tax label
+        \App\Models\StaticTranslation::create(['key' => 'cart.item_tax_included', 'locale' => 'en-UK', 'value' => 'Includes :amount tax']);
+        \App\Models\StaticTranslation::create(['key' => 'cart.item_tax_included', 'locale' => 'pt-PT', 'value' => 'Inclui :amount de imposto']);
     }
 
     public function test_cart_and_checkout_show_disclaimer_when_tax_disabled()
@@ -54,6 +57,15 @@ class TaxSwitchTest extends TestCase
             || str_contains($content, 'Todos os impostos estão incluídos no preço')
             || str_contains($content, 'tax.included_in_price'),
             "Cart page content did not contain expected disclaimer:\n".$content
+        );
+        // when tax is disabled, product summary lines should not be rendered at all
+        $this->assertFalse(str_contains($content, 'cart.summary.products'), "Cart page still showed products total when tax disabled:\n$content");
+        $this->assertFalse(str_contains($content, 'cart.summary.product_tax'), "Cart page still showed product tax when tax disabled:\n$content");
+        // per-item tax line should show the included message, not a numeric value
+        $this->assertTrue(
+            str_contains($content, 'All taxes are included in the price')
+            || str_contains($content, 'Todos os impostos estão incluídos no preço')
+            || str_contains($content, 'tax.included_in_price')
         );
 
         // Prepare address + shipping tier for checkout view
@@ -153,6 +165,48 @@ class TaxSwitchTest extends TestCase
             'total_tax' => 0.00,
             'tax_percentage' => 0.00,
         ]);
+    }
+
+    public function test_cart_summary_shows_net_and_tax_when_tax_enabled()
+    {
+        $user = User::factory()->create();
+
+        $tax = Tax::create(['name' => 'VAT', 'percentage' => 23, 'is_active' => true]);
+
+        $product = Product::create([
+            'tax_id' => $tax->id,
+            'price' => 10.00,
+            'stock' => 5,
+            'weight' => 1.0,
+            'active' => true,
+        ]);
+        // give a name so the only "Products" text in the view comes from the summary
+        $product->translations()->create(['locale' => 'en-UK', 'name' => 'Widget']);
+
+        config(['app.tax_enabled' => true]);
+
+        $res = $this->withSession(['cart' => [$product->id => 2]])
+            ->actingAs($user)
+            ->get(route('cart.index'))
+            ->assertStatus(200);
+
+        $content = $res->getContent();
+
+        $gross = 10.00 * 2;
+        $net = round($gross / 1.23, 2);
+        $taxAmt = round($gross - $net, 2);
+
+        // net should appear on the "Products" summary row and tax on the product tax row
+        $this->assertTrue(str_contains($content, "€".$net), "Expected net amount €{$net} not found:\n$content");
+        $this->assertTrue(str_contains($content, "€".$taxAmt), "Expected tax amount €{$taxAmt} not found:\n$content");
+
+        // the per-item tax line should use our new translation (or fallback English/Portuguese)
+        $this->assertTrue(
+            str_contains($content, 'Includes')
+            || str_contains($content, 'Inclui')
+            || str_contains($content, 'cart.item_tax_included'),
+            "Item tax translation missing:\n{$content}"
+        );
     }
 
     public function test_shipping_calculator_respects_tax_toggle()
