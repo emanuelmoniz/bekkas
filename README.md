@@ -85,6 +85,17 @@ Security notes: never commit real secrets to the repository. Use environment or 
 
 ---
 
+## 🚚 Deployment
+
+- Branch strategy:
+   - `develop` → development
+   - `staging` → staging/QA
+   - `main` → production
+- Full step-by-step deployment playbook:
+   - See [DEPLOY.md](DEPLOY.md)
+
+---
+
 ## 🔒 Security & Best Practices
 
 - Attachments are stored on a private disk and downloads are validated to belong to the user or admin.

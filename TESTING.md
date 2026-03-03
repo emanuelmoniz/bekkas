@@ -23,6 +23,9 @@ Quick commands (recommended)
 - Run tests via composer (not isolated):
   - composer test
 
+- Deployment guide:
+  - See `DEPLOY.md` for phase-based deploy instructions (`develop` → `staging` → `main`).
+
 Note: prefer the helper script on a shared/production host — it sets APP_ENV=testing and uses an isolated sqlite database to avoid touching real data.
 
 1) Goals and safety
@@ -68,7 +71,7 @@ Notes:
 3) How CI (GitHub Actions) runs tests (overview)
 - When you push to a branch or open a pull request, the configured workflow (.github/workflows/ci.yml) performs these steps:
   1. Checkout repository
-  2. Setup PHP and Node versions (the workflow runs a PHP matrix e.g., 8.1 and 8.2)
+  2. Setup PHP and Node versions (currently PHP 8.2 in CI)
   3. Install Composer and npm dependencies
   4. Create env (copy .env.example, generate app key)
   5. Prepare a database (usually SQLite in CI or a service like MySQL via Actions services)
@@ -92,10 +95,6 @@ Notes:
 
 6) When to disable tests from README
 - Until you're confident the test suite is stable and documented, you asked to remove the Tests section from the main README. The tests are still present and runnable (see TESTING.md), but the top-level README won't prompt people to run them until you're ready.
-
-If you'd like, I can also:
-- Add a cron or systemd timer to run tests nightly and email/report results, or
-- Add a Git hook or a simple script you can trigger via SSH to run tests and upload results to a report location.
 
 Creating an admin user
 - To create an administrator user (Administrator / emanuel.moniz@bekkas.pt / Abc.123) run:

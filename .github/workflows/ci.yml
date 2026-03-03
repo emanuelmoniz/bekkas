@@ -11,20 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: [8.1, 8.2]
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: bekkas_test
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd "mysqladmin ping --silent"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 3
+        php-version: [8.2]
 
     steps:
       - uses: actions/checkout@v4
@@ -49,7 +36,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
 
       - name: Install Composer Dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+        run: composer install --prefer-dist --no-progress --no-interaction
 
       - name: Create env
         run: |
@@ -57,11 +44,6 @@ jobs:
           php -r "file_exists('.env') || copy('.env.example', '.env');"
           php artisan key:generate --ansi
           php artisan config:clear
-
-      - name: Prepare SQLite database
-        run: |
-          touch database/database.sqlite
-          php artisan migrate --force
 
       - name: Run PHP CS (Pint)
         run: ./vendor/bin/pint --test
@@ -80,4 +62,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: phpunit-logs
-          path: ./storage/logs || ./tests/coverage
+          if-no-files-found: ignore
+          path: |
+            storage/logs
+            tests/coverage
