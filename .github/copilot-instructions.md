@@ -1,7 +1,7 @@
 # GitHub Copilot instructions for BEKKAS (Laravel)
 
 ## Quick summary ✅
-- BEKKAS is a Laravel 12 e‑commerce + support app (PHP 8.2): product catalog, cart/checkout, shipping tiers, orders, tickets.
+- BEKKAS is a Laravel 12 e‑commerce + support app (PHP 8.4): product catalog, cart/checkout, shipping tiers, orders, tickets.
 - **Key conventions:** DB-driven static translations via `t()` (cached), thin controllers delegating to `app/Services`, and `*Translation` models for DB strings.
 
 ## First things an AI should know (big picture) 💡

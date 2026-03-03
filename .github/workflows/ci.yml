@@ -11,23 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: [8.1, 8.2]
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: bekkas_test
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd "mysqladmin ping --silent"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 3
+        php-version: [8.4]
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Debug environment
+        run: |
+          php -v
+          composer --version
+          node -v
+          npm -v
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -39,7 +33,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20.19.0
 
       - name: Get Composer Cache
         id: composer-cache
@@ -49,7 +43,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
 
       - name: Install Composer Dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+        run: composer install --prefer-dist --no-progress --no-interaction
 
       - name: Create env
         run: |
@@ -58,16 +52,17 @@ jobs:
           php artisan key:generate --ansi
           php artisan config:clear
 
-      - name: Prepare SQLite database
+      - name: Prepare Laravel writable paths
         run: |
-          touch database/database.sqlite
-          php artisan migrate --force
+          mkdir -p storage/framework/views
+          mkdir -p storage/framework/cache
+          mkdir -p storage/framework/sessions
+          mkdir -p storage/framework/testing
+          mkdir -p storage/logs
+          mkdir -p bootstrap/cache
 
       - name: Run PHP CS (Pint)
         run: ./vendor/bin/pint --test
-
-      - name: Run Tests
-        run: composer test --no-interaction
 
       - name: Install Node dependencies
         run: npm ci
@@ -75,9 +70,18 @@ jobs:
       - name: Build assets
         run: npm run build
 
+      - name: Verify Vite manifest
+        run: test -f public/build/manifest.json
+
+      - name: Run Tests
+        run: ./bin/run-tests.sh --log-junit storage/logs/junit.xml
+
       - name: Upload test artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: phpunit-logs
-          path: ./storage/logs || ./tests/coverage
+          if-no-files-found: ignore
+          path: |
+            storage/logs
+            tests/coverage

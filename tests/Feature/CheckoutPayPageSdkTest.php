@@ -14,6 +14,11 @@ class CheckoutPayPageSdkTest extends TestCase
 
     public function test_pay_page_renders_sdk_placeholder_and_persisted_manifest_for_active_pending_session()
     {
+        Config::set('easypay.enabled', true);
+        Config::set('easypay.session_ttl', 1800);
+        Config::set('easypay.env', 'test');
+        Config::set('easypay.sdk_url', 'https://sdk.test/easypay.js');
+
         // Arrange: create user + order in WAITING_PAYMENT
         $user = User::factory()->create();
         $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
@@ -44,16 +49,13 @@ class CheckoutPayPageSdkTest extends TestCase
 
         // Act: visit the pay page as the order owner
 
-        // Ensure Easypay client is enabled for the pay page
-        Config::set('easypay.enabled', true);
-
         $resp = $this->actingAs($user)->get(route('orders.pay', $order->uuid));
 
         // Assert: page contains the inline widget root, the easypay-manifest and the SDK URL from env
         $resp->assertStatus(200);
         $resp->assertSee('id="easypay-checkout"', false);
         $resp->assertSee('id="easypay-manifest"', false);
-        $this->assertStringContainsString(env('EASYPAY_SDK_URL'), $resp->getContent());
+        $this->assertStringContainsString('https://sdk.test/easypay.js', $resp->getContent());
 
         // manifest should be present in the HTML (server-embedded) and be the canonical shape
         $resp->assertSee(json_encode($expectedCanonical), false);
@@ -67,6 +69,11 @@ class CheckoutPayPageSdkTest extends TestCase
 
     public function test_easypay_sdk_includes_language_mapping_and_respects_manifest_language()
     {
+        Config::set('easypay.enabled', true);
+        Config::set('easypay.session_ttl', 1800);
+        Config::set('easypay.env', 'test');
+        Config::set('easypay.sdk_url', 'https://sdk.test/easypay.js');
+
         $user = User::factory()->create();
         $order = Order::factory()->for($user)->create(['status' => 'WAITING_PAYMENT', 'is_paid' => false]);
 
@@ -90,9 +97,6 @@ class CheckoutPayPageSdkTest extends TestCase
         \Illuminate\Support\Facades\Http::fake([
             'https://api.test.easypay.pt/2.0/checkout/test-checkout-123' => \Illuminate\Support\Facades\Http::response($manifest, 200),
         ]);
-
-        // Ensure Easypay client is enabled for the pay page
-        Config::set('easypay.enabled', true);
 
         $resp = $this->actingAs($user)->get(route('orders.pay', $order->uuid));
         $resp->assertStatus(200);
