@@ -9,8 +9,10 @@ A modern e-commerce and support site for a 3D printing studio built with Laravel
 **Requirements:**
 - PHP 8.4+
 - Composer
-- Node 18+ / npm
+- Node 20.19.0+ (or >=22.12.0) / npm
 - MySQL (or a supported DB)
+
+> Use the project-pinned Node version from `.nvmrc` (`nvm install && nvm use`).
 
 **Local setup (typical):**
 

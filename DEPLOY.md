@@ -1,5 +1,19 @@
 # Deploy Guide
 
+## Runtime prerequisites
+
+- Node.js: `20.19.0` (or `>=22.12.0`)
+- npm: use the version bundled with your Node install
+
+Use the project-pinned Node version before install/build steps:
+
+```bash
+nvm install
+nvm use
+node -v
+npm -v
+```
+
 This project uses a 3-phase branch promotion flow:
 
 - `develop` → Development (`dev.bekkas.pt`)
