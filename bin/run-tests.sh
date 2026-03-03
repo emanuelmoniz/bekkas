@@ -73,6 +73,16 @@ mkdir -p database
 rm -f "$TMPDB"
 touch "$TMPDB"
 
+# Ensure framework writable/cache paths exist on fresh CI checkouts.
+# Laravel may resolve Blade compiled path via realpath(storage/framework/views),
+# which returns false if the directory does not exist yet.
+mkdir -p storage/framework/views
+mkdir -p storage/framework/cache
+mkdir -p storage/framework/sessions
+mkdir -p storage/framework/testing
+mkdir -p storage/logs
+mkdir -p bootstrap/cache
+
 export APP_ENV=testing
 export DB_CONNECTION=sqlite
 export DB_DATABASE="$TMPDB"

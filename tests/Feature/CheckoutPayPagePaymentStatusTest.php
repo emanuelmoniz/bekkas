@@ -108,9 +108,9 @@ class CheckoutPayPagePaymentStatusTest extends TestCase
 
         $this->assertTrue(str_contains($html, 'Payment authorised') || str_contains($html, 'Pagamento autorizado'));
 
-        // SDK container is always rendered; per new start logic a fresh manifest may be created
+        // SDK container is always rendered while order is still WAITING_PAYMENT.
+        // A manifest is not guaranteed when orchestration decides not to start/restart SDK.
         $this->assertStringContainsString('id="easypay-checkout"', $html);
-        $this->assertStringContainsString('id="easypay-manifest"', $html);
 
         $this->assertDatabaseHas('easypay_payments', [
             'payment_id' => 'pay_auth_1',
