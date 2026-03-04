@@ -3,7 +3,7 @@
         <div>
             <p class="text-sm text-grey-dark">Created: {{ $s->created_at?->format('d/m/Y H:i:s') }}</p>
             <p class="text-sm">Status: <strong>{{ $s->status ?? ($s->in_error ? 'error' : 'unknown') }}</strong></p>
-            <p class="text-sm">Checkout ID: <span class="inline-block align-baseline font-mono" style="overflow-wrap:anywhere;word-break:break-word;max-width:100%;"><code>{{ $s->checkout_id }}</code></span></p>
+            <p class="text-sm">Checkout ID: <span class="inline-block align-baseline font-sans" style="overflow-wrap:anywhere;word-break:break-word;max-width:100%;"><code>{{ $s->checkout_id }}</code></span></p>
 
 
         </div>

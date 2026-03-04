@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>BEKKAS - 3D Printing Services</title>
+        <title>{{ config('app.name', 'BEKKAS') }} - 3D Printing Services</title>
 
         <!-- Favicons -->
         <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon/apple-touch-icon.png') }}">
@@ -26,7 +26,7 @@
         {{-- always include loader in this standalone template so it can't miss the stack --}}
         @include('partials.recaptcha-loader')
     </head>
-    <body class="bg-light text-dark overflow-hidden" data-splash-active="true">
+    <body class="font-sans bg-light text-dark overflow-hidden" data-splash-active="true">
         @include('layouts.navigation')
 
         <!-- HOME SPLASH INTRO -->
