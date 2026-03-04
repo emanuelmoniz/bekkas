@@ -203,7 +203,7 @@
                             <button
                                 type="button"
                                 x-bind:class="$store.contactInView
-                                    ? 'uppercase inline-flex items-center h-full px-1 pt-1 border-b-2 border-accent-primary text-sm font-sans font-medium leading-5 text-dark focus:outline-none focus:border-accent-primary transition duration-150 ease-in-out'
+                                    ? 'uppercase inline-flex items-center h-full px-1 pt-1 border-b-2 border-primary text-sm font-sans font-medium leading-5 text-dark focus:outline-none focus:border-primary transition duration-150 ease-in-out'
                                     : 'uppercase inline-flex items-center h-full px-1 pt-1 border-b-2 border-transparent text-sm font-sans font-medium leading-5 text-grey-medium hover:text-grey-dark hover:border-grey-medium focus:outline-none focus:text-grey-dark focus:border-grey-medium transition duration-150 ease-in-out'"
                                 @click="window.location.href='{{ url('/#contact') }}'">
                                 {{ t('nav.contact') ?: 'Contact' }}
@@ -225,14 +225,14 @@
                         $otherLocaleName = $otherLocale === 'pt-PT' ? 'PT' : 'EN';
                     @endphp
                     <a href="{{ route('language.switch', $otherLocale) }}"
-                       class="text-sm text-grey-dark hover:text-dark font-medium hover:text-accent-primary/90 no-underline">
+                       class="text-sm text-grey-dark hover:text-dark font-medium hover:text-primary/90 no-underline">
                         {{ $otherLocaleName }}
                     </a>
                 </div>
 
                 <!-- Favorites Icon -->
                 <div x-data="{}" x-show="$store.favorites.count > 0" class="relative" style="display: none;">
-                    <a href="{{ route('favorites.index') }}" class="flex items-center text-grey-dark hover:text-dark hover:text-accent-primary/90 no-underline" aria-label="Favorites">
+                    <a href="{{ route('favorites.index') }}" class="flex items-center text-grey-dark hover:text-dark hover:text-primary/90 no-underline" aria-label="Favorites">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" stroke="none">
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                         </svg>
@@ -242,7 +242,7 @@
 
                 <!-- Cart Icon -->
                 <div x-data="{}" x-show="$store.cart.count > 0 && {{ config('app.store_enabled') ? 'true' : 'false' }}" class="relative" style="display: none;">
-                    <a href="{{ route('cart.index') }}" class="flex items-center text-grey-dark hover:text-dark hover:text-accent-primary/90 no-underline" aria-label="Cart">
+                    <a href="{{ route('cart.index') }}" class="flex items-center text-grey-dark hover:text-dark hover:text-primary/90 no-underline" aria-label="Cart">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25h11.118c.51 0 .955-.343 1.087-.835l1.518-5.688a1.125 1.125 0 00-1.087-1.415H5.106" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25L5.106 4.272M7.5 14.25l-2.25 3m0 0h13.5m-13.5 0a1.5 1.5 0 103 0m10.5 0a1.5 1.5 0 103 0" />
@@ -296,10 +296,10 @@
                     </div>
                 @else
                     <div class="flex items-center space-x-4">
-                        <a href="{{ route('login') }}" class="text-sm text-grey-dark hover:text-dark hover:text-accent-primary/90 no-underline">
+                        <a href="{{ route('login') }}" class="text-sm text-grey-dark hover:text-dark hover:text-primary/90 no-underline">
                             {{ t('nav.login') ?: 'Login' }}
                         </a>
-                        <a href="{{ route('register') }}" class="text-sm text-grey-dark hover:text-dark hover:text-accent-primary/90 no-underline">
+                        <a href="{{ route('register') }}" class="text-sm text-grey-dark hover:text-dark hover:text-primary/90 no-underline">
                             {{ t('nav.register') ?: 'Register' }}
                         </a>
                     </div>
@@ -413,7 +413,7 @@
                 {{-- Configuration --}}
                 <div x-data="{ open: false }">
                     <div class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-grey-dark hover:bg-grey-light">
-                        <a href="{{ route('admin.configurations.index') }}" class="flex-1 text-accent-primary hover:text-accent-primary/90 no-underline">Configuration</a>
+                        <a href="{{ route('admin.configurations.index') }}" class="flex-1 text-primary hover:text-primary/90 no-underline">Configuration</a>
                         <button @click="open = !open" class="ml-2">
                             <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -490,7 +490,7 @@
                 </x-responsive-nav-link>
                 <a href="{{ url('/#contact') }}"
                    x-bind:class="$store.contactInView
-                       ? 'block w-full ps-3 pe-4 py-2 border-l-4 border-accent-primary text-start text-base font-medium text-accent-primary bg-accent-primary/10 focus:outline-none focus:text-accent-primary focus:bg-accent-primary/10 focus:border-accent-primary transition duration-150 ease-in-out'
+                       ? 'block w-full ps-3 pe-4 py-2 border-l-4 border-primary text-start text-base font-medium text-primary bg-primary/10 focus:outline-none focus:text-primary focus:bg-primary/10 focus:border-primary transition duration-150 ease-in-out'
                        : 'block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-grey-dark hover:text-grey-dark hover:bg-white hover:border-grey-medium focus:outline-none focus:text-grey-dark focus:bg-white focus:border-grey-medium transition duration-150 ease-in-out'">
                     {{ t('nav.contact') ?: 'Contact' }}
                 </a>
@@ -519,7 +519,7 @@
                     $otherLocaleName = $otherLocale === 'pt-PT' ? 'PT' : 'EN';
                 @endphp
                 <a href="{{ route('language.switch', $otherLocale) }}"
-                   class="text-sm text-grey-dark hover:text-dark font-medium hover:text-accent-primary/90 no-underline">
+                   class="text-sm text-grey-dark hover:text-dark font-medium hover:text-primary/90 no-underline">
                     {{ $otherLocaleName }}
                 </a>
             </div>
