@@ -117,7 +117,7 @@
                     </p>
                 </div>
 
-                <button class="bg-primary text-white px-8 py-3 rounded-full uppercase mt-6">
+                <button class="bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-8 py-3 rounded-full uppercase mt-6">
                     {{ t('checkout.place_order') ?: 'Place Order' }}
                 </button>
             </form>

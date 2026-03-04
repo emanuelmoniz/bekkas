@@ -131,10 +131,18 @@
 }
 
 @layer base {
-  /* Default all plain text links to accent color only (no underline). Button-like links
-     with explicit utilities remain unchanged. */
-  a {
-    @apply text-accent-primary;
+  /* Non-button links (content/footer) use accent color and no underline.
+     Navigation and pagination controls are excluded by selector shape. */
+  main a:not([class*="bg-"]):not([class*="inline-flex"]):not([class*="px-"]):not([class*="py-"]):not([class*="rounded"]):not([class*="border"]),
+  footer a:not([class*="bg-"]):not([class*="inline-flex"]):not([class*="px-"]):not([class*="py-"]):not([class*="rounded"]):not([class*="border"]) {
+    color: rgb(var(--color-accent-primary));
+    text-decoration: none;
+  }
+
+  main a:not([class*="bg-"]):not([class*="inline-flex"]):not([class*="px-"]):not([class*="py-"]):not([class*="rounded"]):not([class*="border"]):hover,
+  footer a:not([class*="bg-"]):not([class*="inline-flex"]):not([class*="px-"]):not([class*="py-"]):not([class*="rounded"]):not([class*="border"]):hover {
+    color: rgb(var(--color-accent-primary) / 0.9);
+    text-decoration: none;
   }
 
   /* headings use the Figtree family */
@@ -144,11 +152,27 @@
 
   /* Keep prose links matching the same visual style */
   .prose a {
-    @apply text-accent-primary;
+    @apply text-accent-primary no-underline;
+  }
+
+  .prose a:hover {
+    @apply text-accent-primary/90 no-underline;
   }
 }
 
 @layer components {
+  body:not(.admin-view) main :is(button, a)[class*="bg-grey-"][class*="px-8"][class*="py-3"] {
+    @apply bg-grey-light hover:bg-grey-light/90 text-grey-dark text-sm font-normal;
+  }
+
+  body:not(.admin-view) main :is(button, a)[class*="bg-primary"] {
+    @apply bg-primary hover:bg-primary/90 text-white text-sm font-semibold;
+  }
+
+  body.admin-view main :is(button, a)[class*="uppercase"][class*="px-2"][class*="py-2"] {
+    @apply px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light font-normal;
+  }
+
   /* generic animated item: start hidden and shifted down */
   .anim-item {
     @apply opacity-0 translate-y-8;

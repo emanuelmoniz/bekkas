@@ -25,7 +25,7 @@
         @stack('recaptcha')
     </head>
     @php $serverFlash = session('success') ?? session('error') ?? session('warning') ?? session('info'); @endphp
-    <body class="font-sans antialiased" @if($serverFlash) data-server-flash="{{ e($serverFlash) }}" @endif>
+    <body class="font-sans antialiased {{ request()->is('admin*') ? 'admin-view' : 'client-view' }}" @if($serverFlash) data-server-flash="{{ e($serverFlash) }}" @endif>
         <div class="min-h-screen bg-light">
             @include('layouts.navigation')
 

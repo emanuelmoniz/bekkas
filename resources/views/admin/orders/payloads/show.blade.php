@@ -48,7 +48,7 @@
                         <button class="bg-status-error/10 border-status-error text-status-error border px-2 py-2 rounded uppercase text-sm">Delete</button>
                     </form>
 
-                    <button type="button" onclick="window.location.href='{{ route('admin.orders.payloads.index') }}'" class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150 ms-2">Back</button>
+                    <button type="button" onclick="window.location.href='{{ route('admin.orders.payloads.index') }}'" class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light ms-2">Back</button>
                 </div>
             </div>
 

@@ -112,7 +112,7 @@
             <x-input-error :messages="$errors->get('accept_privacy')" class="mt-2" />
         </div>
 
-            <a class="underline text-sm text-grey-dark hover:text-dark rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" href="{{ route('login') }}">
+            <a class="text-sm text-accent-primary hover:text-accent-primary/90 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" href="{{ route('login') }}">
                 {{ t('auth.already_registered') ?: 'Already registered?' }}
             </a>
 

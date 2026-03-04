@@ -73,7 +73,7 @@
 
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-grey-dark hover:text-dark rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" href="{{ route('password.request') }}">
+                <a class="text-sm text-accent-primary hover:text-accent-primary/90 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" href="{{ route('password.request') }}">
                     {{ t('auth.forgot_password') ?: 'Forgot your password?' }}
                 </a>
             @endif
@@ -85,7 +85,7 @@
 
         <div class="mt-4 text-center">
             <span class="text-sm text-grey-dark">{{ t('auth.not_a_user') ?: 'Not a user?' }}</span>
-            <a class="underline text-sm text-grey-dark hover:text-dark rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" href="{{ route('register') }}">
+            <a class="text-sm text-accent-primary hover:text-accent-primary/90 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" href="{{ route('register') }}">
                 {{ t('auth.please_register') ?: 'Please register' }}
             </a>
         </div>

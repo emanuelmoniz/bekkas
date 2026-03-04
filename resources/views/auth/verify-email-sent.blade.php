@@ -19,6 +19,6 @@
     </form>
 
     <div class="mt-4">
-        <a href="{{ route('login') }}" class="underline text-sm text-grey-dark hover:text-dark">{{ t('auth.login') ?: 'Log in' }}</a>
+        <a href="{{ route('login') }}" class="text-sm text-accent-primary hover:text-accent-primary/90">{{ t('auth.login') ?: 'Log in' }}</a>
     </div>
 </x-guest-layout>

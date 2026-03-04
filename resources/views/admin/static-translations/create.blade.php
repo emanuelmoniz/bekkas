@@ -40,7 +40,7 @@
             <div class="flex justify-between items-center pt-2">
                 <button type="button"
                    onclick="window.location.href='{{ route('admin.static-translations.index') }}'"
-                   class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                   class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light">
                     ← Back
                 </button>
                 <x-primary-button>Create</x-primary-button>
