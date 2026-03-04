@@ -63,12 +63,10 @@
                 </div>
 
                 <div class="flex justify-between">
-                    <button type="button"
-                       onclick="window.location.href='{{ route('admin.users.index') }}'"
-                       class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light">
+                    <x-default-button type="button" onclick="window.location.href='{{ route('admin.users.index') }}'">
                         Cancel
-                    </button>
-                    <x-primary-button>Update User</x-primary-button>
+                    </x-default-button>
+                    <x-default-button>Update User</x-default-button>
                 </div>
             </div>
         </form>
@@ -152,7 +150,7 @@
                     </div>
 
                     <div class="flex justify-end">
-                        <x-primary-button>Update Address</x-primary-button>
+                        <x-default-button>Update Address</x-default-button>
                     </div>
                 </form>
             @endforeach
@@ -232,18 +230,16 @@
                 </div>
 
                 <div class="flex justify-end">
-                    <x-primary-button>Add Address</x-primary-button>
+                    <x-default-button>Add Address</x-default-button>
                 </div>
             </form>
         </div>
 
         {{-- BACK BUTTON --}}
         <div class="flex justify-start">
-            <button type="button"
-               onclick="window.location.href='{{ route('admin.users.index') }}'"
-               class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light">
+            <x-default-button type="button" onclick="window.location.href='{{ route('admin.users.index') }}'">
                 Back to Users
-            </button>
+            </x-default-button>
         </div>
 
     </div>

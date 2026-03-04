@@ -6,6 +6,7 @@
 
         <title>{{ config('app.name', 'BEKKAS') }} - {{ t('nav.portfolio') ?: 'Portfolio' }}</title>
 
+        <x-cart-init />
         <x-favorites-init />
 
         <!-- Styles / Scripts -->

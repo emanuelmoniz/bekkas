@@ -240,8 +240,8 @@
             @endif
 
             <div class="flex justify-end gap-3">
-                <button type="button" onclick="window.location.href='{{ route('admin.dashboard') }}'" class="bg-grey-medium hover:bg-grey-medium px-2 py-2 rounded uppercase text-sm">Cancel</button>
-                <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">Save Changes</button>
+                <x-default-button type="button" onclick="window.location.href='{{ route('admin.dashboard') }}'">Cancel</x-default-button>
+                <x-default-button type="submit">Save Changes</x-default-button>
             </div>
         </form>
     </div>

@@ -163,11 +163,9 @@
 
     {{-- SUBMIT --}}
     <div class="pt-4 flex justify-between">
-        <button type="button"
-           onclick="window.location.href='{{ route('admin.projects.index') }}'"
-           class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light">
+        <x-default-button type="button" onclick="window.location.href='{{ route('admin.projects.index') }}'">
             Cancel
-        </button>
-        <x-primary-button>{{ $mode === 'edit' ? 'Update Project' : 'Create Project' }}</x-primary-button>
+        </x-default-button>
+        <x-default-button>{{ $mode === 'edit' ? 'Update Project' : 'Create Project' }}</x-default-button>
     </div>
 </form>

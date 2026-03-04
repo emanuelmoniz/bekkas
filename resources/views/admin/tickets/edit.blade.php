@@ -60,14 +60,13 @@
             </div>
 
             <div class="flex justify-between">
-                <button type="button" onclick="window.location.href='{{ route('admin.tickets.index') }}'"
-        class="bg-grey-medium px-2 py-2 rounded uppercase text-sm">
+                <x-default-button type="button" onclick="window.location.href='{{ route('admin.tickets.index') }}'">
                     Cancel
-                </button>
+                </x-default-button>
 
-                <button class="bg-primary text-white px-2 py-2 rounded uppercase text-sm">
+                <x-default-button type="submit">
                     Save Changes
-                </button>
+                </x-default-button>
             </div>
         </form>
     </div>

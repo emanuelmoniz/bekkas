@@ -13,12 +13,12 @@
         @csrf
         <input type="hidden" name="email" value="{{ session('email') ?: old('email') }}">
 
-        <x-primary-button>
+        <x-default-button>
             {{ t('auth.resend_activation') ?: 'Resend activation email' }}
-        </x-primary-button>
+        </x-default-button>
     </form>
 
     <div class="mt-4">
-        <a href="{{ route('login') }}" class="text-sm text-accent-primary hover:text-accent-primary/90">{{ t('auth.login') ?: 'Log in' }}</a>
+        <a href="{{ route('login') }}" class="text-sm text-accent-primary hover:text-accent-primary/90 no-underline">{{ t('auth.login') ?: 'Log in' }}</a>
     </div>
 </x-guest-layout>

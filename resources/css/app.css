@@ -131,56 +131,25 @@
 }
 
 @layer base {
-  /* Non-button links (content/footer) use accent color and no underline.
-     Navigation and pagination controls are excluded by selector shape. */
-  main a:not([class*="bg-"]):not([class*="inline-flex"]):not([class*="px-"]):not([class*="py-"]):not([class*="rounded"]):not([class*="border"]),
-  footer a:not([class*="bg-"]):not([class*="inline-flex"]):not([class*="px-"]):not([class*="py-"]):not([class*="rounded"]):not([class*="border"]) {
-    color: rgb(var(--color-accent-primary));
-    text-decoration: none;
-  }
-
-  main a:not([class*="bg-"]):not([class*="inline-flex"]):not([class*="px-"]):not([class*="py-"]):not([class*="rounded"]):not([class*="border"]):hover,
-  footer a:not([class*="bg-"]):not([class*="inline-flex"]):not([class*="px-"]):not([class*="py-"]):not([class*="rounded"]):not([class*="border"]):hover {
-    color: rgb(var(--color-accent-primary) / 0.9);
-    text-decoration: none;
-  }
-
   /* headings use the Figtree family */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Figtree', sans-serif;
   }
-
-  /* Keep prose links matching the same visual style */
-  .prose a {
-    @apply text-accent-primary no-underline;
-  }
-
-  .prose a:hover {
-    @apply text-accent-primary/90 no-underline;
-  }
 }
 
 @layer components {
-  body:not(.admin-view) main :is(button, a)[class*="bg-grey-"][class*="px-8"][class*="py-3"] {
-    @apply bg-grey-light hover:bg-grey-light/90 text-grey-dark text-sm font-normal;
-  }
-
-  body:not(.admin-view) main :is(button, a)[class*="bg-primary"] {
-    @apply bg-primary hover:bg-primary/90 text-white text-sm font-semibold;
-  }
-
-  body.admin-view main :is(button, a)[class*="uppercase"][class*="px-2"][class*="py-2"] {
-    @apply px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light font-normal;
-  }
-
   /* generic animated item: start hidden and shifted down */
   .anim-item {
-    @apply opacity-0 translate-y-8;
+    /* start hidden and shifted down; avoid @apply so the CSS parser is happy */
+    opacity: 0;
+    transform: translateY(2rem); /* translate-y-8 */
   }
 
   /* adding .animate-in triggers slide-up effect */
   .anim-item.animate-in {
-    @apply opacity-100 translate-y-0 transition-all duration-150 ease-in;
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 150ms ease-in;
   }
 }
 

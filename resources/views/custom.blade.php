@@ -35,9 +35,9 @@
             <div class="relative z-10 text-center text-white px-6">
                 <h1 class="text-5xl lg:text-7xl font-bold mb-6">{{ t('custom.banner.title') ?: 'Custom Services' }}</h1>
                 <p class="text-xl lg:text-2xl mb-8 max-w-2xl mx-auto">{{ t('custom.banner.subtitle') ?: 'Professional 3D printing solutions for architects and designers' }}</p>
-                <a href="#request" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-semibold transition-colors">
+                <x-primary-cta as="a" href="#request">
                     {{ t('custom.banner.button') ?: 'Request Service' }}
-                </a>
+                </x-primary-cta>
             </div>
         </section> -->
 

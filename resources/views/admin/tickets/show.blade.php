@@ -6,26 +6,21 @@
             </h2>
 
             <div class="flex gap-2">
-                <button type="button"
-                   onclick="window.location.href='{{ route('admin.tickets.index') }}'"
-                   class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light">
+                <x-default-button type="button" onclick="window.location.href='{{ route('admin.tickets.index') }}'">
                     Back to tickets
-                </button>
+                </x-default-button>
 
                 <form method="POST"
                       action="{{ route('admin.tickets.mark-unread', $ticket) }}">
                     @csrf
-                    <button type="submit"
-                            class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                    <x-default-button type="submit">
                         Mark as unread
-                    </button>
+                    </x-default-button>
                 </form>
 
-                <button type="button"
-                   onclick="window.location.href='{{ route('admin.tickets.edit', $ticket) }}'"
-                   class="inline-flex items-center px-2 py-2 bg-primary border border-transparent rounded text-sm text-white uppercase hover:bg-primary/90 transition ease-in-out duration-150">
+                <x-default-button type="button" onclick="window.location.href='{{ route('admin.tickets.edit', $ticket) }}'">
                     Admin Edit
-                </button>
+                </x-default-button>
             </div>
         </div>
     </x-slot>
@@ -85,9 +80,9 @@
                     <textarea name="reason"
                               class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm mb-3"
                               required></textarea>
-                    <button class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-2 py-2 rounded uppercase text-sm">
+                    <x-default-button type="submit">
                         Close Ticket
-                    </button>
+                    </x-default-button>
                 </form>
             @else
                 <form method="POST" action="{{ route('tickets.reopen', $ticket) }}">
@@ -96,9 +91,9 @@
                     <textarea name="reason"
                               class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm mb-3"
                               required></textarea>
-                    <button class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                    <x-default-button type="submit">
                         Reopen Ticket
-                    </button>
+                    </x-default-button>
                 </form>
             @endif
         </div>
@@ -121,7 +116,7 @@
                             @foreach ($msg->attachments as $file)
                                 <li>
                                     <a href="{{ route('tickets.attachments.download', $file) }}"
-                                       class="text-accent-secondary hover:underline">
+                                       class="text-accent-secondary hover:underline text-accent-primary hover:text-accent-primary/90 no-underline">
                                         {{ $file->original_name }}
                                     </a>
                                 </li>
@@ -148,9 +143,9 @@
                 <input type="file" name="files[]" multiple>
 
                 <div class="flex justify-end">
-                    <button class="bg-primary text-white px-2 py-2 rounded uppercase text-sm">
+                    <x-default-button type="submit">
                         Send
-                    </button>
+                    </x-default-button>
                 </div>
             </form>
         @endif

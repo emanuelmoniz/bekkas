@@ -40,12 +40,10 @@
             </label>
 
             <div class="flex justify-between">
-                <button type="button"
-                   onclick="window.location.href='{{ route('admin.taxes.index') }}'"
-                   class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light">
+                <x-default-button type="button" onclick="window.location.href='{{ route('admin.taxes.index') }}'">
                     Cancel
-                </button>
-                <x-primary-button>Update</x-primary-button>
+                </x-default-button>
+                <x-default-button>Update</x-default-button>
             </div>
         </form>
     </div>

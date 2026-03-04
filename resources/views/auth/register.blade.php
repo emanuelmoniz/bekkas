@@ -33,9 +33,9 @@
             </div>
 
             <div class="mb-4">
-                <x-primary-button form="resend-activation-form">
+                <x-default-button form="resend-activation-form">
                     {{ t('auth.resend_activation') ?: 'Resend activation email' }}
-                </x-primary-button>
+                </x-default-button>
             </div>
         @endif
 
@@ -96,7 +96,7 @@
             <label class="flex items-start space-x-3">
                 <input type="checkbox" name="accept_terms" value="1" {{ old('accept_terms') ? 'checked' : '' }} class="mt-1">
                 <span class="text-sm text-grey-dark">
-                    {!! t('auth.accept_terms_label', ['terms_url' => route('terms')]) ?: 'I accept the <a href="'.route('terms').'" target="_blank" rel="noopener">Terms of Service</a>.' !!}
+                    {!! t('auth.accept_terms_label', ['terms_url' => route('terms')]) ?: 'I accept the <a href="'.route('terms').'" target="_blank" rel="noopener" class="text-accent-primary hover:text-accent-primary/90 no-underline">Terms of Service</a>.' !!}
                 </span>
             </label>
             <x-input-error :messages="$errors->get('accept_terms')" class="mt-2" />
@@ -106,7 +106,7 @@
             <label class="flex items-start space-x-3">
                 <input type="checkbox" name="accept_privacy" value="1" {{ old('accept_privacy') ? 'checked' : '' }} class="mt-1">
                 <span class="text-sm text-grey-dark">
-                    {!! t('auth.accept_privacy_label', ['privacy_url' => route('privacy')]) ?: 'I accept the <a href="'.route('privacy').'" target="_blank" rel="noopener">Privacy Policy</a>.' !!}
+                    {!! t('auth.accept_privacy_label', ['privacy_url' => route('privacy')]) ?: 'I accept the <a href="'.route('privacy').'" target="_blank" rel="noopener" class="text-accent-primary hover:text-accent-primary/90 no-underline">Privacy Policy</a>.' !!}
                 </span>
             </label>
             <x-input-error :messages="$errors->get('accept_privacy')" class="mt-2" />
@@ -116,9 +116,9 @@
                 {{ t('auth.already_registered') ?: 'Already registered?' }}
             </a>
 
-            <x-primary-button class="ms-4">
+            <x-default-button>
                 {{ t('auth.register') ?: 'Register' }}
-            </x-primary-button>
+            </x-default-button>
         </div>
     </form>
 

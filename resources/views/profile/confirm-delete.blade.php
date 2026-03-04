@@ -14,9 +14,9 @@
                     @csrf
 
                     <div class="flex justify-end">
-                        <a href="{{ route('profile.edit') }}" class="inline-flex items-center px-8 py-3 bg-grey-light border border-transparent rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest hover:bg-grey-medium">{{ t('profile.cancel') ?: 'Cancel' }}</a>
+                        <x-optional-cta as="a" :href="route('profile.edit')">{{ t('profile.cancel') ?: 'Cancel' }}</x-optional-cta>
 
-                        <button type="submit" class="ms-3 inline-flex items-center px-8 py-3 bg-grey-light border border-transparent rounded-full font-semibold text-xs text-grey-dark uppercase tracking-widest hover:bg-grey-light/90">{{ t('profile.delete_by_email_action') ?: 'Delete my account' }}</button>
+                        <x-optional-cta type="submit">{{ t('profile.delete_by_email_action') ?: 'Delete my account' }}</x-optional-cta>
                     </div>
                 </form>
             </div>

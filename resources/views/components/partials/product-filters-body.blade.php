@@ -172,15 +172,15 @@
 
     {{-- ACTIONS --}}
     <div class="pt-1">
-        <button type="submit"
-                class="w-full bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-8 py-3 rounded-full uppercase transition">
+        <x-primary-cta type="submit" :full-width="true">
             {{ t('store.filter.apply') ?: 'Filter' }}
-        </button>
-        <button type="button"
-                onclick="window.location='{{ route($resetRoute) }}'"
-                class="mt-2 w-full bg-grey-medium hover:bg-grey-dark text-white text-sm font-semibold px-8 py-3 rounded-full uppercase transition">
+        </x-primary-cta>
+        <x-optional-cta type="button" class="mt-2"
+                        onclick="window.location='{{ route($resetRoute) }}'"
+                        :full-width="true"
+                       >
             {{ t('store.filter.reset') ?: 'Reset' }}
-        </button>
+        </x-optional-cta>
     </div>
 
 </form>

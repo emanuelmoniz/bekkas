@@ -35,9 +35,9 @@
         <form method="POST" action="{{ route('verification.resend.guest') }}" class="mb-6">
             @csrf
             <input type="hidden" name="email" value="{{ session('unverified_email') }}">
-            <x-primary-button>
+            <x-default-button>
                 {{ t('auth.resend_activation') ?: 'Resend activation email' }}
-            </x-primary-button>
+            </x-default-button>
         </form>
     @endif
 
@@ -78,9 +78,9 @@
                 </a>
             @endif
 
-            <x-primary-button class="ms-3">
+            <x-default-button>
                 {{ t('auth.login') ?: 'Log in' }}
-            </x-primary-button>
+            </x-default-button>
         </div>
 
         <div class="mt-4 text-center">

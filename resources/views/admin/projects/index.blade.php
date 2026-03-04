@@ -9,10 +9,9 @@
 
         {{-- ACTION BAR --}}
         <div class="mb-4 flex justify-end">
-            <button type="button" onclick="window.location.href='{{ route('admin.projects.create') }}'"
-        class="inline-flex items-center bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+            <x-default-button type="button" onclick="window.location.href='{{ route('admin.projects.create') }}'">
                 New Project
-            </button>
+            </x-default-button>
         </div>
 
         {{-- FILTERS --}}
@@ -63,13 +62,12 @@
 
                 {{-- ACTIONS --}}
                 <div class="flex justify-end gap-2">
-                    <button type="button" onclick="window.location.href='{{ route('admin.projects.index') }}'"
-        class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
+                    <x-default-button type="button" onclick="window.location.href='{{ route('admin.projects.index') }}'">
                         Reset
-                    </button>
-                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                    </x-default-button>
+                    <x-default-button type="submit">
                         Filter
-                    </button>
+                    </x-default-button>
                 </div>
             </div>
         </form>
@@ -91,7 +89,7 @@
                     @forelse ($projects as $project)
                         <tr class="border-t">
                             <td class="px-4 py-2">
-                                <a href="{{ route('admin.projects.show', $project) }}" class="text-accent-secondary hover:underline font-medium">
+                                <a href="{{ route('admin.projects.show', $project) }}" class="font-medium text-accent-primary hover:text-accent-primary/90 no-underline">
                                     {{ optional($project->translation())->name }}
                                 </a>
                                 <x-missing-locale-badge :model="$project" />
@@ -113,19 +111,17 @@
                                 {{ $project->execution_time }}
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
-                                <button type="button" onclick="window.location.href='{{ route('admin.projects.edit', $project) }}'"
-        class="inline-flex bg-primary text-white px-2 py-2 rounded uppercase text-sm">
+                                <x-default-button type="button" onclick="window.location.href='{{ route('admin.projects.edit', $project) }}'">
                                     Edit
-                                </button>
+                                </x-default-button>
                                 <form method="POST"
                                       action="{{ route('admin.projects.destroy', $project) }}"
                                       class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button onclick="return confirm('Delete this project?')"
-                                            class="bg-grey-light text-grey-dark px-2 py-2 rounded uppercase text-sm">
+                                    <x-default-button type="submit" onclick="return confirm('Delete this project?')">
                                         Delete
-                                    </button>
+                                    </x-default-button>
                                 </form>
                             </td>
                         </tr>

@@ -6,10 +6,9 @@
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
 
         <div class="mb-4 flex justify-end">
-            <button type="submit" type="button" onclick="window.location.href='{{ route('admin.static-translations.create') }}'"
-        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+            <x-default-button type="button" onclick="window.location.href='{{ route('admin.static-translations.create') }}'">
                 + New key
-            </button>
+            </x-default-button>
         </div>
 
         {{-- FILTERS --}}
@@ -22,9 +21,8 @@
                 <input name="text" placeholder="Search text…" value="{{ request('text') }}"
                        class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 <div class="flex justify-end gap-2">
-                    <button type="button" onclick="window.location.href='{{ route('admin.static-translations.index') }}'"
-                            class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">Reset</button>
-                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">Filter</button>
+                    <x-default-button type="button" onclick="window.location.href='{{ route('admin.static-translations.index') }}'">Reset</x-default-button>
+                    <x-default-button type="submit">Filter</x-default-button>
                 </div>
             </div>
         </form>
@@ -50,7 +48,7 @@
                             @endphp
                             <tr class="border-t hover:bg-grey-light/30">
                                 <td class="px-3 py-2 font-mono break-all">
-                                    <a href="{{ route('admin.static-translations.edit', $encodedKey) }}" class="text-accent-secondary hover:underline">{{ $keyRow->key }}</a>
+                                    <a href="{{ route('admin.static-translations.edit', $encodedKey) }}" class="text-accent-primary hover:text-accent-primary/90 no-underline">{{ $keyRow->key }}</a>
                                 </td>
                                 <td class="px-3 py-2">
                                     @if ($keyRow->context)
@@ -67,17 +65,15 @@
                                     @endif
                                 </td>
                                 <td class="px-3 py-2 text-right whitespace-nowrap">
-                                    <button type="button"
-                                       onclick="window.location.href='{{ route('admin.static-translations.edit', $encodedKey) }}'"
-                                       class="inline-flex items-center px-2 py-2 rounded bg-primary text-white text-sm uppercase">
-Edit</button>
+                                    <x-default-button type="button" onclick="window.location.href='{{ route('admin.static-translations.edit', $encodedKey) }}'">
+Edit</x-default-button>
                                     <form method="POST"
                                           action="{{ route('admin.static-translations.destroy', $encodedKey) }}"
                                           class="inline-block ms-3"
                                           onsubmit="return confirm('Delete ALL locale rows for key &laquo;{{ addslashes($keyRow->key) }}&raquo;?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="inline-flex items-center px-2 py-2 rounded uppercase bg-status-error/10 text-status-error text-sm">Delete</button>
+                                        <x-default-button type="submit">Delete</x-default-button>
                                     </form>
                                 </td>
                             </tr>

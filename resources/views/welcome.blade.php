@@ -78,7 +78,7 @@
                     
                     <!-- Products Card -->
                     @if(config('app.store_enabled'))
-                        <a href="{{ route('store.index') }}" class="group anim-item" data-index="0">
+                        <a href="{{ route('store.index') }}" class="group anim-item text-accent-primary hover:text-accent-primary/90 no-underline" data-index="0">
                             <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
                                 {{-- scroll images for store products --}}
                                 <x-image-scroller class="w-full aspect-square" :config="[
@@ -92,16 +92,16 @@
                                 <div class="p-6 py-8 flex flex-col flex-grow items-center text-center">
                                     <h3 class="uppercase text-2xl font-bold mb-4 text-dark">{{ t('home.services.store.title') ?: 'STORE' }}</h3>
                                     <p class="text-grey-dark mb-6 flex-grow">{{ t('home.services.store.description') ?: 'Day to day life objects, gifts, souvenires' }}</p>
-                                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-medium transition-colors">
+                                    <x-primary-cta>
                                         {{ t('home.services.store.button') ?: 'Store' }}
-                                    </button>
+                                    </x-primary-cta>
                                 </div>
                             </div>
                         </a>
                     @endif
 
                     <!-- Custom Card -->
-                    <a href="{{ route('custom.index') }}" class="group anim-item" data-index="1">
+                    <a href="{{ route('custom.index') }}" class="group anim-item text-accent-primary hover:text-accent-primary/90 no-underline" data-index="1">
                         <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
                             {{-- scroll images for custom projects --}}
                             <x-image-scroller class="w-full aspect-square" :config="[
@@ -116,9 +116,9 @@
                             <div class="p-6 py-8 flex flex-col flex-grow items-center text-center">
                                 <h3 class="uppercase text-2xl font-bold mb-4 text-dark">{{ t('home.services.custom.title') ?: 'CUSTOM' }}</h3>
                                 <p class="text-grey-dark mb-6 flex-grow">{{ t('home.services.custom.description') ?: 'Printing service for architects and architecture students including modeling and file preparation.' }}</p>
-                                <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-medium transition-colors">
+                                <x-primary-cta>
                                     {{ t('home.services.custom.button') ?: 'More info' }}
-                                </button>
+                                </x-primary-cta>
                             </div>
                         </div>
                     </a>
@@ -145,14 +145,14 @@
 
                         <div>
                             <h3 class="text-lg font-semibold text-dark mb-2">{{ t('home.contact.phone') ?: 'Phone' }}</h3>
-                            <a href="https://wa.me/351965707800" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium">
+                            <a href="https://wa.me/351965707800" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium hover:text-accent-primary/90 no-underline">
                                 +351 965 707 800 (WhatsApp)
                             </a>
                         </div>
 
                         <div>
                             <h3 class="text-lg font-semibold text-dark mb-2">{{ t('home.contact.email') ?: 'Email' }}</h3>
-                            <a href="mailto:{{ config('mail.contact_address', config('mail.admin_address', 'info@bekkas.pt')) }}" class="text-accent-primary hover:text-accent-primary font-medium">
+                            <a href="mailto:{{ config('mail.contact_address', config('mail.admin_address', 'info@bekkas.pt')) }}" class="text-accent-primary hover:text-accent-primary font-medium hover:text-accent-primary/90 no-underline">
                                 {{ config('mail.contact_address', config('mail.admin_address', 'info@bekkas.pt')) }}
                             </a>
                         </div>
@@ -160,12 +160,12 @@
                         <div>
                             <h3 class="text-lg font-semibold text-dark mb-2">{{ t('home.contact.social') ?: 'Follow Us' }}</h3>
                             <div class="mb-2">
-                                <a href="https://instagram.com/bekkas_pt" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium">
+                                <a href="https://instagram.com/bekkas_pt" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium hover:text-accent-primary/90 no-underline">
                                     Instagram
                                 </a>
                             </div>
                             <div>
-                                <a href="https://www.makerworld.com/en/makers/bekkas" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium">
+                                <a href="https://www.makerworld.com/en/makers/bekkas" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium hover:text-accent-primary/90 no-underline">
                                     Makerworld
                                 </a>
                             </div>

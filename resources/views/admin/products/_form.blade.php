@@ -198,10 +198,9 @@
         @endif
     </div>
 
-    <button type="button" id="add-option-type"
-            class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
+    <x-default-button type="button" id="add-option-type">
         + Add option type
-    </button>
+    </x-default-button>
 </div>
 
 
@@ -310,12 +309,10 @@
 
     {{-- SUBMIT --}}
     <div class="pt-4 flex justify-between">
-        <button type="button"
-           onclick="window.location.href='{{ route('admin.products.index') }}'"
-           class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light">
+        <x-default-button type="button" onclick="window.location.href='{{ route('admin.products.index') }}'">
             Cancel
-        </button>
-        <x-primary-button>{{ $mode === 'edit' ? 'Update Product' : 'Create Product' }}</x-primary-button>
+        </x-default-button>
+        <x-default-button>{{ $mode === 'edit' ? 'Update Product' : 'Create Product' }}</x-default-button>
     </div>
 </form>
 
@@ -358,9 +355,9 @@
             </label>
         </div>
         <div class="options-list mt-4 space-y-2"></div>
-        <button type="button" class="mt-2 bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm add-option">
+        <x-default-button type="button">
             + Add option
-        </button>
+        </x-default-button>
     </div>
 </template>
 

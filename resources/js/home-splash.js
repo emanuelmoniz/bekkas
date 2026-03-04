@@ -4,6 +4,25 @@
     document.addEventListener('DOMContentLoaded', function(){
         var splash = document.getElementById('home-splash');
         if (!splash) return;
+        var splashSeenKey = 'home_splash_seen';
+        var hasSeenSplash = false;
+
+        try {
+            hasSeenSplash = window.sessionStorage.getItem(splashSeenKey) === '1';
+        } catch (e) {
+            hasSeenSplash = false;
+        }
+
+        if (hasSeenSplash) {
+            if (splash.parentNode) splash.parentNode.removeChild(splash);
+            document.body.classList.remove('overflow-hidden');
+            return;
+        }
+
+        try {
+            window.sessionStorage.setItem(splashSeenKey, '1');
+        } catch (e) {}
+
         var dismissed = false;
 
         var __autoDismissSplashForContact = (window.location && window.location.hash === '#contact');
