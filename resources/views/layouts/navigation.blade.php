@@ -215,47 +215,49 @@
             </div>
 
             <!-- Right side -->
+            @php $isAdminNavigation = request()->is('admin/*') || request()->is('admin'); @endphp
             <div class="hidden lg:flex lg:items-center lg:ms-6 gap-6">
-                @php $cartCount = array_sum(array_column(session('cart', []), 'quantity')); @endphp
-                <!-- Language Selector -->
-                <div class="flex items-center gap-2">
-                    @php
-                        $currentLocale = app()->getLocale();
-                        $otherLocale = $currentLocale === 'pt-PT' ? 'en-UK' : 'pt-PT';
-                        $otherLocaleName = $otherLocale === 'pt-PT' ? 'PT' : 'EN';
-                    @endphp
-                    <a href="{{ route('language.switch', $otherLocale) }}"
-                       class="text-sm text-grey-dark hover:text-dark font-medium hover:text-primary/90 no-underline">
-                        {{ $otherLocaleName }}
-                    </a>
-                </div>
+                @unless($isAdminNavigation)
+                    <!-- Language Selector -->
+                    <div class="flex items-center gap-2">
+                        @php
+                            $currentLocale = app()->getLocale();
+                            $otherLocale = $currentLocale === 'pt-PT' ? 'en-UK' : 'pt-PT';
+                            $otherLocaleName = $otherLocale === 'pt-PT' ? 'PT' : 'EN';
+                        @endphp
+                        <a href="{{ route('language.switch', $otherLocale) }}"
+                           class="text-sm text-grey-dark hover:text-dark font-medium hover:text-primary/90 no-underline">
+                            {{ $otherLocaleName }}
+                        </a>
+                    </div>
 
-                <!-- Favorites Icon -->
-                <div x-data="{}" x-show="$store.favorites.count > 0" class="relative" style="display: none;">
-                    <a href="{{ route('favorites.index') }}" class="flex items-center text-grey-dark hover:text-dark hover:text-primary/90 no-underline" aria-label="Favorites">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" stroke="none">
-                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                        </svg>
-                        <span class="absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-status-error text-white text-xs px-1.5 py-0.5 min-w-[1.25rem]" x-text="$store.favorites.count"></span>
-                    </a>
-                </div>
+                    <!-- Favorites Icon -->
+                    <div x-data="{}" x-show="$store.favorites.count > 0" class="relative" style="display: none;">
+                        <a href="{{ route('favorites.index') }}" class="flex items-center text-grey-dark hover:text-dark hover:text-primary/90 no-underline" aria-label="Favorites">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" stroke="none">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                            <span class="absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-status-error text-white text-xs px-1.5 py-0.5 min-w-[1.25rem]" x-text="$store.favorites.count"></span>
+                        </a>
+                    </div>
 
-                <!-- Cart Icon -->
-                <div x-data="{}" x-show="$store.cart.count > 0 && {{ config('app.store_enabled') ? 'true' : 'false' }}" class="relative" style="display: none;">
-                    <a href="{{ route('cart.index') }}" class="flex items-center text-grey-dark hover:text-dark hover:text-primary/90 no-underline" aria-label="Cart">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25h11.118c.51 0 .955-.343 1.087-.835l1.518-5.688a1.125 1.125 0 00-1.087-1.415H5.106" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25L5.106 4.272M7.5 14.25l-2.25 3m0 0h13.5m-13.5 0a1.5 1.5 0 103 0m10.5 0a1.5 1.5 0 103 0" />
-                        </svg>
-                        <span class="absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-status-error text-white text-xs px-1.5 py-0.5 min-w-[1.25rem]" x-text="$store.cart.count"></span>
-                    </a>
-                </div>
+                    <!-- Cart Icon -->
+                    <div x-data="{}" x-show="$store.cart.count > 0 && {{ config('app.store_enabled') ? 'true' : 'false' }}" class="relative" style="display: none;">
+                        <a href="{{ route('cart.index') }}" class="flex items-center text-grey-dark hover:text-dark hover:text-primary/90 no-underline" aria-label="Cart">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25h11.118c.51 0 .955-.343 1.087-.835l1.518-5.688a1.125 1.125 0 00-1.087-1.415H5.106" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25L5.106 4.272M7.5 14.25l-2.25 3m0 0h13.5m-13.5 0a1.5 1.5 0 103 0m10.5 0a1.5 1.5 0 103 0" />
+                            </svg>
+                            <span class="absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-status-error text-white text-xs px-1.5 py-0.5 min-w-[1.25rem]" x-text="$store.cart.count"></span>
+                        </a>
+                    </div>
+                @endunless
 
                 @auth
                     <div class="h-full flex items-center">
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
-                                <button class="h-full inline-flex items-center px-8 py-3 border border-transparent text-sm leading-4 font-medium rounded-full text-grey-medium bg-white hover:text-grey-dark focus:outline-none transition">
+                                <button class="h-full inline-flex items-center px-8 py-3 border border-transparent text-sm leading-4 font-medium text-grey-medium bg-white hover:text-grey-dark focus:outline-none transition">
                                     <div>{{ Auth::user()->name }}</div>
                                     <div class="ms-1">
                                         <svg class="fill-current h-4 w-4" viewBox="0 0 20 20">
@@ -331,14 +333,21 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': ! open }" class="hidden lg:hidden">
-        <div class="pt-2 pb-3 space-y-1">
+            <div class="pt-2 pb-3 space-y-1">
+
+            @php
+                $toggleBase = 'uppercase w-full flex items-center justify-between ps-3 pe-4 py-2 text-base font-medium focus:outline-none transition duration-150 ease-in-out';
+                $toggleActive = 'border-l-4 border-primary text-primary bg-primary/10 focus:border-primary';
+                $toggleInactive = 'border-l-4 border-transparent text-grey-dark hover:text-grey-dark hover:bg-white hover:border-grey-medium focus:text-grey-dark focus:bg-white focus:border-grey-medium';
+            @endphp
+            
             @if(request()->is('admin/*') || request()->is('admin'))
                 {{-- ADMIN MENU MOBILE --}}
 
                 {{-- CONTENT --}}
                 <div x-data="{ open: {{ (request()->is('admin/products*') || request()->is('admin/projects*') || request()->is('admin/categories*') || request()->is('admin/materials*')) ? 'true' : 'false' }} }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium {{ (request()->is('admin/products*') || request()->is('admin/projects*') || request()->is('admin/categories*') || request()->is('admin/materials*')) ? 'border-l-4 border-primary text-primary' : 'border-l-4 border-transparent text-grey-dark' }} hover:bg-grey-light">
-                        <span>CONTENT</span>
+                    <button @click="open = !open" class="{{ $toggleBase }} {{ (request()->is('admin/products*') || request()->is('admin/projects*') || request()->is('admin/categories*') || request()->is('admin/materials*')) ? $toggleActive : $toggleInactive }}">
+                        <span>Content</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
@@ -361,8 +370,8 @@
 
                 {{-- ORDERS --}}
                 <div x-data="{ open: {{ (request()->is('admin/orders*') || request()->is('admin/order-statuses*') || request()->is('admin/shipping-config*')) ? 'true' : 'false' }} }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium {{ (request()->is('admin/orders*') || request()->is('admin/order-statuses*') || request()->is('admin/shipping-config*')) ? 'border-l-4 border-primary text-primary' : 'border-l-4 border-transparent text-grey-dark' }} hover:bg-grey-light">
-                        <span>ORDERS</span>
+                    <button @click="open = !open" class="{{ $toggleBase }} {{ (request()->is('admin/orders*') || request()->is('admin/order-statuses*') || request()->is('admin/shipping-config*')) ? $toggleActive : $toggleInactive }}">
+                        <span>Orders</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
@@ -391,8 +400,8 @@
 
                 {{-- TICKETS --}}
                 <div x-data="{ open: {{ (request()->is('admin/tickets*') || request()->is('admin/ticket-categories*')) ? 'true' : 'false' }} }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium {{ (request()->is('admin/tickets*') || request()->is('admin/ticket-categories*')) ? 'border-l-4 border-primary text-primary' : 'border-l-4 border-transparent text-grey-dark' }} hover:bg-grey-light">
-                        <span>TICKETS</span>
+                    <button @click="open = !open" class="{{ $toggleBase }} {{ (request()->is('admin/tickets*') || request()->is('admin/ticket-categories*')) ? $toggleActive : $toggleInactive }}">
+                        <span>Tickets</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
@@ -411,16 +420,17 @@
                 </div>
 
                 {{-- Configuration --}}
-                <div x-data="{ open: {{ (request()->is('admin/shipping-tiers*') || request()->is('admin/countries*') || request()->is('admin/regions*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*') || request()->is('admin/locales*')) ? 'true' : 'false' }} }">
-                    <div @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-base font-medium {{ (request()->is('admin/shipping-tiers*') || request()->is('admin/countries*') || request()->is('admin/regions*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*') || request()->is('admin/locales*')) ? 'border-l-4 border-primary text-primary' : 'border-l-4 border-transparent text-grey-dark' }} hover:bg-grey-light">
-                        <a href="{{ route('admin.configurations.index') }}" class="flex-1 text-primary hover:text-primary/90 no-underline">Configuration</a>
-                        <button @click="open = !open" class="ml-2">
-                            <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-                    </div>
+                <div x-data="{ open: {{ (request()->is('admin/configurations*') || request()->is('admin/shipping-tiers*') || request()->is('admin/countries*') || request()->is('admin/regions*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*') || request()->is('admin/locales*')) ? 'true' : 'false' }} }">
+                    <button @click="open = !open" class="{{ $toggleBase }} {{ (request()->is('admin/configurations*') || request()->is('admin/shipping-tiers*') || request()->is('admin/countries*') || request()->is('admin/regions*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*') || request()->is('admin/locales*')) ? $toggleActive : $toggleInactive }}">
+                        <span>Configurations</span>
+                        <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
                     <div x-show="open" class="pl-4 space-y-1">
+                        <x-responsive-nav-link :href="route('admin.configurations.index')" :active="request()->is('admin/configurations*')">
+                            Base Configurations
+                        </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('admin.shipping-tiers.index')" :active="request()->is('admin/shipping-tiers*')">
                             Shipping Tiers
                         </x-responsive-nav-link>
@@ -445,8 +455,8 @@
             @else
                 {{-- PUBLIC MENU MOBILE --}}
                 @if(config('app.store_enabled'))
-                    <div x-data="{ open: false }">
-                        <button @click="open = !open" class="w-full flex items-center justify-between ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-grey-dark hover:text-grey-dark hover:bg-white hover:border-grey-medium">
+                    <div x-data="{ open: {{ request()->routeIs('store.*') ? 'true' : 'false' }} }">
+                        <button @click="open = !open" class="{{ $toggleBase }} {{ request()->routeIs('store.*') ? $toggleActive : $toggleInactive }}">
                             <span>{{ t('nav.store') ?: 'Store' }}</span>
                             <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -466,8 +476,8 @@
                     </div>
                 @endif
                 
-                <div x-data="{ open: {{ request()->routeIs('portfolio.*') ? 'true' : 'false' }} }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between ps-3 pe-4 py-2 border-l-4 {{ request()->routeIs('portfolio.*') ? 'border-primary text-primary' : 'border-transparent text-grey-dark' }} text-base font-medium hover:text-grey-dark hover:bg-white hover:border-grey-medium">
+                <div x-data="{ open: {{ (request()->routeIs('custom.*') || request()->routeIs('portfolio.*')) ? 'true' : 'false' }} }">
+                    <button @click="open = !open" class="{{ $toggleBase }} {{ (request()->routeIs('custom.*') || request()->routeIs('portfolio.*')) ? $toggleActive : $toggleInactive }}">
                         <span>{{ t('nav.custom') ?: 'Custom' }}</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -485,13 +495,13 @@
                         </x-responsive-nav-link>
                     </div>
                 </div>
-                <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
+                <a href="{{ route('about') }}"
+                   class="{{ $toggleBase }} {{ request()->routeIs('about') ? $toggleActive : $toggleInactive }}">
                     {{ t('nav.about') ?: 'About Us' }}
-                </x-responsive-nav-link>
+                </a>
                 <a href="{{ url('/#contact') }}"
-                   x-bind:class="$store.contactInView
-                       ? 'block w-full ps-3 pe-4 py-2 border-l-4 border-primary text-start text-base font-medium text-primary bg-primary/10 focus:outline-none focus:text-primary focus:bg-primary/10 focus:border-primary transition duration-150 ease-in-out'
-                       : 'block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-grey-dark hover:text-grey-dark hover:bg-white hover:border-grey-medium focus:outline-none focus:text-grey-dark focus:bg-white focus:border-grey-medium transition duration-150 ease-in-out'">
+                   class="{{ $toggleBase }} inline-flex items-center h-full leading-5"
+                   :class="$store.contactInView ? '{{ $toggleActive }}' : '{{ $toggleInactive }}'">
                     {{ t('nav.contact') ?: 'Contact' }}
                 </a>
                 
