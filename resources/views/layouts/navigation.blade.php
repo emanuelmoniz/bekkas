@@ -336,8 +336,8 @@
                 {{-- ADMIN MENU MOBILE --}}
 
                 {{-- CONTENT --}}
-                <div x-data="{ open: false }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium text-grey-dark hover:bg-grey-light">
+                <div x-data="{ open: {{ (request()->is('admin/products*') || request()->is('admin/projects*') || request()->is('admin/categories*') || request()->is('admin/materials*')) ? 'true' : 'false' }} }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium {{ (request()->is('admin/products*') || request()->is('admin/projects*') || request()->is('admin/categories*') || request()->is('admin/materials*')) ? 'border-l-4 border-primary text-primary' : 'border-l-4 border-transparent text-grey-dark' }} hover:bg-grey-light">
                         <span>CONTENT</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -360,8 +360,8 @@
                 </div>
 
                 {{-- ORDERS --}}
-                <div x-data="{ open: false }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium text-grey-dark hover:bg-grey-light">
+                <div x-data="{ open: {{ (request()->is('admin/orders*') || request()->is('admin/order-statuses*') || request()->is('admin/shipping-config*')) ? 'true' : 'false' }} }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium {{ (request()->is('admin/orders*') || request()->is('admin/order-statuses*') || request()->is('admin/shipping-config*')) ? 'border-l-4 border-primary text-primary' : 'border-l-4 border-transparent text-grey-dark' }} hover:bg-grey-light">
                         <span>ORDERS</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -390,8 +390,8 @@
                 </div>
 
                 {{-- TICKETS --}}
-                <div x-data="{ open: false }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium text-grey-dark hover:bg-grey-light">
+                <div x-data="{ open: {{ (request()->is('admin/tickets*') || request()->is('admin/ticket-categories*')) ? 'true' : 'false' }} }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between px-8 py-3 text-base font-medium {{ (request()->is('admin/tickets*') || request()->is('admin/ticket-categories*')) ? 'border-l-4 border-primary text-primary' : 'border-l-4 border-transparent text-grey-dark' }} hover:bg-grey-light">
                         <span>TICKETS</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -411,8 +411,8 @@
                 </div>
 
                 {{-- Configuration --}}
-                <div x-data="{ open: false }">
-                    <div class="w-full flex items-center justify-between px-4 py-2 text-base font-medium text-grey-dark hover:bg-grey-light">
+                <div x-data="{ open: {{ (request()->is('admin/shipping-tiers*') || request()->is('admin/countries*') || request()->is('admin/regions*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*') || request()->is('admin/locales*')) ? 'true' : 'false' }} }">
+                    <div @click="open = !open" class="w-full flex items-center justify-between px-4 py-2 text-base font-medium {{ (request()->is('admin/shipping-tiers*') || request()->is('admin/countries*') || request()->is('admin/regions*') || request()->is('admin/taxes*') || request()->is('admin/static-translations*') || request()->is('admin/locales*')) ? 'border-l-4 border-primary text-primary' : 'border-l-4 border-transparent text-grey-dark' }} hover:bg-grey-light">
                         <a href="{{ route('admin.configurations.index') }}" class="flex-1 text-primary hover:text-primary/90 no-underline">Configuration</a>
                         <button @click="open = !open" class="ml-2">
                             <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -466,8 +466,8 @@
                     </div>
                 @endif
                 
-                <div x-data="{ open: false }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-grey-dark hover:text-grey-dark hover:bg-white hover:border-grey-medium">
+                <div x-data="{ open: {{ request()->routeIs('portfolio.*') ? 'true' : 'false' }} }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between ps-3 pe-4 py-2 border-l-4 {{ request()->routeIs('portfolio.*') ? 'border-primary text-primary' : 'border-transparent text-grey-dark' }} text-base font-medium hover:text-grey-dark hover:bg-white hover:border-grey-medium">
                         <span>{{ t('nav.custom') ?: 'Custom' }}</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
