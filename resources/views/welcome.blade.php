@@ -13,7 +13,7 @@
         <link rel="manifest" href="{{ asset('site.webmanifest') }}">
         <meta name="theme-color" content="#f4eee4">
 
-
+        <x-cart-init />
         <x-favorites-init />
 
         <!-- Styles / Scripts -->
