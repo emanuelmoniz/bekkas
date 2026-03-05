@@ -23,10 +23,9 @@
                        accept="image/*"
                        class="border rounded px-3 py-2">
 
-                <button type="submit"
-                        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                <x-default-button type="submit">
                     Upload Photos
-                </button>
+                </x-default-button>
             </form>
 
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">

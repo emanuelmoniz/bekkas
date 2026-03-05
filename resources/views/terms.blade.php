@@ -7,6 +7,7 @@
         <title>{{ t('legal.terms.title') ?: 'Service Terms | Termos de Serviço' }}</title>
 
 
+        <x-cart-init />
         <x-favorites-init />
 
         <!-- Styles / Scripts -->
@@ -19,7 +20,7 @@
 
         <section class="py-16 lg:py-24">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="max-w-4xl mx-auto prose">
+            <div class="max-w-4xl mx-auto">
                 <h1 class="text-4xl font-bold mb-6">{{ t('legal.terms.title') ?: 'Service Terms | Termos de Serviço' }}</h1>
 
                 <p>{{ t('legal.terms.content') ?: 'These Terms of Service govern your use of the site. By creating an account and using our services you agree to comply with these terms.' }}</p>

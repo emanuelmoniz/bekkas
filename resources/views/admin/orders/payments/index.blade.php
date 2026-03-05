@@ -18,13 +18,12 @@
                        value="{{ request('to_paid_date') }}"
                        class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 <div class="flex justify-end gap-2">
-                    <button type="button" onclick="window.location.href='{{ route('admin.orders.payments.index') }}'"
-        class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
+                    <x-default-button type="button" onclick="window.location.href='{{ route('admin.orders.payments.index') }}'">
                         Reset
-                    </button>
-                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                    </x-default-button>
+                    <x-default-button type="submit">
                         Filter
-                    </button>
+                    </x-default-button>
                 </div>
             </div>
         </form>
@@ -45,14 +44,14 @@
                     @foreach ($payments as $p)
                         <tr class="border-t">
                             <td class="px-3 py-2">
-                                <a href="{{ route('admin.orders.payments.show', $p) }}" class="text-accent-secondary hover:underline font-medium">{{ optional($p->order)->order_number ?? ('#' . $p->order_id) }}</a>
+                                <a href="{{ route('admin.orders.payments.show', $p) }}" class="font-medium text-accent-primary hover:text-accent-primary/90 no-underline">{{ optional($p->order)->order_number ?? ('#' . $p->order_id) }}</a>
                             </td>
                             <td class="px-3 py-2">{{ optional($p->order)->created_at?->format('d/m/Y H:i') ?? '-' }}</td>
                             <td class="px-3 py-2">{{ $p->paid_at?->format('d/m/Y H:i') ?? '-' }}</td>
                             <td class="px-3 py-2">{{ $p->payment_status ?? '-' }}</td>
                             <td class="px-3 py-2">{{ $p->payment_method ?? '-' }}</td>
                             <td class="px-3 py-2 text-right">
-                                <a href="{{ route('admin.orders.payments.show', $p) }}" class="text-accent-secondary hover:underline">View</a>
+                                <a href="{{ route('admin.orders.payments.show', $p) }}" class="text-accent-primary hover:text-accent-primary/90 no-underline">View</a>
                             </td>
 
                         </tr>

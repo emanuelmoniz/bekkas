@@ -10,9 +10,9 @@
             @csrf
 
             <div>
-                <x-primary-button>
+                <x-default-button>
                     {{ t('auth.resend_verification_button') ?: 'Resend Verification Email' }}
-                </x-primary-button>
+                </x-default-button>
             </div>
         </form>
 

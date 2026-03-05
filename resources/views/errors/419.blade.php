@@ -4,9 +4,9 @@
         <p class="mt-3 text-grey-dark">{{ t('error.500.message') }}</p>
 
         <div class="mt-6">
-            <a href="{{ url('/') }}" class="inline-flex items-center px-8 py-3 border border-transparent text-sm font-medium rounded-full uppercase text-white bg-primary hover:bg-primary/90">{{ t('error.back_home') }}</a>
+            <x-primary-cta as="a" :href="url('/')">{{ t('error.back_home') }}</x-primary-cta>
         </div>
 
-        <p class="mt-4 text-sm text-grey-medium">{!! t('error.contact_support', ['email' => '<a href="mailto:'.e(config('mail.contact_address')).'">'.e(config('mail.contact_address')).'</a>']) !!}</p>
+        <p class="mt-4 text-sm text-grey-medium">{!! t('error.contact_support', ['email' => '<a href="mailto:'.e(config('mail.contact_address')).'" class="text-accent-primary hover:text-accent-primary/90 no-underline">'.e(config('mail.contact_address')).'</a>']) !!}</p>
     </div>
 </x-guest-layout>

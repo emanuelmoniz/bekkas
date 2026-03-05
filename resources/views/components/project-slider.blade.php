@@ -1,5 +1,7 @@
 @props([
     'materials'   => null,      // Collection<Material> | array | null — filter by material; null = all active projects
+    'categories'  => null,      // Collection<Category> | array | null — filter by category; null = all active projects
+    'excludeProjectIds' => null, // array|Collection<int>|null — project IDs to exclude from result set
     'max'         => null,      // int|null — maximum items to fetch; null = unlimited
     'order'       => 'newest',  // 'newest' | 'random'
     'isFeatured'  => false,     // bool — when true filter to is_featured projects only
@@ -10,14 +12,18 @@
     Project Slider horizontal scroll section.
 
     **Props:**
-      - `materials`   – Collection or array of Material models whose IDs are used to filter
+    - `materials`   – Collection or array of Material models whose IDs are used to filter
+    - `materials`   – Collection or array of Material models whose IDs are used to filter
                         projects.  Pass null (default) to show all active projects.
-      - `max`         – Maximum number of projects to display.  null = unlimited.
-      - `order`       – 'newest' (default, orders by production_date DESC then created_at DESC)
-                        | 'random'.
-      - `isFeatured`  – When true, only is_featured projects are shown.  When false (default),
-                        no featured filter is applied.
-      - `title`       – Optional heading text rendered above the scroller.
+    - `categories`  – Collection or array of Category models whose IDs are used to filter
+                    projects.  Pass null (default) to show all active projects.
+    - `excludeProjectIds` – Optional list of project IDs to exclude.
+    - `max`         – Maximum number of projects to display.  null = unlimited.
+    - `order`       – 'newest' (default, orders by production_date DESC then created_at DESC)
+                    | 'random'.
+    - `isFeatured`  – When true, only is_featured projects are shown.  When false (default),
+                    no featured filter is applied.
+    - `title`       – Optional heading text rendered above the scroller.
 
     **Layout:**
       - 4 cards per row on desktop  (sm:w-[calc(25%-12px)])
@@ -42,9 +48,22 @@
         $query->whereHas('materials', fn ($q) => $q->whereIn('materials.id', $matIds));
     }
 
+    // Category filter — if categories provided, restrict to projects that have them.
+    $cats = collect($categories ?? []);
+    if ($cats->isNotEmpty()) {
+        $catIds = $cats->pluck('id');
+        $query->whereHas('categories', fn ($q) => $q->whereIn('categories.id', $catIds));
+    }
+
     // Optional featured filter.
     if ($isFeatured) {
         $query->where('is_featured', true);
+    }
+
+    // Exclude specific projects when requested (e.g. current project on show page).
+    $excludedIds = collect($excludeProjectIds ?? [])->filter()->map(fn ($id) => (int) $id)->unique()->values();
+    if ($excludedIds->isNotEmpty()) {
+        $query->whereNotIn('id', $excludedIds);
     }
 
     // Ordering.

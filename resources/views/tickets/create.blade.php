@@ -107,13 +107,12 @@
             </div>
 
             <div class="flex justify-end gap-3">
-                <a href="{{ route('tickets.index') }}"
-                   class="bg-grey-medium px-8 py-3 rounded-full uppercase">
+                <x-optional-cta as="a" :href="route('tickets.index')">
                     {{ t('tickets.cancel') ?: 'Cancel' }}
-                </a>
-                <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
+                </x-optional-cta>
+                <x-primary-cta>
                     {{ t('tickets.submit') ?: 'Open Ticket' }}
-                </button>
+                </x-primary-cta>
             </div>
         </form>
 

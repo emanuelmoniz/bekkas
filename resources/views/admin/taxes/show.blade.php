@@ -41,16 +41,12 @@
         </div>
 
         <div class="flex justify-between mt-6">
-            <button type="button"
-               onclick="window.location.href='{{ route('admin.taxes.index') }}'"
-               class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+            <x-default-button type="button" onclick="window.location.href='{{ route('admin.taxes.index') }}'">
                 Back
-            </button>
-            <button type="button"
-               onclick="window.location.href='{{ route('admin.taxes.edit', $tax) }}'"
-               class="inline-flex items-center px-2 py-2 bg-primary border border-transparent rounded text-sm text-white uppercase hover:bg-primary/90 transition ease-in-out duration-150">
+            </x-default-button>
+            <x-default-button type="button" onclick="window.location.href='{{ route('admin.taxes.edit', $tax) }}'">
                 Edit Tax
-            </button>
+            </x-default-button>
         </div>
 
     </div>

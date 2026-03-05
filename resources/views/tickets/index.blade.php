@@ -4,10 +4,9 @@
 
         {{-- Actions --}}
         <div class="mb-4 flex justify-end">
-            <a href="{{ route('tickets.create') }}"
-               class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
+            <x-primary-cta as="a" :href="route('tickets.create')">
                 {{ t('tickets.new') ?: 'New Ticket' }}
-            </a>
+            </x-primary-cta>
         </div>
 
         {{-- Filters --}}
@@ -57,16 +56,12 @@
 
                 {{-- Actions --}}
                 <div class="flex flex-col lg:flex-row lg:items-center lg:shrink-0 gap-2 mt-2 lg:mt-0">
-                    <a href="{{ route('tickets.index') }}"
-                       class="w-full lg:w-auto text-center bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
+                    <x-optional-cta as="a" :href="route('tickets.index')">
                         {{ t('tickets.reset') ?: 'Reset' }}
-                    </a>
-                    <button
-                        type="submit"
-                        class="w-full lg:w-auto bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase"
-                    >
+                    </x-optional-cta>
+                    <x-primary-cta type="submit">
                         {{ t('tickets.filter') ?: 'Filter' }}
-                    </button>
+                    </x-primary-cta>
                 </div>
 
             </div>
@@ -90,7 +85,7 @@
                     @forelse ($tickets as $ticket)
                         <tr class="border-t">
                             <td class="px-4 py-2 font-bold">
-                                <a href="{{ route('tickets.show', $ticket) }}" class="text-accent-primary hover:underline">
+                                <a href="{{ route('tickets.show', $ticket) }}" class="text-accent-primary hover:text-accent-primary/90 no-underline">
                                     {{ $ticket->ticket_number ?? $ticket->uuid }}
                                 </a>
                             </td>

@@ -36,12 +36,10 @@
                 </div>
 
                 <div class="flex justify-between">
-                    <button type="button"
-                       onclick="window.location.href='{{ route('admin.order-statuses.index') }}'"
-                       class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                    <x-default-button type="button" onclick="window.location.href='{{ route('admin.order-statuses.index') }}'">
                         Cancel
-                    </button>
-                    <x-primary-button>Create</x-primary-button>
+                    </x-default-button>
+                    <x-default-button>Create</x-default-button>
                 </div>
             </form>
         </div>

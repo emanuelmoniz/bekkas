@@ -94,7 +94,7 @@
                 <div class="mt-4">
                     <form method="POST" action="{{ route('admin.orders.payloads.store', $order) }}" onsubmit="return confirm('Create Easypay payload for this order?');" class="inline-block">
                         @csrf
-                        <button class="bg-status-success/10 border-green-200 text-status-success border px-2 py-2 rounded uppercase text-sm">Create payload</button>
+                        <x-default-button type="submit">Create payload</x-default-button>
                     </form>
                 </div>
             @endif
@@ -241,14 +241,12 @@
             </div>
 
             <div class="pt-2 flex justify-between">
-                <button type="button"
-                   onclick="window.location.href='{{ route('admin.orders.index') }}'"
-                   class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                <x-default-button type="button" onclick="window.location.href='{{ route('admin.orders.index') }}'">
                     Back
-                </button>
-                <x-primary-button>
+                </x-default-button>
+                <x-default-button>
                     Save changes
-                </x-primary-button>
+                </x-default-button>
             </div>
         </form>
 
