@@ -22,6 +22,13 @@
     // When called from tailwind.blade.php $elements is passed explicitly.
     // Fallback: compute from paginator so the component is self-contained.
     $elements = $elements ?? ($paginator ? $paginator->elements() : []);
+    // Shared classes for link-style pagination (mobile & desktop)
+    $linkMobile = 'text-sm me-4 text-accent-primary hover:text-accent-primary/90 no-underline';
+    $disabledMobile = 'text-sm me-4 text-grey-medium no-underline';
+    $linkDesktop = 'text-sm text-accent-primary hover:text-accent-primary/90 no-underline';
+    $disabledDesktop = 'text-sm text-grey-medium no-underline';
+    $pageLink = 'text-sm text-accent-primary hover:text-accent-primary/90 no-underline';
+    $pageCurrent = 'text-sm text-grey-medium no-underline';
 @endphp
 
 {{-- Alpine mode: always render, x-show handles visibility.
@@ -44,48 +51,32 @@
 
         @if($isAlpine)
 
-            <button
-                type="button"
-                @click="prevPage(); window.scrollTo({top:0, behavior:'smooth'})"
-                :disabled="currentPage === 1"
-                :class="currentPage === 1
-                    ? 'text-gray-600 border-gray-300 cursor-not-allowed'
-                    : 'text-gray-800 border-gray-300 hover:text-gray-700 hover:bg-gray-100'"
-                class="inline-flex items-center px-4 py-2 text-sm font-medium border leading-5 rounded-md transition ease-in-out duration-150"
+            <a
+                href="#"
+                @click.prevent="prevPage(); window.scrollTo({top:0, behavior:'smooth'})"
+                :class="currentPage === 1 ? '{{ $disabledMobile }} pointer-events-none' : '{{ $linkMobile }}'"
                 x-text="(window.__paginationStrings || {}).previous || 'Previous'"
-            ></button>
+            ></a>
 
-            <button
-                type="button"
-                @click="nextPage(); window.scrollTo({top:0, behavior:'smooth'})"
-                :disabled="currentPage === totalPages"
-                :class="currentPage === totalPages
-                    ? 'text-gray-600 border-gray-300 cursor-not-allowed'
-                    : 'text-gray-800 border-gray-300 hover:text-gray-700 hover:bg-gray-100'"
-                class="inline-flex items-center px-4 py-2 text-sm font-medium border leading-5 rounded-md transition ease-in-out duration-150"
+            <a
+                href="#"
+                @click.prevent="nextPage(); window.scrollTo({top:0, behavior:'smooth'})"
+                :class="currentPage === totalPages ? '{{ $disabledMobile }} pointer-events-none' : '{{ $linkMobile }}'"
                 x-text="(window.__paginationStrings || {}).next || 'Next'"
-            ></button>
+            ></a>
 
         @else
 
             @if ($paginator->onFirstPage())
-                <span class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 border border-gray-300 cursor-not-allowed leading-5 rounded-md">
-                    {{ t('pagination.previous') }}
-                </span>
+                <span class="{{ $disabledMobile }}">{{ t('pagination.previous') }}</span>
             @else
-                <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-800 border border-gray-300 leading-5 rounded-md hover:text-gray-700 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-800 transition ease-in-out duration-150 hover:bg-gray-100">
-                    {{ t('pagination.previous') }}
-                </a>
+                <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="{{ $linkMobile }}">{{ t('pagination.previous') }}</a>
             @endif
 
             @if ($paginator->hasMorePages())
-                <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-800 border border-gray-300 leading-5 rounded-md hover:text-gray-700 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-800 transition ease-in-out duration-150 hover:bg-gray-100">
-                    {{ t('pagination.next') }}
-                </a>
+                <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="{{ $linkMobile }}">{{ t('pagination.next') }}</a>
             @else
-                <span class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 border border-gray-300 cursor-not-allowed leading-5 rounded-md">
-                    {{ t('pagination.next') }}
-                </span>
+                <span class="{{ $disabledMobile }}">{{ t('pagination.next') }}</span>
             @endif
 
         @endif
@@ -110,35 +101,29 @@
         </div>
 
         <div>
-            <span class="inline-flex rtl:flex-row-reverse shadow-sm rounded-md">
+            <span class="flex space-x-4">
 
                 {{-- Previous page --}}
                 @if($isAlpine)
 
-                    <button
-                        type="button"
-                        @click="prevPage(); window.scrollTo({top:0, behavior:'smooth'})"
-                        :disabled="currentPage === 1"
-                        :class="currentPage === 1
-                            ? 'text-gray-500 cursor-not-allowed'
-                            : 'text-gray-500 hover:text-gray-400 active:bg-gray-100 active:text-gray-500'"
-                        class="inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 border border-gray-300 rounded-l-md leading-5 transition ease-in-out duration-150"
+                    <a
+                        href="#"
+                        @click.prevent="prevPage(); window.scrollTo({top:0, behavior:'smooth'})"
+                        :class="currentPage === 1 ? '{{ $disabledDesktop }} pointer-events-none' : '{{ $linkDesktop }}'"
                         :aria-label="(window.__paginationStrings || {}).previous || 'Previous'"
                     >
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-                    </button>
+                        <svg class="w-5 h-5 inline-block" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                    </a>
 
                 @else
 
                     @if ($paginator->onFirstPage())
-                        <span aria-disabled="true" aria-label="{{ t('pagination.previous') }}">
-                            <span class="inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 border border-gray-300 cursor-not-allowed rounded-l-md leading-5" aria-hidden="true">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-                            </span>
+                        <span class="{{ $disabledDesktop }}" aria-disabled="true" aria-label="{{ t('pagination.previous') }}">
+                            <svg class="w-5 h-5 inline-block" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                         </span>
                     @else
-                        <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 border border-gray-300 rounded-l-md leading-5 hover:text-gray-400 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150" aria-label="{{ t('pagination.previous') }}">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                        <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="{{ $linkDesktop }}" aria-label="{{ t('pagination.previous') }}">
+                            <svg class="w-5 h-5 inline-block" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                         </a>
                     @endif
 
@@ -148,47 +133,40 @@
                 @if($isAlpine)
 
                     <template x-for="(item, i) in pageNumbers" :key="i">
-                        <span style="display:contents">
+                        <span>
                             <span
                                 x-show="item === '...'"
-                                class="inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 border border-gray-300 cursor-default leading-5"
+                                class="{{ $pageCurrent }}"
                                 aria-hidden="true"
                             >…</span>
-                            <button
+                            <a
                                 x-show="item !== '...'"
-                                type="button"
-                                @click="goToPage(item); window.scrollTo({top:0, behavior:'smooth'})"
-                                :class="item === currentPage
-                                    ? 'text-gray-700 bg-gray-200 cursor-default'
-                                    : 'text-gray-700 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-100'"
-                                class="inline-flex items-center px-4 py-2 -ml-px text-sm font-medium border border-gray-300 leading-5 transition ease-in-out duration-150"
+                                href="#"
+                                @click.prevent="goToPage(item); window.scrollTo({top:0, behavior:'smooth'})"
+                                :class="item === currentPage ? '{{ $pageCurrent }} pointer-events-none' : '{{ $pageLink }}'"
                                 :aria-current="item === currentPage ? 'page' : null"
                                 x-text="item"
-                            ></button>
+                            ></a>
                         </span>
                     </template>
 
                 @else
 
                     @foreach ($elements as $element)
-                        @if (is_string($element))
-                            <span aria-disabled="true">
-                                <span class="inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 border border-gray-300 cursor-default leading-5">{{ $element }}</span>
-                            </span>
-                        @endif
-                        @if (is_array($element))
-                            @foreach ($element as $page => $url)
-                                @if ($page == $paginator->currentPage())
-                                    <span aria-current="page">
-                                        <span class="inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-gray-200 border border-gray-300 cursor-default leading-5">{{ $page }}</span>
-                                    </span>
-                                @else
-                                    <a href="{{ $url }}" class="inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 border border-gray-300 leading-5 hover:text-gray-700 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 hover:bg-gray-100" aria-label="{{ t('pagination.goto_page', ['page' => $page]) }}">
-                                        {{ $page }}
-                                    </a>
-                                @endif
-                            @endforeach
-                        @endif
+                            @if (is_string($element))
+                                <span class="{{ $pageCurrent }}" aria-disabled="true">{{ $element }}</span>
+                            @endif
+                            @if (is_array($element))
+                                @foreach ($element as $page => $url)
+                                    @if ($page == $paginator->currentPage())
+                                        <span class="{{ $pageCurrent }}" aria-current="page">{{ $page }}</span>
+                                    @else
+                                        <a href="{{ $url }}" class="{{ $pageLink }}" aria-label="{{ t('pagination.goto_page', ['page' => $page]) }}">
+                                            {{ $page }}
+                                        </a>
+                                    @endif
+                                @endforeach
+                            @endif
                     @endforeach
 
                 @endif
@@ -196,31 +174,25 @@
                 {{-- Next page --}}
                 @if($isAlpine)
 
-                    <button
-                        type="button"
-                        @click="nextPage(); window.scrollTo({top:0, behavior:'smooth'})"
-                        :disabled="currentPage === totalPages"
-                        :class="currentPage === totalPages
-                            ? 'text-gray-500 cursor-not-allowed'
-                            : 'text-gray-500 hover:text-gray-400 active:bg-gray-100 active:text-gray-500'"
-                        class="inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 border border-gray-300 rounded-r-md leading-5 transition ease-in-out duration-150"
+                    <a
+                        href="#"
+                        @click.prevent="nextPage(); window.scrollTo({top:0, behavior:'smooth'})"
+                        :class="currentPage === totalPages ? '{{ $disabledDesktop }} pointer-events-none' : '{{ $linkDesktop }}'"
                         :aria-label="(window.__paginationStrings || {}).next || 'Next'"
                     >
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
-                    </button>
+                        <svg class="w-5 h-5 inline-block" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
+                    </a>
 
                 @else
 
                     @if ($paginator->hasMorePages())
-                        <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 border border-gray-300 rounded-r-md leading-5 hover:text-gray-400 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150" aria-label="{{ t('pagination.next') }}">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
+                        <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="{{ $linkDesktop }}" aria-label="{{ t('pagination.next') }}">
+                            <svg class="w-5 h-5 inline-block" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
                         </a>
                     @else
-                        <span aria-disabled="true" aria-label="{{ t('pagination.next') }}">
-                            <span class="inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 border border-gray-300 cursor-not-allowed rounded-r-md leading-5" aria-hidden="true">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
-                            </span>
-                        </span>
+                        <span class="{{ $disabledDesktop }}" aria-disabled="true" aria-label="{{ t('pagination.next') }}">
+                            <svg class="w-5 h-5 inline-block" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
+                    </span>
                     @endif
 
                 @endif
