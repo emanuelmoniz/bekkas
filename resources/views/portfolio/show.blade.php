@@ -61,6 +61,10 @@
                     </p>
                 @endif
 
+                <h3 class="text-sm text-grey-dark font-semibold">
+                    {{ t('portfolio.show.project_details') ?: 'Project details' }}
+                </h3>
+
                 <dl class="space-y-3">
                         <div class="grid grid-cols-[150px_1fr] gap-3 items-baseline">
                             <dt class="text-sm text-grey-dark">{{ t('portfolio.show.production_year') ?: 'Production Year' }}</dt>
