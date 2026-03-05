@@ -29,4 +29,23 @@ class PortfolioController extends Controller
 
         return view('portfolio.index', compact('projects', 'years', 'materials'));
     }
+
+    public function show(Project $project)
+    {
+        if (! $project->is_active) {
+            abort(404);
+        }
+
+        $project->load([
+            'photos',
+            'translations',
+            'materials.translations',
+            'categories.translations',
+        ]);
+
+        return view('portfolio.show', [
+            'project' => $project,
+            'relatedCategories' => $project->categories,
+        ]);
+    }
 }

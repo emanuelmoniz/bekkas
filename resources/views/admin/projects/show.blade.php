@@ -15,6 +15,10 @@
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Name</p>
                     <p class="text-sm text-grey-dark mt-1">{{ optional($project->translation())->name }}</p>
                 </div>
+                <div class="lg:col-span-2">
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Description (EN)</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ optional($project->translation('en-UK'))->description ?: '-' }}</p>
+                </div>
                 <div>
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Production Date</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $project->production_date ? $project->production_date->format('Y-m-d') : '-' }}</p>
@@ -60,9 +64,25 @@
                     </p>
                 </div>
                 <div>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Categories</p>
+                    <p class="text-sm text-grey-dark mt-1">
+                        {{ $project->categories->map(fn($c)=>optional($c->translation())->name)->filter()->join(', ') ?: '-' }}
+                    </p>
+                </div>
+                <div>
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Active</p>
                     <p class="text-sm text-grey-dark mt-1">
                         @if($project->is_active)
+                            <span class="text-status-success font-bold">&#10003;</span>
+                        @else
+                            <span class="text-status-error font-bold">&#10007;</span>
+                        @endif
+                    </p>
+                </div>
+                <div>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Featured</p>
+                    <p class="text-sm text-grey-dark mt-1">
+                        @if($project->is_featured)
                             <span class="text-status-success font-bold">&#10003;</span>
                         @else
                             <span class="text-status-error font-bold">&#10007;</span>

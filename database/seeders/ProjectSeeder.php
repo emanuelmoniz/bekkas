@@ -14,6 +14,7 @@ class ProjectSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('project_photos')->truncate();
         DB::table('material_project')->truncate();
+        DB::table('category_project')->truncate();
         DB::table('project_translations')->truncate();
         DB::table('projects')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
@@ -357,58 +358,71 @@ class ProjectSeeder extends Seeder
             DB::table('projects')->where('id', $id)->update(['uuid' => (string) \Illuminate\Support\Str::uuid()]);
         }
 
+        // Add some random clients and optional client URLs to projects
+        $faker = \Faker\Factory::create();
+        for ($i = 1; $i <= 25; $i++) {
+            if ($faker->boolean(70)) { // ~70% of projects have a client
+                $client = $faker->company();
+                $clientUrl = $faker->boolean(40) ? $faker->url() : null; // ~40% of those have a URL
+                DB::table('projects')->where('id', $i)->update([
+                    'client' => $client,
+                    'client_url' => $clientUrl,
+                ]);
+            }
+        }
+
         // translations for each project (pt-PT and en-UK)
         DB::table('project_translations')->insert([
-            ['id' => 1, 'project_id' => 1, 'locale' => 'pt-PT', 'name' => 'Modelo Casa Moderna', 'description' => null],
-            ['id' => 2, 'project_id' => 1, 'locale' => 'en-UK', 'name' => 'Modern House Model', 'description' => null],
-            ['id' => 3, 'project_id' => 2, 'locale' => 'pt-PT', 'name' => 'Modelo Arranha-céus', 'description' => null],
-            ['id' => 4, 'project_id' => 2, 'locale' => 'en-UK', 'name' => 'Skyscraper Model', 'description' => null],
-            ['id' => 5, 'project_id' => 3, 'locale' => 'pt-PT', 'name' => 'Modelo Ponte', 'description' => null],
-            ['id' => 6, 'project_id' => 3, 'locale' => 'en-UK', 'name' => 'Bridge Design Model', 'description' => null],
-            ['id' => 7, 'project_id' => 4, 'locale' => 'pt-PT', 'name' => 'Modelo Planejamento Urbano', 'description' => null],
-            ['id' => 8, 'project_id' => 4, 'locale' => 'en-UK', 'name' => 'Urban Planning Model', 'description' => null],
-            ['id' => 9, 'project_id' => 5, 'locale' => 'pt-PT', 'name' => 'Modelo Vila Clássica', 'description' => null],
-            ['id' => 10, 'project_id' => 5, 'locale' => 'en-UK', 'name' => 'Classic Villa Model', 'description' => null],
-            ['id' => 11, 'project_id' => 6, 'locale' => 'pt-PT', 'name' => 'Modelo Arquitetura Museu', 'description' => null],
-            ['id' => 12, 'project_id' => 6, 'locale' => 'en-UK', 'name' => 'Museum Architecture Model', 'description' => null],
-            ['id' => 13, 'project_id' => 7, 'locale' => 'pt-PT', 'name' => 'Modelo Edifício Sustentável', 'description' => null],
-            ['id' => 14, 'project_id' => 7, 'locale' => 'en-UK', 'name' => 'Sustainable Building Model', 'description' => null],
-            ['id' => 15, 'project_id' => 8, 'locale' => 'pt-PT', 'name' => 'Modelo Cidade Futurista', 'description' => null],
-            ['id' => 16, 'project_id' => 8, 'locale' => 'en-UK', 'name' => 'Futuristic City Model', 'description' => null],
-            ['id' => 17, 'project_id' => 9, 'locale' => 'pt-PT', 'name' => 'Modelo Design de Interiores', 'description' => null],
-            ['id' => 18, 'project_id' => 9, 'locale' => 'en-UK', 'name' => 'Interior Design Model', 'description' => null],
-            ['id' => 19, 'project_id' => 10, 'locale' => 'pt-PT', 'name' => 'Modelo Design de Paisagem', 'description' => null],
-            ['id' => 20, 'project_id' => 10, 'locale' => 'en-UK', 'name' => 'Landscape Design Model', 'description' => null],
-            ['id' => 21, 'project_id' => 11, 'locale' => 'pt-PT', 'name' => 'Modelo Protótipo Mobiliário', 'description' => null],
-            ['id' => 22, 'project_id' => 11, 'locale' => 'en-UK', 'name' => 'Furniture Prototype Model', 'description' => null],
-            ['id' => 23, 'project_id' => 12, 'locale' => 'pt-PT', 'name' => 'Modelo Design de Produto', 'description' => null],
-            ['id' => 24, 'project_id' => 12, 'locale' => 'en-UK', 'name' => 'Product Design Model', 'description' => null],
-            ['id' => 25, 'project_id' => 13, 'locale' => 'pt-PT', 'name' => 'Modelo Design de Moda', 'description' => null],
-            ['id' => 26, 'project_id' => 13, 'locale' => 'en-UK', 'name' => 'Fashion Design Model', 'description' => null],
-            ['id' => 27, 'project_id' => 14, 'locale' => 'pt-PT', 'name' => 'Modelo Design Gráfico', 'description' => null],
-            ['id' => 28, 'project_id' => 14, 'locale' => 'en-UK', 'name' => 'Graphic Design Model', 'description' => null],
-            ['id' => 29, 'project_id' => 15, 'locale' => 'pt-PT', 'name' => 'Modelo Design Industrial', 'description' => null],
-            ['id' => 30, 'project_id' => 15, 'locale' => 'en-UK', 'name' => 'Industrial Design Model', 'description' => null],
-            ['id' => 31, 'project_id' => 16, 'locale' => 'pt-PT', 'name' => 'Modelo Estrutura Metálica', 'description' => null],
-            ['id' => 32, 'project_id' => 16, 'locale' => 'en-UK', 'name' => 'Metal Structure Model', 'description' => null],
-            ['id' => 33, 'project_id' => 17, 'locale' => 'pt-PT', 'name' => 'Modelo Central Elétrica', 'description' => null],
-            ['id' => 34, 'project_id' => 17, 'locale' => 'en-UK', 'name' => 'Power Plant Model', 'description' => null],
-            ['id' => 35, 'project_id' => 18, 'locale' => 'pt-PT', 'name' => 'Modelo Componente Mecânico', 'description' => null],
-            ['id' => 36, 'project_id' => 18, 'locale' => 'en-UK', 'name' => 'Mechanical Component Model', 'description' => null],
-            ['id' => 37, 'project_id' => 19, 'locale' => 'pt-PT', 'name' => 'Modelo Plataforma Offshore', 'description' => null],
-            ['id' => 38, 'project_id' => 19, 'locale' => 'en-UK', 'name' => 'Offshore Platform Model', 'description' => null],
-            ['id' => 39, 'project_id' => 20, 'locale' => 'pt-PT', 'name' => 'Modelo Viaduto Rodoviário', 'description' => null],
-            ['id' => 40, 'project_id' => 20, 'locale' => 'en-UK', 'name' => 'Road Viaduct Model', 'description' => null],
-            ['id' => 41, 'project_id' => 21, 'locale' => 'pt-PT', 'name' => 'Modelo Complexo Hospitalar', 'description' => null],
-            ['id' => 42, 'project_id' => 21, 'locale' => 'en-UK', 'name' => 'Hospital Complex Model', 'description' => null],
-            ['id' => 43, 'project_id' => 22, 'locale' => 'pt-PT', 'name' => 'Modelo Peça de Relojoaria', 'description' => null],
-            ['id' => 44, 'project_id' => 22, 'locale' => 'en-UK', 'name' => 'Watchmaking Piece Model', 'description' => null],
-            ['id' => 45, 'project_id' => 23, 'locale' => 'pt-PT', 'name' => 'Modelo Navio de Cruzeiro', 'description' => null],
-            ['id' => 46, 'project_id' => 23, 'locale' => 'en-UK', 'name' => 'Cruise Ship Model', 'description' => null],
-            ['id' => 47, 'project_id' => 24, 'locale' => 'pt-PT', 'name' => 'Modelo Turbina Eólica', 'description' => null],
-            ['id' => 48, 'project_id' => 24, 'locale' => 'en-UK', 'name' => 'Wind Turbine Model', 'description' => null],
-            ['id' => 49, 'project_id' => 25, 'locale' => 'pt-PT', 'name' => 'Modelo Estação Espacial', 'description' => null],
-            ['id' => 50, 'project_id' => 25, 'locale' => 'en-UK', 'name' => 'Space Station Model', 'description' => null],
+            ['id' => 1, 'project_id' => 1, 'locale' => 'pt-PT', 'name' => 'Modelo Casa Moderna', 'description' => 'Modelo residencial contemporâneo com linhas limpas e soluções de espaço abertas.'],
+            ['id' => 2, 'project_id' => 1, 'locale' => 'en-UK', 'name' => 'Modern House Model', 'description' => 'A contemporary residential model featuring clean lines and open-space solutions.'],
+            ['id' => 3, 'project_id' => 2, 'locale' => 'pt-PT', 'name' => 'Modelo Arranha-céus', 'description' => 'Arranha-céus conceptual com fachada envidraçada e estrutura leve.'],
+            ['id' => 4, 'project_id' => 2, 'locale' => 'en-UK', 'name' => 'Skyscraper Model', 'description' => 'A conceptual skyscraper with glazed facades and lightweight structure.'],
+            ['id' => 5, 'project_id' => 3, 'locale' => 'pt-PT', 'name' => 'Modelo Ponte', 'description' => 'Projeto de ponte com ênfase em engenharia estrutural e estética.'],
+            ['id' => 6, 'project_id' => 3, 'locale' => 'en-UK', 'name' => 'Bridge Design Model', 'description' => 'Bridge design focusing on structural engineering and visual elegance.'],
+            ['id' => 7, 'project_id' => 4, 'locale' => 'pt-PT', 'name' => 'Modelo Planejamento Urbano', 'description' => 'Plano urbano integrado com zonas residenciais e espaços verdes.'],
+            ['id' => 8, 'project_id' => 4, 'locale' => 'en-UK', 'name' => 'Urban Planning Model', 'description' => 'Integrated urban plan combining residential zones and green spaces.'],
+            ['id' => 9, 'project_id' => 5, 'locale' => 'pt-PT', 'name' => 'Modelo Vila Clássica', 'description' => 'Vila clássica com detalhes ornamentais e pátio central.'],
+            ['id' => 10, 'project_id' => 5, 'locale' => 'en-UK', 'name' => 'Classic Villa Model', 'description' => 'Classic villa featuring ornamental details and a central courtyard.'],
+            ['id' => 11, 'project_id' => 6, 'locale' => 'pt-PT', 'name' => 'Modelo Arquitetura Museu', 'description' => 'Concepção de museu com fluxos expositivos otimizados e iluminação natural.'],
+            ['id' => 12, 'project_id' => 6, 'locale' => 'en-UK', 'name' => 'Museum Architecture Model', 'description' => 'Museum concept with optimized exhibition flows and natural lighting.'],
+            ['id' => 13, 'project_id' => 7, 'locale' => 'pt-PT', 'name' => 'Modelo Edifício Sustentável', 'description' => 'Edifício que prioriza eficiência energética e materiais sustentáveis.'],
+            ['id' => 14, 'project_id' => 7, 'locale' => 'en-UK', 'name' => 'Sustainable Building Model', 'description' => 'Building prioritising energy efficiency and sustainable materials.'],
+            ['id' => 15, 'project_id' => 8, 'locale' => 'pt-PT', 'name' => 'Modelo Cidade Futurista', 'description' => 'Modelo urbano futurista com infraestruturas inovadoras.'],
+            ['id' => 16, 'project_id' => 8, 'locale' => 'en-UK', 'name' => 'Futuristic City Model', 'description' => 'Futuristic urban model with innovative infrastructure concepts.'],
+            ['id' => 17, 'project_id' => 9, 'locale' => 'pt-PT', 'name' => 'Modelo Design de Interiores', 'description' => 'Projeto de interiores focado em materiais e ergonomia.'],
+            ['id' => 18, 'project_id' => 9, 'locale' => 'en-UK', 'name' => 'Interior Design Model', 'description' => 'Interior design project focused on materials and ergonomics.'],
+            ['id' => 19, 'project_id' => 10, 'locale' => 'pt-PT', 'name' => 'Modelo Design de Paisagem', 'description' => 'Design de paisagem contemplativo com percursos e zonas de descanso.'],
+            ['id' => 20, 'project_id' => 10, 'locale' => 'en-UK', 'name' => 'Landscape Design Model', 'description' => 'Contemplative landscape design with pathways and rest areas.'],
+            ['id' => 21, 'project_id' => 11, 'locale' => 'pt-PT', 'name' => 'Modelo Protótipo Mobiliário', 'description' => 'Protótipo de mobiliário com preocupação funcional e estética.'],
+            ['id' => 22, 'project_id' => 11, 'locale' => 'en-UK', 'name' => 'Furniture Prototype Model', 'description' => 'Furniture prototype prioritising function and aesthetics.'],
+            ['id' => 23, 'project_id' => 12, 'locale' => 'pt-PT', 'name' => 'Modelo Design de Produto', 'description' => 'Design de produto pensado para produção em pequena escala.'],
+            ['id' => 24, 'project_id' => 12, 'locale' => 'en-UK', 'name' => 'Product Design Model', 'description' => 'Product design intended for small-scale production.'],
+            ['id' => 25, 'project_id' => 13, 'locale' => 'pt-PT', 'name' => 'Modelo Design de Moda', 'description' => 'Coleção de moda conceptual com silhuetas contemporâneas.'],
+            ['id' => 26, 'project_id' => 13, 'locale' => 'en-UK', 'name' => 'Fashion Design Model', 'description' => 'Concept fashion collection with contemporary silhouettes.'],
+            ['id' => 27, 'project_id' => 14, 'locale' => 'pt-PT', 'name' => 'Modelo Design Gráfico', 'description' => 'Peças de design gráfico com ênfase em tipografia e composição.'],
+            ['id' => 28, 'project_id' => 14, 'locale' => 'en-UK', 'name' => 'Graphic Design Model', 'description' => 'Graphic design pieces emphasising typography and composition.'],
+            ['id' => 29, 'project_id' => 15, 'locale' => 'pt-PT', 'name' => 'Modelo Design Industrial', 'description' => 'Projeto industrial com atenção à produção e durabilidade.'],
+            ['id' => 30, 'project_id' => 15, 'locale' => 'en-UK', 'name' => 'Industrial Design Model', 'description' => 'Industrial design project focused on manufacturability and durability.'],
+            ['id' => 31, 'project_id' => 16, 'locale' => 'pt-PT', 'name' => 'Modelo Estrutura Metálica', 'description' => 'Estrutura metálica detalhada com ligações e cargas calculadas.'],
+            ['id' => 32, 'project_id' => 16, 'locale' => 'en-UK', 'name' => 'Metal Structure Model', 'description' => 'Detailed metal structure with calculated connections and loads.'],
+            ['id' => 33, 'project_id' => 17, 'locale' => 'pt-PT', 'name' => 'Modelo Central Elétrica', 'description' => 'Conceito de central elétrica com componentes técnicos e segurança.'],
+            ['id' => 34, 'project_id' => 17, 'locale' => 'en-UK', 'name' => 'Power Plant Model', 'description' => 'Power plant concept including technical components and safety systems.'],
+            ['id' => 35, 'project_id' => 18, 'locale' => 'pt-PT', 'name' => 'Modelo Componente Mecânico', 'description' => 'Componente mecânico projetado para precisão e montagem.'],
+            ['id' => 36, 'project_id' => 18, 'locale' => 'en-UK', 'name' => 'Mechanical Component Model', 'description' => 'Mechanical component engineered for precision and assembly.'],
+            ['id' => 37, 'project_id' => 19, 'locale' => 'pt-PT', 'name' => 'Modelo Plataforma Offshore', 'description' => 'Plataforma offshore concebida para operações marinhas robustas.'],
+            ['id' => 38, 'project_id' => 19, 'locale' => 'en-UK', 'name' => 'Offshore Platform Model', 'description' => 'Offshore platform designed for robust marine operations.'],
+            ['id' => 39, 'project_id' => 20, 'locale' => 'pt-PT', 'name' => 'Modelo Viaduto Rodoviário', 'description' => 'Viaduto rodoviário com rampas e apoios estruturais.'],
+            ['id' => 40, 'project_id' => 20, 'locale' => 'en-UK', 'name' => 'Road Viaduct Model', 'description' => 'Road viaduct with ramps and structural bearings.'],
+            ['id' => 41, 'project_id' => 21, 'locale' => 'pt-PT', 'name' => 'Modelo Complexo Hospitalar', 'description' => 'Complexo hospitalar com fluxos clínicos e áreas técnicas.'],
+            ['id' => 42, 'project_id' => 21, 'locale' => 'en-UK', 'name' => 'Hospital Complex Model', 'description' => 'Hospital complex with clinical flows and technical zones.'],
+            ['id' => 43, 'project_id' => 22, 'locale' => 'pt-PT', 'name' => 'Modelo Peça de Relojoaria', 'description' => 'Peça de relojoaria em escala com pormenores mecânicos finos.'],
+            ['id' => 44, 'project_id' => 22, 'locale' => 'en-UK', 'name' => 'Watchmaking Piece Model', 'description' => 'Scaled watchmaking piece with fine mechanical details.'],
+            ['id' => 45, 'project_id' => 23, 'locale' => 'pt-PT', 'name' => 'Modelo Navio de Cruzeiro', 'description' => 'Navio de cruzeiro conceptual com decks e áreas públicas.'],
+            ['id' => 46, 'project_id' => 23, 'locale' => 'en-UK', 'name' => 'Cruise Ship Model', 'description' => 'Concept cruise ship including decks and public areas.'],
+            ['id' => 47, 'project_id' => 24, 'locale' => 'pt-PT', 'name' => 'Modelo Turbina Eólica', 'description' => 'Turbina eólica com torre e rotor dimensionados para eficiência.'],
+            ['id' => 48, 'project_id' => 24, 'locale' => 'en-UK', 'name' => 'Wind Turbine Model', 'description' => 'Wind turbine with tower and rotor sized for efficiency.'],
+            ['id' => 49, 'project_id' => 25, 'locale' => 'pt-PT', 'name' => 'Modelo Estação Espacial', 'description' => 'Estação espacial conceptual com módulos habitacionais e científicos.'],
+            ['id' => 50, 'project_id' => 25, 'locale' => 'en-UK', 'name' => 'Space Station Model', 'description' => 'Concept space station with habitable and scientific modules.'],
         ]);
 
         // simple material relationships – all projects use material 1
@@ -417,6 +431,24 @@ class ProjectSeeder extends Seeder
             $materialRows[] = ['project_id' => $i, 'material_id' => 1];
         }
         DB::table('material_project')->insert($materialRows);
+
+        // simple category relationships – distribute categories across projects
+        $categoryRows = [];
+        for ($i = 1; $i <= 25; $i++) {
+            if ($i <= 5) {
+                $cat = 4; // Home
+            } elseif ($i <= 10) {
+                $cat = 3; // Organizer
+            } elseif ($i <= 15) {
+                $cat = 2; // Decoration
+            } elseif ($i <= 20) {
+                $cat = 1; // Christmas
+            } else {
+                $cat = 4;
+            }
+            $categoryRows[] = ['project_id' => $i, 'category_id' => $cat];
+        }
+        DB::table('category_project')->insert($categoryRows);
 
         // ---------------------------------------------------------------------
         // dynamic photo fetching using unsplash service (search term = project name)
