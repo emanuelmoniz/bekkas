@@ -1,92 +1,67 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<x-app-layout>
 
-        @php
-            $projectName = optional($project->translation())->name ?? $project->client ?? 'Project';
-        @endphp
+    @php
+        $projectName = optional($project->translation())->name ?? $project->client ?? 'Project';
 
-        <title>{{ config('app.name', 'BEKKAS') }} - {{ $projectName }}</title>
+        $galleryImages = $project->photos
+            ->sortByDesc('is_primary')
+            ->map(fn ($photo) => [
+                'url' => asset('storage/' . $photo->path),
+                'original' => $photo->original_path
+                    ? asset('storage/' . $photo->original_path)
+                    : null,
+            ])
+            ->values()
+            ->toArray();
 
-        <!-- Favicons -->
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon/apple-touch-icon.png') }}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon/favicon-32x32.png') }}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon/favicon-16x16.png') }}">
-        <link rel="manifest" href="{{ asset('site.webmanifest') }}">
-        <meta name="theme-color" content="#f4eee4">
+        $executionHours = $project->execution_time !== null
+            ? rtrim(rtrim(number_format((float) $project->execution_time, 2, '.', ''), '0'), '.')
+            : null;
 
-        <x-favorites-init />
-        <x-cart-init />
+        $materialNames = $project->materials
+            ->map(fn ($material) => optional($material->translation())->name)
+            ->filter()
+            ->values();
 
-        <!-- Styles / Scripts -->
-        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-            @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @endif
-    </head>
-    <body class="bg-light text-dark">
-        @include('layouts.navigation')
+        $clientUrl = $project->client_url;
+        $hasValidClientUrl = is_string($clientUrl)
+            && preg_match('/^https?:\/\//i', $clientUrl);
+    @endphp
 
-        @php
-            $galleryImages = $project->photos
-                ->sortByDesc('is_primary')
-                ->map(fn ($photo) => [
-                    'url' => asset('storage/' . $photo->path),
-                    'original' => $photo->original_path
-                        ? asset('storage/' . $photo->original_path)
-                        : null,
-                ])
-                ->values()
-                ->toArray();
+    <div class="py-4">
 
-            $executionHours = $project->execution_time !== null
-                ? rtrim(rtrim(number_format((float) $project->execution_time, 2, '.', ''), '0'), '.')
-                : null;
+        {{-- BACK LINK --}}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4 flex">
+            <a href="{{ route('portfolio.index') }}" class="text-sm text-accent-primary flex items-center gap-1 hover:text-accent-primary/90 no-underline">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                {{ t('portfolio.show.back_to_portfolio') ?: 'Back to portfolio' }}
+            </a>
+        </div>
 
-            $materialNames = $project->materials
-                ->map(fn ($material) => optional($material->translation())->name)
-                ->filter()
-                ->values();
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 animate-sequence">
 
-            $clientUrl = $project->client_url;
-            $hasValidClientUrl = is_string($clientUrl)
-                && preg_match('/^https?:\/\//i', $clientUrl);
-        @endphp
-
-        <section class="py-5 lg:py-8">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <a href="{{ route('portfolio.index') }}" class="inline-flex items-center gap-2 text-sm text-accent-primary hover:text-accent-primary/80 no-underline">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    {{ t('portfolio.show.back_to_portfolio') ?: 'Back to portfolio' }}
-                </a>
+            {{-- GALLERY --}}
+            <div class="anim-item">
+                <x-image-gallery :images="$galleryImages"/>
             </div>
-        </section>
 
-        <section class="pb-10 lg:pb-14">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-10 animate-sequence">
-                <div class="anim-item">
-                    <x-image-gallery :images="$galleryImages"/>
-                </div>
+            {{-- DETAILS --}}
+            <div class="bg-white p-6 rounded shadow space-y-4 anim-item">
 
-                <div class="anim-item bg-white rounded-xl shadow-sm border border-grey-medium/20 p-6 lg:p-8 space-y-5">
-                    <div class="space-y-2 pb-2 border-b border-grey-medium/20">
-                        <p class="text-xs uppercase tracking-[0.2em] text-grey-dark">
-                            {{ t('portfolio.show.project_details') ?: 'Project details' }}
-                        </p>
-                        <h1 class="text-2xl lg:text-3xl font-bold text-dark leading-tight">
-                            {{ $projectName }}
-                        </h1>
-                        @if(optional($project->translation())->description)
-                            <p class="text-grey-dark leading-relaxed">
-                                {!! nl2br(e(optional($project->translation())->description)) !!}
-                            </p>
-                        @endif
-                    </div>
+                {{-- NAME --}}
+                <h2 class="font-semibold text-xl text-dark">
+                    {{ $projectName }}
+                </h2>
 
-                    <dl class="space-y-3">
+                @if(optional($project->translation())->description)
+                    <p class="text-sm text-grey-dark leading-relaxed">
+                        {!! nl2br(e(optional($project->translation())->description)) !!}
+                    </p>
+                @endif
+
+                <dl class="space-y-3">
                         <div class="grid grid-cols-[150px_1fr] gap-3 items-baseline">
                             <dt class="text-sm text-grey-dark">{{ t('portfolio.show.production_year') ?: 'Production Year' }}</dt>
                             <dd class="font-medium">{{ $project->production_date?->year ?? '—' }}</dd>
@@ -177,10 +152,11 @@
                     </dl>
                 </div>
             </div>
-        </section>
+    </div>
 
-        <section class="py-10 lg:py-14 bg-white border-t border-grey-medium/20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {{-- RELATED PROJECTS --}}
+        <div class="animate-sequence bg-secondary">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <x-project-slider
                     :categories="$relatedCategories"
                     :excludeProjectIds="[$project->id]"
@@ -189,8 +165,7 @@
                     :title="t('portfolio.show.related_projects') ?: 'Related Projects'"
                 />
             </div>
-        </section>
+        </div>
 
-        @include('layouts.footer')
-    </body>
-</html>
+
+</x-app-layout>
