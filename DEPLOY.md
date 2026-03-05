@@ -89,6 +89,9 @@ git push origin staging
 On the staging server:
 
 ```bash
+# Optional
+php artisan db:seed
+
 cd ~/web/tes.bekkas.pt/public_html
 ./bin/deploy.sh
 ```
