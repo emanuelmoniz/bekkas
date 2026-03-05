@@ -257,7 +257,7 @@
                     <div class="h-full flex items-center">
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
-                                <button class="h-full inline-flex items-center px-8 py-3 border border-transparent text-sm leading-4 font-medium text-grey-medium bg-white hover:text-grey-dark focus:outline-none transition">
+                                <button class="h-full inline-flex items-center pl-8 py-3 border border-transparent text-sm leading-4 font-medium text-grey-medium bg-white hover:text-grey-dark focus:outline-none transition">
                                     <div>{{ Auth::user()->name }}</div>
                                     <div class="ms-1">
                                         <svg class="fill-current h-4 w-4" viewBox="0 0 20 20">
@@ -337,7 +337,7 @@
 
             @php
                 $toggleBase = 'uppercase w-full flex items-center justify-between ps-3 pe-4 py-2 text-base font-medium focus:outline-none transition duration-150 ease-in-out';
-                $toggleActive = 'border-l-4 border-primary text-primary bg-primary/10 focus:border-primary';
+                $toggleActive = 'border-l-4 border-primary bg-white focus:border-primary';
                 $toggleInactive = 'border-l-4 border-transparent text-grey-dark hover:text-grey-dark hover:bg-white hover:border-grey-medium focus:text-grey-dark focus:bg-white focus:border-grey-medium';
             @endphp
             
