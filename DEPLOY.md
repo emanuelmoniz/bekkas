@@ -75,20 +75,22 @@ git push origin feature/my-change
 From your local repo:
 
 ```bash
-#git checkout develop
+git checkout develop
 git pull origin develop
 
-php artisan migrate  #  if db changed
-composer install     #  if needed to seed
-php artisan db:seed  #  if needed
-./bin/run-tests.sh   ## recomended
+./bin/run-tests.sh
 
-#git checkout staging
-#git pull origin staging
-#git merge develop
+git checkout staging
+git pull origin staging
+git merge develop
 git push origin staging
+```
 
-./web/tes.bekkas.pt/public_html/bin/deploy.sh
+On the staging server:
+
+```bash
+cd ~/web/tes.bekkas.pt/public_html
+./bin/deploy.sh
 ```
 
 ## Phase 3 — Promote to production
@@ -108,7 +110,7 @@ git push origin main
 On the production server:
 
 ```bash
-cd ~/web/<prod-domain>/public_html
+cd ~/web/bekkas.pt/public_html
 ./bin/deploy.sh --skip-seed
 ```
 
