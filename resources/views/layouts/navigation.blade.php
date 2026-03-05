@@ -219,17 +219,41 @@
             <div class="hidden lg:flex lg:items-center lg:ms-6 gap-6">
                 @unless($isAdminNavigation)
                     <!-- Language Selector -->
-                    <div class="flex items-center gap-2">
-                        @php
-                            $currentLocale = app()->getLocale();
-                            $otherLocale = $currentLocale === 'pt-PT' ? 'en-UK' : 'pt-PT';
-                            $otherLocaleName = $otherLocale === 'pt-PT' ? 'PT' : 'EN';
-                        @endphp
-                        <a href="{{ route('language.switch', $otherLocale) }}"
-                           class="text-sm text-grey-dark hover:text-dark font-medium hover:text-primary/90 no-underline">
-                            {{ $otherLocaleName }}
-                        </a>
-                    </div>
+                    @php
+                        $locales = config('app.locales', []);
+                        $localeCount = count($locales);
+                        $currentLocale = app()->getLocale();
+                    @endphp
+                    @if($localeCount > 1)
+                        <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                            <button class="inline-flex items-center text-sm text-grey-dark hover:text-dark font-medium no-underline px-2 py-1">
+                                <span class="me-2">{{ strtoupper(substr($currentLocale, 0, 2)) }}</span>
+                            </button>
+
+                            <div x-show="open"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100"
+                                 x-transition:leave-end="opacity-0 scale-95"
+                                 class="absolute left-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                 style="display: none;">
+                                <div class="py-1">
+                                    @foreach($locales as $code => $name)
+                                        <a href="{{ route('language.switch', $code) }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">
+                                            <div class="flex items-center justify-between w-full">
+                                                <span>{{ $name }} - {{ strtoupper(substr($code, 0, 2)) }}</span>
+                                                @if($code === $currentLocale)
+                                                    <span class="text-xs text-grey-medium">✓</span>
+                                                @endif
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    @endif
 
                     <!-- Favorites Icon -->
                     <div x-data="{}" x-show="$store.favorites.count > 0" class="relative" style="display: none;">
@@ -504,39 +528,27 @@
                    :class="$store.contactInView ? '{{ $toggleActive }}' : '{{ $toggleInactive }}'">
                     {{ t('nav.contact') ?: 'Contact' }}
                 </a>
-                
-                <div x-data="{}" x-show="$store.favorites.count > 0" style="display: none;">
-                    <x-responsive-nav-link :href="route('favorites.index')" :active="request()->routeIs('favorites.*')">
-                        {{ t('nav.favorites') ?: 'Favorites' }} (<span x-text="$store.favorites.count"></span>)
-                    </x-responsive-nav-link>
-                </div>
-                
-                @php $cartCount = array_sum(array_column(session('cart', []), 'quantity')); @endphp
-                <div x-data="{}" x-show="$store.cart.count > 0 && {{ config('app.store_enabled') ? 'true' : 'false' }}">
-                    <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
-                        {{ t('nav.cart') ?: 'Cart' }} (<span x-text="$store.cart.count"></span>)
-                    </x-responsive-nav-link>
+                <div class="border-y border-grey-light">
+                    <div x-show="$store.favorites.count > 0" style="display: none;">
+                        <x-responsive-nav-link :href="route('favorites.index')" :active="request()->routeIs('favorites.*')">
+                            {{ t('nav.favorites') ?: 'Favorites' }} (<span x-text="$store.favorites.count"></span>)
+                        </x-responsive-nav-link>
+                    </div>
+                    
+                    @php $cartCount = array_sum(array_column(session('cart', []), 'quantity')); @endphp
+                    <div x-data="{}" x-show="$store.cart.count > 0 && {{ config('app.store_enabled') ? 'true' : 'false' }}">
+                        <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
+                            {{ t('nav.cart') ?: 'Cart' }} (<span x-text="$store.cart.count"></span>)
+                        </x-responsive-nav-link>
+                    </div>
                 </div>
             @endif
         </div>
 
-        <div class="pt-4 pb-1 border-t border-grey-light">
-            {{-- Language Selector Mobile --}}
-            <div class="px-4 py-2">
-                @php
-                    $currentLocale = app()->getLocale();
-                    $otherLocale = $currentLocale === 'pt-PT' ? 'en-UK' : 'pt-PT';
-                    $otherLocaleName = $otherLocale === 'pt-PT' ? 'PT' : 'EN';
-                @endphp
-                <a href="{{ route('language.switch', $otherLocale) }}"
-                   class="text-sm text-grey-dark hover:text-dark font-medium hover:text-primary/90 no-underline">
-                    {{ $otherLocaleName }}
-                </a>
-            </div>
-
+        <div class="pt-2 pb-8">
             @auth
                 <div class="px-4">
-                    <div class="font-medium text-base text-grey-dark">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-grey-medium">{{ Auth::user()->name }}</div>
                     <div class="font-medium text-sm text-grey-medium">{{ Auth::user()->email }}</div>
                 </div>
 
@@ -577,6 +589,37 @@
                     </x-responsive-nav-link>
                 </div>
             @endauth
+            {{-- Language Selector Mobile --}}
+            @unless($isAdminNavigation)
+                @php
+                    $locales = config('app.locales', []);
+                    $localeCount = count($locales);
+                    $currentLocale = app()->getLocale();
+                @endphp
+                @if($localeCount > 1)
+                    <div class="mt-4">
+                        <div x-data="{ openLocale: false }">
+                            <button @click="openLocale = !openLocale" class="w-full flex items-center justify-between px-3 py-2 text-sm text-grey-dark bg-white">
+                                <span>{{ $locales[$currentLocale] ?? $currentLocale }} - {{ strtoupper(substr($currentLocale, 0, 2)) }}</span>
+                                <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': openLocale }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+
+                            <div x-show="openLocale" class="mt-2 space-y-1 pl-2" style="display: none;">
+                                @foreach($locales as $code => $name)
+                                    <a href="{{ route('language.switch', $code) }}" class="block px-3 py-2 text-sm text-grey-dark hover:bg-grey-light rounded">
+                                        <span>{{ $name }} - {{ strtoupper(substr($code, 0, 2)) }}</span>
+                                        @if($code === $currentLocale)
+                                            <span class="text-xs text-grey-medium"> ✓</span>
+                                        @endif
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endunless
         </div>
     </div>
 </nav>
