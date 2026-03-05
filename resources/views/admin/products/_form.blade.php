@@ -355,7 +355,7 @@
             </label>
         </div>
         <div class="options-list mt-4 space-y-2"></div>
-        <x-default-button type="button">
+        <x-default-button type="button" class="add-option">
             + Add option
         </x-default-button>
     </div>
