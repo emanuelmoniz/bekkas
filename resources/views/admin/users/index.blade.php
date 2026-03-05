@@ -9,10 +9,9 @@
 
         {{-- ACTION BAR --}}
         <div class="mb-4 flex justify-end">
-            <button type="button" onclick="window.location.href='{{ route('admin.users.create') }}'"
-        class="inline-flex items-center bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+            <x-default-button type="button" onclick="window.location.href='{{ route('admin.users.create') }}'">
                 New User
-            </button>
+            </x-default-button>
         </div>
 
         {{-- FILTERS --}}
@@ -49,13 +48,12 @@
 
                 {{-- ACTIONS --}}
                 <div class="flex justify-end gap-2">
-                    <button type="button" onclick="window.location.href='{{ route('admin.users.index') }}'"
-        class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
+                    <x-default-button type="button" onclick="window.location.href='{{ route('admin.users.index') }}'">
                         Reset
-                    </button>
-                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                    </x-default-button>
+                    <x-default-button type="submit">
                         Filter
-                    </button>
+                    </x-default-button>
                 </div>
             </div>
         </form>
@@ -76,7 +74,7 @@
                     @forelse ($users as $user)
                         <tr class="border-t">
                             <td class="px-4 py-2">
-                                <a href="{{ route('admin.users.show', $user) }}" class="text-accent-secondary hover:underline font-medium">{{ $user->name }}</a>
+                                <a href="{{ route('admin.users.show', $user) }}" class="font-medium text-accent-primary hover:text-accent-primary/90 no-underline">{{ $user->name }}</a>
                             </td>
                             <td class="px-4 py-2">
                                 {{ $user->email }}
@@ -92,10 +90,9 @@
                                 @endif
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
-                                <button type="button" onclick="window.location.href='{{ route('admin.users.edit', $user) }}'"
-        class="inline-flex bg-primary text-white px-2 py-2 rounded uppercase text-sm">
+                                <x-default-button type="button" onclick="window.location.href='{{ route('admin.users.edit', $user) }}'">
                                     Edit
-                                </button>
+                                </x-default-button>
                             </td>
                         </tr>
                     @empty

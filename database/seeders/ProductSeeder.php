@@ -17,6 +17,11 @@ class ProductSeeder extends Seeder
         DB::table('material_product')->truncate();
         DB::table('product_translations')->truncate();
         DB::table('products')->truncate();
+        // option-related tables: reflect that some products can have option types and options
+        DB::table('product_option_translations')->truncate();
+        DB::table('product_options')->truncate();
+        DB::table('product_option_type_translations')->truncate();
+        DB::table('product_option_types')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         DB::table('products')->insert([
@@ -574,6 +579,55 @@ class ProductSeeder extends Seeder
             ['product_id' => 21, 'material_id' => 1],
             ['product_id' => 22, 'material_id' => 1],
             ['product_id' => 23, 'material_id' => 1],
+        ]);
+
+        // Seed a few sample product option types and options to reflect product configurability
+        // NOTE: these are example rows — the seeder only defines them, it does not run automatically here.
+        DB::table('product_option_types')->insert([
+            // Product 11 (Ceramic Mug) has two option types: Color (stocked) and Size (priced)
+            ['id' => 1, 'product_id' => 11, 'is_active' => 1, 'have_stock' => 1, 'have_price' => 0, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 2, 'product_id' => 11, 'is_active' => 1, 'have_stock' => 0, 'have_price' => 1, 'created_at' => now(), 'updated_at' => now()],
+            // Product 17 (Leather Journal) has a single option type: Cover Finish
+            ['id' => 3, 'product_id' => 17, 'is_active' => 1, 'have_stock' => 0, 'have_price' => 1, 'created_at' => now(), 'updated_at' => now()],
+        ]);
+
+        DB::table('product_option_type_translations')->insert([
+            ['product_option_type_id' => 1, 'locale' => 'en-UK', 'name' => 'Color', 'description' => 'Choose a color for the mug'],
+            ['product_option_type_id' => 1, 'locale' => 'pt-PT', 'name' => 'Cor', 'description' => 'Escolha uma cor para a caneca'],
+            ['product_option_type_id' => 2, 'locale' => 'en-UK', 'name' => 'Size', 'description' => 'Select a size; may adjust price'],
+            ['product_option_type_id' => 2, 'locale' => 'pt-PT', 'name' => 'Tamanho', 'description' => 'Selecione um tamanho; pode alterar o preço'],
+            ['product_option_type_id' => 3, 'locale' => 'en-UK', 'name' => 'Cover finish', 'description' => 'Finish for the leather cover (adds cost)'],
+            ['product_option_type_id' => 3, 'locale' => 'pt-PT', 'name' => 'Acabamento da capa', 'description' => 'Acabamento para a capa em pele (acréscimo)'],
+        ]);
+
+        DB::table('product_options')->insert([
+            // Options for Color (type 1) - stocked variants
+            ['id' => 1, 'product_option_type_id' => 1, 'is_active' => 1, 'stock' => 10, 'price' => null, 'promo_price' => null, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 2, 'product_option_type_id' => 1, 'is_active' => 1, 'stock' => 15, 'price' => null, 'promo_price' => null, 'created_at' => now(), 'updated_at' => now()],
+            // Options for Size (type 2) - priced variants (no stock tracking)
+            ['id' => 3, 'product_option_type_id' => 2, 'is_active' => 1, 'stock' => 0, 'price' => '0.00', 'promo_price' => null, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 4, 'product_option_type_id' => 2, 'is_active' => 1, 'stock' => 0, 'price' => '2.50', 'promo_price' => null, 'created_at' => now(), 'updated_at' => now()],
+            // Options for Cover finish (type 3)
+            ['id' => 5, 'product_option_type_id' => 3, 'is_active' => 1, 'stock' => 0, 'price' => '5.00', 'promo_price' => null, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 6, 'product_option_type_id' => 3, 'is_active' => 1, 'stock' => 0, 'price' => '10.00', 'promo_price' => null, 'created_at' => now(), 'updated_at' => now()],
+        ]);
+
+        DB::table('product_option_translations')->insert([
+            // Color options for product 11
+            ['product_option_id' => 1, 'locale' => 'en-UK', 'name' => 'Red', 'description' => null],
+            ['product_option_id' => 1, 'locale' => 'pt-PT', 'name' => 'Vermelho', 'description' => null],
+            ['product_option_id' => 2, 'locale' => 'en-UK', 'name' => 'Blue', 'description' => null],
+            ['product_option_id' => 2, 'locale' => 'pt-PT', 'name' => 'Azul', 'description' => null],
+            // Size options
+            ['product_option_id' => 3, 'locale' => 'en-UK', 'name' => 'Standard (300ml)', 'description' => null],
+            ['product_option_id' => 3, 'locale' => 'pt-PT', 'name' => 'Standard (300ml)', 'description' => null],
+            ['product_option_id' => 4, 'locale' => 'en-UK', 'name' => 'Large (400ml)', 'description' => null],
+            ['product_option_id' => 4, 'locale' => 'pt-PT', 'name' => 'Grande (400ml)', 'description' => null],
+            // Cover finish options for product 17
+            ['product_option_id' => 5, 'locale' => 'en-UK', 'name' => 'Natural leather finish', 'description' => null],
+            ['product_option_id' => 5, 'locale' => 'pt-PT', 'name' => 'Acabamento em pele natural', 'description' => null],
+            ['product_option_id' => 6, 'locale' => 'en-UK', 'name' => 'Deluxe stitched finish', 'description' => null],
+            ['product_option_id' => 6, 'locale' => 'pt-PT', 'name' => 'Acabamento deluxe cosido', 'description' => null],
         ]);
 
         // dynamically download representative photos for the retained products

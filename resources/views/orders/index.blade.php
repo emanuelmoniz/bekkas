@@ -48,16 +48,12 @@
 
                 {{-- Actions --}}
                 <div class="flex flex-col lg:flex-row lg:items-center lg:shrink-0 gap-2 mt-2 lg:mt-0">
-                    <a href="{{ route('orders.index') }}"
-                       class="w-full lg:w-auto text-center bg-grey-medium hover:bg-grey-dark text-white px-8 py-3 rounded-full uppercase">
+                    <x-optional-cta as="a" :href="route('orders.index')">
                         {{ t('orders.reset') ?: 'Reset' }}
-                    </a>
-                    <button
-                        type="submit"
-                        class="w-full lg:w-auto bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase"
-                    >
+                    </x-optional-cta>
+                    <x-primary-cta type="submit">
                         {{ t('orders.filter') ?: 'Filter' }}
-                    </button>
+                    </x-primary-cta>
                 </div>
 
             </div>
@@ -81,7 +77,7 @@
                     @forelse ($orders as $order)
                         <tr class="border-t">
                             <td class="px-4 py-2 font-bold">
-                                <a href="{{ route('orders.show', $order) }}" class="text-accent-primary hover:underline">
+                                <a href="{{ route('orders.show', $order) }}" class="text-accent-primary hover:text-accent-primary/90 no-underline">
                                     {{ $order->order_number }}
                                 </a>
                             </td>

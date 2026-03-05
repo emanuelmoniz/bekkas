@@ -15,7 +15,7 @@
                         <p class="text-xs text-grey-dark uppercase tracking-widest">Order</p>
                         <p class="text-sm text-grey-dark mt-1">
                             @if($payment->order)
-                                <a class="text-accent-secondary hover:underline" href="{{ route('admin.orders.show', $payment->order) }}">{{ $payment->order->order_number }}</a>
+                                <a class="text-accent-primary hover:text-accent-primary/90 no-underline" href="{{ route('admin.orders.show', $payment->order) }}">{{ $payment->order->order_number }}</a>
                             @else
                                 <span class="text-grey-medium">No order</span>
                             @endif
@@ -25,7 +25,7 @@
                         <p class="text-xs text-grey-dark uppercase tracking-widest">Checkout session</p>
                         <p class="text-sm text-grey-dark mt-1">
                             @if($payment->checkoutSession)
-                                <a class="text-accent-primary hover:underline" href="{{ route('admin.orders.checkouts.show', $payment->checkoutSession) }}">Session #{{ $payment->checkoutSession->id }}</a>
+                                <a class="text-accent-primary hover:text-accent-primary/90 no-underline" href="{{ route('admin.orders.checkouts.show', $payment->checkoutSession) }}">Session #{{ $payment->checkoutSession->id }}</a>
                             @else
                                 <span class="text-grey-medium">—</span>
                             @endif
@@ -79,7 +79,7 @@
                                 $payload = $payment->checkoutSession?->payload ?? $payment->order?->easypayPayload ?? null;
                             @endphp
                             @if($payload)
-                                <button type="button" onclick="window.location.href='{{ route('admin.orders.payloads.show', $payload) }}'" class="inline-flex items-center bg-white border px-2 py-2 rounded uppercase text-sm ms-2">Payload</button>
+                                <x-default-button type="button" onclick="window.location.href='{{ route('admin.orders.payloads.show', $payload) }}'">Payload</x-default-button>
                             @endif
                         @endif
 
@@ -89,25 +89,25 @@
                             {{-- Update: refresh payment details from Easypay (single payment endpoint) --}}
                             <form method="POST" action="{{ route('admin.orders.payments.refresh', $payment) }}" class="inline-block ms-2">
                                 @csrf
-                                <button class="bg-primary/10 border-accent-secondary/20 text-accent-secondary border px-2 py-2 rounded uppercase text-sm">Update</button>
+                                <x-default-button type="submit">Update</x-default-button>
                             </form>
                         @endif
 
                         @if(strtolower((string) $payment->payment_status) === 'paid' && optional($payment->order)->is_paid)
                             <form method="POST" action="{{ route('admin.orders.payments.refund', $payment) }}" onsubmit="return confirm('Confirm refund request?');" class="inline-block ms-2">
                                 @csrf
-                                <button type="submit" class="inline-flex items-center bg-white border px-2 py-2 rounded uppercase text-sm text-grey-dark hover:bg-grey-light">Refund</button>
+                                <x-default-button type="submit">Refund</x-default-button>
                             </form>
 
                             @if(! empty($payment->refund_id))
                                 <form method="POST" action="{{ route('admin.orders.payments.refund.refresh', $payment) }}" class="inline-block ms-2">
                                     @csrf
-                                    <button type="submit" class="inline-flex items-center bg-status-warning border-amber-200 text-status-warning border px-2 py-2 rounded uppercase text-sm">Update refund</button>
+                                    <x-default-button type="submit">Update refund</x-default-button>
                                 </form>
                             @endif
                         @endif
 
-                        <button type="button" onclick="window.location.href='{{ route('admin.orders.payments.index') }}'" class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150 ms-2">Back</button>
+                        <x-default-button type="button" onclick="window.location.href='{{ route('admin.orders.payments.index') }}'">Back</x-default-button>
                     </div>
                 </div>
             </div>

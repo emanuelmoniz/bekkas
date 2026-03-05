@@ -92,9 +92,6 @@
                    value="{{ old('height', $project->height ?? '') }}"
                    class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
         </div>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
             <x-input-label for="weight">Weight</x-input-label>
             <input type="number"
@@ -104,7 +101,9 @@
                    value="{{ old('weight', $project->weight ?? '') }}"
                    class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
         </div>
+    </div>
 
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
             <x-input-label>Materials</x-input-label>
             <select name="materials[]"
@@ -117,6 +116,22 @@
                             $project->materials->contains($material->id)
                         )>
                         {{ optional($material->translation())->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div>
+            <x-input-label>Categories</x-input-label>
+            <select name="categories[]"
+                    multiple
+                    class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}"
+                        @selected(
+                            isset($project) &&
+                            $project->categories->contains($category->id)
+                        )>
+                        {{ optional($category->translation())->name }}
                     </option>
                 @endforeach
             </select>
@@ -163,11 +178,9 @@
 
     {{-- SUBMIT --}}
     <div class="pt-4 flex justify-between">
-        <button type="button"
-           onclick="window.location.href='{{ route('admin.projects.index') }}'"
-           class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+        <x-default-button type="button" onclick="window.location.href='{{ route('admin.projects.index') }}'">
             Cancel
-        </button>
-        <x-primary-button>{{ $mode === 'edit' ? 'Update Project' : 'Create Project' }}</x-primary-button>
+        </x-default-button>
+        <x-default-button>{{ $mode === 'edit' ? 'Update Project' : 'Create Project' }}</x-default-button>
     </div>
 </form>

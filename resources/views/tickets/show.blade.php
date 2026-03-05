@@ -6,18 +6,16 @@
             </h2>
 
             <div class="flex gap-2">
-                <a href="{{ route('tickets.index') }}"
-                   class="bg-grey-medium px-8 py-3 rounded-full uppercase text-sm">
+                <x-optional-cta as="a" :href="route('tickets.index')">
                     {{ t('tickets.back_to_tickets') ?: 'Back to tickets' }}
-                </a>
+                </x-optional-cta>
 
                 <form method="POST"
                       action="{{ route('tickets.mark-unread', $ticket) }}">
                     @csrf
-                    <button type="submit"
-                            class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-sm">
+                    <x-primary-cta type="submit">
                         {{ t('tickets.mark_as_unread') ?: 'Mark as unread' }}
-                    </button>
+                    </x-primary-cta>
                 </form>
             </div>
         </div>
@@ -29,7 +27,7 @@
         <div class="bg-white p-6 rounded shadow space-y-2">
             <div>
                 <strong>{{ t('tickets.ticket_id') ?: 'Ticket ID' }}:</strong>
-                <span class="font-mono text-sm">{{ $ticket->ticket_number ?? $ticket->uuid }}</span>
+                <span class="text-sm">{{ $ticket->ticket_number ?? $ticket->uuid }}</span>
             </div>
 
             <div>
@@ -76,9 +74,9 @@
                     <textarea name="reason"
                               class="w-full border rounded px-3 py-2 mb-3"
                               required></textarea>
-                    <button class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-8 py-3 rounded-full uppercase">
+                    <x-optional-cta>
                         {{ t('tickets.close_ticket') ?: 'Close Ticket' }}
-                    </button>
+                    </x-optional-cta>
                 </form>
             @else
                 <form method="POST" action="{{ route('tickets.reopen', $ticket) }}">
@@ -87,9 +85,9 @@
                     <textarea name="reason"
                               class="w-full border rounded px-3 py-2 mb-3"
                               required></textarea>
-                    <button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase">
+                    <x-primary-cta>
                         {{ t('tickets.reopen_ticket') ?: 'Reopen Ticket' }}
-                    </button>
+                    </x-primary-cta>
                 </form>
             @endif
         </div>
@@ -112,7 +110,7 @@
                             @foreach ($msg->attachments as $file)
                                 <li>
                                     <a href="{{ route('tickets.attachments.download', $file) }}"
-                                       class="text-accent-primary hover:underline">
+                                       class="text-accent-primary hover:underline hover:text-accent-primary/90 no-underline">
                                         {{ $file->original_name }}
                                     </a>
                                 </li>
@@ -152,9 +150,9 @@
                 @include('partials.recaptcha-loader')
 
                 <div class="flex justify-end">
-                    <button class="bg-primary text-white px-8 py-3 rounded-full uppercase">
+                    <x-primary-cta>
                         {{ t('tickets.send') ?: 'Send' }}
-                    </button>
+                    </x-primary-cta>
                 </div>
             </form>
         @endif

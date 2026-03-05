@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Locale;
 use App\Models\Material;
 use App\Models\Project;
@@ -38,6 +39,13 @@ class ProjectController extends Controller
             });
         }
 
+        // CATEGORY
+        if ($request->filled('category_id')) {
+            $query->whereHas('categories', function ($q) use ($request) {
+                $q->where('categories.id', $request->category_id);
+            });
+        }
+
         // ACTIVE
         if ($request->filled('is_active')) {
             $query->where('is_active', (bool) $request->is_active);
@@ -61,8 +69,9 @@ class ProjectController extends Controller
     public function create()
     {
         $materials = Material::with('translations')->get();
+        $categories = Category::with('translations')->get();
 
-        return view('admin.projects.create', compact('materials'));
+        return view('admin.projects.create', compact('materials', 'categories'));
     }
 
     public function store(Request $request)
@@ -100,25 +109,28 @@ class ProjectController extends Controller
         }
 
         $project->materials()->sync($request->materials ?? []);
+        $project->categories()->sync($request->categories ?? []);
 
         return redirect()->route('admin.projects.index');
     }
 
     public function show(Project $project)
     {
-        $project->load(['translations', 'materials', 'photos']);
+        $project->load(['translations', 'materials', 'categories', 'photos']);
 
         return view('admin.projects.show', compact('project'));
     }
 
     public function edit(Project $project)
     {
-        $project->load(['translations', 'materials']);
+        $project->load(['translations', 'materials', 'categories']);
         $materials = Material::with('translations')->get();
+        $categories = Category::with('translations')->get();
 
         return view('admin.projects.edit', compact(
             'project',
-            'materials'
+            'materials',
+            'categories'
         ));
     }
 
@@ -159,6 +171,7 @@ class ProjectController extends Controller
         }
 
         $project->materials()->sync($request->materials ?? []);
+        $project->categories()->sync($request->categories ?? []);
 
         return redirect()->route('admin.projects.index');
     }

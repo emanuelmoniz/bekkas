@@ -6,10 +6,9 @@
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
 
         <div class="mb-4 flex justify-end">
-            <button type="submit" type="button" onclick="window.location.href='{{ route('admin.locales.create') }}'"
-        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+            <x-default-button type="button" onclick="window.location.href='{{ route('admin.locales.create') }}'">
                 Add Locale
-            </button>
+            </x-default-button>
         </div>
 
         <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
@@ -24,9 +23,8 @@
                     <option value="0" @selected(request('active') === '0')>No</option>
                 </select>
                 <div class="flex justify-end gap-2">
-                    <button type="button" onclick="window.location.href='{{ route('admin.locales.index') }}'"
-        class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">Reset</button>
-                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">Filter</button>
+                    <x-default-button type="button" onclick="window.location.href='{{ route('admin.locales.index') }}'">Reset</x-default-button>
+                    <x-default-button type="submit">Filter</x-default-button>
                 </div>
             </div>
         </form>
@@ -48,7 +46,7 @@
                     @foreach ($locales as $loc)
                         <tr class="border-t">
                             <td class="px-4 py-2 font-mono text-sm">{{ $loc->code }}</td>
-                            <td class="px-4 py-2"><a href="{{ route('admin.locales.show', $loc) }}" class="text-accent-secondary hover:underline font-medium">{{ $loc->name }}</a></td>
+                            <td class="px-4 py-2"><a href="{{ route('admin.locales.show', $loc) }}" class="font-medium text-accent-primary hover:text-accent-primary/90 no-underline">{{ $loc->name }}</a></td>
                             <td class="px-4 py-2 text-xl">{{ $loc->flag_emoji }}</td>
                             <td class="px-4 py-2">{{ optional($loc->country)->name }}</td>
                             <td class="px-4 py-2">
@@ -66,16 +64,14 @@
                                 @endif
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
-                                <button type="button"
-                                   onclick="window.location.href='{{ route('admin.locales.edit', $loc) }}'"
-                                   class="inline-flex items-center px-2 py-2 rounded bg-primary text-white text-sm uppercase">
-Edit</button>
+                                <x-default-button type="button" onclick="window.location.href='{{ route('admin.locales.edit', $loc) }}'">
+Edit</x-default-button>
                                 <form action="{{ route('admin.locales.destroy', $loc) }}"
                                       method="POST" class="inline"
                                       onsubmit="return confirm('Delete this locale?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="inline-flex items-center px-2 py-2 rounded uppercase bg-status-error/10 text-status-error text-sm">Delete</button>
+                                    <x-default-button type="submit">Delete</x-default-button>
                                 </form>
                             </td>
                         </tr>

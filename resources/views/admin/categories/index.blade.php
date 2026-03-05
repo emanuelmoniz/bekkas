@@ -9,10 +9,9 @@
 
         {{-- ACTION BAR --}}
         <div class="mb-4 flex justify-end">
-            <button type="button" onclick="window.location.href='{{ route('admin.categories.create') }}'"
-        class="inline-flex items-center bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+            <x-default-button type="button" onclick="window.location.href='{{ route('admin.categories.create') }}'">
                 New Category
-            </button>
+            </x-default-button>
         </div>
 
         {{-- FILTERS --}}
@@ -21,9 +20,8 @@
                 <input type="text" name="name" value="{{ request('name') }}" placeholder="Name"
                        class="flex-1 border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 <div class="flex gap-2">
-                    <button type="button" onclick="window.location.href='{{ route('admin.categories.index') }}'"
-        class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">Reset</button>
-                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">Filter</button>
+                    <x-default-button type="button" onclick="window.location.href='{{ route('admin.categories.index') }}'">Reset</x-default-button>
+                    <x-default-button type="submit">Filter</x-default-button>
                 </div>
             </div>
         </form>
@@ -42,7 +40,7 @@
                     @forelse ($categories as $category)
                         <tr class="border-t">
                             <td class="px-4 py-2">
-                                <a href="{{ route('admin.categories.show', $category) }}" class="text-accent-secondary hover:underline font-medium">{{ optional($category->translation())->name }}</a>
+                                <a href="{{ route('admin.categories.show', $category) }}" class="font-medium text-accent-primary hover:text-accent-primary/90 no-underline">{{ optional($category->translation())->name }}</a>
                                 <x-missing-locale-badge :model="$category" />
                             </td>
 
@@ -51,10 +49,9 @@
                             </td>
 
                             <td class="px-4 py-2 text-right space-x-2">
-                                <button type="button" onclick="window.location.href='{{ route('admin.categories.edit', $category) }}'"
-        class="inline-flex bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                                <x-default-button type="button" onclick="window.location.href='{{ route('admin.categories.edit', $category) }}'">
                                     Edit
-                                </button>
+                                </x-default-button>
 
                                 <form method="POST"
                                       action="{{ route('admin.categories.destroy', $category) }}"
@@ -62,11 +59,9 @@
                                     @csrf
                                     @method('DELETE')
 
-                                    <button type="submit"
-                                            onclick="return confirm('Delete this category?')"
-                                            class="bg-grey-light hover:bg-grey-light/90 text-grey-dark px-2 py-2 rounded uppercase text-sm">
+                                    <x-default-button type="submit" onclick="return confirm('Delete this category?')">
                                         Delete
-                                    </button>
+                                    </x-default-button>
                                 </form>
                             </td>
                         </tr>

@@ -26,13 +26,12 @@
                        value="{{ request('to_session_date') }}"
                        class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
                 <div class="flex justify-end gap-2">
-                    <button type="button" onclick="window.location.href='{{ route('admin.orders.checkouts.index') }}'"
-        class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
+                    <x-default-button type="button" onclick="window.location.href='{{ route('admin.orders.checkouts.index') }}'">
                         Reset
-                    </button>
-                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                    </x-default-button>
+                    <x-default-button type="submit">
                         Filter
-                    </button>
+                    </x-default-button>
                 </div>
             </div>
         </form>
@@ -52,13 +51,13 @@
                     @foreach ($sessions as $s)
                         <tr class="border-t">
                             <td class="px-3 py-2">
-                                <a href="{{ route('admin.orders.checkouts.show', $s) }}" class="text-accent-secondary hover:underline font-medium">{{ optional($s->order)->order_number ?? ('#' . $s->order_id) }}</a>
+                                <a href="{{ route('admin.orders.checkouts.show', $s) }}" class="font-medium text-accent-primary hover:text-accent-primary/90 no-underline">{{ optional($s->order)->order_number ?? ('#' . $s->order_id) }}</a>
                             </td>
                             <td class="px-3 py-2">{{ optional($s->order)->created_at?->format('d/m/Y H:i') ?? '-' }}</td>
                             <td class="px-3 py-2">{{ $s->created_at->format('d/m/Y H:i') }}</td>
                             <td class="px-3 py-2">{{ $s->status ?? '-' }}</td>
                             <td class="px-3 py-2 text-right">
-                                <a href="{{ route('admin.orders.checkouts.show', $s) }}" class="text-accent-secondary hover:underline">View</a>
+                                <a href="{{ route('admin.orders.checkouts.show', $s) }}" class="text-accent-primary hover:text-accent-primary/90 no-underline">View</a>
                             </td>
 
                         </tr>

@@ -6,7 +6,7 @@
 
         <title>{{ config('app.name', 'BEKKAS') }} - {{ t('legal.privacy.title') ?: 'Privacy Policy' }}</title>
 
-
+        <x-cart-init />
         <x-favorites-init />
 
         <!-- Styles / Scripts -->
@@ -19,7 +19,7 @@
 
         <section class="py-16 lg:py-24">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="max-w-4xl mx-auto prose">
+            <div class="max-w-4xl mx-auto">
                 <h1 class="text-4xl font-bold mb-6">{{ t('legal.privacy.title') ?: 'Privacy Policy' }}</h1>
 
                 <p>{{ t('legal.privacy.content') ?: 'We collect and use personal information to provide our services. We respect your privacy and process data according to applicable law.' }}</p>

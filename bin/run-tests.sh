@@ -73,6 +73,21 @@ if [ ! -f "vendor/autoload.php" ]; then
   composer install --no-interaction --prefer-dist --no-progress
 fi
 
+# If the test runner is missing (e.g. composer was installed without --dev),
+# try to install dev dependencies so PHPUnit/Artisan test command becomes available.
+# Avoid auto-installing in production unless forced via FORCE=1.
+if [ ! -x "vendor/bin/phpunit" ]; then
+  if command -v composer >/dev/null 2>&1; then
+    if [ "${CURRENT_APP_ENV:-}" = "production" ] && [ -z "${FORCE:-}" ]; then
+      echo "Test runner (vendor/bin/phpunit) not found and APP_ENV=production."
+      echo "Set FORCE=1 to allow installing dev dependencies, or run 'composer install' manually."
+    else
+      echo "Test runner not found. Installing Composer dev dependencies..."
+      composer install --no-interaction --prefer-dist --no-progress
+    fi
+  fi
+fi
+
 if ! php -m | grep -qi pdo_sqlite; then
   echo "PDO SQLite extension not found. Install it (e.g. sudo apt install php-sqlite) and retry."
   exit 1

@@ -6,15 +6,22 @@
 
         <title>{{ config('app.name', 'BEKKAS') }} - Architecture Services</title>
 
+        <!-- Favicons -->
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon/favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+        <meta name="theme-color" content="#f4eee4">
 
         <x-favorites-init />
+        <x-cart-init />
 
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
     </head>
-    <body class="bg-white text-dark">
+    <body class="font-sans bg-white text-dark">
         @include('layouts.navigation')
 
         <!-- BANNER SECTION
@@ -28,9 +35,9 @@
             <div class="relative z-10 text-center text-white px-6">
                 <h1 class="text-5xl lg:text-7xl font-bold mb-6">{{ t('custom.banner.title') ?: 'Custom Services' }}</h1>
                 <p class="text-xl lg:text-2xl mb-8 max-w-2xl mx-auto">{{ t('custom.banner.subtitle') ?: 'Professional 3D printing solutions for architects and designers' }}</p>
-                <a href="#request" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-semibold transition-colors">
+                <x-primary-cta as="a" href="#request">
                     {{ t('custom.banner.button') ?: 'Request Service' }}
-                </a>
+                </x-primary-cta>
             </div>
         </section> -->
 

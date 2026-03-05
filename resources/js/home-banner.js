@@ -42,11 +42,18 @@ export function carousel(initialSlides) {
         init() {
             // ensure initial current corresponds
             this.current = 0;
-            // start from first real slide according to offset
+            // start from first real slide according to offset but avoid
+            // animating the initial jump from the cloned slides into place.
+            // Disable animation, set the rawIndex, then re-enable animation
+            // after the next tick so the initial position appears instantly.
+            this.animate = false;
             this.rawIndex = this.cloneOffset;
             // keep reference to container for drag calculations
             this.container = this.$refs.trackContainer;
-            this.start();
+            this.$nextTick(() => {
+                this.animate = true;
+                this.start();
+            });
         },
         start() {
             if (this.interval) clearInterval(this.interval);
@@ -81,24 +88,9 @@ export function carousel(initialSlides) {
             this.rawIndex = Math.max(this.rawIndex - 1, 0);
             this.current = (this.rawIndex - this.cloneOffset + this.slides.length) % this.slides.length;
             this.progress = 0;
-            // if we've moved into the left clones, schedule a reset to the
-            // corresponding real slide after the transition finishes
-            if (this.rawIndex < this.cloneOffset) {
-                setTimeout(() => {
-                    this.animate = false;
-                    if (this.rawIndex === this.cloneOffset - 1) {
-                        // clone of last slide -> jump to real last
-                        this.rawIndex = this.slides.length + this.cloneOffset - 1;
-                    } else {
-                        // more distant clones (only occurs when cloneOffset>1)
-                        // map back two positions from the right-hand end
-                        this.rawIndex = this.slides.length + this.cloneOffset - 2;
-                    }
-                    // also update current to keep in sync
-                    this.current = (this.rawIndex - this.cloneOffset + this.slides.length) % this.slides.length;
-                    this.$nextTick(() => { this.animate = true; });
-                }, 1000);
-            }
+            // if we've moved into the left clones, let `handleTransitionEnd`
+            // perform the non-animated jump back into the real slides so the
+            // reset is consistent with right-hand clone handling.
         },
         handleTransitionEnd() {
             // allow new movement now that the transition finished
@@ -112,6 +104,24 @@ export function carousel(initialSlides) {
                 this.animate = false;
                 this.rawIndex = this.cloneOffset + offset;
                 this.current = offset;
+                this.$nextTick(() => { this.animate = true; });
+            }
+            // symmetric handling for left-hand clones: jump to the
+            // corresponding real slides without animating so the user does
+            // not see a slide animation from fake to real slides.
+            if (this.rawIndex < this.cloneOffset) {
+                // offset from the inner-most clone (0 when touching the
+                // clone that's a copy of the last slide)
+                const offsetFromInner = this.cloneOffset - 1 - this.rawIndex;
+                this.animate = false;
+                if (offsetFromInner === 0) {
+                    // clone of last slide -> map to real last
+                    this.rawIndex = this.slides.length + this.cloneOffset - 1;
+                } else {
+                    // map further-left clones back accordingly
+                    this.rawIndex = this.slides.length + this.cloneOffset - 2;
+                }
+                this.current = (this.rawIndex - this.cloneOffset + this.slides.length) % this.slides.length;
                 this.$nextTick(() => { this.animate = true; });
             }
         },

@@ -79,14 +79,12 @@
             </div>
 
             <div class="flex justify-end gap-3">
-                <button type="button" onclick="window.location.href='{{ route('admin.orders.index') }}'"
-        class="bg-grey-medium hover:bg-grey-medium px-2 py-2 rounded uppercase text-sm">
+                <x-default-button type="button" onclick="window.location.href='{{ route('admin.orders.index') }}'">
                     Cancel
-                </button>
-                <button type="submit" 
-                        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                </x-default-button>
+                <x-default-button type="submit">
                     Save Changes
-                </button>
+                </x-default-button>
             </div>
         </form>
 

@@ -9,10 +9,9 @@
 
         {{-- ACTION BAR --}}
         <div class="mb-4 flex justify-end">
-            <button type="submit" type="button" onclick="window.location.href='{{ route('admin.products.create') }}'"
-        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+            <x-default-button type="button" onclick="window.location.href='{{ route('admin.products.create') }}'">
                 New Product
-            </button>
+            </x-default-button>
         </div>
 
         {{-- FILTERS --}}
@@ -64,14 +63,12 @@
 
                 {{-- ACTIONS --}}
                 <div class="flex justify-end gap-2">
-                    <button type="button"
-                       onclick="window.location.href='{{ route('admin.products.index') }}'"
-                       class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
+                    <x-default-button type="button" onclick="window.location.href='{{ route('admin.products.index') }}'">
                         Reset
-                    </button>
-                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                    </x-default-button>
+                    <x-default-button type="submit">
                         Filter
-                    </button>
+                    </x-default-button>
                 </div>
             </div>
         </form>
@@ -91,7 +88,7 @@
                     @forelse ($products as $product)
                         <tr class="border-t">
                             <td class="px-4 py-2">
-                                <a href="{{ route('admin.products.show', $product) }}" class="text-accent-secondary hover:underline font-medium">{{ optional($product->translation())->name }}</a>
+                                <a href="{{ route('admin.products.show', $product) }}" class="font-medium text-accent-primary hover:text-accent-primary/90 no-underline">{{ optional($product->translation())->name }}</a>
                                 <x-missing-locale-badge :model="$product" />
                             </td>
                             <td class="px-4 py-2">
@@ -101,19 +98,17 @@
                                 {{ $product->stock }}
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
-                                <button type="submit" type="button" onclick="window.location.href='{{ route('admin.products.edit', $product) }}'"
-        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                                <x-default-button type="button" onclick="window.location.href='{{ route('admin.products.edit', $product) }}'">
                                     Edit
-                                </button>
+                                </x-default-button>
                                 <form method="POST"
                                       action="{{ route('admin.products.destroy', $product) }}"
                                       class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button onclick="return confirm('Delete this product?')"
-                                            class="bg-grey-light text-grey-dark px-2 py-2 rounded uppercase text-sm">
+                                    <x-default-button type="submit" onclick="return confirm('Delete this product?')">
                                         Delete
-                                    </button>
+                                    </x-default-button>
                                 </form>
                             </td>
                         </tr>
