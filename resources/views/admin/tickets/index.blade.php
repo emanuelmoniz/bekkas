@@ -5,10 +5,9 @@
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4 flex justify-end">
-            <button type="submit" type="button" onclick="window.location.href='{{ route('admin.tickets.create') }}'"
-        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+            <x-default-button type="button" onclick="window.location.href='{{ route('admin.tickets.create') }}'">
                 New Ticket
-            </button>
+            </x-default-button>
         </div>
 
         <form method="GET" class="mb-6 bg-white p-4 rounded shadow">
@@ -32,14 +31,12 @@
                     @endforeach
                 </select>
                 <div class="flex justify-end gap-2">
-                    <button type="button"
-                    onclick="window.location.href='{{ route('admin.tickets.index') }}'"
-                    class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
+                    <x-default-button type="button" onclick="window.location.href='{{ route('admin.tickets.index') }}'">
                         Reset
-                    </button>
-                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                    </x-default-button>
+                    <x-default-button type="submit">
                         Filter
-                    </button>
+                    </x-default-button>
                 </div>
             </div>
         </form>
@@ -60,7 +57,7 @@
                     @forelse ($tickets as $ticket)
                         <tr class="border-t">
                             <td class="px-4 py-2 font-mono text-sm">
-                                <a href="{{ route('admin.tickets.show', $ticket) }}" class="text-accent-secondary hover:underline font-medium">{{ $ticket->ticket_number ?? $ticket->uuid }}</a>
+                                <a href="{{ route('admin.tickets.show', $ticket) }}" class="font-medium text-accent-primary hover:text-accent-primary/90 no-underline">{{ $ticket->ticket_number ?? $ticket->uuid }}</a>
                             </td>
 
                             <td class="px-4 py-2 font-semibold">

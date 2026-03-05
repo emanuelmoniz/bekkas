@@ -86,7 +86,7 @@
     />
 
     {{-- Card body: image scroller + product info --}}
-    <a href="{{ route('store.show', $product) }}" class="block">
+    <a href="{{ route('store.show', $product) }}" class="block text-accent-primary hover:text-accent-primary/90 no-underline">
 
         @if($scrollerImages->isNotEmpty())
             <x-image-scroller

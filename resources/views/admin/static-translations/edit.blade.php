@@ -45,12 +45,10 @@
             @endforeach
 
             <div class="flex justify-between items-center pt-2">
-                <button type="button"
-                   onclick="window.location.href='{{ route('admin.static-translations.index') }}'"
-                   class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+                <x-default-button type="button" onclick="window.location.href='{{ route('admin.static-translations.index') }}'">
                     ← Back
-                </button>
-                <x-primary-button>Save</x-primary-button>
+                </x-default-button>
+                <x-default-button>Save</x-default-button>
             </div>
         </form>
     </div>

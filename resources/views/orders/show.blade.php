@@ -87,7 +87,7 @@
                                 </div>
 
                                 <div class="mt-4 text-right">
-                                    <a href="{{ route('orders.pay', $order->uuid) }}" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-semibold">{{ t('orders.change_payment') ?: 'Change payment' }}</a>
+                                    <x-primary-cta as="a" :href="route('orders.pay', $order->uuid)">{{ t('orders.change_payment') ?: 'Change payment' }}</x-primary-cta>
                                 </div>
                             </div>
 
@@ -95,7 +95,7 @@
                         @else
                             @unless(in_array($ps, ['pending','authorised'], true))
                                 @if(config('easypay.enabled'))
-                                    <a href="{{ route('orders.pay', $order->uuid) }}" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-semibold">{{ t('orders.pay_now') ?: 'Pay now' }}</a>
+                                    <x-primary-cta as="a" :href="route('orders.pay', $order->uuid)">{{ t('orders.pay_now') ?: 'Pay now' }}</x-primary-cta>
                                 @else
                                     <div class="p-3 rounded bg-primary/10 border border-yellow-100 text-sm text-yellow-800">
                                         {{ t('checkout.gateways.disabled') ?: (t('checkout.pay.unavailable') ?: 'Payment system is temporarily unavailable — please check your order details in a moment and try again.') }}

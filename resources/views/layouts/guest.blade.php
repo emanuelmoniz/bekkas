@@ -25,7 +25,7 @@
     <body class="font-sans text-dark antialiased" @if($serverFlash) data-server-flash="{{ e($serverFlash) }}" @endif>
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-grey-light">
             <div>
-                <a href="/">
+                <a href="/" class="text-accent-primary hover:text-accent-primary/90 no-underline">
                     <img src="{{ asset('images/hero_logo.svg') }}" alt="BEKKAS" class="h-28 w-auto">
                 </a>
             </div>

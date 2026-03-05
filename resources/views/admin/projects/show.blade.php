@@ -15,6 +15,10 @@
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Name</p>
                     <p class="text-sm text-grey-dark mt-1">{{ optional($project->translation())->name }}</p>
                 </div>
+                <div class="lg:col-span-2">
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Description (EN)</p>
+                    <p class="text-sm text-grey-dark mt-1">{{ optional($project->translation('en-UK'))->description ?: '-' }}</p>
+                </div>
                 <div>
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Production Date</p>
                     <p class="text-sm text-grey-dark mt-1">{{ $project->production_date ? $project->production_date->format('Y-m-d') : '-' }}</p>
@@ -60,9 +64,25 @@
                     </p>
                 </div>
                 <div>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Categories</p>
+                    <p class="text-sm text-grey-dark mt-1">
+                        {{ $project->categories->map(fn($c)=>optional($c->translation())->name)->filter()->join(', ') ?: '-' }}
+                    </p>
+                </div>
+                <div>
                     <p class="text-xs text-grey-dark uppercase tracking-widest">Active</p>
                     <p class="text-sm text-grey-dark mt-1">
                         @if($project->is_active)
+                            <span class="text-status-success font-bold">&#10003;</span>
+                        @else
+                            <span class="text-status-error font-bold">&#10007;</span>
+                        @endif
+                    </p>
+                </div>
+                <div>
+                    <p class="text-xs text-grey-dark uppercase tracking-widest">Featured</p>
+                    <p class="text-sm text-grey-dark mt-1">
+                        @if($project->is_featured)
                             <span class="text-status-success font-bold">&#10003;</span>
                         @else
                             <span class="text-status-error font-bold">&#10007;</span>
@@ -91,16 +111,12 @@
         </div>
 
         <div class="flex justify-between mt-6">
-            <button type="button"
-               onclick="window.location.href='{{ route('admin.projects.index') }}'"
-               class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150">
+            <x-default-button type="button" onclick="window.location.href='{{ route('admin.projects.index') }}'">
                 Back
-            </button>
-            <button type="button"
-               onclick="window.location.href='{{ route('admin.projects.edit', $project) }}'"
-               class="inline-flex items-center px-2 py-2 bg-primary border border-transparent rounded text-sm text-white uppercase hover:bg-primary/90 transition ease-in-out duration-150">
+            </x-default-button>
+            <x-default-button type="button" onclick="window.location.href='{{ route('admin.projects.edit', $project) }}'">
                 Edit Project
-            </button>
+            </x-default-button>
         </div>
 
     </div>

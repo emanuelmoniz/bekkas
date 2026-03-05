@@ -42,6 +42,35 @@ Alpine.store('flash', {
         this.type = type || 'success';
         this.show = true;
 
+        // Scroll the flash container into view so users away from the top
+        // of the page can see validation/errors triggered by actions.
+        try {
+            const el = document.querySelector('[data-flash-root]');
+            if (el) {
+                const doScroll = () => {
+                    try {
+                        // Prefer a header/nav with sticky positioning used by the layout
+                        const header = document.querySelector('nav.sticky, header.sticky, .sticky.top-0, .site-header');
+                        const headerHeight = header ? Math.ceil(header.getBoundingClientRect().height) : 0;
+                        const margin = 8; // small gap between header and flash
+                        const rect = el.getBoundingClientRect();
+                        const target = window.scrollY + rect.top - headerHeight - margin;
+                        window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+                    } catch (e) {
+                        try { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (er) { el.scrollIntoView(); }
+                    }
+                };
+
+                if (window.Alpine && typeof window.Alpine.nextTick === 'function') {
+                    window.Alpine.nextTick(doScroll);
+                } else {
+                    requestAnimationFrame(doScroll);
+                }
+            }
+        } catch (e) {
+            // ignore scrolling failures
+        }
+
         // Do NOT auto-focus the close button. Keeping the button reachable via keyboard
         // (tabindex toggles) preserves accessibility without surprising focus changes.
         // (Users can still focus the button manually or via keyboard navigation.)

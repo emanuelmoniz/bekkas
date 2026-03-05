@@ -72,14 +72,12 @@
             </label>
 
             <div class="flex justify-between">
-                <button type="button" onclick="window.location.href='{{ route('admin.regions.index') }}'"
-        class="bg-grey-medium hover:bg-grey-dark text-white px-2 py-2 rounded uppercase text-sm">
+                <x-default-button type="button" onclick="window.location.href='{{ route('admin.regions.index') }}'">
                     Cancel
-                </button>
-                <button type="submit"
-                        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                </x-default-button>
+                <x-default-button type="submit">
                     Save
-                </button>
+                </x-default-button>
             </div>
         </form>
     </div>

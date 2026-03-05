@@ -66,7 +66,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ t('profile.save') ?: 'Save' }}</x-primary-button>
+            <x-default-button>{{ t('profile.save') ?: 'Save' }}</x-default-button>
 
 
         </div>

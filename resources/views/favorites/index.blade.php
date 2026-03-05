@@ -47,10 +47,9 @@
 
                     @if(config('app.store_enabled'))
                         <div class="mt-4">
-                            <a href="{{ route('store.index') }}"
-                               class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-center font-medium">
+                            <x-primary-cta as="a" :href="route('store.index')">
                                 {{ t('favorites.browse_products') ?: 'Browse Products' }}
-                            </a>
+                            </x-primary-cta>
                         </div>
                     @endif
                 </div>

@@ -117,9 +117,9 @@
                     </p>
                 </div>
 
-                <button class="bg-primary text-white px-8 py-3 rounded-full uppercase mt-6">
+                <x-primary-cta>
                     {{ t('checkout.place_order') ?: 'Place Order' }}
-                </button>
+                </x-primary-cta>
             </form>
 
             {{-- RIGHT --}}

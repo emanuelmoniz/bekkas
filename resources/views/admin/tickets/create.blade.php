@@ -68,13 +68,12 @@
             </div>
 
             <div class="flex justify-end gap-3">
-                <button type="button" onclick="window.location.href='{{ route('admin.tickets.index') }}'"
-        class="bg-grey-medium px-2 py-2 rounded uppercase text-sm">
+                <x-default-button type="button" onclick="window.location.href='{{ route('admin.tickets.index') }}'">
                     Cancel
-                </button>
-                <button class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                </x-default-button>
+                <x-default-button type="submit">
                     Open Ticket
-                </button>
+                </x-default-button>
             </div>
         </form>
 

@@ -16,7 +16,7 @@
                         <p class="text-xs text-grey-dark uppercase tracking-widest">Order</p>
                         <p class="text-sm text-grey-dark mt-1">
                             @if($session->order)
-                                <a class="text-accent-secondary hover:underline" href="{{ route('admin.orders.show', $session->order) }}">{{ $session->order->order_number }}</a>
+                                <a class="text-accent-primary hover:text-accent-primary/90 no-underline" href="{{ route('admin.orders.show', $session->order) }}">{{ $session->order->order_number }}</a>
                             @else
                                 <span class="text-grey-medium">No order</span>
                             @endif
@@ -26,7 +26,7 @@
                         <p class="text-xs text-grey-dark uppercase tracking-widest">Payload</p>
                         <p class="text-sm text-grey-dark mt-1">
                             @if($session->payload)
-                                <a class="text-accent-primary hover:underline" href="{{ route('admin.orders.payloads.show', $session->payload) }}">Payload #{{ $session->payload->id }}</a>
+                                <a class="text-accent-primary hover:text-accent-primary/90 no-underline" href="{{ route('admin.orders.payloads.show', $session->payload) }}">Payload #{{ $session->payload->id }}</a>
                             @else
                                 <span class="text-grey-medium">—</span>
                             @endif
@@ -77,15 +77,15 @@
 
                         <form method="POST" action="{{ route('admin.orders.checkouts.refresh', $session) }}" class="inline-block ms-2">
                             @csrf
-                            <button class="bg-primary/10 border-accent-secondary/20 text-accent-secondary border px-2 py-2 rounded uppercase text-sm" title="Refresh / fetch checkout details">Update</button>
+                            <x-default-button type="submit" title="Refresh / fetch checkout details">Update</x-default-button>
                         </form>
 
                         <form method="POST" action="{{ route('admin.orders.checkouts.cancel', $session) }}" class="inline-block ms-2" onsubmit="return confirm('Cancel this checkout at Easypay?');">
                             @csrf
-                            <button class="bg-status-error/10 border-status-error text-status-error border px-2 py-2 rounded uppercase text-sm" title="Cancel checkout">Cancel</button>
+                            <x-default-button type="submit" title="Cancel checkout">Cancel</x-default-button>
                         </form>
 
-                        <button type="button" onclick="window.location.href='{{ route('admin.orders.checkouts.index') }}'" class="inline-flex items-center px-2 py-2 bg-white border border-grey-medium rounded text-sm text-grey-dark uppercase shadow-sm hover:bg-grey-light transition ease-in-out duration-150 ms-2">Back</button>
+                        <x-default-button type="button" onclick="window.location.href='{{ route('admin.orders.checkouts.index') }}'">Back</x-default-button>
                     </div>
                 </div>
 

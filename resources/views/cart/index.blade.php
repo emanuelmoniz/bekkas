@@ -9,10 +9,9 @@
                     
                     @if(config('app.store_enabled'))
                         <div class="mt-4">
-                            <a href="{{ route('store.index') }}"
-                               class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-center font-medium">
+                            <x-primary-cta as="a" :href="route('store.index')">
                                 {{ t('cart.start_shopping') ?: 'Start Shopping' }}
-                            </a>
+                            </x-primary-cta>
                         </div>
                     @endif
                 </div>
@@ -98,20 +97,14 @@
                         {{ t('cart.shipping_at_checkout') ?: 'The shipping cost will be calculated at checkout.' }}
                     </div>
 
-                    <div class="pt-4">
-                        <a href="{{ route('checkout.index') }}"
-                           class="w-full bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase text-center font-medium block">
-                            {{ t('cart.checkout') ?: 'Proceed to Checkout' }}
-                        </a>
-                    </div>
+                    <x-primary-cta as="a" :href="route('checkout.index')" :full-width="true">
+                        {{ t('cart.checkout') ?: 'Proceed to Checkout' }}
+                    </x-primary-cta>
 
                     @if(config('app.store_enabled'))
-                        <div class="pt-2">
-                            <a href="{{ route('store.index') }}"
-                               class="w-full bg-grey-light hover:bg-grey-light text-grey-dark px-8 py-3 rounded-full uppercase text-center font-medium block">
-                                {{ t('cart.continue_shopping') ?: 'Continue Shopping' }}
-                            </a>
-                        </div>
+                        <x-optional-cta as="a" :href="route('store.index')" :full-width="true" class="mt-2">
+                            {{ t('cart.continue_shopping') ?: 'Continue Shopping' }}
+                        </x-optional-cta>
                     @endif
                 </div>
             @endif

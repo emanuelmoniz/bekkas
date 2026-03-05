@@ -7,10 +7,9 @@
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-4 flex justify-end">
-            <button type="submit" type="button" onclick="window.location.href='{{ route('admin.shipping-tiers.create') }}'"
-        class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+            <x-default-button type="button" onclick="window.location.href='{{ route('admin.shipping-tiers.create') }}'">
                 New Shipping Tier
-            </button>
+            </x-default-button>
         </div>
 
         {{-- FILTERS --}}
@@ -53,13 +52,12 @@
 
                 {{-- ACTIONS --}}
                 <div class="flex justify-end gap-2">
-                    <button type="button" onclick="window.location.href='{{ route('admin.shipping-tiers.index') }}'"
-        class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
+                    <x-default-button type="button" onclick="window.location.href='{{ route('admin.shipping-tiers.index') }}'">
                         Reset
-                    </button>
-                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                    </x-default-button>
+                    <x-default-button type="submit">
                         Filter
-                    </button>
+                    </x-default-button>
                 </div>
             </div>
         </form>
@@ -83,7 +81,7 @@
                     @forelse ($tiers as $tier)
                         <tr class="border-t">
                             <td class="px-4 py-2">
-                                <a href="{{ route('admin.shipping-tiers.show', $tier) }}" class="text-accent-secondary hover:underline font-medium">{{ $tier->translation()?->name }}</a>
+                                <a href="{{ route('admin.shipping-tiers.show', $tier) }}" class="font-medium text-accent-primary hover:text-accent-primary/90 no-underline">{{ $tier->translation()?->name }}</a>
                                 <x-missing-locale-badge :model="$tier" />
                             </td>
                             <td class="px-4 py-2">{{ $tier->weight_from }}-{{ $tier->weight_to }}</td>
@@ -105,19 +103,17 @@
                                 @endif
                             </td>
                             <td class="px-4 py-2 text-right space-x-2">
-                                <button type="button"
-                                   onclick="window.location.href='{{ route('admin.shipping-tiers.edit', $tier) }}'"
-                                   class="inline-flex items-center px-2 py-2 rounded bg-primary text-white text-sm uppercase">
+                                <x-default-button type="button" onclick="window.location.href='{{ route('admin.shipping-tiers.edit', $tier) }}'">
                                     Edit
-                                </button>
+                                </x-default-button>
 
                                 <form method="POST"
                                       action="{{ route('admin.shipping-tiers.duplicate', $tier) }}"
                                       class="inline">
                                     @csrf
-                                    <button class="inline-flex items-center px-2 py-2 rounded uppercase bg-grey-light text-grey-dark text-sm">
+                                    <x-default-button type="submit">
                                         Duplicate
-                                    </button>
+                                    </x-default-button>
                                 </form>
 
                                 <form method="POST"
@@ -126,9 +122,9 @@
                                       onsubmit="return confirm('Delete this tier?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="inline-flex items-center px-2 py-2 rounded uppercase bg-status-error/10 text-status-error text-sm">
+                                    <x-default-button type="submit">
                                         Delete
-                                    </button>
+                                    </x-default-button>
                                 </form>
                             </td>
                         </tr>

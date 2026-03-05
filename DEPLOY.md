@@ -89,7 +89,7 @@ git push origin staging
 On the staging server:
 
 ```bash
-cd ~/web/<staging-domain>/public_html
+cd ~/web/tes.bekkas.pt/public_html
 ./bin/deploy.sh
 ```
 
@@ -110,7 +110,7 @@ git push origin main
 On the production server:
 
 ```bash
-cd ~/web/<prod-domain>/public_html
+cd ~/web/bekkas.pt/public_html
 ./bin/deploy.sh --skip-seed
 ```
 

@@ -47,8 +47,7 @@
         <p class="text-primary text-sm mt-1">{{ $message }}</p>
     @enderror
 
-    <button type="submit" 
-            class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full uppercase font-semibold transition-colors">
+    <x-primary-cta type="submit">
         {{ t('contact.send') ?: 'Send Message' }}
-    </button>
+    </x-primary-cta>
 </form>

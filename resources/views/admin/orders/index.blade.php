@@ -54,13 +54,12 @@
                        class="border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
             
                 <div class="flex justify-end gap-2">
-                    <button type="button" onclick="window.location.href='{{ route('admin.orders.index') }}'"
-        class="bg-grey-light hover:bg-grey-medium text-grey-dark px-2 py-2 rounded uppercase text-sm">
+                    <x-default-button type="button" onclick="window.location.href='{{ route('admin.orders.index') }}'">
                         Reset
-                    </button>
-                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-2 py-2 rounded uppercase text-sm">
+                    </x-default-button>
+                    <x-default-button type="submit">
                         Filter
-                    </button>
+                    </x-default-button>
                 </div>       
             </div>
         </form>
@@ -80,7 +79,7 @@
                     @foreach ($orders as $order)
                         <tr class="border-t">
                             <td class="px-3 py-2">
-                                <a href="{{ route('admin.orders.show', $order) }}" class="text-accent-secondary hover:underline font-medium">{{ $order->order_number }}</a>
+                                <a href="{{ route('admin.orders.show', $order) }}" class="font-medium text-accent-primary hover:text-accent-primary/90 no-underline">{{ $order->order_number }}</a>
                             </td>
                             <td class="px-3 py-2">
                                 {{ $order->user->name }}<br>

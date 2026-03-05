@@ -77,6 +77,11 @@ class Project extends Model
         return $this->belongsToMany(Material::class);
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
     public function photos()
     {
         return $this->hasMany(ProjectPhoto::class);
