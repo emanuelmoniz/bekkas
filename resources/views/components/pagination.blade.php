@@ -19,12 +19,9 @@
 
 @php
     $isAlpine = (bool) $alpine;
-    // When called from tailwind.blade.php $elements is passed explicitly.
-    // Fallback: compute from paginator so the component is self-contained.
     $elements = $elements ?? ($paginator ? $paginator->elements() : []);
-    // Shared classes for link-style pagination (mobile & desktop)
-    $linkMobile = 'text-sm me-4 text-accent-primary hover:text-accent-primary/90 no-underline';
-    $disabledMobile = 'text-sm me-4 text-grey-medium no-underline';
+    $linkMobile = 'text-sm text-accent-primary hover:text-accent-primary/90 no-underline';
+    $disabledMobile = 'text-sm text-grey-medium no-underline';
     $linkDesktop = 'text-sm text-accent-primary hover:text-accent-primary/90 no-underline';
     $disabledDesktop = 'text-sm text-grey-medium no-underline';
     $pageLink = 'text-sm text-accent-primary hover:text-accent-primary/90 no-underline';
@@ -47,36 +44,54 @@
 >
 
     {{-- ── MOBILE: prev / next only ─────────────────────────────────────── --}}
-    <div class="flex gap-2 items-center justify-between sm:hidden">
+    <div class="flex gap-2 justify-between sm:hidden">
 
         @if($isAlpine)
 
             <a
                 href="#"
                 @click.prevent="prevPage(); window.scrollTo({top:0, behavior:'smooth'})"
-                :class="currentPage === 1 ? '{{ $disabledMobile }} pointer-events-none' : '{{ $linkMobile }}'"
-                x-text="(window.__paginationStrings || {}).previous || 'Previous'"
-            ></a>
+                :class="'flex items-start ' + (currentPage === 1 ? '{{ $disabledMobile }} pointer-events-none' : '{{ $linkMobile }}')"
+                :aria-label="(window.__paginationStrings || {}).previous || 'Previous'"
+            >
+                <svg class="w-4 h-4 inline-block me-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M12.707 15.707a1 1 0 01-1.414 0L6.586 11l4.707-4.707a1 1 0 011.414 1.414L9.414 11l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd"/></svg>
+                <span x-text="(window.__paginationStrings || {}).previous || 'Previous'"></span>
+            </a>
 
             <a
                 href="#"
                 @click.prevent="nextPage(); window.scrollTo({top:0, behavior:'smooth'})"
-                :class="currentPage === totalPages ? '{{ $disabledMobile }} pointer-events-none' : '{{ $linkMobile }}'"
-                x-text="(window.__paginationStrings || {}).next || 'Next'"
-            ></a>
+                :class="'flex items-center ' + (currentPage === totalPages ? '{{ $disabledMobile }} pointer-events-none' : '{{ $linkMobile }}')"
+                :aria-label="(window.__paginationStrings || {}).next || 'Next'"
+            >
+                <span x-text="(window.__paginationStrings || {}).next || 'Next'"></span>
+                <svg class="w-4 h-4 inline-block ms-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M7.293 4.293a1 1 0 011.414 0L13.414 9l-4.707 4.707a1 1 0 01-1.414-1.414L10.586 9 7.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+            </a>
 
         @else
 
             @if ($paginator->onFirstPage())
-                <span class="{{ $disabledMobile }}">{{ t('pagination.previous') }}</span>
+                <span class="flex items-start {{ $disabledMobile }}" aria-disabled="true" aria-label="{{ t('pagination.previous') }}">
+                    <svg class="w-4 h-4 inline-block me-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M12.707 15.707a1 1 0 01-1.414 0L6.586 11l4.707-4.707a1 1 0 011.414 1.414L9.414 11l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd"/></svg>
+                    {{ t('pagination.previous') }}
+                </span>
             @else
-                <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="{{ $linkMobile }}">{{ t('pagination.previous') }}</a>
+                <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="flex items-start {{ $linkMobile }}" aria-label="{{ t('pagination.previous') }}">
+                    <svg class="w-4 h-4 inline-block me-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M12.707 15.707a1 1 0 01-1.414 0L6.586 11l4.707-4.707a1 1 0 011.414 1.414L9.414 11l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd"/></svg>
+                    {{ t('pagination.previous') }}
+                </a>
             @endif
 
             @if ($paginator->hasMorePages())
-                <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="{{ $linkMobile }}">{{ t('pagination.next') }}</a>
+                <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="flex items-center {{ $linkMobile }}" aria-label="{{ t('pagination.next') }}">
+                    {{ t('pagination.next') }}
+                    <svg class="w-4 h-4 inline-block ms-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M7.293 4.293a1 1 0 011.414 0L13.414 9l-4.707 4.707a1 1 0 01-1.414-1.414L10.586 9 7.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </a>
             @else
-                <span class="{{ $disabledMobile }}">{{ t('pagination.next') }}</span>
+                <span class="flex items-center {{ $disabledMobile }}" aria-disabled="true" aria-label="{{ t('pagination.next') }}">
+                    {{ t('pagination.next') }}
+                    <svg class="w-4 h-4 inline-block ms-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M7.293 4.293a1 1 0 011.414 0L13.414 9l-4.707 4.707a1 1 0 01-1.414-1.414L10.586 9 7.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </span>
             @endif
 
         @endif
@@ -131,9 +146,8 @@
 
                 {{-- Page numbers / ellipsis --}}
                 @if($isAlpine)
-
                     <template x-for="(item, i) in pageNumbers" :key="i">
-                        <span>
+                        <span class="flex items-end">
                             <span
                                 x-show="item === '...'"
                                 class="{{ $pageCurrent }}"
@@ -149,26 +163,25 @@
                             ></a>
                         </span>
                     </template>
-
                 @else
-
-                    @foreach ($elements as $element)
-                            @if (is_string($element))
-                                <span class="{{ $pageCurrent }}" aria-disabled="true">{{ $element }}</span>
-                            @endif
-                            @if (is_array($element))
-                                @foreach ($element as $page => $url)
-                                    @if ($page == $paginator->currentPage())
-                                        <span class="{{ $pageCurrent }}" aria-current="page">{{ $page }}</span>
-                                    @else
-                                        <a href="{{ $url }}" class="{{ $pageLink }}" aria-label="{{ t('pagination.goto_page', ['page' => $page]) }}">
-                                            {{ $page }}
-                                        </a>
-                                    @endif
-                                @endforeach
-                            @endif
-                    @endforeach
-
+                    <span class="flex items-end space-x-4"> 
+                        @foreach ($elements as $element)
+                                @if (is_string($element))
+                                    <span class="{{ $pageCurrent }}" aria-disabled="true">{{ $element }}</span>
+                                @endif
+                                @if (is_array($element))
+                                    @foreach ($element as $page => $url)
+                                        @if ($page == $paginator->currentPage())
+                                            <span class="{{ $pageCurrent }}" aria-current="page">{{ $page }}</span>
+                                        @else
+                                            <a href="{{ $url }}" class="{{ $pageLink }}" aria-label="{{ t('pagination.goto_page', ['page' => $page]) }}">
+                                                {{ $page }}
+                                            </a>
+                                        @endif
+                                    @endforeach
+                                @endif
+                        @endforeach
+                    </span>
                 @endif
 
                 {{-- Next page --}}
