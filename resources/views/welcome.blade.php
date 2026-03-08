@@ -145,8 +145,8 @@
 
                         <div>
                             <h3 class="text-lg font-semibold text-dark mb-2">{{ t('home.contact.phone') ?: 'Phone' }}</h3>
-                            <a href="https://wa.me/351965707800" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium hover:text-accent-primary/90 no-underline">
-                                +351 965 707 800 (WhatsApp)
+                            <a href="https://wa.me/351922015060" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium hover:text-accent-primary/90 no-underline">
+                                +351 922 015 060 (WhatsApp)
                             </a>
                         </div>
 
