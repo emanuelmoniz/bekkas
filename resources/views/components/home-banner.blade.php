@@ -21,7 +21,13 @@
                         <div class="min-h-[50vh] lg:min-h-[75vh] flex flex-col items-center justify-end text-center text-white px-6 pb-20 bg-dark/40">
                             <h1 class="text-4xl lg:text-6xl font-bold mb-4" x-text="slide.tagline"></h1>
                             <h2 class="text-2xl lg:text-4xl font-semibold mb-4" x-text="slide.subtagline"></h2>
-                            <x-primary-cta as="a" x-bind:href="slide.buttonUrl" x-text="slide.buttonText"></x-primary-cta>
+                            @php $buttonEnabled = $buttonEnabled ?? true; @endphp
+                            <template x-if="(typeof slide.buttonEnabled === 'undefined') ? {{ $buttonEnabled ? 'true' : 'false' }} : slide.buttonEnabled">
+                                <x-primary-cta as="a" x-bind:href="slide.buttonUrl" x-text="slide.buttonText"></x-primary-cta>
+                            </template>
+                            <template x-if="!( (typeof slide.buttonEnabled === 'undefined') ? {{ $buttonEnabled ? 'true' : 'false' }} : slide.buttonEnabled )">
+                                <x-optional-cta disabled x-text="slide.buttonText"></x-optional-cta>
+                            </template>
                         </div>
                     </div>
                 </div>

@@ -139,6 +139,10 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'nav.store', 'locale' => 'pt-PT', 'value' => 'Loja', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'nav.store', 'locale' => 'en-UK', 'value' => 'Store', 'created_at' => $now, 'updated_at' => $now],
 
+            // Home services - store 'soon' label when store feature is disabled
+            ['key' => 'home.services.store.soon', 'locale' => 'pt-PT', 'value' => 'Brevemente', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'home.services.store.soon', 'locale' => 'en-UK', 'value' => 'Soon', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'nav.custom', 'locale' => 'pt-PT', 'value' => 'Produção', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'nav.custom', 'locale' => 'en-UK', 'value' => 'Custom', 'created_at' => $now, 'updated_at' => $now],
 
