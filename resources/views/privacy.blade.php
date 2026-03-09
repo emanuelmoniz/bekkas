@@ -1,21 +1,6 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@section('title', config('app.name', 'BEKKAS') . ' - ' . (t('legal.privacy.title') ?: 'Privacy Policy'))
 
-        <title>{{ config('app.name', 'BEKKAS') }} - {{ t('legal.privacy.title') ?: 'Privacy Policy' }}</title>
-
-        <x-cart-init />
-        <x-favorites-init />
-
-        <!-- Styles / Scripts -->
-        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-            @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @endif
-    </head>
-    <body class="bg-white text-dark">
-        @include('layouts.navigation')
+<x-app-layout>
 
         <section class="py-16 lg:py-24">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,6 +20,4 @@
             </div>
         </section>
 
-        @include('layouts.footer')
-    </body>
-</html>
+</x-app-layout>

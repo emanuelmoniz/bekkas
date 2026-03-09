@@ -1,38 +1,19 @@
-﻿<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+﻿@section('title', config('app.name', 'BEKKAS') . ' - 3D Printing Services')
 
-        <title>{{ config('app.name', 'BEKKAS') }} - 3D Printing Services</title>
+@push('head')
+    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+        @vite(['resources/css/home-splash.css'])
+    @endif
+@endpush
 
-        <!-- Favicons -->
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon/apple-touch-icon.png') }}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon/favicon-32x32.png') }}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon/favicon-16x16.png') }}">
-        <link rel="manifest" href="{{ asset('site.webmanifest') }}">
-        <meta name="theme-color" content="#f4eee4">
+@push('recaptcha')
+    @include('partials.recaptcha-loader')
+@endpush
 
-        <x-cart-init />
-        <x-favorites-init />
-
-        <!-- Styles / Scripts -->
-        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-            @vite(['resources/css/app.css', 'resources/css/home-splash.css', 'resources/js/app.js'])
-        @endif
-
-        <!-- Google reCAPTCHA (loaded only on pages that request it) -->
-        @stack('recaptcha')
-        {{-- always include loader in this standalone template so it can't miss the stack --}}
-        @include('partials.recaptcha-loader')
-    </head>
-    <body class="font-sans bg-light text-dark overflow-hidden" data-splash-active="true">
-        @include('layouts.navigation')
-
-        <!-- HOME SPLASH INTRO -->
-        <div id="home-splash" class="home-splash-overlay" role="dialog" aria-label="{{ config('app.name', 'BEKKAS') }} splash">
-            <img src="{{ asset('images/hero_logo.svg') }}" alt="{{ config('app.name', 'BEKKAS') }}" class="home-splash-logo" />
-        </div>
+<x-app-layout>
+    <div id="home-splash" class="home-splash-overlay" role="dialog" aria-label="{{ config('app.name', 'BEKKAS') }} splash">
+        <img src="{{ asset('images/hero_logo.svg') }}" alt="{{ config('app.name', 'BEKKAS') }}" class="home-splash-logo" />
+    </div>
 
         <!-- BANNER SECTION -->
         @php
@@ -181,9 +162,7 @@
             </div>
         </section>
 
-        @include('layouts.footer')
-
+    @push('scripts')
         @vite('resources/js/contact-tracking.js')
-
-    </body>
-</html>
+    @endpush
+</x-app-layout>

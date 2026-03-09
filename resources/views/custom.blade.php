@@ -1,28 +1,6 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@section('title', config('app.name', 'BEKKAS') . ' - Architecture Services')
 
-        <title>{{ config('app.name', 'BEKKAS') }} - Architecture Services</title>
-
-        <!-- Favicons -->
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon/apple-touch-icon.png') }}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon/favicon-32x32.png') }}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon/favicon-16x16.png') }}">
-        <link rel="manifest" href="{{ asset('site.webmanifest') }}">
-        <meta name="theme-color" content="#f4eee4">
-
-        <x-favorites-init />
-        <x-cart-init />
-
-        <!-- Styles / Scripts -->
-        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-            @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @endif
-    </head>
-    <body class="font-sans bg-white text-dark">
-        @include('layouts.navigation')
+<x-app-layout>
 
         <!-- BANNER SECTION
         <section class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-dark">
@@ -172,6 +150,4 @@
             </div>
         </section>
 
-        @include('layouts.footer')
-    </body>
-</html>
+    </x-app-layout>

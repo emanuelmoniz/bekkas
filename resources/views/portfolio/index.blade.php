@@ -1,50 +1,30 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@section('title', config('app.name', 'BEKKAS') . ' - ' . (t('nav.portfolio') ?: 'Portfolio'))
 
-        <title>{{ config('app.name', 'BEKKAS') }} - {{ t('nav.portfolio') ?: 'Portfolio' }}</title>
+@push('head')
+    @php
+        $pgPrevious   = t('pagination.previous')   ?: 'Previous';
+        $pgNext       = t('pagination.next')        ?: 'Next';
+        $pgNavigation = t('pagination.navigation')  ?: 'Pagination Navigation';
+        $pgShowing    = t('pagination.showing', ['first' => ':first', 'last' => ':last', 'total' => ':total'])
+                        ?: 'Showing :first to :last of :total results';
+    @endphp
+    <script>
+        window.__portfolioProjects = @json(
+            $projects->map(fn ($p) => [
+                'year'        => $p->production_date?->year ?? 0,
+                'materialIds' => $p->materials->pluck('id')->values()->all(),
+            ])
+        );
+        window.__paginationStrings = {
+            previous:   @json($pgPrevious),
+            next:       @json($pgNext),
+            navigation: @json($pgNavigation),
+            showing:    @json($pgShowing),
+        };
+    </script>
+@endpush
 
-        <!-- Favicons -->
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon/apple-touch-icon.png') }}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon/favicon-32x32.png') }}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon/favicon-16x16.png') }}">
-        <link rel="manifest" href="{{ asset('site.webmanifest') }}">
-        <meta name="theme-color" content="#f4eee4">
-
-        <x-favorites-init />
-        <x-cart-init />
-
-        <!-- Styles / Scripts -->
-        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-            @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @endif
-
-        @php
-            $pgPrevious   = t('pagination.previous')   ?: 'Previous';
-            $pgNext       = t('pagination.next')        ?: 'Next';
-            $pgNavigation = t('pagination.navigation')  ?: 'Pagination Navigation';
-            $pgShowing    = t('pagination.showing', ['first' => ':first', 'last' => ':last', 'total' => ':total'])
-                            ?: 'Showing :first to :last of :total results';
-        @endphp
-        <script>
-            window.__portfolioProjects = @json(
-                $projects->map(fn ($p) => [
-                    'year'        => $p->production_date?->year ?? 0,
-                    'materialIds' => $p->materials->pluck('id')->values()->all(),
-                ])
-            );
-            window.__paginationStrings = {
-                previous:   @json($pgPrevious),
-                next:       @json($pgNext),
-                navigation: @json($pgNavigation),
-                showing:    @json($pgShowing),
-            };
-        </script>
-    </head>
-    <body class="bg-white text-dark">
-        @include('layouts.navigation')
+<x-app-layout>
 
         {{-- ──────────────────────────────────────────────────────────────────
              Main Alpine component wraps everything so filter state is shared.
@@ -279,6 +259,4 @@
 
         </div>{{-- end x-data --}}
 
-        @include('layouts.footer')
-    </body>
-</html>
+    </x-app-layout>
