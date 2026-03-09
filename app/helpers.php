@@ -25,15 +25,21 @@ if (! function_exists('t')) {
             $locale = app()->getLocale();
             $fallback = config('app.fallback_locale');
 
+            // Auto-merge default legal replacements for keys under the "legal." namespace.
+            $mergedReplacements = $replacements;
+            if (function_exists('legal_replacements') && str_starts_with($key, 'legal.')) {
+                $mergedReplacements = array_merge(legal_replacements(), $replacements);
+            }
+
             if (isset($all[$locale]) && array_key_exists($key, $all[$locale])) {
-                return apply_t_replacements($all[$locale][$key], $replacements);
+                return apply_t_replacements($all[$locale][$key], $mergedReplacements);
             }
 
             if (isset($all[$fallback]) && array_key_exists($key, $all[$fallback])) {
-                return apply_t_replacements($all[$fallback][$key], $replacements);
+                return apply_t_replacements($all[$fallback][$key], $mergedReplacements);
             }
 
-            return (string) __($key, $replacements);
+            return (string) __($key, $mergedReplacements);
         } catch (\Throwable $e) {
             return (string) __($key, $replacements);
         }
@@ -77,6 +83,44 @@ if (! function_exists('send_mails_enabled')) {
         }
 
         return (bool) (config('mail.enabled', env('APP_EMAILS_ENABLED', true)));
+    }
+}
+
+if (! function_exists('legal_replacements')) {
+    function legal_replacements(): array
+    {
+        // Use config keys only — the configuration service/provider is
+        // responsible for bootstrapping DB values into `config('app.*')`.
+        $company = config('app.name');
+        $legal_name = config('app.legal_name', '');
+        $website = config('app.url', env('APP_URL'));
+        $country = config('app.company_country', '');
+
+        $address_line1 = config('app.company_address_line1');
+        $address_line2 = config('app.company_address_line2');
+        $postal_code = config('app.company_postal_code');
+        $city = config('app.company_city');
+
+        $addressParts = array_filter([
+            $legal_name ?: null,
+            $address_line1 ?? null,
+            $address_line2 ?? null,
+            ($postal_code ?? null) ? (($postal_code ?? '').' '.($city ?? '')) : ($city ?? null),
+            $country ?: null,
+        ]);
+
+        $full = implode(', ', $addressParts);
+        $tin = config('app.company_tin', '');
+        $contact = config('app.company_contact_email', config('mail.from.address'));
+
+        return [
+            'company' => $company,
+            'legal_name' => $legal_name,
+            'website_domain' => $website,
+            'full_address' => $full,
+            'tin' => $tin,
+            'contact_email' => $contact,
+        ];
     }
 }
 

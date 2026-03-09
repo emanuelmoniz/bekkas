@@ -32,7 +32,13 @@
             @endisset
 
             <!-- Flash Messages (single canonical source; supports success|error|warning|info) -->
-            @include('partials.flash')
+            @if($serverFlash)
+                @include('partials.flash')
+            @else
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+                    @include('partials.flash')
+                </div>
+            @endif
 
             <!-- Page Content -->
             <main class="flex-1">

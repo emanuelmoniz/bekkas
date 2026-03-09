@@ -15,6 +15,16 @@ return [
 
     'name' => env('APP_NAME', 'BEKKAS - 3D Printing Studio'),
 
+    /* Company / legal defaults (can be overridden from DB via ConfigurationServiceProvider) */
+    'legal_name' => env('COMPANY_NAME', null),
+    'company_tin' => env('COMPANY_TIN', null),
+    'company_address_line1' => env('COMPANY_ADDRESS_LINE1', null),
+    'company_address_line2' => env('COMPANY_ADDRESS_LINE2', null),
+    'company_postal_code' => env('COMPANY_POSTAL_CODE', null),
+    'company_city' => env('COMPANY_CITY', null),
+    'company_country' => env('COMPANY_COUNTRY', null),
+    'company_contact_email' => env('COMPANY_CONTACT_EMAIL', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

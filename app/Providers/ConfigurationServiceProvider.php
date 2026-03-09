@@ -36,7 +36,7 @@ class ConfigurationServiceProvider extends ServiceProvider
 
             // Mail
             'mail_admin' => ['mail.admin_address'],
-            'mail_contact' => ['mail.contact_address'],
+            'mail_contact' => ['mail.contact_address', 'app.company_contact_email'],
             'smtp_server_host' => ['mail.mailers.smtp.host'],
             'smtp_server_port' => ['mail.mailers.smtp.port'],
             'smtp_username' => ['mail.mailers.smtp.username'],
@@ -85,6 +85,14 @@ class ConfigurationServiceProvider extends ServiceProvider
             'tax_enabled' => ['app.tax_enabled'],
             // Portfolio page visibility
             'is_portfolio_enabled' => ['site.is_portfolio_enabled'],
+            // Legal / company details
+            'company_name' => ['app.legal_name'],
+            'tin' => ['app.company_tin'],
+            'address_line1' => ['app.company_address_line1'],
+            'address_line2' => ['app.company_address_line2'],
+            'postal_code' => ['app.company_postal_code'],
+            'city' => ['app.company_city'],
+            'country_id' => ['app.company_country'],
         ];
 
         foreach ($map as $field => $keys) {
@@ -92,7 +100,13 @@ class ConfigurationServiceProvider extends ServiceProvider
                 continue;
             }
 
-            $value = $cfg->{$field};
+            // For some fields we want to derive a value rather than use the
+            // raw DB column directly (e.g. `country_id` -> country name).
+            if ($field === 'country_id') {
+                $value = $cfg->country?->name ?? null;
+            } else {
+                $value = $cfg->{$field};
+            }
             if ($value === null || $value === '') {
                 continue; // fallback to env/config default
             }
