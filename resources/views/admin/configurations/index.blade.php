@@ -46,6 +46,11 @@
                     <input type="checkbox" name="tax_enabled" value="1" @checked(old('tax_enabled', $c->tax_enabled ?? false)) class="mr-2">
                     <span>Tax enabled</span>
                 </label>
+
+                <label class="inline-flex items-center">
+                    <input type="checkbox" name="is_portfolio_enabled" value="1" @checked(old('is_portfolio_enabled', $c->is_portfolio_enabled ?? true)) class="mr-2">
+                    <span>Portfolio page visible</span>
+                </label>
             </div>
 
             <hr>

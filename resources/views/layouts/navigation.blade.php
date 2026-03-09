@@ -165,7 +165,7 @@
 
                         {{-- Custom (with dropdown) --}}
                         <div class="relative h-full flex items-center" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <x-nav-button :active="request()->routeIs('custom.*') || request()->routeIs('portfolio.*')" @click="window.location.href='{{ route('custom.index') }}'">
+                            <x-nav-button :active="request()->routeIs('custom.*') || (config('site.is_portfolio_enabled', true) && request()->routeIs('portfolio.*'))" @click="window.location.href='{{ route('custom.index') }}'">
                                 {{ t('nav.custom') ?: 'Custom' }}
                             </x-nav-button>
                             <div x-show="open"
@@ -184,9 +184,11 @@
                                     <a href="{{ route('custom.index') }}#request" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">
                                         {{ t('nav.services_prices') ?: 'Services & Prices' }}
                                     </a>
-                                    <a href="{{ route('portfolio.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">
-                                        {{ t('nav.portfolio') ?: 'Portfolio' }}
-                                    </a>
+                                    @if(config('site.is_portfolio_enabled', true))
+                                        <a href="{{ route('portfolio.index') }}" class="block px-8 py-3 text-sm text-grey-dark hover:bg-grey-light">
+                                            {{ t('nav.portfolio') ?: 'Portfolio' }}
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -500,8 +502,8 @@
                     </div>
                 @endif
                 
-                <div x-data="{ open: {{ (request()->routeIs('custom.*') || request()->routeIs('portfolio.*')) ? 'true' : 'false' }} }">
-                    <button @click="open = !open" class="{{ $toggleBase }} {{ (request()->routeIs('custom.*') || request()->routeIs('portfolio.*')) ? $toggleActive : $toggleInactive }}">
+                <div x-data="{ open: {{ (request()->routeIs('custom.*') || (config('site.is_portfolio_enabled', true) && request()->routeIs('portfolio.*'))) ? 'true' : 'false' }} }">
+                    <button @click="open = !open" class="{{ $toggleBase }} {{ (request()->routeIs('custom.*') || (config('site.is_portfolio_enabled', true) && request()->routeIs('portfolio.*'))) ? $toggleActive : $toggleInactive }}">
                         <span>{{ t('nav.custom') ?: 'Custom' }}</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -514,9 +516,11 @@
                         <x-responsive-nav-link :href="route('custom.index') . '#requests'" :active="false">
                             {{ t('nav.services_prices') ?: 'Services & Prices' }}
                         </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('portfolio.index')" :active="request()->routeIs('portfolio.*')">
-                            {{ t('nav.portfolio') ?: 'Portfolio' }}
-                        </x-responsive-nav-link>
+                        @if(config('site.is_portfolio_enabled', true))
+                            <x-responsive-nav-link :href="route('portfolio.index')" :active="request()->routeIs('portfolio.*')">
+                                {{ t('nav.portfolio') ?: 'Portfolio' }}
+                            </x-responsive-nav-link>
+                        @endif
                     </div>
                 </div>
                 <a href="{{ route('about') }}"

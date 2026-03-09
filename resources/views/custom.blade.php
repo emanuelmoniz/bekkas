@@ -127,27 +127,28 @@
         </section>
 
         <!-- PROJECTS SECTION -->
-        <section class="py-16 lg:py-24 bg-light">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        @if(config('site.is_portfolio_enabled', true))
+            <section class="py-16 lg:py-24 bg-light">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                <h2 class="uppercase text-4xl font-bold mb-12 text-center text-dark">
-                    {{ t('custom.projects.title') ?: 'Our past Projects' }}
-                </h2>
+                    <h2 class="uppercase text-4xl font-bold mb-12 text-center text-dark">
+                        {{ t('custom.projects.title') ?: 'Our past Projects' }}
+                    </h2>
 
-                <x-project-slider
-                    :isFeatured="true"
-                    :max="8"
-                    order="newest"
-                />
+                    <x-project-slider
+                        :isFeatured="true"
+                        :max="8"
+                        order="newest"
+                    />
 
-                <div class="mt-10 flex justify-center">
-                    <a href="{{ route('portfolio.index') }}"
-                       class="inline-flex items-center gap-2 border-2 border-dark text-dark hover:bg-dark hover:text-white px-8 py-3 rounded-full uppercase font-semibold text-sm transition-colors duration-200">
-                        {{ t('custom.projects.portfolio_button') ?: 'Check our full portfolio' }}
-                    </a>
+                    <div class="mt-10 flex justify-center">
+                            <a href="{{ route('portfolio.index') }}"
+                            class="inline-flex items-center gap-2 border-2 border-dark text-dark hover:bg-dark hover:text-white px-8 py-3 rounded-full uppercase font-semibold text-sm transition-colors duration-200">
+                                {{ t('custom.projects.portfolio_button') ?: 'Check our full portfolio' }}
+                            </a>
+                    </div>
+
                 </div>
-
-            </div>
-        </section>
-
+            </section>
+        @endif
     </x-app-layout>

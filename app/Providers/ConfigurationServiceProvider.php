@@ -83,6 +83,8 @@ class ConfigurationServiceProvider extends ServiceProvider
 
             // Tax feature toggle (DB override for APP_TAX_ENABLED)
             'tax_enabled' => ['app.tax_enabled'],
+            // Portfolio page visibility
+            'is_portfolio_enabled' => ['site.is_portfolio_enabled'],
         ];
 
         foreach ($map as $field => $keys) {

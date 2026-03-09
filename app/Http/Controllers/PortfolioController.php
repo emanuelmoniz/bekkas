@@ -8,6 +8,10 @@ class PortfolioController extends Controller
 {
     public function index()
     {
+        if (! config('site.is_portfolio_enabled', true)) {
+            abort(404);
+        }
+
         $projects = Project::with(['photos', 'translations', 'materials.translations'])
             ->where('is_active', true)
             ->orderByDesc('production_date')
@@ -32,6 +36,10 @@ class PortfolioController extends Controller
 
     public function show(Project $project)
     {
+        if (! config('site.is_portfolio_enabled', true)) {
+            abort(404);
+        }
+
         if (! $project->is_active) {
             abort(404);
         }

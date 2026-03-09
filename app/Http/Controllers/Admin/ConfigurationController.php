@@ -25,6 +25,7 @@ class ConfigurationController extends Controller
             'send_mails_enabled' => 'nullable|boolean',
             'easypay_enabled' => 'nullable|boolean',
             'tax_enabled' => 'nullable|boolean',
+            'is_portfolio_enabled' => 'nullable|boolean',
             'is_maintenance' => 'nullable|boolean',
             'maintenance_title' => 'nullable|string',
             'maintenance_subtitle' => 'nullable|string',
@@ -71,6 +72,7 @@ class ConfigurationController extends Controller
         $data['send_mails_enabled'] = $request->has('send_mails_enabled') ? (bool) $request->input('send_mails_enabled') : false;
         $data['easypay_enabled'] = $request->has('easypay_enabled') ? (bool) $request->input('easypay_enabled') : false;
         $data['tax_enabled'] = $request->has('tax_enabled') ? (bool) $request->input('tax_enabled') : false;
+        $data['is_portfolio_enabled'] = $request->has('is_portfolio_enabled') ? (bool) $request->input('is_portfolio_enabled') : false;
         $data['google_socialite_enabled'] = $request->has('google_socialite_enabled') ? (bool) $request->input('google_socialite_enabled') : false;
         $data['microsoft_socialite_enabled'] = $request->has('microsoft_socialite_enabled') ? (bool) $request->input('microsoft_socialite_enabled') : false;
         $data['is_maintenance'] = $request->has('is_maintenance') ? (bool) $request->input('is_maintenance') : false;
