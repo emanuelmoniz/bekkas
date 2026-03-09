@@ -1,5 +1,3 @@
-@include('partials.flash')
-
 <form id="contact-form" method="POST" action="{{ route('contact.store') }}"
       data-msg-name-required="{{ t('validation.name_required') ?: 'Please enter your name.' }}"
       data-msg-email-invalid="{{ t('validation.email_invalid') ?: 'Please enter a valid email address.' }}"
@@ -42,10 +40,12 @@
         @enderror
     </div>
 
-    <div class="mb-6 g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
-    @error('g-recaptcha-response')
-        <p class="text-primary text-sm mt-1">{{ $message }}</p>
-    @enderror
+    <div class="mb-6">
+        <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+        @error('g-recaptcha-response')
+            <p class="text-primary text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
 
     <x-primary-cta type="submit">
         {{ t('contact.send') ?: 'Send Message' }}

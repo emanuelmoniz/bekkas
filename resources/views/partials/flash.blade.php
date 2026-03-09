@@ -20,7 +20,7 @@
     }
 
     $hasServerMessage = (bool) $serverMessage;
-    $wrapInLayout = $hasServerMessage && empty($forceInline);
+    $wrapInLayout = empty($forceInline);
     $escapedServerMessage = $hasServerMessage ? $serverMessage : '';
 @endphp
 
@@ -62,9 +62,10 @@
     x-cloak
     @unless($hasServerMessage) style="display:none" @endunless
     x-bind:aria-hidden="!(Alpine.store('flash').show || localShow)"
+    @if($wrapInLayout) class="sticky top-16 z-40 w-full bg-white border-b border-grey-light" @endif
 >
     @if($wrapInLayout)
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
     @endif
 
     @php $flashBase = 'w-full px-4 py-3 rounded relative pr-12 border border-grey-light border-l-4'; @endphp
