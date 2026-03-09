@@ -165,7 +165,7 @@
                                 </a>
                             </div>
                             <div>
-                                <a href="https://www.makerworld.com/en/makers/bekkas" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium hover:text-accent-primary/90 no-underline">
+                                <a href="https://makerworld.com/en/@AZSeashell" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:text-accent-primary font-medium hover:text-accent-primary/90 no-underline">
                                     Makerworld
                                 </a>
                             </div>
