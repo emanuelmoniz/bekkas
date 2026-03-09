@@ -19,7 +19,7 @@
     </head>
     @php $serverFlash = session('success') ?? session('error') ?? session('warning') ?? session('info'); @endphp
     <body class="font-sans antialiased {{ request()->is('admin*') ? 'admin-view' : 'client-view' }}" @if($serverFlash) data-server-flash="{{ e($serverFlash) }}" @endif>
-        <div class="min-h-screen bg-light">
+        <div class="min-h-screen bg-light flex flex-col">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -35,12 +35,12 @@
             @include('partials.flash')
 
             <!-- Page Content -->
-            <main>
+            <main class="flex-1">
                 {{ $slot }}
             </main>
-        </div>
 
-        @include('layouts.footer')
+            @include('layouts.footer')
+        </div>
         @stack('scripts')
     </body>
 </html>
