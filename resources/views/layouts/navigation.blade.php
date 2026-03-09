@@ -257,15 +257,17 @@
                         </div>
                     @endif
 
-                    <!-- Favorites Icon -->
-                    <div x-data="{}" x-show="$store.favorites.count > 0" class="relative" style="display: none;">
-                        <a href="{{ route('favorites.index') }}" class="flex items-center text-grey-dark hover:text-dark hover:text-primary/90 no-underline" aria-label="Favorites">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" stroke="none">
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                            </svg>
-                            <span class="absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-status-error text-white text-xs px-1.5 py-0.5 min-w-[1.25rem]" x-text="$store.favorites.count"></span>
-                        </a>
-                    </div>
+                    @if(config('app.store_enabled'))
+                        <!-- Favorites Icon -->
+                        <div x-data="{}" x-show="$store.favorites.count > 0" class="relative" style="display: none;">
+                            <a href="{{ route('favorites.index') }}" class="flex items-center text-grey-dark hover:text-dark hover:text-primary/90 no-underline" aria-label="Favorites">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" stroke="none">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+                                <span class="absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-status-error text-white text-xs px-1.5 py-0.5 min-w-[1.25rem]" x-text="$store.favorites.count"></span>
+                            </a>
+                        </div>
+                    @endif
 
                     <!-- Cart Icon -->
                     <div x-data="{}" x-show="$store.cart.count > 0 && {{ config('app.store_enabled') ? 'true' : 'false' }}" class="relative" style="display: none;">
@@ -533,11 +535,13 @@
                     {{ t('nav.contact') ?: 'Contact' }}
                 </a>
                 <div class="border-y border-grey-light">
-                    <div x-show="$store.favorites.count > 0" style="display: none;">
-                        <x-responsive-nav-link :href="route('favorites.index')" :active="request()->routeIs('favorites.*')">
-                            {{ t('nav.favorites') ?: 'Favorites' }} (<span x-text="$store.favorites.count"></span>)
-                        </x-responsive-nav-link>
-                    </div>
+                    @if(config('app.store_enabled'))
+                        <div x-show="$store.favorites.count > 0" style="display: none;">
+                            <x-responsive-nav-link :href="route('favorites.index')" :active="request()->routeIs('favorites.*')">
+                                {{ t('nav.favorites') ?: 'Favorites' }} (<span x-text="$store.favorites.count"></span>)
+                            </x-responsive-nav-link>
+                        </div>
+                    @endif
                     
                     @php $cartCount = array_sum(array_column(session('cart', []), 'quantity')); @endphp
                     <div x-data="{}" x-show="$store.cart.count > 0 && {{ config('app.store_enabled') ? 'true' : 'false' }}">

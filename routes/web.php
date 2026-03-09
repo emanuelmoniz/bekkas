@@ -118,14 +118,15 @@ Route::post('/cart/remove', [CartController::class, 'remove'])
 
 // Favorites
 Route::get('/favorites', [FavoriteController::class, 'index'])
+    ->middleware(\App\Http\Middleware\EnsureStoreEnabled::class)
     ->name('favorites.index');
 
 Route::post('/favorites/toggle/{product:id}', [FavoriteController::class, 'toggle'])
-    ->middleware('throttle:30,1')
+    ->middleware(['throttle:30,1', \App\Http\Middleware\EnsureStoreEnabled::class])
     ->name('favorites.toggle');
 
 Route::post('/favorites/remove/{product}', [FavoriteController::class, 'remove'])
-    ->middleware('throttle:30,1')
+    ->middleware(['throttle:30,1', \App\Http\Middleware\EnsureStoreEnabled::class])
     ->name('favorites.remove');
 
 /*
