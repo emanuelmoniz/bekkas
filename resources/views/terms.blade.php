@@ -7,19 +7,13 @@
             <div class="max-w-4xl mx-auto">
                 <h1 class="text-4xl font-bold mb-6">{{ t('legal.terms.title') ?: 'Service Terms | Termos de Serviço' }}</h1>
 
-                <p>{{ t('legal.terms.content') ?: 'These Terms of Service govern your use of the site. By creating an account and using our services you agree to comply with these terms.' }}</p>
+                <p>{!! nl2br(e(t('legal.terms.content', ['company' => config('app.name')] ) ?: 'These Terms of Service govern your use of the site. By creating an account and using our services you agree to comply with these terms.')) !!}</p>
 
-                <h2 class="mt-8 text-2xl font-semibold">{{ t('legal.terms.section_usage_title') ?: 'Use of the Service' }}</h2>
-                <p>{{ t('legal.terms.section_usage') ?: 'You agree to use the service in compliance with applicable laws and not to misuse the platform. We may suspend or terminate accounts that violate these terms.' }}</p>
+                <h2 id="shipping" class="mt-8 text-2xl font-semibold">{{ t('footer.shipping_policy') ?: 'Shipping Policy' }}</h2>
+                <div class="prose mt-4">{!! nl2br(e(t('legal.shipping_policy', ['company' => config('app.name')]) ?: 'Shipping policy text.')) !!}</div>
 
-                <h2 class="mt-8 text-2xl font-semibold">{{ t('legal.terms.section_limitation_title') ?: 'Limitation of Liability' }}</h2>
-                <p>{{ t('legal.terms.section_limitation') ?: 'Our liability is limited as permitted by law. We provide services on an as-is basis and disclaim certain warranties.' }}</p>
-
-                <h2 id="returns" class="mt-8 text-2xl font-semibold">{{ t('legal.terms.section_returns_title') ?: 'Return and Refunds Policy | Política de Devoluções e Reembolsos' }}</h2>
-                <p>{{ t('legal.terms.section_returns') ?: 'Description of the return and refunds policy.' }}</p>
-
-                <h2 id="shipping" class="mt-8 text-2xl font-semibold">{{ t('legal.terms.section_shipping_title') ?: 'Shipping Policy | Politica de Envios' }}</h2>
-                <p>{{ t('legal.terms.section_shipping') ?: 'Description of the shipping policy.' }}</p>
+                <h2 id="returns" class="mt-8 text-2xl font-semibold">{{ t('footer.return_refunds') ?: 'Return and Refunds Policy' }}</h2>
+                <div class="prose mt-4">{!! nl2br(e(t('legal.returns_policy', ['company' => config('app.name')]) ?: 'Returns policy text.')) !!}</div>
 
                 <p class="mt-8 text-sm text-grey-dark">{{ t('legal.terms.last_updated') ?: 'Last updated: February 2026' }}</p>
             </div>
