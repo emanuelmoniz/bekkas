@@ -56,6 +56,13 @@ class Configuration extends Model
         'easypay_payment_methods',
         'easypay_session_ttl',
         'easypay_mb_ttl',
+        'company_name',
+        'tin',
+        'address_line1',
+        'address_line2',
+        'postal_code',
+        'city',
+        'country_id',
         'user_id',
     ];
 
@@ -75,5 +82,10 @@ class Configuration extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
     }
 }

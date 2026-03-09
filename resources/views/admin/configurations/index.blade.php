@@ -82,6 +82,45 @@
 
             <hr>
 
+            <h3 class="font-semibold mt-6">Address</h3>
+            <div class="grid grid-cols-2 gap-4 mt-2">
+                <div>
+                    <label class="block mb-2">Company name</label>
+                    <input name="company_name" value="{{ old('company_name', $c->company_name ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+                </div>
+                <div>
+                    <label class="block mb-2">TIN</label>
+                    <input name="tin" value="{{ old('tin', $c->tin ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+                </div>
+                <div>
+                    <label class="block mb-2">Address line 1</label>
+                    <input name="address_line1" value="{{ old('address_line1', $c->address_line1 ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+                </div>
+                <div>
+                    <label class="block mb-2">Address line 2</label>
+                    <input name="address_line2" value="{{ old('address_line2', $c->address_line2 ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+                </div>
+                <div>
+                    <label class="block mb-2">Postal code</label>
+                    <input name="postal_code" value="{{ old('postal_code', $c->postal_code ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+                </div>
+                <div>
+                    <label class="block mb-2">City</label>
+                    <input name="city" value="{{ old('city', $c->city ?? '') }}" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+                </div>
+                <div>
+                    <label class="block mb-2">Country</label>
+                    <select name="country_id" class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
+                        <option value="">—</option>
+                        @foreach($countries as $country)
+                            <option value="{{ $country->id }}" @selected((string) old('country_id', (string) ($c->country_id ?? '')) === (string) $country->id)>{{ $country->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <hr>
+
             <h3 class="font-semibold">Email</h3>
             <div class="grid grid-cols-2 gap-4">
                 <div>

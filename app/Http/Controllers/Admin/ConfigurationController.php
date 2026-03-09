@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Configuration;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +14,9 @@ class ConfigurationController extends Controller
     {
         $last = Configuration::latest()->first();
 
-        return view('admin.configurations.index', ['config' => $last]);
+        $countries = Country::orderByTranslatedName()->get();
+
+        return view('admin.configurations.index', ['config' => $last, 'countries' => $countries]);
     }
 
     public function update(Request $request)
@@ -65,6 +68,13 @@ class ConfigurationController extends Controller
             'easypay_payment_methods' => 'nullable|string',
             'easypay_session_ttl' => 'nullable|integer',
             'easypay_mb_ttl' => 'nullable|integer',
+            'company_name' => 'nullable|string',
+            'tin' => 'nullable|string',
+            'address_line1' => 'nullable|string',
+            'address_line2' => 'nullable|string',
+            'postal_code' => 'nullable|string',
+            'city' => 'nullable|string',
+            'country_id' => 'nullable|exists:countries,id',
         ]);
 
         // Normalize boolean fields (checkboxes may be absent)
