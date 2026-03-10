@@ -17,9 +17,14 @@
         </p>
     </header>
 
+    {{-- Show validation errors for the password update form (uses the updatePassword error bag) --}}
+    <x-validation-errors-alert :errorBag="$errors->getBag('updatePassword')" :fields="['current_password','password','password_confirmation']" />
+
     <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('put')
+
+        <input type="email" name="email" value="{{ auth()->user()->email }}" autocomplete="username" class="sr-only" tabindex="-1">
 
         @if(auth()->user()->hasPassword())
         <div>

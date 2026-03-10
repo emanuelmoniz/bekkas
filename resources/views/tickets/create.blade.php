@@ -1,10 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-grey-dark leading-tight">
-            {{ t('tickets.open_ticket') ?: 'Open Ticket' }}
-        </h2>
-    </x-slot>
-
     @php
         $descriptions = $categories->mapWithKeys(fn ($cat) => [
             $cat->id => optional($cat->translation())->description,
