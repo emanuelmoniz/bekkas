@@ -32,8 +32,8 @@ class TicketMessageController extends Controller
             'message.required' => t('tickets.message_required') ?: 'Please enter a message.',
         ];
 
-        // If reCAPTCHA is configured, require it for all users on the client-facing endpoint
-        if (! empty(config('services.recaptcha.secret_key'))) {
+        // If reCAPTCHA is configured, require it for non-admin users only
+        if (! empty(config('services.recaptcha.secret_key')) && ! ($user && $user->hasRole('admin'))) {
             $rules['g-recaptcha-response'] = ['required', new Recaptcha];
             $messages['g-recaptcha-response.required'] = t('tickets.recaptcha_required') ?: 'Please verify that you are not a robot.';
         }
