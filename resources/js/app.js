@@ -11,6 +11,7 @@ window.Alpine = Alpine;
 // import the carousel helper for the home banner; it registers itself globally
 import './home-banner';
 import './contact-validation';
+import './auth-validation';
 import './home-splash';
 import './section-animations';
 import { favoriteToggle } from './favorite-toggle';

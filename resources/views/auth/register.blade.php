@@ -1,9 +1,14 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}"
+          novalidate
+          data-auth-validation="true"
+            data-has-server-errors="{{ $errors->any() ? '1' : '0' }}"
+          data-msg-email-invalid="{{ t('validation.email_invalid') ?: 'Please enter a valid email address.' }}"
+          data-msg-validation-failed="{{ t('contact.validation_failed') ?: 'Please correct the errors below and try again.' }}">
         @csrf
 
         <!-- Social login -->
-        <div class="mb-4 text-center space-y-2">
+        <div class="mb-4 text-center space-y-2 mt-3">
             @if(config('services.google.enabled') && \Illuminate\Support\Facades\Route::has('login.provider'))
                 <a href="{{ route('login.provider', 'google') }}" class="inline-flex items-center justify-center w-full border rounded-full uppercase px-8 py-3 bg-white hover:bg-white">
                     <img src="/images/google-logo.svg" alt="Google" class="me-2 h-5 w-5">
@@ -112,13 +117,16 @@
             <x-input-error :messages="$errors->get('accept_privacy')" class="mt-2" />
         </div>
 
+        <div class="mt-4">
+            <x-primary-cta fullWidth>
+                {{ t('auth.register') ?: 'Register' }}
+            </x-primary-cta>
+        </div>
+
+        <div class="mt-3 text-center">
             <a class="text-sm text-accent-primary hover:text-accent-primary/90 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" href="{{ route('login') }}">
                 {{ t('auth.already_registered') ?: 'Already registered?' }}
             </a>
-
-            <x-default-button>
-                {{ t('auth.register') ?: 'Register' }}
-            </x-default-button>
         </div>
     </form>
 

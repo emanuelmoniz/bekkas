@@ -3,7 +3,7 @@
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <!-- Social login -->
-    <div class="mb-4 text-center space-y-2">
+    <div class="mb-4 text-center space-y-2 mt-3">
         @if(config('services.google.enabled') && \Illuminate\Support\Facades\Route::has('login.provider'))
             <a href="{{ route('login.provider', 'google') }}" class="inline-flex items-center justify-center w-full border rounded-full uppercase px-8 py-3 bg-white hover:bg-white">
                 <img src="/images/google-logo.svg" alt="Google" class="me-2 h-5 w-5">
@@ -41,7 +41,12 @@
         </form>
     @endif
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('login') }}"
+          novalidate
+          data-auth-validation="true"
+            data-has-server-errors="{{ $errors->any() ? '1' : '0' }}"
+          data-msg-email-invalid="{{ t('validation.email_invalid') ?: 'Please enter a valid email address.' }}"
+          data-msg-validation-failed="{{ t('contact.validation_failed') ?: 'Please correct the errors below and try again.' }}">
         @csrf
 
         <!-- Email Address -->
@@ -71,17 +76,19 @@
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="text-sm text-accent-primary hover:text-accent-primary/90 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" href="{{ route('password.request') }}">
-                    {{ t('auth.forgot_password') ?: 'Forgot your password?' }}
-                </a>
-            @endif
-
-            <x-default-button>
+        <div class="mt-4">
+            <x-primary-cta fullWidth>
                 {{ t('auth.login') ?: 'Log in' }}
-            </x-default-button>
+            </x-primary-cta>
         </div>
+
+        @if (Route::has('password.request'))
+            <div class="mt-3">
+                <x-optional-cta as="a" :href="route('password.request')" fullWidth>
+                    {{ t('auth.forgot_password') ?: 'Forgot your password?' }}
+                </x-optional-cta>
+            </div>
+        @endif
 
         <div class="mt-4 text-center">
             <span class="text-sm text-grey-dark">{{ t('auth.not_a_user') ?: 'Not a user?' }}</span>
