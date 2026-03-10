@@ -54,7 +54,7 @@
                     <div
                         x-show="description"
                         x-transition
-                        class="mt-3 p-4 bg-light border border-grey-medium rounded-lg text-sm text-grey-dark whitespace-pre-line"
+                        class="mt-3 p-4 bg-status-info/10 border border-status-info rounded-lg text-sm text-status-info whitespace-pre-line"
                         x-text="description"
                     ></div>
                 </div>

@@ -19,6 +19,12 @@
         }
     }
 
+    // If there is no explicit server flash, surface the first validation error
+    if (! $serverMessage && isset($errors) && $errors->any()) {
+        $serverMessage = $errors->first();
+        $serverType = 'error';
+    }
+
     $hasServerMessage = (bool) $serverMessage;
     $wrapInLayout = empty($forceInline);
     $escapedServerMessage = $hasServerMessage ? $serverMessage : '';

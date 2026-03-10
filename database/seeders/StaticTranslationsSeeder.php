@@ -1080,8 +1080,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'custom.features.support_desc', 'locale' => 'en-UK', 'value' => 'Dedicated support from design consultation to final delivery.', 'created_at' => $now, 'updated_at' => $now],
 
             // Modeling bullets
-            ['key' => 'custom.features.modeling_b1', 'locale' => 'en-UK', 'value' => 'FreeCad | Fusion | Revit | Archicad', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.features.modeling_b1', 'locale' => 'pt-PT', 'value' => 'FreeCad | Fusion | Revit | Archicad', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.modeling_b1', 'locale' => 'en-UK', 'value' => 'FreeCad | Fusion | Revit ', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.features.modeling_b1', 'locale' => 'pt-PT', 'value' => 'FreeCad | Fusion | Revit ', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.features.modeling_b2', 'locale' => 'en-UK', 'value' => 'Blender | Archicad (soon)', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.features.modeling_b2', 'locale' => 'pt-PT', 'value' => 'Blender | Archicad (em breve)', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.features.modeling_b3', 'locale' => 'en-UK', 'value' => 'Check with us other software', 'created_at' => $now, 'updated_at' => $now],
@@ -1106,13 +1106,13 @@ class StaticTranslationsSeeder extends Seeder
             // custom.request — 3-service-card section
             ['key' => 'custom.request.title',        'locale' => 'pt-PT', 'value' => 'Serviços e Preços', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.title',        'locale' => 'en-UK', 'value' => 'Services and Pricing', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.subtitle',      'locale' => 'pt-PT', 'value' => 'Escolha o serviço que melhor se adapta à sua situação. Cada opção abre um ticket com a categoria já selecionada.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.subtitle',      'locale' => 'pt-PT', 'value' => 'Escolha o serviço que melhor se adapta à sua situação. Cada opção abre um pedido com a categoria já selecionada.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle',      'locale' => 'en-UK', 'value' => 'Choose the service that best matches your situation. Each option opens a ticket with the right category already selected.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle1',     'locale' => 'pt-PT', 'value' => 'Escolha o serviço que melhor se adapta à sua necessidade.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle1',     'locale' => 'en-UK', 'value' => 'Choose the service that best matches your needs.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle2',     'locale' => 'pt-PT', 'value' => 'Leia atentamente as caracteristicas e informações de cada opção.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle2',     'locale' => 'en-UK', 'value' => 'Read carefully the features and informations of each option.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.subtitle3',     'locale' => 'pt-PT', 'value' => 'Cada opção abrirá um ticket com o serviço já selecionado.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.subtitle3',     'locale' => 'pt-PT', 'value' => 'Cada opção abrirá um pedido com o serviço já selecionado.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle3',     'locale' => 'en-UK', 'value' => 'Each option opens a ticket with the right service already selected.', 'created_at' => $now, 'updated_at' => $now],
 
             // Card 1 — R&D
@@ -1177,7 +1177,7 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.new', 'locale' => 'en-UK', 'value' => 'New Ticket', 'created_at' => $now, 'updated_at' => $now],
 
             // Ticket create form
-            ['key' => 'tickets.open_ticket', 'locale' => 'pt-PT', 'value' => 'Abrir Ticket', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.open_ticket', 'locale' => 'pt-PT', 'value' => 'Abrir Pedido', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.open_ticket', 'locale' => 'en-UK', 'value' => 'Open Ticket', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.category', 'locale' => 'pt-PT', 'value' => 'Categoria', 'created_at' => $now, 'updated_at' => $now],
@@ -1198,7 +1198,7 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.cancel', 'locale' => 'pt-PT', 'value' => 'Cancelar', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.cancel', 'locale' => 'en-UK', 'value' => 'Cancel', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'tickets.submit', 'locale' => 'pt-PT', 'value' => 'Abrir Ticket', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.submit', 'locale' => 'pt-PT', 'value' => 'Abrir Pedido', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.submit', 'locale' => 'en-UK', 'value' => 'Open Ticket', 'created_at' => $now, 'updated_at' => $now],
 
             // Ticket validation messages
@@ -1224,10 +1224,10 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.recaptcha_required', 'locale' => 'en-UK', 'value' => 'Please verify that you are not a robot.', 'created_at' => $now, 'updated_at' => $now],
 
             // Ticket index page
-            ['key' => 'tickets.index_title', 'locale' => 'pt-PT', 'value' => 'Tickets', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.index_title', 'locale' => 'pt-PT', 'value' => 'Pedidos', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.index_title', 'locale' => 'en-UK', 'value' => 'Tickets', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'tickets.ticket_id', 'locale' => 'pt-PT', 'value' => 'ID do Ticket', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.ticket_id', 'locale' => 'pt-PT', 'value' => 'ID do Pedido', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.ticket_id', 'locale' => 'en-UK', 'value' => 'Ticket ID', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.search_title', 'locale' => 'pt-PT', 'value' => 'Pesquisar título', 'created_at' => $now, 'updated_at' => $now],
@@ -1254,11 +1254,11 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.last_update', 'locale' => 'pt-PT', 'value' => 'Última Atualização', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.last_update', 'locale' => 'en-UK', 'value' => 'Last Update', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'tickets.no_tickets', 'locale' => 'pt-PT', 'value' => 'Nenhum ticket encontrado.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.no_tickets', 'locale' => 'pt-PT', 'value' => 'Nenhum pedido encontrado.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.no_tickets', 'locale' => 'en-UK', 'value' => 'No tickets found.', 'created_at' => $now, 'updated_at' => $now],
 
             // Ticket show page
-            ['key' => 'tickets.back_to_tickets', 'locale' => 'pt-PT', 'value' => 'Voltar aos tickets', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.back_to_tickets', 'locale' => 'pt-PT', 'value' => 'Voltar aos pedidos', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.back_to_tickets', 'locale' => 'en-UK', 'value' => 'Back to tickets', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.mark_as_unread', 'locale' => 'pt-PT', 'value' => 'Marcar como não lido', 'created_at' => $now, 'updated_at' => $now],
@@ -1276,13 +1276,13 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.close_reason', 'locale' => 'pt-PT', 'value' => 'Motivo do encerramento', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.close_reason', 'locale' => 'en-UK', 'value' => 'Close reason', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'tickets.close_ticket', 'locale' => 'pt-PT', 'value' => 'Fechar Ticket', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.close_ticket', 'locale' => 'pt-PT', 'value' => 'Fechar Pedido', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.close_ticket', 'locale' => 'en-UK', 'value' => 'Close Ticket', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.reopen_reason', 'locale' => 'pt-PT', 'value' => 'Motivo da reabertura', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.reopen_reason', 'locale' => 'en-UK', 'value' => 'Reopen reason', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'tickets.reopen_ticket', 'locale' => 'pt-PT', 'value' => 'Reabrir Ticket', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.reopen_ticket', 'locale' => 'pt-PT', 'value' => 'Reabrir Pedido', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.reopen_ticket', 'locale' => 'en-UK', 'value' => 'Reopen Ticket', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.system', 'locale' => 'pt-PT', 'value' => 'Sistema', 'created_at' => $now, 'updated_at' => $now],
@@ -1295,23 +1295,23 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.new_message', 'locale' => 'en-UK', 'value' => 'New message', 'created_at' => $now, 'updated_at' => $now],
 
             // Ticket email notifications
-            ['key' => 'tickets.email.subject', 'locale' => 'pt-PT', 'value' => 'Ticket #:uuid – :event', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.subject', 'locale' => 'pt-PT', 'value' => 'Pedido #:uuid – :event', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.subject', 'locale' => 'en-UK', 'value' => 'Ticket #:uuid – :event', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.email.event.new_message', 'locale' => 'en-UK', 'value' => 'New message', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.event.new_message', 'locale' => 'pt-PT', 'value' => 'Nova mensagem', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.email.event.created', 'locale' => 'en-UK', 'value' => 'New ticket created', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'tickets.email.event.created', 'locale' => 'pt-PT', 'value' => 'Novo ticket criado', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.event.created', 'locale' => 'pt-PT', 'value' => 'Novo pedido criado', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.email.event.admin_update', 'locale' => 'en-UK', 'value' => 'Administrative update', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.event.admin_update', 'locale' => 'pt-PT', 'value' => 'Atualização administrativa', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.email.event.closed', 'locale' => 'en-UK', 'value' => 'Ticket closed', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'tickets.email.event.closed', 'locale' => 'pt-PT', 'value' => 'Ticket fechado', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.event.closed', 'locale' => 'pt-PT', 'value' => 'Pedido fechado', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.email.event.reopened', 'locale' => 'en-UK', 'value' => 'Ticket reopened', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'tickets.email.event.reopened', 'locale' => 'pt-PT', 'value' => 'Ticket reaberto', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.event.reopened', 'locale' => 'pt-PT', 'value' => 'Pedido reaberto', 'created_at' => $now, 'updated_at' => $now],
 
             // Orders email translations
             ['key' => 'orders.email.subject', 'locale' => 'pt-PT', 'value' => 'Encomenda #:order_number – :event', 'created_at' => $now, 'updated_at' => $now],
@@ -1360,10 +1360,10 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.email.greeting', 'locale' => 'pt-PT', 'value' => 'Olá :name,', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.greeting', 'locale' => 'en-UK', 'value' => 'Hello :name,', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'tickets.email.update_intro', 'locale' => 'pt-PT', 'value' => 'Existe uma atualização num ticket em que está envolvido.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.update_intro', 'locale' => 'pt-PT', 'value' => 'Existe uma atualização num pedido em que está envolvido.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.update_intro', 'locale' => 'en-UK', 'value' => 'There is an update on a ticket you are involved in.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'tickets.email.ticket_label', 'locale' => 'pt-PT', 'value' => 'Ticket', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.ticket_label', 'locale' => 'pt-PT', 'value' => 'Pedido', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.ticket_label', 'locale' => 'en-UK', 'value' => 'Ticket', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.email.status_label', 'locale' => 'pt-PT', 'value' => 'Estado', 'created_at' => $now, 'updated_at' => $now],
@@ -1375,7 +1375,7 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.email.message_label', 'locale' => 'pt-PT', 'value' => 'Mensagem', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.message_label', 'locale' => 'en-UK', 'value' => 'Message', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'tickets.email.view_button', 'locale' => 'pt-PT', 'value' => 'Ver Ticket', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.view_button', 'locale' => 'pt-PT', 'value' => 'Ver Pedido', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.view_button', 'locale' => 'en-UK', 'value' => 'View Ticket', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.email.auto_sent', 'locale' => 'pt-PT', 'value' => 'Este email foi enviado automaticamente.', 'created_at' => $now, 'updated_at' => $now],
