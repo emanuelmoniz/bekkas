@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -183,5 +184,75 @@ class AuthTest extends TestCase
             ->assertRedirect('/');
 
         $this->assertGuest();
+    }
+
+    public function test_password_reset_notification_locale_prefers_logged_in_user_language()
+    {
+        Notification::fake();
+
+        $user = User::factory()->create([
+            'email' => 'locale-auth@example.com',
+            'language' => 'en-UK',
+        ]);
+
+        config(['app.locale' => 'pt-PT']);
+        session(['locale' => 'pt-PT']);
+
+        $this->actingAs($user);
+        $this->post(route('password.email'), ['email' => $user->email])->assertSessionHas('status');
+
+        Notification::assertSentTo(
+            $user,
+            \App\Notifications\ResetPasswordNotification::class,
+            function ($notification) {
+                return $notification->locale === 'en-UK';
+            }
+        );
+    }
+
+    public function test_password_reset_notification_locale_uses_session_when_guest()
+    {
+        Notification::fake();
+
+        $user = User::factory()->create([
+            'email' => 'locale-guest@example.com',
+            'language' => 'pt-PT',
+        ]);
+
+        config(['app.locale' => 'pt-PT']);
+        session(['locale' => 'en-UK']);
+
+        $this->post(route('password.email'), ['email' => $user->email])->assertSessionHas('status');
+
+        Notification::assertSentTo(
+            $user,
+            \App\Notifications\ResetPasswordNotification::class,
+            function ($notification) {
+                return $notification->locale === 'en-UK';
+            }
+        );
+    }
+
+    public function test_password_reset_notification_locale_falls_back_to_app_default()
+    {
+        Notification::fake();
+
+        $user = User::factory()->create([
+            'email' => 'locale-fallback@example.com',
+            'language' => 'en-UK',
+        ]);
+
+        config(['app.locale' => 'pt-PT']);
+        session()->forget('locale');
+
+        $this->post(route('password.email'), ['email' => $user->email])->assertSessionHas('status');
+
+        Notification::assertSentTo(
+            $user,
+            \App\Notifications\ResetPasswordNotification::class,
+            function ($notification) {
+                return $notification->locale === 'pt-PT';
+            }
+        );
     }
 }

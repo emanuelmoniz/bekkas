@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,7 +17,16 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function sendEmailVerificationNotification()
     {
-        $this->notify((new \App\Notifications\VerifyEmailNotification)->locale($this->preferredLocale() ?: app()->getLocale()));
+        $this->notify((new \App\Notifications\VerifyEmailNotification)->locale($this->resolveDefaultNotificationLocale()));
+    }
+
+    /**
+     * Override framework default password reset notification so locale precedence
+     * matches project rules for default auth notifications.
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify((new ResetPasswordNotification($token))->locale($this->resolveDefaultNotificationLocale()));
     }
 
     /**
@@ -71,7 +81,27 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function preferredLocale(): ?string
     {
-        return $this->language ?: null;
+        return $this->resolveDefaultNotificationLocale();
+    }
+
+    /**
+     * Locale precedence for default notifications:
+     * 1) logged-in user configured language
+     * 2) session locale
+     * 3) app default locale
+     */
+    public function resolveDefaultNotificationLocale(): string
+    {
+        if (auth()->check() && auth()->id() === $this->id && ! empty($this->language)) {
+            return $this->language;
+        }
+
+        $sessionLocale = session('locale');
+        if (! empty($sessionLocale)) {
+            return $sessionLocale;
+        }
+
+        return (string) config('app.locale');
     }
 
     /**

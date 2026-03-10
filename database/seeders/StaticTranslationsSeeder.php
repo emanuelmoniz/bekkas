@@ -824,6 +824,22 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'auth.verify_email_subcopy', 'locale' => 'pt-PT', 'value' => 'Se tiver dificuldades em clicar no botão ":actionText", copie e cole o URL abaixo no seu navegador:', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.verify_email_subcopy', 'locale' => 'en-UK', 'value' => "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below into your web browser:", 'created_at' => $now, 'updated_at' => $now],
 
+            // Password reset email (localized DB-driven strings)
+            ['key' => 'auth.reset_password_email_subject', 'locale' => 'pt-PT', 'value' => 'Notificação de Redefinição de Palavra-passe', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.reset_password_email_subject', 'locale' => 'en-UK', 'value' => 'Reset Password Notification', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.reset_password_email_intro', 'locale' => 'pt-PT', 'value' => 'Está a receber este email porque recebemos um pedido de redefinição de palavra-passe para a sua conta.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.reset_password_email_intro', 'locale' => 'en-UK', 'value' => 'You are receiving this email because we received a password reset request for your account.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.reset_password_email_action', 'locale' => 'pt-PT', 'value' => 'Redefinir Palavra-passe', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.reset_password_email_action', 'locale' => 'en-UK', 'value' => 'Reset Password', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.reset_password_email_expire', 'locale' => 'pt-PT', 'value' => 'Este link de redefinição de palavra-passe expira em :count minutos.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.reset_password_email_expire', 'locale' => 'en-UK', 'value' => 'This password reset link will expire in :count minutes.', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'auth.reset_password_email_outro', 'locale' => 'pt-PT', 'value' => 'Se não pediu uma redefinição de palavra-passe, não é necessária qualquer ação adicional.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'auth.reset_password_email_outro', 'locale' => 'en-UK', 'value' => 'If you did not request a password reset, no further action is required.', 'created_at' => $now, 'updated_at' => $now],
+
             // UI for verify-email page
             ['key' => 'auth.verify_prompt', 'locale' => 'pt-PT', 'value' => 'Obrigado pelo registo! Antes de começar, pode verificar o seu endereço de email clicando no link que enviámos? Se não recebeu o email, reenviaremos outro.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.verify_prompt', 'locale' => 'en-UK', 'value' => 'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.', 'created_at' => $now, 'updated_at' => $now],

@@ -63,7 +63,7 @@ class TicketStatusController extends Controller
             TicketMessage::create([
                 'ticket_id' => $ticket->id,
                 'user_id' => $user->id,
-                'message' => (t('tickets.closed_reason') ?: 'Ticket closed. Reason:') . ' ' . $request->reason,
+                'message' => (t('tickets.closed_reason') ?: 'Ticket closed. Reason:').' '.$request->reason,
                 'is_system' => true,
             ]);
 
@@ -119,7 +119,7 @@ class TicketStatusController extends Controller
         TicketMessage::create([
             'ticket_id' => $ticket->id,
             'user_id' => $user->id,
-            'message' => (t('tickets.reopened_reason') ?: 'Ticket reopened. Reason:') . ' ' . $request->reason,
+            'message' => (t('tickets.reopened_reason') ?: 'Ticket reopened. Reason:').' '.$request->reason,
             'is_system' => true,
         ]);
 
