@@ -89,10 +89,12 @@ git push origin staging
 On the staging server:
 
 ```bash
-# Optional
-php artisan db:seed
 
 cd ~/web/tes.bekkas.pt/public_html
+
+php artisan db:seed                                   # Optional
+php artisan db:seed --class=StaticTranslationsSeeder  # Optional
+
 ./bin/deploy.sh
 ```
 
@@ -114,6 +116,10 @@ On the production server:
 
 ```bash
 cd ~/web/bekkas.pt/public_html
+
+php artisan db:seed                                   # Optional
+php artisan db:seed --class=StaticTranslationsSeeder  # Optional
+
 ./bin/deploy.sh --skip-seed
 ```
 
