@@ -204,6 +204,8 @@ class OrdersTest extends TestCase
         });
 
         // Sanity: building the mailable with the customer's locale yields an English subject
+        $this->seed(\Database\Seeders\StaticTranslationsSeeder::class);
+        \Illuminate\Support\Facades\Cache::forget('static_translations_all');
         $m = new \App\Mail\OrderNotification($order, 'orders.email.event.placed', $user->name, ($order->status ?? null), ['status' => ($order->status ?? null)]);
         // Simulate the mailer applying the user's locale when building the mailable
         $prev = app()->getLocale();

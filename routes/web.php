@@ -135,7 +135,7 @@ Route::post('/favorites/remove/{product}', [FavoriteController::class, 'remove']
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', \App\Http\Middleware\AppendSessionFlashToJson::class])->group(function () {
 
     /*
     | Profile
@@ -517,6 +517,9 @@ Route::middleware(['auth', 'is_admin'])
 
         Route::patch('tickets/{ticket}', [TicketAdminController::class, 'update'])
             ->name('tickets.update');
+
+        Route::post('tickets/{ticket}/messages', [TicketAdminController::class, 'storeMessage'])
+            ->name('tickets.messages.store');
     });
 
 require __DIR__.'/auth.php';

@@ -83,7 +83,10 @@
                 </thead>
                 <tbody>
                     @forelse ($tickets as $ticket)
-                        <tr class="border-t">
+                        <tr class="border-t {{ $ticket->isUnreadFor(auth()->id())
+                                        ? 'bg-status-warning/10 text-status-warning font-semibold'
+                                        : 'text-grey-dark'
+                                   }} ">
                             <td class="px-4 py-2 font-bold">
                                 <a href="{{ route('tickets.show', $ticket) }}" class="text-accent-primary hover:text-accent-primary/90 no-underline">
                                     {{ $ticket->ticket_number ?? $ticket->uuid }}
@@ -91,11 +94,7 @@
                             </td>
 
                             <td class="px-4 py-2 font-semibold">
-                                <a href="{{ route('tickets.show', $ticket) }}"
-                                   class="{{ $ticket->isUnreadFor(auth()->id())
-                                        ? 'text-status-error'
-                                        : 'text-grey-dark'
-                                   }} hover:underline">
+                                <a href="{{ route('tickets.show', $ticket) }}">
                                     {{ $ticket->title }}
                                 </a>
                             </td>
@@ -108,7 +107,7 @@
                                 {{ ucfirst($ticket->status) }}
                             </td>
 
-                            <td class="px-4 py-2 text-sm text-grey-dark">
+                            <td class="px-4 py-2 text-sm">
                                 {{ $ticket->last_message_at?->format('Y-m-d H:i') ?? '—' }}
                             </td>
                         </tr>

@@ -25,7 +25,8 @@
 
         <form method="POST"
               action="{{ route('tickets.store') }}"
-              enctype="multipart/form-data">
+              enctype="multipart/form-data"
+              novalidate>
             @csrf
 
             <div class="bg-white p-6 rounded shadow mb-6 space-y-4">
@@ -37,7 +38,6 @@
                         name="ticket_category_id"
                         class="w-full border rounded px-3 py-2"
                         x-model="selectedCategory"
-                        required
                     >
                         <option value="">— {{ t('tickets.select_category') ?: 'Select a category' }} —</option>
                         @foreach ($categories as $category)
@@ -65,8 +65,7 @@
                     <input type="text"
                            name="title"
                            value="{{ old('title') }}"
-                           class="w-full border rounded px-3 py-2"
-                           required>
+                           class="w-full border rounded px-3 py-2">
                 </div>
 
                 {{-- Message --}}
@@ -74,8 +73,7 @@
                     <label class="block font-semibold mb-1">{{ t('tickets.message') ?: 'Message' }} *</label>
                     <textarea name="message"
                               rows="5"
-                              class="w-full border rounded px-3 py-2"
-                              required>{{ old('message') }}</textarea>
+                              class="w-full border rounded px-3 py-2">{{ old('message') }}</textarea>
                 </div>
 
                 {{-- Due Date --}}
@@ -95,15 +93,17 @@
                            multiple>
                 </div>
 
-                {{-- Google reCAPTCHA --}}
-                <div>
-                    <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
-                    @error('g-recaptcha-response')
-                        <p class="text-status-error text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+                {{-- Google reCAPTCHA (render only when both site and secret keys configured) --}}
+                @if (! empty(config('services.recaptcha.site_key')) && ! empty(config('services.recaptcha.secret_key')))
+                    <div>
+                        <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                        @error('g-recaptcha-response')
+                            <p class="text-status-error text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                @include('partials.recaptcha-loader')
+                    @include('partials.recaptcha-loader')
+                @endif
             </div>
 
             <div class="flex justify-end gap-3">

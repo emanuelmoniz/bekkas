@@ -24,12 +24,10 @@ class StaticTranslationsSeeder extends Seeder
             'store.filter.' => 'Store — filter panel',
             'store.order.' => 'Store — sort options',
             'store.' => 'Store — product listing & detail page',
-            'favorites.filter.' => 'My Favorites page — filter panel',
             'favorites.' => 'My Favorites page',
             'nav.' => 'Global navigation menu (all pages)',
             'page.' => 'Page title tags',
             'cart.' => 'Shopping cart page',
-            'shipping_config.' => 'Admin — shipping configuration page',
             'profile.' => 'User profile page — settings, addresses, password',
             'auth.' => 'Auth pages — login, register, password reset, email verification',
             'home.banner.' => 'Home page — hero banner',
@@ -59,14 +57,12 @@ class StaticTranslationsSeeder extends Seeder
             'legal.' => 'Legal pages',
             'contact.email.' => 'Contact form email notifications',
             'contact.' => 'Contact page & contact form',
-            'validation.password.' => 'Shared validation — password rules',
             'validation.' => 'Shared form validation messages',
             'stock.' => 'Cart & checkout — stock validation messages',
             'error.' => 'Error pages (404, 500)',
             'pagination.' => 'Shared pagination component (all listing pages)',
             'gallery.' => 'Image gallery component (product & project pages)',
             'tax.' => 'Cart & checkout — tax display',
-            'verification-link-sent' => 'Profile page — email verification status',
         ];
 
         // Sort by prefix length descending so the most-specific prefix wins.
@@ -88,8 +84,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.language', 'locale' => 'en-UK', 'value' => 'Language', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.save', 'locale' => 'pt-PT', 'value' => 'Guardar', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.save', 'locale' => 'en-UK', 'value' => 'Save', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.saved', 'locale' => 'pt-PT', 'value' => 'Guardado.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.saved', 'locale' => 'en-UK', 'value' => 'Saved.', 'created_at' => $now, 'updated_at' => $now],
             // Orders Yes/No
             ['key' => 'orders.yes', 'locale' => 'pt-PT', 'value' => 'Sim', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.yes', 'locale' => 'en-UK', 'value' => 'Yes', 'created_at' => $now, 'updated_at' => $now],
@@ -115,11 +109,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'pagination.goto_page', 'locale' => 'pt-PT', 'value' => 'Ir para a página :page', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'pagination.goto_page', 'locale' => 'en-UK', 'value' => 'Go to page :page', 'created_at' => $now, 'updated_at' => $now],
             // Navigation
-            ['key' => 'nav.dashboard', 'locale' => 'pt-PT', 'value' => 'Painel', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'nav.dashboard', 'locale' => 'en-UK', 'value' => 'Dashboard', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'nav.shop', 'locale' => 'pt-PT', 'value' => 'Loja', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'nav.shop', 'locale' => 'en-UK', 'value' => 'Shop', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'nav.cart', 'locale' => 'pt-PT', 'value' => 'Carrinho', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'nav.cart', 'locale' => 'en-UK', 'value' => 'Cart', 'created_at' => $now, 'updated_at' => $now],
@@ -175,8 +164,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'nav.admin', 'locale' => 'en-UK', 'value' => 'Admin', 'created_at' => $now, 'updated_at' => $now],
 
             // Cart page
-            ['key' => 'page.cart.title', 'locale' => 'pt-PT', 'value' => 'Carrinho', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'page.cart.title', 'locale' => 'en-UK', 'value' => 'Cart', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'cart.empty', 'locale' => 'pt-PT', 'value' => 'O seu carrinho está vazio.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'cart.empty', 'locale' => 'en-UK', 'value' => 'Your cart is empty.', 'created_at' => $now, 'updated_at' => $now],
@@ -197,18 +184,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'cart.item_tax_included', 'locale' => 'pt-PT', 'value' => 'Inclui :amount de imposto', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'cart.item_tax_included', 'locale' => 'en-UK', 'value' => 'Includes :amount tax', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'cart.summary.shipping', 'locale' => 'pt-PT', 'value' => 'Envio', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'cart.summary.shipping', 'locale' => 'en-UK', 'value' => 'Shipping', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'cart.summary.shipping_tax', 'locale' => 'pt-PT', 'value' => 'Imposto de envio', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'cart.summary.shipping_tax', 'locale' => 'en-UK', 'value' => 'Shipping tax', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'cart.summary.total', 'locale' => 'pt-PT', 'value' => 'Total', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'cart.summary.total', 'locale' => 'en-UK', 'value' => 'Total', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'cart.summary.total_tax', 'locale' => 'pt-PT', 'value' => 'Total imposto', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'cart.summary.total_tax', 'locale' => 'en-UK', 'value' => 'Total tax', 'created_at' => $now, 'updated_at' => $now],
-
             ['key' => 'cart.checkout', 'locale' => 'pt-PT', 'value' => 'Finalizar Compra', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'cart.checkout', 'locale' => 'en-UK', 'value' => 'Proceed to Checkout', 'created_at' => $now, 'updated_at' => $now],
 
@@ -225,30 +200,10 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'cart.shipping_at_checkout', 'locale' => 'en-UK', 'value' => 'The shipping cost will be calculated at checkout.', 'created_at' => $now, 'updated_at' => $now],
 
             // Shipping Config (Admin)
-            ['key' => 'shipping_config.title', 'locale' => 'pt-PT', 'value' => 'Configuração de Envio', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'shipping_config.title', 'locale' => 'en-UK', 'value' => 'Shipping Configuration', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'shipping_config.free_shipping_over', 'locale' => 'pt-PT', 'value' => 'Envio Gratuito Acima de (€)', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'shipping_config.free_shipping_over', 'locale' => 'en-UK', 'value' => 'Free Shipping Over (€)', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'shipping_config.free_shipping_help', 'locale' => 'pt-PT', 'value' => 'Defina como 0 para desativar o limite de envio gratuito', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'shipping_config.free_shipping_help', 'locale' => 'en-UK', 'value' => 'Set to 0 to disable free shipping threshold', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'shipping_config.success', 'locale' => 'pt-PT', 'value' => 'Configuração de envio atualizada com sucesso.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'shipping_config.success', 'locale' => 'en-UK', 'value' => 'Shipping configuration updated successfully.', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'shipping_config.save_changes', 'locale' => 'pt-PT', 'value' => 'Guardar Alterações', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'shipping_config.save_changes', 'locale' => 'en-UK', 'value' => 'Save Changes', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'shipping_config.cancel', 'locale' => 'pt-PT', 'value' => 'Cancelar', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'shipping_config.cancel', 'locale' => 'en-UK', 'value' => 'Cancel', 'created_at' => $now, 'updated_at' => $now],
 
             // Favorites
             ['key' => 'nav.favorites', 'locale' => 'pt-PT', 'value' => 'Favoritos', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'nav.favorites', 'locale' => 'en-UK', 'value' => 'Favorites', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'favorites.title', 'locale' => 'pt-PT', 'value' => 'Os Meus Favoritos', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'favorites.title', 'locale' => 'en-UK', 'value' => 'My Favorites', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'favorites.empty', 'locale' => 'pt-PT', 'value' => 'Não tem produtos favoritos.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'favorites.empty', 'locale' => 'en-UK', 'value' => 'You have no favorite products.', 'created_at' => $now, 'updated_at' => $now],
@@ -259,48 +214,13 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'favorites.browse_products', 'locale' => 'pt-PT', 'value' => 'Explorar Produtos', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'favorites.browse_products', 'locale' => 'en-UK', 'value' => 'Browse Products', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'favorites.remove', 'locale' => 'pt-PT', 'value' => 'Remover', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'favorites.remove', 'locale' => 'en-UK', 'value' => 'Remove', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'favorites.filters', 'locale' => 'pt-PT', 'value' => 'Filtros', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'favorites.filters', 'locale' => 'en-UK', 'value' => 'Filters', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'favorites.filter.search', 'locale' => 'pt-PT', 'value' => 'Pesquisar...', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'favorites.filter.search', 'locale' => 'en-UK', 'value' => 'Search...', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'favorites.filter.all_categories', 'locale' => 'pt-PT', 'value' => 'Todas as Categorias', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'favorites.filter.all_categories', 'locale' => 'en-UK', 'value' => 'All Categories', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'favorites.filter.all_materials', 'locale' => 'pt-PT', 'value' => 'Todos os Materiais', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'favorites.filter.all_materials', 'locale' => 'en-UK', 'value' => 'All Materials', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'favorites.filter.min_price', 'locale' => 'pt-PT', 'value' => 'Mín €', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'favorites.filter.min_price', 'locale' => 'en-UK', 'value' => 'Min €', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'favorites.filter.max_price', 'locale' => 'pt-PT', 'value' => 'Máx €', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'favorites.filter.max_price', 'locale' => 'en-UK', 'value' => 'Max €', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'favorites.filter.apply', 'locale' => 'pt-PT', 'value' => 'Filtrar', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'favorites.filter.apply', 'locale' => 'en-UK', 'value' => 'Filter', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'favorites.filter.reset', 'locale' => 'pt-PT', 'value' => 'Limpar', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'favorites.filter.reset', 'locale' => 'en-UK', 'value' => 'Reset', 'created_at' => $now, 'updated_at' => $now],
-
             ['key' => 'favorites.removed', 'locale' => 'pt-PT', 'value' => 'Produto removido dos favoritos.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'favorites.removed', 'locale' => 'en-UK', 'value' => 'Product removed from favorites.', 'created_at' => $now, 'updated_at' => $now],
 
             // Checkout page
-            ['key' => 'page.checkout.title', 'locale' => 'pt-PT', 'value' => 'Finalizar Compra', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'page.checkout.title', 'locale' => 'en-UK', 'value' => 'Checkout', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'checkout.shipping_address', 'locale' => 'pt-PT', 'value' => 'Morada de envio', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.shipping_address', 'locale' => 'en-UK', 'value' => 'Shipping Address', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'checkout.new_address', 'locale' => 'pt-PT', 'value' => 'Nova morada', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.new_address', 'locale' => 'en-UK', 'value' => 'New address', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'checkout.new_address_details', 'locale' => 'pt-PT', 'value' => 'Detalhes da nova morada', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.new_address_details', 'locale' => 'en-UK', 'value' => 'New address details', 'created_at' => $now, 'updated_at' => $now],
 
             // Easypay / Pay page messages
             ['key' => 'checkout.pay.loading_widget', 'locale' => 'pt-PT', 'value' => 'A carregar o componente de pagamento…', 'created_at' => $now, 'updated_at' => $now],
@@ -317,22 +237,14 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.pay.success', 'locale' => 'pt-PT', 'value' => 'Pagamento recebido — obrigado. A atualizar o estado da encomenda…', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.pay.success', 'locale' => 'en-UK', 'value' => 'Payment received — thank you. Updating order status…', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'checkout.pay.widget_failed', 'locale' => 'pt-PT', 'value' => 'O componente de pagamento falhou ao carregar — por favor tente novamente.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.pay.widget_failed', 'locale' => 'en-UK', 'value' => 'Payment widget failed to load — please try again.', 'created_at' => $now, 'updated_at' => $now],
-
             // Messages for SDK pre-checks / error-handling flows
             ['key' => 'checkout.pay.already_paid', 'locale' => 'pt-PT', 'value' => 'A encomenda já foi paga. Obrigado.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.pay.already_paid', 'locale' => 'en-UK', 'value' => 'This order has already been paid. Thank you.', 'created_at' => $now, 'updated_at' => $now],
 
             // When SDK reports already-paid but remote does not confirm any paid payment for the order
-            ['key' => 'checkout.pay.error_contact_support', 'locale' => 'pt-PT', 'value' => 'Ocorreu um problema com o seu pagamento — por favor contacte o suporte.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.pay.error_contact_support', 'locale' => 'en-UK', 'value' => 'There is something in error with your payment, please contact support.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'checkout.pay.new_session_created', 'locale' => 'pt-PT', 'value' => 'Criado um novo pedido de pagamento — por favor selecione o método e tente novamente.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.pay.new_session_created', 'locale' => 'en-UK', 'value' => 'Created a new payment session — please select a method and try again.', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'checkout.pay.cannot_start_sdk_paid', 'locale' => 'pt-PT', 'value' => 'A SDK não será iniciada porque a encomenda já está paga.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.pay.cannot_start_sdk_paid', 'locale' => 'en-UK', 'value' => 'SDK will not start because the order is already paid.', 'created_at' => $now, 'updated_at' => $now],
 
             // New: client-facing payment-status messages shown on the pay page when a persisted
             // payment exists and is authoritative (refreshed from Easypay single-payment endpoint).
@@ -360,9 +272,6 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'checkout.pay.iban', 'locale' => 'pt-PT', 'value' => 'IBAN', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.pay.iban', 'locale' => 'en-UK', 'value' => 'IBAN', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'checkout.pay.session_cancelled', 'locale' => 'pt-PT', 'value' => 'Sessão de pagamento anterior cancelada. A criar nova sessão…', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.pay.session_cancelled', 'locale' => 'en-UK', 'value' => 'Previous payment session cancelled. Creating a new session…', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'address_form.title', 'locale' => 'pt-PT', 'value' => 'Nome da morada', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'address_form.title', 'locale' => 'en-UK', 'value' => 'Address name', 'created_at' => $now, 'updated_at' => $now],
@@ -400,12 +309,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.free_shipping_message', 'locale' => 'pt-PT', 'value' => 'O total da sua encomenda excede', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.free_shipping_message', 'locale' => 'en-UK', 'value' => 'Your order total exceeds', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'checkout.free_shipping_applied', 'locale' => 'pt-PT', 'value' => 'Envio grátis foi aplicado à sua encomenda.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.free_shipping_applied', 'locale' => 'en-UK', 'value' => 'Free shipping has been applied to your order.', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'checkout.shipping_method', 'locale' => 'pt-PT', 'value' => 'Método de envio', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'checkout.shipping_method', 'locale' => 'en-UK', 'value' => 'Shipping method', 'created_at' => $now, 'updated_at' => $now],
-
             ['key' => 'checkout.address_required_for_shipping', 'locale' => 'pt-PT', 'value' => 'Por favor, preencha o formulário de morada para podermos mostrar as opções de envio disponíveis.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.address_required_for_shipping', 'locale' => 'en-UK', 'value' => 'Please fill the address form so we can show the available shipping options.', 'created_at' => $now, 'updated_at' => $now],
 
@@ -421,9 +324,6 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'orders.paid', 'locale' => 'pt-PT', 'value' => 'Pago', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.paid', 'locale' => 'en-UK', 'value' => 'Paid', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'orders.canceled', 'locale' => 'pt-PT', 'value' => 'Cancelado', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'orders.canceled', 'locale' => 'en-UK', 'value' => 'Canceled', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'orders.refunded', 'locale' => 'pt-PT', 'value' => 'Reembolsado', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.refunded', 'locale' => 'en-UK', 'value' => 'Refunded', 'created_at' => $now, 'updated_at' => $now],
@@ -485,21 +385,13 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'orders.total', 'locale' => 'pt-PT', 'value' => 'Total', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.total', 'locale' => 'en-UK', 'value' => 'Total', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'orders.my_orders', 'locale' => 'pt-PT', 'value' => 'As Minhas Encomendas', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'orders.my_orders', 'locale' => 'en-UK', 'value' => 'My Orders', 'created_at' => $now, 'updated_at' => $now],
-
             ['key' => 'orders.order_number', 'locale' => 'pt-PT', 'value' => 'Encomenda #', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.order_number', 'locale' => 'en-UK', 'value' => 'Order #', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'orders.view', 'locale' => 'pt-PT', 'value' => 'Ver', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'orders.view', 'locale' => 'en-UK', 'value' => 'View', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'orders.no_orders', 'locale' => 'pt-PT', 'value' => 'Nenhuma encomenda encontrada.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.no_orders', 'locale' => 'en-UK', 'value' => 'No orders found.', 'created_at' => $now, 'updated_at' => $now],
 
             // Orders index — page title & filter bar
-            ['key' => 'orders.index_title', 'locale' => 'pt-PT', 'value' => 'As Minhas Encomendas', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'orders.index_title', 'locale' => 'en-UK', 'value' => 'My Orders', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'orders.paid_all', 'locale' => 'pt-PT', 'value' => 'Todos', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.paid_all', 'locale' => 'en-UK', 'value' => 'All', 'created_at' => $now, 'updated_at' => $now],
@@ -521,9 +413,6 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'orders.no_tracking', 'locale' => 'pt-PT', 'value' => 'A sua encomenda ainda não tem informações de rastreamento', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'orders.no_tracking', 'locale' => 'en-UK', 'value' => 'Your order does not have tracking information yet', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'store.title', 'locale' => 'pt-PT', 'value' => 'Loja', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'store.title', 'locale' => 'en-UK', 'value' => 'Store', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'store.filter.name', 'locale' => 'pt-PT', 'value' => 'Nome', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.filter.name', 'locale' => 'en-UK', 'value' => 'Name', 'created_at' => $now, 'updated_at' => $now],
@@ -641,9 +530,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'store.select_option', 'locale' => 'pt-PT', 'value' => 'Selecione uma opção', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.select_option', 'locale' => 'en-UK', 'value' => 'Select an option', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'store.options_required', 'locale' => 'pt-PT', 'value' => 'Por favor selecione todas as opções antes de adicionar ao carrinho.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'store.options_required', 'locale' => 'en-UK', 'value' => 'Please select all options before adding to cart.', 'created_at' => $now, 'updated_at' => $now],
-
             ['key' => 'store.select_option_for', 'locale' => 'pt-PT', 'value' => 'Por favor selecione um valor para: :type', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'store.select_option_for', 'locale' => 'en-UK', 'value' => 'Please select a value for: :type', 'created_at' => $now, 'updated_at' => $now],
 
@@ -709,9 +595,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.no_addresses', 'locale' => 'pt-PT', 'value' => 'Ainda sem moradas.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.no_addresses', 'locale' => 'en-UK', 'value' => 'No addresses yet.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'profile.add_new_address', 'locale' => 'pt-PT', 'value' => 'Adicionar nova morada', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.add_new_address', 'locale' => 'en-UK', 'value' => 'Add new address', 'created_at' => $now, 'updated_at' => $now],
-
             ['key' => 'profile.phone', 'locale' => 'pt-PT', 'value' => 'Telefone', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.phone', 'locale' => 'en-UK', 'value' => 'Phone', 'created_at' => $now, 'updated_at' => $now],
 
@@ -756,12 +639,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.unlink_account', 'locale' => 'pt-PT', 'value' => 'Desligar Conta', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.unlink_account', 'locale' => 'en-UK', 'value' => 'Unlink', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'profile.social_linked', 'locale' => 'pt-PT', 'value' => 'Conta social ligada.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.social_linked', 'locale' => 'en-UK', 'value' => 'Social account linked.', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'profile.social_unlinked', 'locale' => 'pt-PT', 'value' => 'Conta social desligada.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.social_unlinked', 'locale' => 'en-UK', 'value' => 'Social account unlinked.', 'created_at' => $now, 'updated_at' => $now],
-
             ['key' => 'profile.confirm_unlink', 'locale' => 'pt-PT', 'value' => 'Tem a certeza de que pretende desligar esta conta social?', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.confirm_unlink', 'locale' => 'en-UK', 'value' => 'Are you sure you want to unlink this social account?', 'created_at' => $now, 'updated_at' => $now],
 
@@ -770,9 +647,6 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'profile.save', 'locale' => 'pt-PT', 'value' => 'Guardar', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.save', 'locale' => 'en-UK', 'value' => 'Save', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'profile.saved', 'locale' => 'pt-PT', 'value' => 'Guardado.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.saved', 'locale' => 'en-UK', 'value' => 'Saved.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'profile.current_password', 'locale' => 'pt-PT', 'value' => 'Palavra-passe Atual', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.current_password', 'locale' => 'en-UK', 'value' => 'Current Password', 'created_at' => $now, 'updated_at' => $now],
@@ -796,8 +670,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.verification_sent', 'locale' => 'en-UK', 'value' => 'A new verification link has been sent to your email address.', 'created_at' => $now, 'updated_at' => $now],
 
             // Backwards-compatible key used by session status in controllers
-            ['key' => 'verification-link-sent', 'locale' => 'pt-PT', 'value' => 'Um novo link de verificação foi enviado para o seu endereço de email.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'verification-link-sent', 'locale' => 'en-UK', 'value' => 'A new verification link has been sent to your email address.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'profile.update_password', 'locale' => 'pt-PT', 'value' => 'Atualizar Palavra-passe', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.update_password', 'locale' => 'en-UK', 'value' => 'Update Password', 'created_at' => $now, 'updated_at' => $now],
@@ -835,9 +707,6 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'profile.delete_by_email_button', 'locale' => 'pt-PT', 'value' => 'Enviar link de eliminação', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.delete_by_email_button', 'locale' => 'en-UK', 'value' => 'Send deletion link', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'profile.delete_by_email_sent', 'locale' => 'pt-PT', 'value' => 'Um link de eliminação foi enviado para o seu endereço de email.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.delete_by_email_sent', 'locale' => 'en-UK', 'value' => 'A deletion link has been sent to your email address.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'profile.delete_by_email_subject', 'locale' => 'pt-PT', 'value' => 'Confirmar eliminação da conta', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.delete_by_email_subject', 'locale' => 'en-UK', 'value' => 'Confirm account deletion', 'created_at' => $now, 'updated_at' => $now],
@@ -958,9 +827,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'auth.verification_verified', 'locale' => 'pt-PT', 'value' => 'O seu email foi confirmado com sucesso.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'auth.verification_verified', 'locale' => 'en-UK', 'value' => 'Your email address has been verified.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'auth.recaptcha_required', 'locale' => 'pt-PT', 'value' => 'Por favor, verifique que não é um robô.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'auth.recaptcha_required', 'locale' => 'en-UK', 'value' => 'Please verify that you are not a robot.', 'created_at' => $now, 'updated_at' => $now],
-
             // Home page
             ['key' => 'home.banner.tagline1', 'locale' => 'pt-PT', 'value' => 'Do Conceito à Criação.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'home.banner.tagline1', 'locale' => 'en-UK', 'value' => 'From Concept to Creation.', 'created_at' => $now, 'updated_at' => $now],
@@ -1023,14 +889,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'home.contact.social', 'locale' => 'en-UK', 'value' => 'Follow Us', 'created_at' => $now, 'updated_at' => $now],
 
             // Footer
-            ['key' => 'footer.about', 'locale' => 'pt-PT', 'value' => 'Serviços de Impressão 3D para todos', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'footer.about', 'locale' => 'en-UK', 'value' => '3D Printing Services for everyone', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'footer.links', 'locale' => 'pt-PT', 'value' => 'Links Rápidos', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'footer.links', 'locale' => 'en-UK', 'value' => 'Quick Links', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'footer.follow', 'locale' => 'pt-PT', 'value' => 'Siga-nos', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'footer.follow', 'locale' => 'en-UK', 'value' => 'Follow Us', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'footer.rights', 'locale' => 'pt-PT', 'value' => 'Todos os direitos reservados.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'footer.rights', 'locale' => 'en-UK', 'value' => 'All rights reserved.', 'created_at' => $now, 'updated_at' => $now],
@@ -1057,9 +915,6 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'custom.banner.button', 'locale' => 'pt-PT', 'value' => 'Preços e Serviços', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.banner.button', 'locale' => 'en-UK', 'value' => 'Pricing and Services', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'custom.features.title', 'locale' => 'pt-PT', 'value' => 'Opções', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.features.title', 'locale' => 'en-UK', 'value' => 'Options', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'custom.features.modeling', 'locale' => 'pt-PT', 'value' => 'Modelação 3D', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.features.modeling', 'locale' => 'en-UK', 'value' => '3D Modeling', 'created_at' => $now, 'updated_at' => $now],
@@ -1106,8 +961,6 @@ class StaticTranslationsSeeder extends Seeder
             // custom.request — 3-service-card section
             ['key' => 'custom.request.title',        'locale' => 'pt-PT', 'value' => 'Serviços e Preços', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.title',        'locale' => 'en-UK', 'value' => 'Services and Pricing', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.subtitle',      'locale' => 'pt-PT', 'value' => 'Escolha o serviço que melhor se adapta à sua situação. Cada opção abre um pedido com a categoria já selecionada.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.subtitle',      'locale' => 'en-UK', 'value' => 'Choose the service that best matches your situation. Each option opens a ticket with the right category already selected.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle1',     'locale' => 'pt-PT', 'value' => 'Escolha o serviço que melhor se adapta à sua necessidade.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle1',     'locale' => 'en-UK', 'value' => 'Choose the service that best matches your needs.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.subtitle2',     'locale' => 'pt-PT', 'value' => 'Leia atentamente as caracteristicas e informações de cada opção.', 'created_at' => $now, 'updated_at' => $now],
@@ -1140,8 +993,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'custom.request.prep_desc',    'locale' => 'en-UK', 'value' => 'You have a 3D file (e.g. an architecture or design project) but it needs to be optimised and prepared before printing.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.prep_bullet1', 'locale' => 'pt-PT', 'value' => 'Preparação: 30€/h (incrementos de 15 min)', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.prep_bullet1', 'locale' => 'en-UK', 'value' => 'Preparation: €30/hr (15-min billing)',    'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.prep_bullet2', 'locale' => 'pt-PT', 'value' => 'Impressão: 20€/h (incrementos de 15 min)', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.prep_bullet2', 'locale' => 'en-UK', 'value' => 'Print: €20/hr (15-min billing)',   'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.prep_bullet2', 'locale' => 'pt-PT', 'value' => 'Impressão: 10€/h (incrementos de 15 min)', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.prep_bullet2', 'locale' => 'en-UK', 'value' => 'Print: €10/hr (15-min billing)',   'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.prep_bullet3', 'locale' => 'pt-PT', 'value' => '20% desconto para estudantes',           'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.prep_bullet3', 'locale' => 'en-UK', 'value' => '20% student discount',                  'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.prep_attach',  'locale' => 'pt-PT', 'value' => 'Anexe o(s) ficheiro(s) 3D e indique a escala e material.', 'created_at' => $now, 'updated_at' => $now],
@@ -1154,8 +1007,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'custom.request.print_title',   'locale' => 'en-UK', 'value' => 'I have a print-ready file',              'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.print_desc',    'locale' => 'pt-PT', 'value' => 'O seu ficheiro está pronto para impressão. Envie e nós damos orçamento e imprimimos. Ideal também para modelos encontrados online.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.print_desc',    'locale' => 'en-UK', 'value' => 'Your file is ready to print. Send it over and we will quote and print it. Also ideal for models found online.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.print_bullet1', 'locale' => 'pt-PT', 'value' => '20€/h · faturação em incrementos de 15 min', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'custom.request.print_bullet1', 'locale' => 'en-UK', 'value' => '€20/hr · billed in 15-min sets',         'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.print_bullet1', 'locale' => 'pt-PT', 'value' => '10€/h · faturação em incrementos de 15 min', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'custom.request.print_bullet1', 'locale' => 'en-UK', 'value' => '€10/hr · billed in 15-min sets',         'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.print_bullet2', 'locale' => 'pt-PT', 'value' => 'PLA incluído · outros materiais sob consulta', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.print_bullet2', 'locale' => 'en-UK', 'value' => 'PLA included · other materials on request', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'custom.request.print_bullet3', 'locale' => 'pt-PT', 'value' => '20% desconto para estudantes',           'created_at' => $now, 'updated_at' => $now],
@@ -1201,6 +1054,26 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.submit', 'locale' => 'pt-PT', 'value' => 'Abrir Pedido', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.submit', 'locale' => 'en-UK', 'value' => 'Open Ticket', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'tickets.reply_to_ticket', 'locale' => 'pt-PT', 'value' => 'Responder ao pedido', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.reply_to_ticket', 'locale' => 'en-UK', 'value' => 'Reply to ticket', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'tickets.created_success', 'locale' => 'pt-PT', 'value' => 'Pedido criado com sucesso! Entraremos em contacto em breve.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.created_success', 'locale' => 'en-UK', 'value' => 'Ticket created successfully! We will get back to you shortly.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.message_sent_success', 'locale' => 'pt-PT', 'value' => 'Mensagem enviada com sucesso.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.message_sent_success', 'locale' => 'en-UK', 'value' => 'Message sent successfully.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.closed_success', 'locale' => 'pt-PT', 'value' => 'Pedido fechado com sucesso.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.closed_success', 'locale' => 'en-UK', 'value' => 'Ticket closed successfully.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.closed_reason', 'locale' => 'pt-PT', 'value' => 'Pedido fechado. Motivo:', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.closed_reason', 'locale' => 'en-UK', 'value' => 'Ticket closed. Reason:', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.reopened_reason', 'locale' => 'pt-PT', 'value' => 'Pedido reaberto. Motivo:', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.reopened_reason', 'locale' => 'en-UK', 'value' => 'Ticket reopened. Reason:', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.reopened_success', 'locale' => 'pt-PT', 'value' => 'Pedido reaberto com sucesso.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.reopened_success', 'locale' => 'en-UK', 'value' => 'Ticket reopened successfully.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.close_failed', 'locale' => 'pt-PT', 'value' => 'Não foi possível fechar o pedido. Por favor tente novamente.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.close_failed', 'locale' => 'en-UK', 'value' => 'Failed to close ticket. Please try again.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.attachment_failed', 'locale' => 'pt-PT', 'value' => 'O ficheiro não foi anexado. A sua mensagem foi enviada, mas alguns ficheiros falharam ao anexar.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.attachment_failed', 'locale' => 'en-UK', 'value' => 'File(s) were not attached. Your message was sent, but some files failed to attach.', 'created_at' => $now, 'updated_at' => $now],
+
             // Ticket validation messages
             ['key' => 'tickets.title_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira um título.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.title_required', 'locale' => 'en-UK', 'value' => 'Please enter a title.', 'created_at' => $now, 'updated_at' => $now],
@@ -1214,6 +1087,9 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.message_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira uma mensagem.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.message_required', 'locale' => 'en-UK', 'value' => 'Please enter a message.', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'tickets.reason_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira um motivo.', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.reason_required', 'locale' => 'en-UK', 'value' => 'Please provide a reason.', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'tickets.due_date_invalid', 'locale' => 'pt-PT', 'value' => 'Por favor, insira uma data válida.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.due_date_invalid', 'locale' => 'en-UK', 'value' => 'Please enter a valid date.', 'created_at' => $now, 'updated_at' => $now],
 
@@ -1222,10 +1098,9 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'tickets.recaptcha_required', 'locale' => 'pt-PT', 'value' => 'Por favor, verifique que não é um robô.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.recaptcha_required', 'locale' => 'en-UK', 'value' => 'Please verify that you are not a robot.', 'created_at' => $now, 'updated_at' => $now],
+            // reCAPTCHA misconfiguration message (shown when site widget is present but secret missing)
 
             // Ticket index page
-            ['key' => 'tickets.index_title', 'locale' => 'pt-PT', 'value' => 'Pedidos', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'tickets.index_title', 'locale' => 'en-UK', 'value' => 'Tickets', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.ticket_id', 'locale' => 'pt-PT', 'value' => 'ID do Pedido', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.ticket_id', 'locale' => 'en-UK', 'value' => 'Ticket ID', 'created_at' => $now, 'updated_at' => $now],
@@ -1235,9 +1110,6 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'tickets.select_category', 'locale' => 'pt-PT', 'value' => 'Selecionar categoria', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.select_category', 'locale' => 'en-UK', 'value' => 'Select category', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'tickets.search', 'locale' => 'pt-PT', 'value' => 'Pesquisar...', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'tickets.search', 'locale' => 'en-UK', 'value' => 'Search...', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.filters', 'locale' => 'pt-PT', 'value' => 'Filtros', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.filters', 'locale' => 'en-UK', 'value' => 'Filters', 'created_at' => $now, 'updated_at' => $now],
@@ -1297,21 +1169,6 @@ class StaticTranslationsSeeder extends Seeder
             // Ticket email notifications
             ['key' => 'tickets.email.subject', 'locale' => 'pt-PT', 'value' => 'Pedido #:uuid – :event', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.subject', 'locale' => 'en-UK', 'value' => 'Ticket #:uuid – :event', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'tickets.email.event.new_message', 'locale' => 'en-UK', 'value' => 'New message', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'tickets.email.event.new_message', 'locale' => 'pt-PT', 'value' => 'Nova mensagem', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'tickets.email.event.created', 'locale' => 'en-UK', 'value' => 'New ticket created', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'tickets.email.event.created', 'locale' => 'pt-PT', 'value' => 'Novo pedido criado', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'tickets.email.event.admin_update', 'locale' => 'en-UK', 'value' => 'Administrative update', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'tickets.email.event.admin_update', 'locale' => 'pt-PT', 'value' => 'Atualização administrativa', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'tickets.email.event.closed', 'locale' => 'en-UK', 'value' => 'Ticket closed', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'tickets.email.event.closed', 'locale' => 'pt-PT', 'value' => 'Pedido fechado', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'tickets.email.event.reopened', 'locale' => 'en-UK', 'value' => 'Ticket reopened', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'tickets.email.event.reopened', 'locale' => 'pt-PT', 'value' => 'Pedido reaberto', 'created_at' => $now, 'updated_at' => $now],
 
             // Orders email translations
             ['key' => 'orders.email.subject', 'locale' => 'pt-PT', 'value' => 'Encomenda #:order_number – :event', 'created_at' => $now, 'updated_at' => $now],
@@ -1383,6 +1240,21 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'tickets.email.thanks', 'locale' => 'pt-PT', 'value' => 'Obrigado,', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.email.thanks', 'locale' => 'en-UK', 'value' => 'Thanks,', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'tickets.email.event.created', 'locale' => 'pt-PT', 'value' => 'Pedido criado', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.event.created', 'locale' => 'en-UK', 'value' => 'Ticket created', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'tickets.email.event.new_message', 'locale' => 'pt-PT', 'value' => 'Nova mensagem', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.event.new_message', 'locale' => 'en-UK', 'value' => 'New message', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'tickets.email.event.admin_update', 'locale' => 'pt-PT', 'value' => 'Atualização do administrador', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.event.admin_update', 'locale' => 'en-UK', 'value' => 'Admin update', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'tickets.email.event.closed', 'locale' => 'pt-PT', 'value' => 'Pedido fechado', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.event.closed', 'locale' => 'en-UK', 'value' => 'Ticket closed', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'tickets.email.event.reopened', 'locale' => 'pt-PT', 'value' => 'Pedido reaberto', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.email.event.reopened', 'locale' => 'en-UK', 'value' => 'Ticket reopened', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'nav.my_tickets', 'locale' => 'pt-PT', 'value' => 'Pedidos', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'nav.my_tickets', 'locale' => 'en-UK', 'value' => 'Tickets', 'created_at' => $now, 'updated_at' => $now],
@@ -1521,9 +1393,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'contact.validation_failed', 'locale' => 'pt-PT', 'value' => 'Por favor corrija os erros abaixo e tente novamente.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'contact.validation_failed', 'locale' => 'en-UK', 'value' => 'Please correct the errors below and try again.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'contact.recaptcha_required', 'locale' => 'pt-PT', 'value' => 'Por favor, verifique que não é um robô.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'contact.recaptcha_required', 'locale' => 'en-UK', 'value' => 'Please verify that you are not a robot.', 'created_at' => $now, 'updated_at' => $now],
-
             ['key' => 'contact.email.admin_subject', 'locale' => 'pt-PT', 'value' => 'Nova mensagem de contacto de :name', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'contact.email.admin_subject', 'locale' => 'en-UK', 'value' => 'New contact message from :name', 'created_at' => $now, 'updated_at' => $now],
 
@@ -1573,17 +1442,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'validation.email_exists', 'locale' => 'pt-PT', 'value' => 'Este endereço de email já está registado.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'validation.email_exists', 'locale' => 'en-UK', 'value' => 'This email address is already registered.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'validation.unique', 'locale' => 'pt-PT', 'value' => 'Este valor já está a ser utilizado.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.unique', 'locale' => 'en-UK', 'value' => 'This value is already in use.', 'created_at' => $now, 'updated_at' => $now],
-
             ['key' => 'validation.email_mismatch', 'locale' => 'pt-PT', 'value' => 'Os endereços de email não coincidem.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'validation.email_mismatch', 'locale' => 'en-UK', 'value' => 'Email addresses do not match.', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'validation.errors_found', 'locale' => 'pt-PT', 'value' => 'Por favor, corrija os seguintes erros:', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.errors_found', 'locale' => 'en-UK', 'value' => 'Please correct the following errors:', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'validation.min.string', 'locale' => 'pt-PT', 'value' => 'Este campo deve ter pelo menos :min caracteres.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.min.string', 'locale' => 'en-UK', 'value' => 'This field must be at least :min characters.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'validation.password_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira uma palavra-passe.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'validation.password_required', 'locale' => 'en-UK', 'value' => 'Please enter a password.', 'created_at' => $now, 'updated_at' => $now],
@@ -1591,36 +1451,7 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'validation.password_min', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve ter pelo menos 8 caracteres.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'validation.password_min', 'locale' => 'en-UK', 'value' => 'Password must be at least 8 characters.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'validation.password_letters', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter pelo menos uma letra.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.password_letters', 'locale' => 'en-UK', 'value' => 'Password must contain at least one letter.', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'validation.password_mixed_case', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter letras maiúsculas e minúsculas.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.password_mixed_case', 'locale' => 'en-UK', 'value' => 'Password must contain both uppercase and lowercase letters.', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'validation.password_numbers', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter pelo menos um número.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.password_numbers', 'locale' => 'en-UK', 'value' => 'Password must contain at least one number.', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'validation.password_symbols', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter pelo menos um símbolo.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.password_symbols', 'locale' => 'en-UK', 'value' => 'Password must contain at least one symbol.', 'created_at' => $now, 'updated_at' => $now],
-
             // Laravel Password rule default message keys
-            ['key' => 'validation.password.letters', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter pelo menos uma letra.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.password.letters', 'locale' => 'en-UK', 'value' => 'Password must contain at least one letter.', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'validation.password.mixed', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter letras maiúsculas e minúsculas.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.password.mixed', 'locale' => 'en-UK', 'value' => 'Password must contain both uppercase and lowercase letters.', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'validation.password.numbers', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter pelo menos um número.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.password.numbers', 'locale' => 'en-UK', 'value' => 'Password must contain at least one number.', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'validation.password.symbols', 'locale' => 'pt-PT', 'value' => 'A palavra-passe deve conter pelo menos um símbolo.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.password.symbols', 'locale' => 'en-UK', 'value' => 'Password must contain at least one symbol.', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'validation.password.uncompromised', 'locale' => 'pt-PT', 'value' => 'Esta palavra-passe apareceu numa fuga de dados. Por favor, escolha uma diferente.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.password.uncompromised', 'locale' => 'en-UK', 'value' => 'This password has appeared in a data leak. Please choose a different one.', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'validation.password_uncompromised', 'locale' => 'pt-PT', 'value' => 'Esta palavra-passe apareceu numa fuga de dados. Por favor, escolha uma diferente.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.password_uncompromised', 'locale' => 'en-UK', 'value' => 'This password has appeared in a data leak. Please choose a different one.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'validation.password_mismatch', 'locale' => 'pt-PT', 'value' => 'As palavras-passe não coincidem.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'validation.password_mismatch', 'locale' => 'en-UK', 'value' => 'Passwords do not match.', 'created_at' => $now, 'updated_at' => $now],
@@ -1644,14 +1475,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'validation.title_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira um título para a morada.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'validation.title_required', 'locale' => 'en-UK', 'value' => 'Please enter an address title.', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'validation.nif_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira o seu NIF/Contribuinte.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.nif_required', 'locale' => 'en-UK', 'value' => 'Please enter your NIF/Tax ID.', 'created_at' => $now, 'updated_at' => $now],
-
             ['key' => 'validation.address_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira a sua morada.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'validation.address_required', 'locale' => 'en-UK', 'value' => 'Please enter your address.', 'created_at' => $now, 'updated_at' => $now],
-
-            ['key' => 'validation.address2_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira a linha 2 da morada.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'validation.address2_required', 'locale' => 'en-UK', 'value' => 'Please enter address line 2.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'validation.postal_code_required', 'locale' => 'pt-PT', 'value' => 'Por favor, insira o seu código postal.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'validation.postal_code_required', 'locale' => 'en-UK', 'value' => 'Please enter your postal code.', 'created_at' => $now, 'updated_at' => $now],
@@ -1672,8 +1497,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'validation.error_heading', 'locale' => 'en-UK', 'value' => 'Please fix the following errors:', 'created_at' => $now, 'updated_at' => $now],
 
             // Stock validation messages
-            ['key' => 'stock.out_of_stock', 'locale' => 'pt-PT', 'value' => 'Este produto está esgotado.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'stock.out_of_stock', 'locale' => 'en-UK', 'value' => 'This product is out of stock.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'stock.only_available', 'locale' => 'pt-PT', 'value' => 'Apenas :stock unidades disponíveis em stock.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'stock.only_available', 'locale' => 'en-UK', 'value' => 'Only :stock units available in stock.', 'created_at' => $now, 'updated_at' => $now],
@@ -1799,8 +1622,6 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'orders.email.shipping_label', 'locale' => 'en-UK', 'value' => 'Shipping', 'created_at' => $now, 'updated_at' => $now],
 
             // Profile — data deletion & social auth
-            ['key' => 'profile.deletion_link_sent', 'locale' => 'pt-PT', 'value' => 'Foi enviado um link de eliminação da conta para o seu endereço de e-mail.', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'profile.deletion_link_sent', 'locale' => 'en-UK', 'value' => 'A deletion link has been sent to your email address.', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'profile.provider_disabled', 'locale' => 'pt-PT', 'value' => 'O início de sessão social está atualmente desativado.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.provider_disabled', 'locale' => 'en-UK', 'value' => 'Social sign-in is currently disabled.', 'created_at' => $now, 'updated_at' => $now],

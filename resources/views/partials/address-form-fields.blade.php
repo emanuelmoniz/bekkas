@@ -52,7 +52,6 @@
                 name="{{ $field }}"
                 value="{{ $value }}"
                 class="{{ $inputClasses }}"
-                @if($isRequired($field)) required @endif
                 {!! $disabledExpr ? ':disabled="'.$disabledExpr.'"' : '' !!}
                 @if($field === 'postal_code') {!! $postalCodeBindings !!} @endif
             >
@@ -65,7 +64,6 @@
         </span>
         <select name="country_id"
                 class="{{ $inputClasses }}"
-                @if($isRequired('country_id')) required @endif
                 {!! $disabledExpr ? ':disabled="'.$disabledExpr.'"' : '' !!}
                 {!! $countryBindings !!}>
             <option value="">{{ t("{$labelPrefix}.country") ?: 'Country' }}</option>

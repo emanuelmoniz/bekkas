@@ -75,4 +75,47 @@ Alpine.store('flash', {
     }
 });
 
+// Axios response interceptor: show server-provided flash payloads automatically
+try {
+    if (window.axios) {
+        window.axios.interceptors.response.use(
+            function (response) {
+                const flash = response?.data?.flash || response?.flash;
+                if (flash && window.Alpine && Alpine.store && Alpine.store('flash')) {
+                    Alpine.store('flash').showMessage(flash.message || '', flash.type || 'info');
+                }
+                return response;
+            },
+            function (error) {
+                const flash = error?.response?.data?.flash || error?.response?.flash;
+                if (flash && window.Alpine && Alpine.store && Alpine.store('flash')) {
+                    Alpine.store('flash').showMessage(flash.message || '', flash.type || 'error');
+                }
+                return Promise.reject(error);
+            }
+        );
+    }
+} catch (e) {
+    // ignore interceptor setup failures
+}
+
+// fetch wrapper that also reads `flash` from JSON responses and shows it via Alpine
+window.fetchWithFlash = async function (input, init) {
+    const res = await fetch(input, init);
+    let json = null;
+    try {
+        json = await res.clone().json();
+    } catch (e) {
+        // not JSON
+    }
+
+    const flash = json?.flash || (json && json.data && json.data.flash);
+    if (flash && window.Alpine && Alpine.store && Alpine.store('flash')) {
+        Alpine.store('flash').showMessage(flash.message || '', flash.type || 'info');
+    }
+
+    if (!res.ok) throw res;
+    return json ?? res;
+};
+
 Alpine.start();

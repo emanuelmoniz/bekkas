@@ -28,10 +28,12 @@ class TicketMessageController extends Controller
             'files.*' => 'nullable|file|max:20480',
         ];
 
-        $messages = [];
+        $messages = [
+            'message.required' => t('tickets.message_required') ?: 'Please enter a message.',
+        ];
 
-        // If reCAPTCHA is configured, require it — but admins are exempt
-        if (! empty(config('services.recaptcha.secret_key')) && ! $user->hasRole('admin')) {
+        // If reCAPTCHA is configured, require it for all users on the client-facing endpoint
+        if (! empty(config('services.recaptcha.secret_key'))) {
             $rules['g-recaptcha-response'] = ['required', new Recaptcha];
             $messages['g-recaptcha-response.required'] = t('tickets.recaptcha_required') ?: 'Please verify that you are not a robot.';
         }
@@ -65,10 +67,14 @@ class TicketMessageController extends Controller
                 'input' => $request->only('message'),
             ]);
 
-            return back()->withInput()->withErrors(['message' => t('tickets.message_failed') ?: 'Failed to save message. Please try again.']);
+            return back()
+                ->withInput()
+                ->withErrors(['message' => t('tickets.message_failed') ?: 'Failed to save message. Please try again.'])
+                ->with('error', t('tickets.message_failed') ?: 'Failed to save message. Please try again.');
         }
 
         // Attach files (safe — don't fail entire request if an upload/store fails)
+        $attachmentFailed = false;
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 try {
@@ -87,6 +93,7 @@ class TicketMessageController extends Controller
                         'message_id' => $message->id,
                         'error' => $e->getMessage(),
                     ]);
+                    $attachmentFailed = true;
                 }
             }
         }
@@ -127,8 +134,7 @@ class TicketMessageController extends Controller
             $ticket->notifyParticipants(
                 $message,
                 'tickets.email.event.new_message',
-                $user->id,
-                // eventParams (optional) — message body is displayed in the email body, not the label
+                $user->id
             );
         } catch (\Throwable $e) {
             \Log::error('Ticket notification failed', [
@@ -138,6 +144,11 @@ class TicketMessageController extends Controller
             ]);
         }
 
-        return back();
+        $response = back()->with('success', t('tickets.message_sent_success') ?: 'Message sent successfully.');
+        if ($attachmentFailed) {
+            $response = $response->with('error', t('tickets.attachment_failed') ?: 'Some files failed to attach.');
+        }
+
+        return $response;
     }
 }

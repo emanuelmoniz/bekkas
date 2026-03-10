@@ -49,7 +49,7 @@ class TicketAdminMessageTest extends TestCase
 
         // Act as admin and post message
         $this->actingAs($admin)
-            ->post(route('tickets.messages.store', $ticket), [
+            ->post(route('admin.tickets.messages.store', $ticket), [
                 'message' => 'Admin reply',
             ])
             ->assertRedirect();
@@ -87,7 +87,7 @@ class TicketAdminMessageTest extends TestCase
         $admin->roles()->attach($role->id);
 
         $this->actingAs($admin)
-            ->post(route('tickets.messages.store', $ticket), [
+            ->post(route('admin.tickets.messages.store', $ticket), [
                 'message' => 'Admin reply despite mail failure',
             ])
             ->assertRedirect();
@@ -122,7 +122,7 @@ class TicketAdminMessageTest extends TestCase
 
         // Admin posts without providing g-recaptcha-response
         $this->actingAs($admin)
-            ->post(route('tickets.messages.store', $ticket), [
+            ->post(route('admin.tickets.messages.store', $ticket), [
                 'message' => 'Admin reply without recaptcha',
             ])
             ->assertRedirect();

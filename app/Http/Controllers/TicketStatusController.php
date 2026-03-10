@@ -45,34 +45,49 @@ class TicketStatusController extends Controller
             return back();
         }
 
+        $messages = [
+            'reason.required' => t('tickets.reason_required') ?: 'Please provide a reason.',
+        ];
+
         $request->validate([
             'reason' => 'required|string',
-        ]);
+        ], $messages);
 
-        $ticket->update([
-            'status' => 'closed',
-            'closed_at' => now(),
-            'close_reason' => $request->reason,
-        ]);
+        try {
+            $ticket->update([
+                'status' => 'closed',
+                'closed_at' => now(),
+                'close_reason' => $request->reason,
+            ]);
 
-        TicketMessage::create([
-            'ticket_id' => $ticket->id,
-            'user_id' => $user->id,
-            'message' => 'Ticket closed. Reason: '.$request->reason,
-            'is_system' => true,
-        ]);
+            TicketMessage::create([
+                'ticket_id' => $ticket->id,
+                'user_id' => $user->id,
+                'message' => (t('tickets.closed_reason') ?: 'Ticket closed. Reason:') . ' ' . $request->reason,
+                'is_system' => true,
+            ]);
 
-        $ticket->notifyParticipants(
-            $ticket->messages()->latest()->first(),
-            'tickets.email.event.closed',
-            $user->id,
-            ['reason' => $request->reason]
-        );
+            $ticket->notifyParticipants(
+                $ticket->messages()->latest()->first(),
+                'tickets.email.event.closed',
+                $user->id,
+                ['reason' => $request->reason]
+            );
 
-        // ✅ Mark unread for other participant
-        $this->updateReadStateForSystemMessage($ticket, $user->id);
+            // ✅ Mark unread for other participant
+            $this->updateReadStateForSystemMessage($ticket, $user->id);
 
-        return redirect()->route('tickets.show', $ticket);
+            return redirect()->route('tickets.show', $ticket)
+                ->with('success', t('tickets.closed_success') ?: 'Ticket closed successfully.');
+        } catch (\Throwable $e) {
+            \Log::error('Ticket close failed', [
+                'ticket_id' => $ticket->id,
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+            ]);
+
+            return back()->with('error', t('tickets.close_failed') ?: 'Failed to close ticket. Please try again.');
+        }
     }
 
     public function reopen(Request $request, Ticket $ticket)
@@ -87,9 +102,13 @@ class TicketStatusController extends Controller
             return back();
         }
 
+        $messages = [
+            'reason.required' => t('tickets.reason_required') ?: 'Please provide a reason.',
+        ];
+
         $request->validate([
             'reason' => 'required|string',
-        ]);
+        ], $messages);
 
         $ticket->update([
             'status' => 'open',
@@ -100,7 +119,7 @@ class TicketStatusController extends Controller
         TicketMessage::create([
             'ticket_id' => $ticket->id,
             'user_id' => $user->id,
-            'message' => 'Ticket reopened. Reason: '.$request->reason,
+            'message' => (t('tickets.reopened_reason') ?: 'Ticket reopened. Reason:') . ' ' . $request->reason,
             'is_system' => true,
         ]);
 
@@ -114,7 +133,8 @@ class TicketStatusController extends Controller
         // ✅ Mark unread for other participant
         $this->updateReadStateForSystemMessage($ticket, $user->id);
 
-        return redirect()->route('tickets.show', $ticket);
+        return redirect()->route('tickets.show', $ticket)
+            ->with('success', t('tickets.reopened_success') ?: 'Ticket reopened successfully.');
     }
 
     public function markUnread(Request $request, Ticket $ticket)

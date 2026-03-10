@@ -16,7 +16,7 @@
 
                 <div>
                     <label class="block mb-1">User *</label>
-                    <select name="user_id" class="w-full border rounded px-3 py-2" required>
+                    <select name="user_id" class="w-full border rounded px-3 py-2">
                         <option value="">Select a user</option>
                         @foreach ($users as $u)
                             <option value="{{ $u->id }}">{{ $u->name }} ({{ $u->email }})</option>
@@ -26,7 +26,7 @@
 
                 <div>
                     <label class="block mb-1">Category *</label>
-                    <select name="ticket_category_id" class="w-full border rounded px-3 py-2" required>
+                    <select name="ticket_category_id" class="w-full border rounded px-3 py-2">
                         <option value="">Select a category</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}">
@@ -38,18 +38,16 @@
 
                 <div>
                     <label class="block mb-1">Title *</label>
-                    <input type="text"
-                           name="title"
-                           class="w-full border rounded px-3 py-2"
-                           required>
+                          <input type="text"
+                              name="title"
+                              class="w-full border rounded px-3 py-2">
                 </div>
 
                 <div>
                     <label class="block mb-1">Message *</label>
                     <textarea name="message"
                               rows="5"
-                              class="w-full border rounded px-3 py-2"
-                              required></textarea>
+                              class="w-full border rounded px-3 py-2"></textarea>
                 </div>
 
                 <div>

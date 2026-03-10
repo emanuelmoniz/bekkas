@@ -78,8 +78,7 @@
                     @csrf
                     <label class="block mb-1">Close reason *</label>
                     <textarea name="reason"
-                              class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm mb-3"
-                              required></textarea>
+                              class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm mb-3"></textarea>
                     <x-default-button type="submit">
                         Close Ticket
                     </x-default-button>
@@ -89,8 +88,7 @@
                     @csrf
                     <label class="block mb-1">Reopen reason *</label>
                     <textarea name="reason"
-                              class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm mb-3"
-                              required></textarea>
+                              class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm mb-3"></textarea>
                     <x-default-button type="submit">
                         Reopen Ticket
                     </x-default-button>
@@ -101,44 +99,52 @@
         {{-- MESSAGES --}}
         <div class="space-y-4">
             @foreach ($ticket->messages as $msg)
-                <div class="bg-white p-4 rounded shadow">
-                    <div class="text-sm text-grey-dark mb-1">
-                        {{ $msg->is_system ? 'System' : ($msg->user?->name ?? '—') }}
-                        · {{ $msg->created_at }}
-                    </div>
+                @php
+                    // On admin view: admin (anyone but the ticket owner) and system messages should be right-aligned
+                    $isAdminOrSystem = $msg->is_system || ($msg->user_id && $msg->user_id !== $ticket->user_id);
+                @endphp
 
-                    <div class="whitespace-pre-line">
-                        {{ $msg->message }}
-                    </div>
+                <div class="flex {{ $isAdminOrSystem ? 'justify-end' : 'justify-start' }}">
+                    <div class="max-w-[66%] w-full {{ $isAdminOrSystem ? 'text-right' : 'text-left' }}">
+                        <div class="rounded-lg p-4 shadow {{ $isAdminOrSystem ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200' }}">
+                            <div class="text-sm mb-1 {{ $isAdminOrSystem ? 'text-indigo-100' : 'text-grey-dark' }}">
+                                {{ $msg->is_system ? 'System' : ($msg->user?->name ?? '—') }}
+                                · {{ $msg->created_at }}
+                            </div>
 
-                    @if ($msg->attachments->count())
-                        <ul class="list-disc ml-5 text-sm mt-2">
-                            @foreach ($msg->attachments as $file)
-                                <li>
-                                    <a href="{{ route('tickets.attachments.download', $file) }}"
-                                       class="text-accent-secondary hover:underline text-accent-primary hover:text-accent-primary/90 no-underline">
-                                        {{ $file->original_name }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
+                            <div class="whitespace-pre-line">
+                                {{ $msg->message }}
+                            </div>
+
+                            @if ($msg->attachments->count())
+                                <ul class="list-disc ml-5 text-sm mt-2">
+                                    @foreach ($msg->attachments as $file)
+                                        <li>
+                                            <a href="{{ route('tickets.attachments.download', $file) }}"
+                                               class="hover:underline text-accent-primary hover:text-accent-primary/90 no-underline">
+                                                {{ $file->original_name }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             @endforeach
         </div>
 
         {{-- REPLY --}}
         @if ($ticket->status === 'open')
-            <form method="POST"
-                  action="{{ route('tickets.messages.store', $ticket) }}"
-                  enctype="multipart/form-data"
-                  class="bg-white p-6 rounded shadow space-y-4">
+                        <form method="POST"
+                                    action="{{ route('tickets.messages.store', $ticket) }}"
+                                    enctype="multipart/form-data"
+                                    class="bg-white p-6 rounded shadow space-y-4">
                 @csrf
 
-                <textarea name="message"
-                          rows="4"
-                          class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm"
-                          required></textarea>
+                                <textarea name="message"
+                                                    rows="4"
+                                                    class="w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm"></textarea>
 
                 <input type="file" name="files[]" multiple>
 

@@ -259,4 +259,85 @@ class TicketAdminController extends Controller
 
         return redirect()->route('admin.tickets.show', $ticket);
     }
+
+    public function storeMessage(Request $request, Ticket $ticket)
+    {
+        $this->ensureAdmin();
+
+        if ($ticket->status === 'closed') {
+            abort(403);
+        }
+
+        $request->validate([
+            'message' => 'required|string',
+            'files.*' => 'nullable|file|max:20480',
+        ]);
+
+        $authUser = Auth::user();
+
+        $message = TicketMessage::create([
+            'ticket_id' => $ticket->id,
+            'user_id' => $authUser->id,
+            'message' => $request->message,
+        ]);
+
+        $attachmentFailed = false;
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                try {
+                    $path = $file->store('tickets/'.$ticket->uuid, 'private');
+                    TicketAttachment::create([
+                        'ticket_message_id' => $message->id,
+                        'original_name' => $file->getClientOriginalName(),
+                        'path' => $path,
+                        'mime' => $file->getMimeType(),
+                        'size' => $file->getSize(),
+                    ]);
+                } catch (\Throwable $e) {
+                    \Log::error('Admin ticket attachment save failed', [
+                        'ticket_id' => $ticket->id,
+                        'message_id' => $message->id,
+                        'error' => $e->getMessage(),
+                    ]);
+                    $attachmentFailed = true;
+                }
+            }
+        }
+
+        $state = $ticket->read_state ?? [];
+        $participants = collect([$ticket->user_id, $ticket->created_by])->unique();
+        foreach ($participants as $participantId) {
+            if ((int) $participantId === (int) $authUser->id) {
+                $state[$participantId] = now();
+            } else {
+                unset($state[$participantId]);
+            }
+        }
+
+        $ticket->update([
+            'last_message_at' => now(),
+            'read_state' => $state,
+        ]);
+
+        try {
+            $ticket->notifyParticipants(
+                $message,
+                'tickets.email.event.new_message',
+                $authUser->id
+            );
+        } catch (\Throwable $e) {
+            \Log::error('Admin ticket notification failed', [
+                'ticket_id' => $ticket->id,
+                'message_id' => $message->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        $response = back()->with('success', 'Message sent successfully.');
+        if ($attachmentFailed) {
+            $response = $response->with('error', 'Some files failed to attach.');
+        }
+
+        return $response;
+    }
 }

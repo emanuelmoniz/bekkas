@@ -140,7 +140,8 @@ class TicketController extends Controller
             $authUser->id
         );
 
-        return redirect()->route('tickets.show', $ticket);
+        return redirect()->route('tickets.show', $ticket)
+            ->with('success', t('tickets.created_success') ?: 'Ticket created successfully!');
     }
 
     public function show(Ticket $ticket)
