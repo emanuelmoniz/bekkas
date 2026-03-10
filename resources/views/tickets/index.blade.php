@@ -122,7 +122,11 @@
             </table>
 
             {{-- Mobile cards (< md) --}}
-            <div class="lg:hidden divide-y divide-grey-light">
+            <div class="lg:hidden divide-y divide-grey-light 
+                {{ $ticket->isUnreadFor(auth()->id())
+                    ? 'bg-status-warning/10 text-status-warning font-semibold'
+                    : 'text-grey-dark'
+                }} ">
                 @forelse ($tickets as $ticket)
                     <a href="{{ route('tickets.show', $ticket) }}"
                        class="block px-4 py-3 hover:bg-grey-light/40 transition-colors">
@@ -132,18 +136,18 @@
                             <span class="font-bold text-accent-primary">
                                 {{ $ticket->ticket_number ?? $ticket->uuid }}
                             </span>
-                            <span class="text-xs px-2 py-0.5 rounded-full bg-grey-light text-grey-dark shrink-0">
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-grey-light shrink-0">
                                 {{ ucfirst($ticket->status) }}
                             </span>
                         </div>
 
                         {{-- Title --}}
-                        <p class="mt-1 font-semibold {{ $ticket->isUnreadFor(auth()->id()) ? 'text-status-error' : 'text-grey-dark' }}">
+                        <p class="mt-1 font-semibold">
                             {{ $ticket->title }}
                         </p>
 
                         {{-- Category + date --}}
-                        <div class="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-grey-medium">
+                        <div class="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-xs">
                             <span>{{ optional($ticket->category?->translation())->name ?? '—' }}</span>
                             <span>{{ $ticket->last_message_at?->format('Y-m-d H:i') ?? '—' }}</span>
                         </div>

@@ -683,6 +683,12 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'profile.set_password_desc', 'locale' => 'pt-PT', 'value' => 'Entrou com um fornecedor social. Adicione uma palavra-passe para também poder entrar com o seu email.', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.set_password_desc', 'locale' => 'en-UK', 'value' => 'You signed in using a social provider. Add a password to also be able to sign in with your email.', 'created_at' => $now, 'updated_at' => $now],
 
+            ['key' => 'profile.password_reset_hint', 'locale' => 'pt-PT', 'value' => 'Não se lembra da palavra-passe atual?', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.password_reset_hint', 'locale' => 'en-UK', 'value' => "Don't remember your current password?", 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'profile.password_reset_cta', 'locale' => 'pt-PT', 'value' => 'Redefinir Palavra-passe', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'profile.password_reset_cta', 'locale' => 'en-UK', 'value' => 'Password Reset', 'created_at' => $now, 'updated_at' => $now],
+
             ['key' => 'profile.delete_account', 'locale' => 'pt-PT', 'value' => 'Eliminar Conta', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'profile.delete_account', 'locale' => 'en-UK', 'value' => 'Delete Account', 'created_at' => $now, 'updated_at' => $now],
 

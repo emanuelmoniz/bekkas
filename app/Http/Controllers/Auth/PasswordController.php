@@ -42,8 +42,11 @@ class PasswordController extends Controller
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator, 'updatePassword')
+            return redirect()
+                ->route('profile.edit')
+                ->withFragment('password-section')
+                ->with('error', $validator->errors()->first())
+                ->withErrors($validator)
                 ->withInput();
         }
 

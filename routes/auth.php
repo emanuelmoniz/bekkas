@@ -32,18 +32,6 @@ Route::middleware('guest')->group(function () {
     // can be used both for unauthenticated sign-in and for linking while
     // authenticated (profile -> link flow).
 
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
-        ->name('password.request');
-
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-        ->name('password.email');
-
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-        ->name('password.reset');
-
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-        ->name('password.store');
-
     // After registration (guest) — show "check your email" page
     Route::get('verify-email/sent', [RegisteredUserController::class, 'verifyEmailSent'])
         ->name('verification.sent');
@@ -76,6 +64,19 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 });
+
+// Password reset flow is available to both guests and authenticated users.
+Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+    ->name('password.request');
+
+Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+    ->name('password.email');
+
+Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+    ->name('password.reset');
+
+Route::post('reset-password', [NewPasswordController::class, 'store'])
+    ->name('password.store');
 
 // Callback for social providers (accessible to both guests and authenticated users)
 Route::get('login/{provider}/callback', [\App\Http\Controllers\Auth\SocialAuthController::class, 'handleProviderCallback'])
