@@ -24,7 +24,7 @@
                 @else
                     @if(config('services.google.enabled'))
                         <a href="{{ route('profile.social.link', 'google') }}" class="inline-flex items-center">
-                            <x-default-button>{{ t('profile.link_account') ?: 'Link account' }}</x-default-button>
+                            <x-primary-cta>{{ t('profile.link_account') ?: 'Link account' }}</x-primary-cta>
                         </a>
                     @else
                         <div class="text-xs text-grey-medium">{{ t('profile.provider_disabled') ?: 'Google sign-in is currently disabled.' }}</div>
@@ -52,7 +52,7 @@
                 @else
                     @if(config('services.microsoft.enabled'))
                         <a href="{{ route('profile.social.link', 'microsoft') }}" class="inline-flex items-center">
-                            <x-default-button>{{ t('profile.link_account') ?: 'Link account' }}</x-default-button>
+                            <x-primary-cta>{{ t('profile.link_account') ?: 'Link account' }}</x-primary-cta>
                         </a>
                     @else
                         <div class="text-xs text-grey-medium">{{ t('profile.provider_disabled') ?: 'Microsoft sign-in is currently disabled.' }}</div>

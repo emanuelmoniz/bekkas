@@ -44,7 +44,7 @@
                             {{ t('profile.default_address') ?: 'Default address' }}
                         </label>
 
-                        <x-default-button>{{ t('profile.save') ?: 'Save' }}</x-default-button>
+                        <x-primary-cta>{{ t('profile.save') ?: 'Save' }}</x-primary-cta>
                     </form>
 
                     {{-- DELETE FORM (SEPARATE) --}}
@@ -87,7 +87,7 @@
                 {{ t('profile.default_address') ?: 'Default address' }}
             </label>
 
-            <x-default-button>{{ t('profile.add_address') ?: 'Add Address' }}</x-default-button>
+            <x-primary-cta>{{ t('profile.add_address') ?: 'Add Address' }}</x-primary-cta>
         </form>
     </details>
 </section>
