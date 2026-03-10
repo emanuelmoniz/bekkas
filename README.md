@@ -67,56 +67,93 @@ Security notes: never commit real secrets to the repository. Use environment or 
 
 ---
 
-## CLI PHP & queue workers (server notes)
+## 📧 Email & queue workers (server notes)
 
-If you run Laravel queue workers on this server you must ensure the PHP CLI has the PCNTL functions available (Laravel's worker uses `pcntl_signal`). On some control-panel images these functions are disabled in `disable_functions`.
+Emails (order notifications, contact form, tickets) are dispatched as queued jobs. The queue driver must be set to `database` and a persistent worker must be running to deliver them.
 
-- Backup the CLI php.ini before editing:
+### `.env` requirements
+
+```dotenv
+QUEUE_CONNECTION=database
+MAIL_MAILER=smtp
+MAIL_HOST=email-smtp.eu-west-3.amazonaws.com
+MAIL_PORT=587
+MAIL_ENCRYPTION=tls
+MAIL_USERNAME=<AWS SES SMTP username>
+MAIL_PASSWORD=<AWS SES SMTP password>
+MAIL_FROM_ADDRESS=no-reply@bekkas.pt
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+> **Do not** duplicate `QUEUE_CONNECTION` in `.env`. If both `sync` and `database` appear, only the last one takes effect and this causes confusion — keep exactly one entry.
+
+### Supervisor setup (production server)
+
+Each environment has its own Supervisor program defined in `/etc/supervisor/conf.d/`. Current programs:
+
+| Environment | Domain | Supervisor program |
+|---|---|---|
+| Production | bekkas.pt | `bekkas-queue` |
+| Staging | tes.bekkas.pt | `tes-bekkas-queue` |
+| Development | dev.bekkas.pt | `dev-bekkas-queue` |
+
+Template for a new environment (run as root):
 
 ```bash
-sudo cp /etc/php/8.4/cli/php.ini /etc/php/8.4/cli/php.ini.bak
+cat > /etc/supervisor/conf.d/<name>-queue.conf << 'EOF'
+[program:<name>-queue]
+process_name=%(program_name)s
+command=php /home/bekkas/web/<domain>/public_html/artisan queue:listen database --sleep=3 --tries=3
+autostart=true
+autorestart=true
+user=bekkas
+redirect_stderr=true
+stdout_logfile=/home/bekkas/web/<domain>/public_html/storage/logs/queue.log
+stopwaitsecs=3600
+EOF
+supervisorctl reread && supervisorctl update
 ```
 
-- In the php.ini entry `disable_functions` remove any tokens that start with `pcntl_` (leave other disabled functions such as `exec` or `system` alone). Example change:
+The worker auto-restarts on crash (`autorestart=true`). After each deploy, `bin/deploy.sh` automatically restarts the correct program based on `APP_ENV`, so no manual intervention is needed.
 
-Before:
-
-```text
-disable_functions = pcntl_alarm,pcntl_fork,pcntl_signal,exec,system
-```
-
-After:
-
-```text
-disable_functions = exec,system
-```
-
-- Verify PCNTL is available for the CLI:
+Useful Supervisor commands:
 
 ```bash
+supervisorctl status                     # check all workers
+supervisorctl restart <name>-queue       # restart a specific worker
+supervisorctl tail -f <name>-queue       # tail its log
+```
+
+### PHP CLI — PCNTL requirement
+
+Laravel's queue worker uses `pcntl_signal`. On some server images these functions are disabled in `php.ini`. Check and fix:
+
+```bash
+# Verify
 php -r "var_dump(function_exists('pcntl_signal'));"
+# Expected: bool(true)
+
+# If false, edit /etc/php/8.4/cli/php.ini:
+# Back up first
+sudo cp /etc/php/8.4/cli/php.ini /etc/php/8.4/cli/php.ini.bak
+# Remove only pcntl_* tokens from disable_functions — leave exec, system, etc. alone
+# Before: disable_functions = pcntl_alarm,pcntl_fork,pcntl_signal,exec,system
+# After:  disable_functions = exec,system
 ```
 
-Expect `bool(true)`; then run the worker as normal:
-
-```bash
-php artisan queue:work
-```
-
-- If you edited the FPM php.ini (`/etc/php/8.4/fpm/php.ini`) restart FPM:
-
-```bash
-sudo systemctl restart php8.4-fpm
-```
-
-- Quick testing alternative (no ini edit): set the queue driver to `sync` in your `.env` so jobs run inline while you test:
-
-```bash
-sed -i 's/^QUEUE_CONNECTION=.*/QUEUE_CONNECTION=sync/' .env
-php artisan config:clear
-```
+> If you also edited the FPM php.ini, restart FPM: `sudo systemctl restart php8.4-fpm`
 
 Security note: enabling PCNTL restores process-control functions. Do not enable other risky functions unless you understand the security implications.
+
+### Local development
+
+In local development the queue driver can stay `sync` so jobs run inline without needing a worker:
+
+```dotenv
+QUEUE_CONNECTION=sync
+```
+
+`composer dev` also starts a `queue:listen` process if you prefer to test the async path locally.
 
 ## 🔧 Development commands
 
