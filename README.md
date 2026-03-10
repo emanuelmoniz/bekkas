@@ -67,6 +67,57 @@ Security notes: never commit real secrets to the repository. Use environment or 
 
 ---
 
+## CLI PHP & queue workers (server notes)
+
+If you run Laravel queue workers on this server you must ensure the PHP CLI has the PCNTL functions available (Laravel's worker uses `pcntl_signal`). On some control-panel images these functions are disabled in `disable_functions`.
+
+- Backup the CLI php.ini before editing:
+
+```bash
+sudo cp /etc/php/8.4/cli/php.ini /etc/php/8.4/cli/php.ini.bak
+```
+
+- In the php.ini entry `disable_functions` remove any tokens that start with `pcntl_` (leave other disabled functions such as `exec` or `system` alone). Example change:
+
+Before:
+
+```text
+disable_functions = pcntl_alarm,pcntl_fork,pcntl_signal,exec,system
+```
+
+After:
+
+```text
+disable_functions = exec,system
+```
+
+- Verify PCNTL is available for the CLI:
+
+```bash
+php -r "var_dump(function_exists('pcntl_signal'));"
+```
+
+Expect `bool(true)`; then run the worker as normal:
+
+```bash
+php artisan queue:work
+```
+
+- If you edited the FPM php.ini (`/etc/php/8.4/fpm/php.ini`) restart FPM:
+
+```bash
+sudo systemctl restart php8.4-fpm
+```
+
+- Quick testing alternative (no ini edit): set the queue driver to `sync` in your `.env` so jobs run inline while you test:
+
+```bash
+sed -i 's/^QUEUE_CONNECTION=.*/QUEUE_CONNECTION=sync/' .env
+php artisan config:clear
+```
+
+Security note: enabling PCNTL restores process-control functions. Do not enable other risky functions unless you understand the security implications.
+
 ## 🔧 Development commands
 
 - Start dev server + assets (local):

@@ -71,4 +71,13 @@ if [ "$APP_ENV_VAL" = "production" ] || [ "$APP_ENV_VAL" = "staging" ]; then
   php artisan view:cache
 fi
 
+# If Supervisor is installed, restart the managed queue worker (common on this server)
+if command -v supervisorctl >/dev/null 2>&1; then
+  echo "[deploy] Reloading Supervisor and restarting queue worker..."
+  supervisorctl reread || true
+  supervisorctl update || true
+  # restart a common program name; adjust if your supervisor conf uses a different name
+  supervisorctl restart bekkas-queue || true
+fi
+
 echo "[deploy] Done. Branch '$BRANCH' deployed."
