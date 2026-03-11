@@ -42,39 +42,32 @@ git checkout develop
 1. Start from updated `develop`
 
 ```bash
+cd ~/web/tes.bekkas.pt/public_html
+
 git checkout develop
 git pull origin develop
 ```
 
-2. Create feature branch
+2. Implement changes, then run checks
 
 ```bash
-git checkout -b feature/my-change
-```
-
-3. Implement changes, then run checks
-
-```bash
-./bin/run-tests.sh
 ./vendor/bin/pint
+./bin/run-tests.sh
 ```
 
-4. Commit and push
+3. Commit and push
 
 ```bash
 git add .
 git commit -m "feat: describe change"
-git push origin feature/my-change
+git push origin develop
 ```
-
-5. Open PR and merge into `develop`
-   - `develop` auto-deploys to `dev.bekkas.pt`.
 
 ## Phase 2 — Promote to staging for QA
 
-From your local repo:
-
 ```bash
+cd ~/web/tes.bekkas.pt/public_html
+
 git checkout develop
 git pull origin develop
 
@@ -84,13 +77,6 @@ git checkout staging
 git pull origin staging
 git merge develop
 git push origin staging
-```
-
-On the staging server:
-
-```bash
-
-cd ~/web/tes.bekkas.pt/public_html
 
 php artisan db:seed                                   # Optional
 php artisan db:seed --class=StaticTranslationsSeeder  # Optional
@@ -100,22 +86,18 @@ php artisan db:seed --class=StaticTranslationsSeeder  # Optional
 
 ## Phase 3 — Promote to production
 
-From your local repo:
-
 ```bash
+cd ~/web/bekkas.pt/public_html
+
 git checkout staging
 git pull origin staging
+
+./bin/run-tests.sh
 
 git checkout main
 git pull origin main
 git merge staging
 git push origin main
-```
-
-On the production server:
-
-```bash
-cd ~/web/bekkas.pt/public_html
 
 php artisan db:seed                                   # Optional
 php artisan db:seed --class=StaticTranslationsSeeder  # Optional
