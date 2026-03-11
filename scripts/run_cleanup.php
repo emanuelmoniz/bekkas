@@ -1,7 +1,7 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
-$app = require_once __DIR__ . '/../bootstrap/app.php';
+require __DIR__.'/../vendor/autoload.php';
+$app = require_once __DIR__.'/../bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
@@ -23,11 +23,11 @@ try {
     }
 
     foreach ($unused as $f) {
-        echo $f . PHP_EOL;
+        echo $f.PHP_EOL;
     }
 
     exit(0);
 } catch (Throwable $e) {
-    fwrite(STDERR, "Error: " . $e->getMessage() . PHP_EOL);
+    fwrite(STDERR, 'Error: '.$e->getMessage().PHP_EOL);
     exit(1);
 }
