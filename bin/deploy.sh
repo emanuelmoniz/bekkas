@@ -71,15 +71,10 @@ if [ "$APP_ENV_VAL" = "production" ] || [ "$APP_ENV_VAL" = "staging" ]; then
   php artisan view:cache
 fi
 
-# If Supervisor is installed, restart the managed queue worker for this environment
-if command -v supervisorctl >/dev/null 2>&1; then
-  case "$APP_ENV_VAL" in
-    production) SUPERVISOR_PROGRAM="bekkas-queue" ;;
-    staging)    SUPERVISOR_PROGRAM="tes-bekkas-queue" ;;
-    *)          SUPERVISOR_PROGRAM="dev-bekkas-queue" ;;
-  esac
-  echo "[deploy] Restarting queue worker ($SUPERVISOR_PROGRAM)..."
-  supervisorctl restart "$SUPERVISOR_PROGRAM" || true
-fi
+# Signal queue workers to restart gracefully via Laravel cache.
+# supervisorctl requires root socket access; php artisan queue:restart avoids that
+# by writing a restart timestamp to cache — supervisor then auto-restarts the process.
+echo "[deploy] Signalling queue worker to restart (php artisan queue:restart)..."
+php artisan queue:restart
 
 echo "[deploy] Done. Branch '$BRANCH' deployed."
