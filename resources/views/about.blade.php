@@ -2,22 +2,15 @@
 
 <x-app-layout>
 
-        <!-- BANNER SECTION -->
-        <section class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-dark">
-            <!-- Background Image -->
-            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1581092160607-ee67e9e95167?w=1200&h=800&fit=crop')">
-                <div class="absolute inset-0 bg-dark/40"></div>
-            </div>
-            
-            <!-- Content -->
-            <div class="relative z-10 text-center text-white px-6">
-                <h1 class="text-5xl lg:text-7xl font-bold mb-6">{{ t('about.banner.title') ?: 'About BEKKAS' }}</h1>
-                <p class="text-xl lg:text-2xl mb-8 max-w-2xl mx-auto">{{ t('about.banner.subtitle') ?: 'Making 3D printing accessible to everyone' }}</p>
+        <!-- HERO LOGO SECTION -->
+        <section class="relative w-full min-h-[50vh] flex items-center justify-center bg-light overflow-hidden px-2">
+            <div class="relative z-10 flex items-center justify-center w-full">
+                <img src="{{ asset('images/hero_logo.svg') }}" alt="{{ config('app.name') }}" class="mx-auto w-full h-auto object-contain max-w-[420px]" />
             </div>
         </section>
 
         <!-- MISSION SECTION -->
-        <section class="py-16 lg:py-24 bg-white animate-sequence">
+        <section class="py-16 lg:py-24 bg-secondary animate-sequence">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-8 text-dark">{{ t('about.mission.title') ?: 'Our Mission' }}</h2>
                 <p class="text-lg lg:text-xl text-grey-dark mb-6 leading-relaxed">
@@ -30,7 +23,7 @@
         </section>
 
         <!-- VALUES SECTION -->
-        <section class="py-16 lg:py-24 bg-white">
+        <section class="py-16 lg:py-24 bg-light">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-4xl font-bold mb-12 text-center text-dark">{{ t('about.values.title') ?: 'What We Stand For' }}</h2>
                 
@@ -57,7 +50,7 @@
         </section>
 
         <!-- STORY SECTION -->
-        <section class="py-16 lg:py-24 bg-white animate-sequence">
+        <section class="py-16 lg:py-24 bg-secondary animate-sequence">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-8 text-center text-dark">{{ t('about.story.title') ?: 'Our Story' }}</h2>
                 <div class="space-y-6 text-lg text-grey-dark">
