@@ -38,9 +38,9 @@
             </div>
 
             <div class="mb-4">
-                <x-default-button form="resend-activation-form">
+                <x-optional-cta fullWidth form="resend-activation-form">
                     {{ t('auth.resend_activation') ?: 'Resend activation email' }}
-                </x-default-button>
+                </x-optional-cta>
             </div>
         @endif
 

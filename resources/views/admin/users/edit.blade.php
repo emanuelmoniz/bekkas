@@ -62,6 +62,31 @@
                     </label>
                 </div>
 
+                {{-- ROLES --}}
+                <div>
+                    <h3 class="text-lg border-b pb-2 mt-4">Roles</h3>
+
+                    @php
+                        $selectedRoles = old('roles', $user->roles->pluck('id')->toArray());
+                        $isSelf = auth()->check() && auth()->id() === $user->id;
+                    @endphp
+
+                    @if($isSelf)
+                        <div class="mb-2 text-sm text-yellow-700">You cannot change your own roles.</div>
+                    @endif
+
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        @foreach($roles as $role)
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" name="roles[]" value="{{ $role->id }}" @checked(in_array($role->id, $selectedRoles)) @disabled($isSelf) class="rounded border-grey-medium">
+                                <span class="ml-2">{{ $role->name }}</span>
+                            </label>
+                        @endforeach
+                    </div>
+
+                    <x-input-error :messages="$errors->get('roles')" class="mt-2" />
+                </div>
+
                 <div class="flex justify-between">
                     <x-default-button type="button" onclick="window.location.href='{{ route('admin.users.index') }}'">
                         Cancel

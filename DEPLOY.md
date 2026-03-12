@@ -42,39 +42,32 @@ git checkout develop
 1. Start from updated `develop`
 
 ```bash
+cd ~/web/tes.bekkas.pt/public_html
+
 git checkout develop
 git pull origin develop
 ```
 
-2. Create feature branch
+2. Implement changes, then run checks
 
 ```bash
-git checkout -b feature/my-change
-```
-
-3. Implement changes, then run checks
-
-```bash
-./bin/run-tests.sh
 ./vendor/bin/pint
+./bin/run-tests.sh
 ```
 
-4. Commit and push
+3. Commit and push
 
 ```bash
 git add .
 git commit -m "feat: describe change"
-git push origin feature/my-change
+git push origin develop
 ```
-
-5. Open PR and merge into `develop`
-   - `develop` auto-deploys to `dev.bekkas.pt`.
 
 ## Phase 2 — Promote to staging for QA
 
-From your local repo:
-
 ```bash
+cd ~/web/tes.bekkas.pt/public_html
+
 git checkout develop
 git pull origin develop
 
@@ -84,44 +77,53 @@ git checkout staging
 git pull origin staging
 git merge develop
 git push origin staging
-```
-
-On the staging server:
-
-```bash
-
-cd ~/web/tes.bekkas.pt/public_html
 
 php artisan db:seed                                   # Optional
 php artisan db:seed --class=StaticTranslationsSeeder  # Optional
 
-./bin/deploy.sh
+./bin/deploy.sh --seed-no-content
+
+# Seed options (mutually exclusive; default = no seeding):
+#   --no-seed          Don't seed anything (default; --skip-seed is an alias)
+#   --force-seed       Run full DatabaseSeeder (all seeders, even on production)
+#   --seed-no-content  Run all seeders EXCEPT ProductSeeder and ProjectSeeder
+#   --seed-content     Run only ProductSeeder and ProjectSeeder
 ```
 
 ## Phase 3 — Promote to production
 
-From your local repo:
-
 ```bash
+cd ~/web/bekkas.pt/public_html
+
 git checkout staging
 git pull origin staging
+
+./bin/run-tests.sh
 
 git checkout main
 git pull origin main
 git merge staging
 git push origin main
+
+./bin/deploy.sh --no-seed
+
+# Seed options (mutually exclusive; default = no seeding):
+#   --no-seed          Don't seed anything (default; --skip-seed is an alias)
+#   --force-seed       Run full DatabaseSeeder (all seeders, even on production)
+#   --seed-no-content  Run all seeders EXCEPT ProductSeeder and ProjectSeeder
+#   --seed-content     Run only ProductSeeder and ProjectSeeder
 ```
 
-On the production server:
+## Seed options for `./bin/deploy.sh`
 
-```bash
-cd ~/web/bekkas.pt/public_html
+These flags are mutually exclusive. Default (no flag) = no seeding.
 
-php artisan db:seed                                   # Optional
-php artisan db:seed --class=StaticTranslationsSeeder  # Optional
-
-./bin/deploy.sh --skip-seed
-```
+| Flag | Behaviour |
+|---|---|
+| `--no-seed` / `--skip-seed` | Don't seed anything (default) |
+| `--force-seed` | Run the full `DatabaseSeeder` (all seeders, even on production) |
+| `--seed-no-content` | Run all seeders **except** `ProductSeeder` and `ProjectSeeder` |
+| `--seed-content` | Run **only** `ProductSeeder` and `ProjectSeeder` |
 
 ## Quick reference
 

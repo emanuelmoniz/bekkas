@@ -1,18 +1,27 @@
 #!/bin/bash
 # bin/deploy.sh — Pull latest code and refresh the environment
-# Usage: ./bin/deploy.sh [--skip-migrations] [--skip-seed]
+# Usage: ./bin/deploy.sh [--skip-migrations] [--no-seed|--skip-seed|--force-seed|--seed-no-content|--seed-content]
+#
+# Seed options (mutually exclusive; default = no seeding):
+#   --no-seed          Don't seed anything (default; --skip-seed is an alias)
+#   --force-seed       Run full DatabaseSeeder (all seeders, even on production)
+#   --seed-no-content  Run all seeders EXCEPT ProductSeeder and ProjectSeeder
+#   --seed-content     Run only ProductSeeder and ProjectSeeder
 #
 # Run from Laravel root. Detects APP_ENV and adjusts automatically.
 
 set -e
 
 SKIP_MIGRATIONS=false
-SKIP_SEED=false
+SEED_MODE="none"  # none | force | no-content | content
 
 for arg in "$@"; do
   case $arg in
-    --skip-migrations) SKIP_MIGRATIONS=true ;;
-    --skip-seed) SKIP_SEED=true ;;
+    --skip-migrations)   SKIP_MIGRATIONS=true ;;
+    --no-seed|--skip-seed) SEED_MODE="none" ;;
+    --force-seed)        SEED_MODE="force" ;;
+    --seed-no-content)   SEED_MODE="no-content" ;;
+    --seed-content)      SEED_MODE="content" ;;
   esac
 done
 
@@ -50,10 +59,35 @@ if [ "$SKIP_MIGRATIONS" = false ]; then
   php artisan migrate --force
 fi
 
-# Seed (only in non-production)
-if [ "$SKIP_SEED" = false ] && [ "$APP_ENV_VAL" != "production" ]; then
-  echo "[deploy] Skipping seed (use --force-seed to override)"
-fi
+# Seed
+case "$SEED_MODE" in
+  none)
+    echo "[deploy] Seeding skipped (use --force-seed, --seed-no-content, or --seed-content to seed)."
+    ;;
+  force)
+    echo "[deploy] Running full DatabaseSeeder..."
+    php artisan db:seed --force
+    ;;
+  no-content)
+    echo "[deploy] Running seeders without content (no ProductSeeder / ProjectSeeder)..."
+    php artisan db:seed --class=RoleSeeder --force
+    php artisan db:seed --class=TaxSeeder --force
+    php artisan db:seed --class=CategorySeeder --force
+    php artisan db:seed --class=MaterialSeeder --force
+    php artisan db:seed --class=CountrySeeder --force
+    php artisan db:seed --class=RegionSeeder --force
+    php artisan db:seed --class=LocaleSeeder --force
+    php artisan db:seed --class=ShippingTierSeeder --force
+    php artisan db:seed --class=TicketCategorySeeder --force
+    php artisan db:seed --class=TicketCategoryTranslationSeeder --force
+    php artisan db:seed --class=StaticTranslationsSeeder --force
+    ;;
+  content)
+    echo "[deploy] Running content seeders only (ProductSeeder + ProjectSeeder)..."
+    php artisan db:seed --class=ProductSeeder --force
+    php artisan db:seed --class=ProjectSeeder --force
+    ;;
+esac
 
 # Storage link
 php artisan storage:link 2>/dev/null || true

@@ -62,88 +62,23 @@
                 </div>
             </div>
 
-            {{-- DEFAULT ADDRESS --}}
+            {{-- ROLES --}}
             <div class="bg-white p-6 rounded shadow mb-6 space-y-4">
-                <h3 class="text-lg border-b pb-2">Default Address</h3>
+                <h3 class="text-lg border-b pb-2">Roles</h3>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {{-- TITLE --}}
-                    <div>
-                        <x-input-label for="title">Title</x-input-label>
-                        <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title')" />
-                        <x-input-error :messages="$errors->get('title')" class="mt-2" />
-                    </div>
-
-                    {{-- NIF --}}
-                    <div>
-                        <x-input-label for="nif">NIF</x-input-label>
-                        <x-text-input id="nif" name="nif" type="text" class="mt-1 block w-full" :value="old('nif')" />
-                        <x-input-error :messages="$errors->get('nif')" class="mt-2" />
-                    </div>
-
-                    {{-- ADDRESS LINE 1 --}}
-                    <div class="lg:col-span-2">
-                        <x-input-label for="address_line_1">Address Line 1 <span class="text-status-error">*</span></x-input-label>
-                        <x-text-input id="address_line_1" name="address_line_1" type="text" class="mt-1 block w-full" :value="old('address_line_1')" required />
-                        <x-input-error :messages="$errors->get('address_line_1')" class="mt-2" />
-                    </div>
-
-                    {{-- ADDRESS LINE 2 --}}
-                    <div class="lg:col-span-2">
-                        <x-input-label for="address_line_2">Address Line 2</x-input-label>
-                        <x-text-input id="address_line_2" name="address_line_2" type="text" class="mt-1 block w-full" :value="old('address_line_2')" />
-                        <x-input-error :messages="$errors->get('address_line_2')" class="mt-2" />
-                    </div>
-
-                    {{-- POSTAL CODE --}}
-                    <div>
-                        <x-input-label for="postal_code">Postal Code <span class="text-status-error">*</span></x-input-label>
-                        <x-text-input id="postal_code" name="postal_code" type="text" class="mt-1 block w-full" :value="old('postal_code')" required />
-                        <x-input-error :messages="$errors->get('postal_code')" class="mt-2" />
-                    </div>
-
-                    {{-- CITY --}}
-                    <div>
-                        <x-input-label for="city">City <span class="text-status-error">*</span></x-input-label>
-                        <x-text-input id="city" name="city" type="text" class="mt-1 block w-full" :value="old('city')" required />
-                        <x-input-error :messages="$errors->get('city')" class="mt-2" />
-                    </div>
-
-                    {{-- COUNTRY --}}
-                    <div class="lg:col-span-2">
-                        <x-input-label for="country_id">Country <span class="text-status-error">*</span></x-input-label>
-                        <select id="country_id" name="country_id" required class="mt-1 block w-full border-grey-medium focus:border-accent-primary focus:ring-primary rounded-md shadow-sm">
-                            @foreach ($countries as $country)
-                                <option value="{{ $country->id }}" @selected(old('country_id') == $country->id)>
-                                    {{ $country->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <x-input-error :messages="$errors->get('country_id')" class="mt-2" />
-                    </div>
-
-                    {{-- PHONE --}}
-                    <div>
-                        <x-input-label for="address_phone">Phone</x-input-label>
-                        <x-text-input id="address_phone" name="address_phone" type="text" class="mt-1 block w-full" :value="old('address_phone')" />
-                        <x-input-error :messages="$errors->get('address_phone')" class="mt-2" />
-                    </div>
-
-                    {{-- IS DEFAULT --}}
-                    <div class="flex items-center">
+                <div class="grid grid-cols-2 gap-2">
+                    @foreach($roles as $role)
                         <label class="inline-flex items-center">
-                            <input type="hidden" name="is_default" value="1">
-                            <input type="checkbox"
-                                   name="is_default"
-                                   value="1"
-                                   checked
-                                   disabled
-                                   class="rounded border-grey-medium opacity-50">
-                            <span class="ml-2 text-grey-dark">Default Address (automatic)</span>
+                            <input type="checkbox" name="roles[]" value="{{ $role->id }}" @checked(in_array($role->id, old('roles', []))) class="rounded border-grey-medium">
+                            <span class="ml-2">{{ $role->name }}</span>
                         </label>
-                    </div>
+                    @endforeach
                 </div>
+
+                <x-input-error :messages="$errors->get('roles')" class="mt-2" />
             </div>
+
+            {{-- Addresses are managed on the user edit page --}}
 
             {{-- ACTIONS --}}
             <div class="flex justify-between">

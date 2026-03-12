@@ -47,7 +47,7 @@ class TicketCategoryTranslationSeeder extends Seeder
                     "Our team will provide a separate quote for Preparation and for Print, along with estimated times for each.\n\n".
                     "Pricing:\n".
                     "  • Preparation — €30 / hour, billed in 15-minute increments.\n".
-                    "  • Print — €20 / hour, billed in 15-minute increments (PLA included; other materials quoted separately).\n".
+                    "  • Print — €10 / hour, billed in 15-minute increments (PLA included; other materials quoted separately).\n".
                     '  • 20% student discount applies to both Preparation and Print.',
             ],
             [
@@ -60,7 +60,7 @@ class TicketCategoryTranslationSeeder extends Seeder
                     "A nossa equipa apresentará um orçamento separado para Preparação e para Impressão, com estimativas de tempo para cada fase.\n\n".
                     "Preços:\n".
                     "  • Preparação — 30€ / hora, faturado em incrementos de 15 minutos.\n".
-                    "  • Impressão — 20€ / hora, faturado em incrementos de 15 minutos (PLA incluído; outros materiais orçamentados separadamente).\n".
+                    "  • Impressão — 10€ / hora, faturado em incrementos de 15 minutos (PLA incluído; outros materiais orçamentados separadamente).\n".
                     '  • Desconto de 20% para estudantes em Preparação e Impressão.',
             ],
 
@@ -74,7 +74,7 @@ class TicketCategoryTranslationSeeder extends Seeder
                     "What to attach: your print-ready file(s) plus all relevant technical information — scale, colour, material, layer height, infill percentage, and any other print settings.\n\n".
                     "Our team will review your request and reply with a quote and estimated production time.\n\n".
                     "Pricing:\n".
-                    "  • €20 / hour, billed in 15-minute increments.\n".
+                    "  • €10 / hour, billed in 15-minute increments.\n".
                     "  • PLA material included. Other materials are quoted on a case-by-case basis.\n".
                     '  • 20% student discount applies.',
             ],
@@ -87,7 +87,7 @@ class TicketCategoryTranslationSeeder extends Seeder
                     "O que anexar: o(s) ficheiro(s) prontos para impressão e todas as informações técnicas relevantes — escala, cor, material, altura de camada, percentagem de preenchimento e outras definições de impressão.\n\n".
                     "A nossa equipa analisará o pedido e responderá com um orçamento e estimativa de tempo de produção.\n\n".
                     "Preços:\n".
-                    "  • 20€ / hora, faturado em incrementos de 15 minutos.\n".
+                    "  • 10€ / hora, faturado em incrementos de 15 minutos.\n".
                     "  • Material PLA incluído. Outros materiais são orçamentados caso a caso.\n".
                     '  • Desconto de 20% para estudantes.',
             ],
