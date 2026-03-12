@@ -62,16 +62,6 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['nullable', 'string', 'max:20'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-
-            // Address fields
-            'title' => ['nullable', 'string', 'max:255'],
-            'nif' => ['nullable', 'string', 'max:50'],
-            'address_phone' => ['nullable', 'string', 'max:20'],
-            'address_line_1' => ['required', 'string', 'max:255'],
-            'address_line_2' => ['nullable', 'string', 'max:255'],
-            'postal_code' => ['required', 'string', 'max:20'],
-            'city' => ['required', 'string', 'max:100'],
-            'country_id' => ['required', 'exists:countries,id'],
         ]);
 
         $user = User::create([
@@ -80,20 +70,11 @@ class UserController extends Controller
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
             'is_active' => $request->boolean('is_active', true),
+            // Admin-created accounts are treated as email-verified by default
+            'email_verified_at' => \Carbon\Carbon::now(),
         ]);
 
-        // Create address for the user
-        $user->addresses()->create([
-            'title' => $request->title,
-            'nif' => $request->nif,
-            'phone' => $request->address_phone,
-            'address_line_1' => $request->address_line_1,
-            'address_line_2' => $request->address_line_2,
-            'postal_code' => $request->postal_code,
-            'city' => $request->city,
-            'country_id' => $request->country_id,
-            'is_default' => true,
-        ]);
+        // Addresses are created/managed on the edit page.
 
         return redirect()->route('admin.users.index');
     }
