@@ -81,7 +81,13 @@ git push origin staging
 php artisan db:seed                                   # Optional
 php artisan db:seed --class=StaticTranslationsSeeder  # Optional
 
-./bin/deploy.sh
+./bin/deploy.sh --seed-no-content
+
+# Seed options (mutually exclusive; default = no seeding):
+#   --no-seed          Don't seed anything (default; --skip-seed is an alias)
+#   --force-seed       Run full DatabaseSeeder (all seeders, even on production)
+#   --seed-no-content  Run all seeders EXCEPT ProductSeeder and ProjectSeeder
+#   --seed-content     Run only ProductSeeder and ProjectSeeder
 ```
 
 ## Phase 3 — Promote to production
@@ -99,11 +105,25 @@ git pull origin main
 git merge staging
 git push origin main
 
-php artisan db:seed                                   # Optional
-php artisan db:seed --class=StaticTranslationsSeeder  # Optional
+./bin/deploy.sh --no-seed
 
-./bin/deploy.sh --skip-seed
+# Seed options (mutually exclusive; default = no seeding):
+#   --no-seed          Don't seed anything (default; --skip-seed is an alias)
+#   --force-seed       Run full DatabaseSeeder (all seeders, even on production)
+#   --seed-no-content  Run all seeders EXCEPT ProductSeeder and ProjectSeeder
+#   --seed-content     Run only ProductSeeder and ProjectSeeder
 ```
+
+## Seed options for `./bin/deploy.sh`
+
+These flags are mutually exclusive. Default (no flag) = no seeding.
+
+| Flag | Behaviour |
+|---|---|
+| `--no-seed` / `--skip-seed` | Don't seed anything (default) |
+| `--force-seed` | Run the full `DatabaseSeeder` (all seeders, even on production) |
+| `--seed-no-content` | Run all seeders **except** `ProductSeeder` and `ProjectSeeder` |
+| `--seed-content` | Run **only** `ProductSeeder` and `ProjectSeeder` |
 
 ## Quick reference
 
