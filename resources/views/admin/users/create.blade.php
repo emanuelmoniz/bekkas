@@ -62,6 +62,22 @@
                 </div>
             </div>
 
+            {{-- ROLES --}}
+            <div class="bg-white p-6 rounded shadow mb-6 space-y-4">
+                <h3 class="text-lg border-b pb-2">Roles</h3>
+
+                <div class="grid grid-cols-2 gap-2">
+                    @foreach($roles as $role)
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" name="roles[]" value="{{ $role->id }}" @checked(in_array($role->id, old('roles', []))) class="rounded border-grey-medium">
+                            <span class="ml-2">{{ $role->name }}</span>
+                        </label>
+                    @endforeach
+                </div>
+
+                <x-input-error :messages="$errors->get('roles')" class="mt-2" />
+            </div>
+
             {{-- Addresses are managed on the user edit page --}}
 
             {{-- ACTIONS --}}

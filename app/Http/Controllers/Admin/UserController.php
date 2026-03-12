@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\Country;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -52,7 +53,9 @@ class UserController extends Controller
     {
         $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();
 
-        return view('admin.users.create', compact('countries'));
+        $roles = Role::orderBy('name')->get();
+
+        return view('admin.users.create', compact('countries', 'roles'));
     }
 
     public function store(Request $request)
@@ -61,6 +64,8 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['nullable', 'string', 'max:20'],
+            'roles' => ['nullable', 'array'],
+            'roles.*' => ['integer', 'exists:roles,id'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -76,15 +81,19 @@ class UserController extends Controller
 
         // Addresses are created/managed on the edit page.
 
+        // Persist selected roles (if any)
+        $user->roles()->sync($request->input('roles', []));
+
         return redirect()->route('admin.users.index');
     }
 
     public function edit(User $user)
     {
-        $user->load('addresses.country');
+        $user->load('addresses.country', 'roles');
         $countries = Country::with('translations')->where('is_active', true)->orderByTranslatedName()->get();
+        $roles = Role::orderBy('name')->get();
 
-        return view('admin.users.edit', compact('user', 'countries'));
+        return view('admin.users.edit', compact('user', 'countries', 'roles'));
     }
 
     public function update(Request $request, User $user)
@@ -93,6 +102,8 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
             'phone' => ['nullable', 'string', 'max:20'],
+            'roles' => ['nullable', 'array'],
+            'roles.*' => ['integer', 'exists:roles,id'],
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -109,6 +120,18 @@ class UserController extends Controller
                 'password' => Hash::make($request->password),
             ]);
         }
+
+        // Persist selected roles but prevent an admin from removing their own admin role
+        $roles = $request->input('roles', []);
+
+        if (auth()->check() && auth()->id() === $user->id) {
+            $adminRole = Role::where('name', 'admin')->first();
+            if ($adminRole && ! in_array($adminRole->id, $roles)) {
+                $roles[] = $adminRole->id;
+            }
+        }
+
+        $user->roles()->sync($roles);
 
         return redirect()->route('admin.users.show', $user);
     }
