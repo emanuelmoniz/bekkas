@@ -47,6 +47,11 @@ Route::get('/', function () {
 Route::get('/maintenance', function () {
     $config = \App\Models\Configuration::latest()->first();
 
+    // Redirect to homepage when maintenance mode is not enabled.
+    if (! ($config && $config->is_maintenance)) {
+        return redirect('/');
+    }
+
     return response()->view('maintenance', [
         'maintenance_title' => $config->maintenance_title ?? 'BEKKAS IS IMPROVING',
         'maintenance_subtitle' => $config->maintenance_subtitle ?? 'Everyday design will be even better!',
