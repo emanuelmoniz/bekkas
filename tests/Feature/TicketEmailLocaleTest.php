@@ -17,6 +17,8 @@ class TicketEmailLocaleTest extends TestCase
         Mail::fake();
 
         $owner = User::factory()->create(['language' => 'pt-PT']);
+        // Admin user exists but notifications are sent only to the configured
+        // support inbox; the presence of an admin isn’t used by the mail logic.
         $admin = User::factory()->create();
         $admin->roles()->attach(\App\Models\Role::firstOrCreate(['name' => 'admin'])->id);
 
@@ -52,13 +54,18 @@ class TicketEmailLocaleTest extends TestCase
                 && str_contains($html, $ticket->ticket_number);
         });
 
-        // Admin should receive mail in English and include ticket GUID
-        Mail::assertQueued(\App\Mail\TicketNotification::class, function ($mail) use ($admin, $ticket) {
+        // Support inbox (configured address) should receive one English email.
+        $supportEmail = config('mail.admin_address', 'info@bekkas.pt');
+        Mail::assertQueued(\App\Mail\TicketNotification::class, function ($mail) use ($supportEmail, $ticket) {
             $html = method_exists($mail, 'render') ? $mail->render() : '';
 
-            return $mail->hasTo($admin->email)
+            return $mail->hasTo($supportEmail)
                 && ($mail->locale === 'en-UK' || $mail->locale === 'en')
                 && str_contains($html, $ticket->ticket_number);
         });
+
+        // Ensure no additional notifications were queued (e.g. to admin user directly)
+        $all = Mail::queued(\App\Mail\TicketNotification::class);
+        $this->assertCount(2, $all); // owner + inbox
     }
 }
