@@ -29,19 +29,19 @@
                 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-sequence">
                     <!-- Value 1 -->
-                    <div class="bg-white p-8 rounded-lg anim-item" data-index="0">
+                    <div class="bg-white p-8 text-justify rounded-lg anim-item" data-index="0">
                         <h3 class="text-xl font-bold mb-4 text-dark">{{ t('about.values.accessibility') ?: 'Accessibility' }}</h3>
                         <p class="text-grey-dark">{{ t('about.values.accessibility_desc') ?: 'We make 3D printing technology available to everyone, from students to professionals, with affordable solutions and expert guidance.' }}</p>
                     </div>
 
                     <!-- Value 2 -->
-                    <div class="bg-white p-8 rounded-lg anim-item" data-index="1">
+                    <div class="bg-white p-8 text-justify rounded-lg anim-item" data-index="1">
                         <h3 class="text-xl font-bold mb-4 text-dark">{{ t('about.values.uniqueness') ?: 'Uniqueness' }}</h3>
                         <p class="text-grey-dark">{{ t('about.values.uniqueness_desc') ?: 'Every project is different. We help you create something truly unique and personalizable that stands out from mass-produced items.' }}</p>
                     </div>
 
                     <!-- Value 3 -->
-                    <div class="bg-white p-8 rounded-lg anim-item" data-index="2">
+                    <div class="bg-white p-8 text-justify rounded-lg anim-item" data-index="2">
                         <h3 class="text-xl font-bold mb-4 text-dark">{{ t('about.values.quality') ?: 'Quality' }}</h3>
                         <p class="text-grey-dark">{{ t('about.values.quality_desc') ?: 'We never compromise on quality. From material selection to final delivery, every step is executed with precision and care.' }}</p>
                     </div>
@@ -53,7 +53,7 @@
         <section class="py-16 lg:py-24 bg-secondary animate-sequence">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 anim-item" data-index="0">
                 <h2 class="text-4xl font-bold mb-8 text-center text-dark">{{ t('about.story.title') ?: 'Our Story' }}</h2>
-                <div class="space-y-6 text-lg text-grey-dark">
+                <div class="space-y-6 text-lg text-center text-grey-dark">
                     <p>
                         {{ t('about.story.paragraph1') ?: 'BEKKAS was founded with a simple vision: to democratize access to 3D printing technology and empower individuals to bring their ideas to life.' }}
                     </p>

@@ -17,7 +17,7 @@
     </head>
     @php $serverFlash = session('success') ?? session('error') ?? session('warning') ?? session('info'); @endphp
     <body class="font-sans text-dark antialiased" @if($serverFlash) data-server-flash="{{ e($serverFlash) }}" @endif>
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-grey-light">
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-light">
             <div>
                 <a href="/" class="text-accent-primary hover:text-accent-primary/90 no-underline">
                     <img src="{{ asset('images/hero_logo.svg') }}" alt="BEKKAS" class="h-28 w-auto">

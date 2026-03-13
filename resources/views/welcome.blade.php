@@ -1,4 +1,4 @@
-﻿@section('title', config('app.name', 'BEKKAS') . ' - 3D Printing Services')
+﻿@section('title', config('app.name', 'BEKKAS'))
 
 @push('head')
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))

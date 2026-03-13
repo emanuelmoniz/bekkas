@@ -512,6 +512,12 @@ Route::middleware(['auth', 'is_admin'])
         Route::post('tickets/{ticket}/mark-unread', [TicketStatusController::class, 'markUnread'])
             ->name('tickets.mark-unread');
 
+        Route::post('tickets/{ticket}/close', [TicketStatusController::class, 'close'])
+            ->name('tickets.close');
+
+        Route::post('tickets/{ticket}/reopen', [TicketStatusController::class, 'reopen'])
+            ->name('tickets.reopen');
+
         Route::get('tickets/{ticket}/edit', [TicketAdminController::class, 'edit'])
             ->name('tickets.edit');
 

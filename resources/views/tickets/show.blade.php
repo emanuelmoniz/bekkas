@@ -77,9 +77,20 @@
                                     · {{ $msg->created_at }}
                                 </div>
 
-                                <div class="whitespace-pre-line">
-                                    {{ $msg->message }}
-                                </div>
+                                @if ($msg->is_system && $msg->system_event)
+                                    <div class="whitespace-pre-line">
+                                        @if ($msg->system_event === 'closed')
+                                            <span class="font-semibold">{{ t('tickets.closed_by') ?: 'Closed by' }}:</span> {{ $msg->user?->name ?? '—' }}<br>
+                                        @elseif ($msg->system_event === 'reopened')
+                                            <span class="font-semibold">{{ t('tickets.reopened_by') ?: 'Reopened by' }}:</span> {{ $msg->user?->name ?? '—' }}<br>
+                                        @endif
+                                        <span class="font-semibold">{{ t('tickets.reason') ?: 'Reason' }}:</span> {{ $msg->message }}
+                                    </div>
+                                @else
+                                    <div class="whitespace-pre-line">
+                                        {{ $msg->message }}
+                                    </div>
+                                @endif
 
                                 @if ($msg->attachments->count())
                                     <ul class="list-disc ml-5 text-sm mt-2">
