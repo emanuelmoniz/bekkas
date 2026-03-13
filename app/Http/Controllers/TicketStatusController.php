@@ -63,8 +63,9 @@ class TicketStatusController extends Controller
             TicketMessage::create([
                 'ticket_id' => $ticket->id,
                 'user_id' => $user->id,
-                'message' => (t('tickets.closed_reason') ?: 'Ticket closed. Reason:').' '.$request->reason,
+                'message' => $request->reason,
                 'is_system' => true,
+                'system_event' => 'closed',
             ]);
 
             $ticket->notifyParticipants(
@@ -77,7 +78,9 @@ class TicketStatusController extends Controller
             // ✅ Mark unread for other participant
             $this->updateReadStateForSystemMessage($ticket, $user->id);
 
-            return redirect()->route('tickets.show', $ticket)
+            $isAdmin = Route::currentRouteName() && str_starts_with(Route::currentRouteName(), 'admin.');
+
+            return redirect()->route($isAdmin ? 'admin.tickets.index' : 'tickets.index')
                 ->with('success', t('tickets.closed_success') ?: 'Ticket closed successfully.');
         } catch (\Throwable $e) {
             \Log::error('Ticket close failed', [
@@ -119,8 +122,9 @@ class TicketStatusController extends Controller
         TicketMessage::create([
             'ticket_id' => $ticket->id,
             'user_id' => $user->id,
-            'message' => (t('tickets.reopened_reason') ?: 'Ticket reopened. Reason:').' '.$request->reason,
+            'message' => $request->reason,
             'is_system' => true,
+            'system_event' => 'reopened',
         ]);
 
         $ticket->notifyParticipants(
@@ -133,7 +137,9 @@ class TicketStatusController extends Controller
         // ✅ Mark unread for other participant
         $this->updateReadStateForSystemMessage($ticket, $user->id);
 
-        return redirect()->route('tickets.show', $ticket)
+        $isAdmin = Route::currentRouteName() && str_starts_with(Route::currentRouteName(), 'admin.');
+
+        return redirect()->route($isAdmin ? 'admin.tickets.index' : 'tickets.index')
             ->with('success', t('tickets.reopened_success') ?: 'Ticket reopened successfully.');
     }
 

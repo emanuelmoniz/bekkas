@@ -1,4 +1,4 @@
-@section('title', config('app.name', 'BEKKAS') . ' - ' . (t('legal.privacy.title') ?: 'Privacy Policy'))
+@section('title', config('app.name', 'BEKKAS') . ' - ' . (t('footer.privacy') ?: 'Privacy Policy'))
 
 <x-app-layout>
 

@@ -1,4 +1,4 @@
-@section('title', config('app.name', 'BEKKAS') . ' - Architecture Services')
+@section('title', config('app.name', 'BEKKAS') . ' - ' . (t('nav.custom') ?: 'Custom Services'))
 
 <x-app-layout>
 

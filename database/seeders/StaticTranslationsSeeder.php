@@ -273,8 +273,8 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'checkout.pay.iban', 'locale' => 'pt-PT', 'value' => 'IBAN', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'checkout.pay.iban', 'locale' => 'en-UK', 'value' => 'IBAN', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'address_form.title', 'locale' => 'pt-PT', 'value' => 'Nome da morada', 'created_at' => $now, 'updated_at' => $now],
-            ['key' => 'address_form.title', 'locale' => 'en-UK', 'value' => 'Address name', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.title', 'locale' => 'pt-PT', 'value' => 'Nome (Ex. Casa | Trabalho | Outro)', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'address_form.title', 'locale' => 'en-UK', 'value' => 'Name (Ex. Home | Work | Other)', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'address_form.nif', 'locale' => 'pt-PT', 'value' => 'NIF', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'address_form.nif', 'locale' => 'en-UK', 'value' => 'NIF', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'address_form.phone', 'locale' => 'pt-PT', 'value' => 'Telefone', 'created_at' => $now, 'updated_at' => $now],
@@ -1181,6 +1181,15 @@ class StaticTranslationsSeeder extends Seeder
 
             ['key' => 'tickets.system', 'locale' => 'pt-PT', 'value' => 'Sistema', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.system', 'locale' => 'en-UK', 'value' => 'System', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'tickets.closed_by', 'locale' => 'pt-PT', 'value' => 'Fechado por', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.closed_by', 'locale' => 'en-UK', 'value' => 'Closed by', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'tickets.reopened_by', 'locale' => 'pt-PT', 'value' => 'Reaberto por', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.reopened_by', 'locale' => 'en-UK', 'value' => 'Reopened by', 'created_at' => $now, 'updated_at' => $now],
+
+            ['key' => 'tickets.reason', 'locale' => 'pt-PT', 'value' => 'Motivo', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.reason', 'locale' => 'en-UK', 'value' => 'Reason', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.send', 'locale' => 'pt-PT', 'value' => 'Enviar', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.send', 'locale' => 'en-UK', 'value' => 'Send', 'created_at' => $now, 'updated_at' => $now],

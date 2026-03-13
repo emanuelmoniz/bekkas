@@ -108,22 +108,20 @@ class Ticket extends Model
     /* ================= EMAIL NOTIFICATIONS  ================= */
     public function notifyParticipants(TicketMessage $message, string $eventLabel, int $actorId): void
     {
-        $recipients = User::where(function ($q) {
-            $q->where('id', $this->user_id)
-                ->orWhereHas('roles', fn ($r) => $r->where('name', 'admin'));
-        })
-            ->where('id', '!=', $actorId)
-            ->get();
-
-        foreach ($recipients as $recipient) {
-            // Admin recipients must always receive English emails; customers receive their configured language.
-            $recipientLocale = $recipient->roles()->where('name', 'admin')->exists()
-                ? 'en-UK'
-                : ($recipient->language ?? app()->getLocale());
-
-            Mail::to($recipient->email, $recipient->name)
-                ->locale($recipientLocale)
-                ->queue(new TicketNotification($this, $message, $eventLabel, $recipient->name));
+        // Notify the ticket owner (customer) if they are not the actor.
+        $owner = User::find($this->user_id);
+        if ($owner && $owner->id !== $actorId) {
+            $ownerLocale = $owner->language ?? app()->getLocale();
+            Mail::to($owner->email, $owner->name)
+                ->locale($ownerLocale)
+                ->queue(new TicketNotification($this, $message, $eventLabel, $owner->name));
         }
+
+        // Notify the admin inbox (always in English), same as order notifications.
+        $adminEmail = config('mail.admin_address', 'info@bekkas.pt');
+        $adminName = config('app.name', 'BEKKAS');
+        Mail::to($adminEmail, $adminName)
+            ->locale('en-UK')
+            ->queue(new TicketNotification($this, $message, $eventLabel, $adminName));
     }
 }

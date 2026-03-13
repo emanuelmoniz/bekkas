@@ -1,4 +1,4 @@
-@section('title', t('legal.terms.title') ?: 'Service Terms | Termos de Serviço')
+@section('title', config('app.name', 'BEKKAS') . ' - ' . (t('footer.terms') ?: 'Terms of Service'))
 
 <x-app-layout>
 

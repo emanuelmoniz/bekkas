@@ -74,7 +74,7 @@
         {{-- CLOSE / REOPEN --}}
         <div class="bg-white p-6 rounded shadow">
             @if ($ticket->status === 'open')
-                <form method="POST" action="{{ route('tickets.close', $ticket) }}">
+                <form method="POST" action="{{ route('admin.tickets.close', $ticket) }}">
                     @csrf
                     <label class="block mb-1">Close reason *</label>
                     <textarea name="reason"
@@ -84,7 +84,7 @@
                     </x-default-button>
                 </form>
             @else
-                <form method="POST" action="{{ route('tickets.reopen', $ticket) }}">
+                <form method="POST" action="{{ route('admin.tickets.reopen', $ticket) }}">
                     @csrf
                     <label class="block mb-1">Reopen reason *</label>
                     <textarea name="reason"
@@ -112,9 +112,20 @@
                                 · {{ $msg->created_at }}
                             </div>
 
-                            <div class="whitespace-pre-line">
-                                {{ $msg->message }}
-                            </div>
+                            @if ($msg->is_system && $msg->system_event)
+                                <div class="whitespace-pre-line">
+                                    @if ($msg->system_event === 'closed')
+                                        <span class="font-semibold">Closed by:</span> {{ $msg->user?->name ?? '—' }}<br>
+                                    @elseif ($msg->system_event === 'reopened')
+                                        <span class="font-semibold">Reopened by:</span> {{ $msg->user?->name ?? '—' }}<br>
+                                    @endif
+                                    <span class="font-semibold">Reason:</span> {{ $msg->message }}
+                                </div>
+                            @else
+                                <div class="whitespace-pre-line">
+                                    {{ $msg->message }}
+                                </div>
+                            @endif
 
                             @if ($msg->attachments->count())
                                 <ul class="list-disc ml-5 text-sm mt-2">

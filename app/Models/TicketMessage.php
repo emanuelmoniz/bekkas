@@ -11,6 +11,7 @@ class TicketMessage extends Model
         'user_id',
         'message',
         'is_system',
+        'system_event',
     ];
 
     public function ticket()
