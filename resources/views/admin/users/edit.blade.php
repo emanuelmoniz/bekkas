@@ -12,6 +12,10 @@
             @csrf
             @method('PATCH')
 
+            @php
+                $isSelf = auth()->check() && auth()->id() === $user->id;
+            @endphp
+
             <div class="bg-white p-6 rounded shadow space-y-4">
                 <h3 class="text-lg border-b pb-2">User Information</h3>
 
@@ -57,9 +61,14 @@
                                name="is_active"
                                value="1"
                                @checked(old('is_active', $user->is_active))
+                               @disabled($isSelf)
                                class="rounded border-grey-medium">
                         <span class="ml-2 font-semibold">Active</span>
                     </label>
+
+                    @if($isSelf)
+                        <div class="mt-1 text-sm text-yellow-700">You cannot deactivate your own account.</div>
+                    @endif
                 </div>
 
                 {{-- ROLES --}}
