@@ -144,6 +144,44 @@ if (! function_exists('image_scroller_images')) {
     function image_scroller_images(array $config = [])
     {
         $max = isset($config['max']) && $config['max'] > 0 ? (int) $config['max'] : null;
+
+        // Allow passing one or more explicit image URLs/paths. This is useful for
+        // cases (e.g. the homepage cards) where the store/portfolio features are
+        // disabled and we want to show a single static asset instead.
+        if (isset($config['images']) || isset($config['image'])) {
+            $input = $config['images'] ?? $config['image'];
+            $urls = [];
+
+            if (is_string($input)) {
+                $urls = [$input];
+            } elseif (is_iterable($input)) {
+                $urls = $input;
+            } else {
+                $urls = [$input];
+            }
+
+            $collection = collect($urls)
+                ->filter(fn ($u) => is_string($u) && trim($u) !== '')
+                ->map(function ($u) {
+                    $u = trim($u);
+
+                    // Preserve full URLs
+                    if (preg_match('#^([a-z][a-z0-9+\-.]*:)?//#i', $u)) {
+                        return $u;
+                    }
+
+                    // Normalise leading slashes before passing to asset()
+                    return asset(ltrim($u, '/'));
+                })
+                ->values();
+
+            if ($max) {
+                $collection = $collection->take($max);
+            }
+
+            return $collection;
+        }
+
         // we build an intermediate collection of "entries" containing path,
         // created_at and a priority flag.  this lets us reorder globally and
         // favour primary photos while still respecting the various limits.

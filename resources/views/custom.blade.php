@@ -2,30 +2,13 @@
 
 <x-app-layout>
 
-        <!-- BANNER SECTION
-        <section class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-dark">
-
-            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=800&fit=crop')">
-                <div class="absolute inset-0 bg-dark/40"></div>
-            </div>
-            
-
-            <div class="relative z-10 text-center text-white px-6">
-                <h1 class="text-5xl lg:text-7xl font-bold mb-6">{{ t('custom.banner.title') ?: 'Custom Services' }}</h1>
-                <p class="text-xl lg:text-2xl mb-8 max-w-2xl mx-auto">{{ t('custom.banner.subtitle') ?: 'Professional 3D printing solutions for architects and designers' }}</p>
-                <x-primary-cta as="a" href="#request">
-                    {{ t('custom.banner.button') ?: 'Request Service' }}
-                </x-primary-cta>
-            </div>
-        </section> -->
-
         <!-- FEATURES SECTION -->
         <section class="py-16 lg:py-24 bg-light">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                                 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <x-feature-card
-                        :image="asset('images/slide1.jpg')"
+                        :image="asset('images/feature1.jpg')"
                         :title="t('custom.features.modeling') ?: '3D Modeling'"
                         :description="t('custom.features.modeling_desc') ?: 'Professional 3D model shaping, preparation and optimization for printing.'"
                         :bullets="array_filter([
@@ -35,7 +18,7 @@
                         ])"
                     />
                     <x-feature-card
-                        :image="asset('images/slide2.jpg')"
+                        :image="asset('images/feature2.jpg')"
                         :title="t('custom.features.materials') ?: 'Multiple Materials'"
                         :description="t('custom.features.materials_desc') ?: 'Various materials and finishes to suit your project needs.'"
                         :bullets="array_filter([
@@ -45,7 +28,7 @@
                         ])"
                     />
                     <x-feature-card
-                        :image="asset('images/slide3.jpg')"
+                        :image="asset('images/feature3.jpg')"
                         :title="t('custom.features.support') ?: 'Expert Support'"
                         :description="t('custom.features.support_desc') ?: 'Dedicated support from design consultation to final delivery.'"
                         :bullets="array_filter([

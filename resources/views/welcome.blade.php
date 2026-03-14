@@ -14,9 +14,10 @@
     <div id="home-splash" class="home-splash-overlay" role="dialog" aria-label="{{ config('app.name', 'BEKKAS') }} splash">
         <img src="{{ asset('images/hero_logo.svg') }}" alt="{{ config('app.name', 'BEKKAS') }}" class="home-splash-logo" />
     </div>
-        @php $storeEnabled = config('app.store_enabled'); @endphp
-        <!-- BANNER SECTION -->
         @php
+            $storeEnabled = config('app.store_enabled');
+            $portfolioEnabled = config('site.is_portfolio_enabled', true);
+
             // define slides for the homepage carousel; text/button reuse existing translation keys
             $homeTagline1 = t('home.banner.tagline1') ?: 'Printing Life layer by layer';
             $homeSubTagline1 = t('home.banner.subtagline1') ?: 'Printing Life layer by layer';
@@ -42,7 +43,7 @@
             $slides = [
                 [
                     // local placeholders copied during build
-                    'image' => asset('images/slide1.jpg'),
+                    'image' => asset('images/slide1_B.jpg'),
                     'tagline' => $homeTagline1,
                     'subtagline' => $homeSubTagline1,
                     'buttonText' => $homeButton1,
@@ -84,14 +85,22 @@
                     @endif
                             <div class="bg-white rounded-lg overflow-hidden shadow-lg transition-shadow h-full flex flex-col {{ $storeEnabled ? 'hover:shadow-xl cursor-pointer' : '' }}">
                                 {{-- scroll images for store products --}}
-                                <x-image-scroller class="w-full aspect-square" :config="[
-                                    'interval' => 1500,
-                                    'products' => [
-                                        'featured' => true,
-                                        'active' => true,
-                                        'per_item' => 1,
-                                    ],
-                                ]" />
+                                @php
+                                    $storeScrollerConfig = $storeEnabled
+                                        ? [
+                                            'interval' => 1500,
+                                            'products' => [
+                                                'featured' => true,
+                                                'active' => true,
+                                                'per_item' => 1,
+                                            ],
+                                        ]
+                                        : [
+                                            'interval' => 1500,
+                                            'image' => asset('images/store.png'),
+                                        ];
+                                @endphp
+                                <x-image-scroller class="w-full aspect-square" :config="$storeScrollerConfig" />
                                 <div class="p-6 py-8 flex flex-col flex-grow items-center text-center">
                                     <h3 class="uppercase text-2xl font-bold mb-4 text-dark">{{ t('home.services.store.title') ?: 'STORE' }}</h3>
                                     <p class="text-grey-dark mb-6 flex-grow">{{ t('home.services.store.description') ?: 'Day to day life objects, gifts, souvenires' }}</p>
@@ -116,15 +125,23 @@
                     <a href="{{ route('custom.index') }}" class="group anim-item text-accent-primary hover:text-accent-primary/90 no-underline" data-index="1">
                         <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
                             {{-- scroll images for custom projects --}}
-                            <x-image-scroller class="w-full aspect-square" :config="[
-                                'interval' => 3000,
-                                'max' => null,
-                                'projects' => [
-                                    'active' => true,
-                                    'featured' => true,
-                                    'per_item' => 1,
-                                ],
-                            ]" />
+                            @php
+                                $customScrollerConfig = $portfolioEnabled
+                                    ? [
+                                        'interval' => 3000,
+                                        'max' => null,
+                                        'projects' => [
+                                            'active' => true,
+                                            'featured' => true,
+                                            'per_item' => 1,
+                                        ],
+                                    ]
+                                    : [
+                                        'interval' => 3000,
+                                        'image' => asset('images/custom.png'),
+                                    ];
+                            @endphp
+                            <x-image-scroller class="w-full aspect-square" :config="$customScrollerConfig" />
                             <div class="p-6 py-8 flex flex-col flex-grow items-center text-center">
                                 <h3 class="uppercase text-2xl font-bold mb-4 text-dark">{{ t('home.services.custom.title') ?: 'CUSTOM' }}</h3>
                                 <p class="text-grey-dark mb-6 flex-grow">{{ t('home.services.custom.description') ?: 'Printing service for architects and architecture students including modeling and file preparation.' }}</p>
