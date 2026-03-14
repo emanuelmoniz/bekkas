@@ -1064,7 +1064,7 @@ class StaticTranslationsSeeder extends Seeder
             ['key' => 'tickets.message', 'locale' => 'pt-PT', 'value' => 'Mensagem', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.message', 'locale' => 'en-UK', 'value' => 'Message', 'created_at' => $now, 'updated_at' => $now],
 
-            ['key' => 'tickets.due_date', 'locale' => 'pt-PT', 'value' => 'Data de Vencimento', 'created_at' => $now, 'updated_at' => $now],
+            ['key' => 'tickets.due_date', 'locale' => 'pt-PT', 'value' => 'Prazo de execução', 'created_at' => $now, 'updated_at' => $now],
             ['key' => 'tickets.due_date', 'locale' => 'en-UK', 'value' => 'Due Date', 'created_at' => $now, 'updated_at' => $now],
 
             ['key' => 'tickets.files', 'locale' => 'pt-PT', 'value' => 'Ficheiros', 'created_at' => $now, 'updated_at' => $now],

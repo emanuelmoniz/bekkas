@@ -104,6 +104,27 @@ class ImageScrollerTest extends TestCase
         $this->assertCount(1, $images);
     }
 
+    public function test_single_image_asset_can_be_provided_via_config()
+    {
+        $images = image_scroller_images(['image' => 'images/store.jpg']);
+        $this->assertCount(1, $images);
+        $this->assertStringEndsWith('images/store.jpg', $images->first());
+    }
+
+    public function test_multiple_images_can_be_provided_via_config()
+    {
+        $images = image_scroller_images(['images' => ['images/store.jpg', 'images/custom.jpg']]);
+        $this->assertCount(2, $images);
+        $this->assertStringEndsWith('images/store.jpg', $images->first());
+        $this->assertStringEndsWith('images/custom.jpg', $images->last());
+    }
+
+    public function test_max_limit_applies_to_config_images()
+    {
+        $images = image_scroller_images(['images' => ['images/store.jpg', 'images/custom.jpg'], 'max' => 1]);
+        $this->assertCount(1, $images);
+    }
+
     public function test_component_renders_markup()
     {
         $images = collect(['https://foo/bar.jpg', 'https://foo/baz.jpg']);

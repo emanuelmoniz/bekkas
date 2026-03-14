@@ -38,4 +38,27 @@ class AdminAccessTest extends TestCase
             ->assertOk()
             ->assertViewIs('admin.dashboard');
     }
+
+    public function test_admin_cannot_deactivate_their_own_account()
+    {
+        $user = User::factory()->create(['is_active' => true]);
+
+        $role = Role::firstOrCreate(['name' => 'admin']);
+        $user->roles()->sync([$role->id]);
+
+        $this->actingAs($user)
+            ->patch(route('admin.users.update', $user), [
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'is_active' => '0',
+                'roles' => [$role->id],
+            ])
+            ->assertRedirect(route('admin.users.show', $user));
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'is_active' => true,
+        ]);
+    }
 }

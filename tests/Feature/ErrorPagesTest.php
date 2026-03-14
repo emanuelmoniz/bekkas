@@ -18,6 +18,17 @@ class ErrorPagesTest extends TestCase
         parent::setUp();
     }
 
+    public function test_maintenance_route_redirects_to_home_when_disabled()
+    {
+        // Ensure configuration exists but maintenance mode is disabled
+        \App\Models\Configuration::create(['is_maintenance' => false]);
+
+        $response = $this->get('/maintenance');
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/');
+    }
+
     public function test_404_page_shows_logo_button_and_contact()
     {
         // Seed DB translations used by the error view

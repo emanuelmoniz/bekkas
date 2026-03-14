@@ -111,7 +111,9 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'is_active' => $request->boolean('is_active'),
+            'is_active' => (auth()->check() && auth()->id() === $user->id)
+                ? true
+                : $request->boolean('is_active'),
         ]);
 
         // Update password if provided

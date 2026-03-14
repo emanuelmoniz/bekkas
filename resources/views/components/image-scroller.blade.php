@@ -52,6 +52,10 @@
               'per_item' => <max photos per project>,
           ],
 
+          // explicit static images (useful when the store/portfolio is disabled)
+          'image'  => <single url or path>,
+          'images' => [<url or path>, ...],
+
           // global options:
           'max'       => <maximum total images; null for no limit (homepage passes null)>,
           'interval'  => <ms>,              // 
@@ -75,7 +79,12 @@
     if (is_null($images)) {
         $images = image_scroller_images($config);
     } else {
-        $images = collect($images);
+        // Allow a single string to be passed in (e.g. `:images="asset('...')"`).
+        if (is_string($images)) {
+            $images = collect([$images]);
+        } else {
+            $images = collect($images);
+        }
     }
 
     // build final config that goes to the HTML attribute
